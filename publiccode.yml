@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: EUPL-1.2
-publiccodeYmlVersion: "0.4"
+publiccodeYmlVersion: "0"
 name: Eira
 url: "https://example.org/eira.git"  # URL definitiva pendente de publicación
 releaseDate: "2026-11-18"
@@ -9,7 +9,6 @@ platforms:
 categories:
   - facility-management
   - appointment-scheduling
-  - asset-management
 developmentStatus: development
 softwareType: standalone/web
 description:
@@ -42,7 +41,6 @@ description:
 legal:
   license: EUPL-1.2
   mainCopyrightOwner: Equipo Eira
-  repoOwner: Equipo Eira
 maintenance:
   type: community
   contacts:

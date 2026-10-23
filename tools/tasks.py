@@ -64,12 +64,31 @@ def openapi():
     manage("spectacular", "--validate", "--fail-on-warn", "--file", "docs/api/openapi.yaml")
 
 
+def publiccode():
+    """Valida publiccode.yml co validador oficial (Docker). Sen rede: o repositorio aínda non é público."""
+    run(
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        f"{ROOT}:/data:ro",
+        "italia/publiccode-parser-go",
+        "-no-network",
+        "-path",
+        "/data",
+        "/data/publiccode.yml",
+    )
+
+
 def screenshots():
     i18n()
     run(PY, "-m", "pytest", "tests/e2e/test_screenshots.py", "-m", "e2e", "-p", "no:cacheprovider")
 
 
-TASKS = {f.__name__: f for f in (dev, seed, test, e2e, lint, licenses, i18n, openapi, screenshots)}
+TASKS = {
+    f.__name__: f
+    for f in (dev, seed, test, e2e, lint, licenses, i18n, openapi, publiccode, screenshots)
+}
 
 if __name__ == "__main__":
     if len(sys.argv) != 2 or sys.argv[1] not in TASKS:

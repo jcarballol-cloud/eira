@@ -10,7 +10,7 @@
 | Datos tabulares | **CSV RFC 4180** (UTF-8) | Indicadores, datos abertos, exportación | Implementado |
 | Folla de cálculo | **ODS** (OpenDocument, ISO/IEC 26300) | Indicadores do concello (`?ods=…`), escritor propio sen dependencias | Implementado |
 | Datos abertos | **DCAT-AP** (JSON-LD) | `/c/<slug>/datos-abertos/dcat.jsonld` | Básico implementado |
-| Catálogo de software público | **publiccode.yml** 0.4 | Raíz do repositorio | Implementado (non validado co validador oficial) |
+| Catálogo de software público | **publiccode.yml** 0.4 | Raíz do repositorio | Validado con `publiccode-parser` 5.4.3 (`python tools/tasks.py publiccode`, sen comprobacións de rede ata publicar o repositorio) |
 | Identidade | **SAML 2.0** (Cl@ve) · **OpenID Connect** (Chave365) | `IdentityAdapter`: simulado + esqueletos `ClaveSamlAdapter`, `Chave365OidcAdapter` | Previsto |
 | Pagos | Redsys (HMAC-SHA256) | `PaymentAdapter`: `FakeRedsysAdapter` + esqueleto `RedsysAdapter` | Previsto |
 | Pechaduras | MQTT / HTTP | `LockAdapter`: mock MQTT (`eira/<concello>/<dispositivo>/cmd`) | Simulado |

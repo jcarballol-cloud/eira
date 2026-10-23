@@ -3,6 +3,45 @@
 **Fecha:** 23/10/2026 · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
 
 
+## v2. De prototipo a producto (23/10, tarde y noche)
+
+**Servidor de demo:** <http://localhost:8000> · LAN `http://<IP do equipo>:8000`.
+- Corre en una ventana de PowerShell independiente, titulada «Eira demo · 0.0.0.0:8000» (PID 39944), con `runserver --noreload` y la IA simulada; no se ha cargado Ollama ni ningún modelo.
+- Los datos de demo se regeneraron justo antes de arrancar.
+- Para pararlo, cierra la ventana.
+- El servidor de la fase 1 (PID 38220) **ya no estaba en marcha** cuando fui a sustituirlo: el puerto 8000 no escuchaba y yo no lo paré. No sé cuándo cayó.
+
+**Commits locales**, sin push: F0 `7f0eb4b`, F1 `c9ebfd0`, F3 `92670c0`, F5 `70a8a1f`, F2 `0737eb1`, F4 `a03dd10`, F7 `5086b15`, F8 `17cd0c3`, F6 `a786550`, más el de F9.
+
+| Fase | Qué hay | Verificado |
+|---|---|---|
+| F0 | `docs/APRENDIZAXES.md` (solo patrones de AFS +50 y LifeGuarPro, sin datos ni recursos) y `docs/PLAN_V2.md` | ✅ revisado |
+| F1 | Cada perfil con su herramienta: app móvil del vecindario y del operario, tableta del monitor, escritorio del ayuntamiento y de la diputación (consulta de solo lectura con aviso). Permisos reales en el backend, marco de dispositivo con `?marco=` | ✅ 65 tests de la matriz rol × URL (200/403) |
+| F3 | Cobros: notificación firmada servidor a servidor (un rechazo nunca confirma), estados, bloqueo de 10 min, devoluciones, cobro en mostrador, conciliación CSV/ODS, tarifas por colectivo, descuento en franjas tranquilas, recibo PDF | ✅ 17 tests de cobros, E2E del pago |
+| F5 | Mapa: el 403 se debía al Referer y ahora se envía solo el origen; servidor de teselas por ayuntamiento; política de OSM documentada | ✅ E2E: teselas con 200, sin violaciones de CSP (`docs/capturas/v2/mapa-teselas.png`) |
+| F2 | Alta realista: «Solicitar la app» con padrón simulado → correo con enlace y código ligado a ese correo → instalación Android/iPhone → primera apertura (código ya relleno) → «¿Tienes hijos?». Alta en mostrador con hoja QR; el monitor apunta personas y el ayuntamiento las valida | ✅ 16 tests y E2E del flujo completo |
+| F4 | 16 fotos de Wikimedia Commons con la licencia comprobada una a una (CC0/BY/BY-SA/PD), sin personas reconocibles ni marcas, WebP en 3 tamaños, `CREDITS.md` y `/creditos/`. Formulario de instalación con pestañas, accesibilidad con iconos, escala de esfuerzo de una persona en una persona con caras OMNI y Borg CR-10 | ✅ 5 tests de fotos (licencias, EXIF, variantes) y capturas antes/después |
+| F7 | «¿Qué tal fue?» en el checklist; «Mal» crea una incidencia. Vista de valoraciones sin nombres. Observatorio con filtros, tablas y CSV/ODS (n ≥ 10). Comparativa de la diputación con tendencia y satisfacción; alta de ayuntamiento en 6 pasos con invitación | ✅ 7 + 3 tests y el vídeo |
+| F8 | `docs/rxpd/` (matriz por perfil, RAT, textos modelo); centro de privacidad; menores de 14 (art. 7 LOPDGDD); iconos de cámara y filtro «sin fotos»; solo cookies técnicas; purga de solicitudes a los 12 meses | ✅ 10 tests (cookies, roles, consentimientos y purga) |
+| F6 | Recomendaciones concretas dentro de cada reserva (hora para beber, cantidades según el peso, durante, sales, hiponatremia, energía, después, tiempo, edad y semana OMS), calculadas en el dispositivo; en la cuenta solo con consentimiento del art. 9 | ✅ 6 tests de privacidad y un E2E que comprueba que ninguna petición lleva el peso |
+| F9 | Nuevo guion ([guion-demo.md](demo/guion-demo.md)); vídeos regrabados (108 s en móvil y 110 s en escritorio, con subtítulos), 25 capturas de pasos por viewport en `docs/capturas/v2/pitch-*` y 99 pantallas en `docs/capturas/v2/pantallas/` (móvil, tableta y escritorio); axe en 3 viewports; rendimiento ([rendemento.md](rendemento.md)); traducción al castellano completa | ✅ ver abajo |
+
+**Números al cierre:** 298 tests unitarios y de integración, y 16 E2E (más los 2 de vídeo), todo en verde. axe 0 violaciones en **68 páginas × 3 viewports** (390, 820 y 1280 px). El castellano tiene 0 cadenas sin traducir ni dudosas.
+
+**Hecho pero NO verificado o con límites:**
+- **Rendimiento**: medido con `runserver` y SQLite en local, no en producción ni con red móvil. La comparativa de la diputación tardaba 218 ms y ahora tiene caché de 5 min.
+- **Traducción al castellano**: se hizo con dos subagentes y se verificaron automáticamente los marcadores, el HTML y los plurales. Solo revisé a mano algunas cadenas, no las 571.
+- **Instalación PWA**: el botón «Instalar ahora» depende de `beforeinstallprompt`, que no se ha probado en un Android real. En iPhone solo hay instrucciones, porque no existe una API para instalar.
+- **Padrón y Redsys**: los adaptadores reales son esqueletos.
+- **Fotos**: la licencia se verificó con los metadatos de la API de Commons. Antes de publicar, conviene que una persona revise visualmente las 16 fichas.
+- La «diputación ve lo mismo que el ayuntamiento en solo lectura» queda **reflejado tal cual** en la matriz RGPD. Es una decisión que conviene revisar con el DPD.
+
+**Decisiones para revisar:** todas están en `docs/DECISIONS.md`, secciones «v2 F*». Las más importantes:
+- el motor de salud solo en JavaScript;
+- las cantidades por peso solo para adultos;
+- el filtro de fotos de la tableta, que es solo visual para no marcar ausencias.
+
+
 ## 0. Novedades de la sesión de mañana (23/10, tarde)
 
 | Qué | Estado | Cómo se verificó |

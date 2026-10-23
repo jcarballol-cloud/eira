@@ -54,7 +54,19 @@ def _delta(now, before):
 
 
 def compare(region, weeks=4):
-    """Indicadores por concello no período e variación fronte ao período anterior."""
+    """Indicadores por concello no período e variación fronte ao período anterior.
+    Gárdase 5 minutos en caché: calcula dous períodos por concello."""
+    from django.core.cache import cache
+
+    key = f"eira:region-compare:{region.pk}:{weeks}:{timezone.localdate().isoformat()}"
+    rows = cache.get(key)
+    if rows is None:
+        rows = _compare(region, weeks)
+        cache.set(key, rows, 300)
+    return rows
+
+
+def _compare(region, weeks):
     today = timezone.localdate()
     rows = []
     for m in region.municipalities.filter(is_active=True).order_by("name"):

@@ -19,6 +19,7 @@ from .conftest import DESKTOP, MOBILE
 
 pytestmark = [pytest.mark.e2e, pytest.mark.video, pytest.mark.django_db(transaction=False)]
 OUT = Path(settings.BASE_DIR) / "docs" / "demo"
+SHOTS = Path(settings.BASE_DIR) / "docs" / "capturas" / "v2"
 
 CAPTION_JS = """(text) => {
   let bar = document.getElementById('eira-caption');
@@ -60,107 +61,149 @@ class Director:
 
 
 def run_script(page, base, d):
-    # 1. Portada
-    d.go(base + "/")
-    d.say("Eira · Reservar é o fácil. O difícil é abrir a porta.", 3.2)
-    # 2. Veciña: buscar e reservar
-    d.login(base, "uxia@demo.eira.example")
-    d.say("Uxía, veciña de Vilardeiras, abre a app: próxima reserva e accesos rápidos.", 2.6)
-    d.go(base + "/c/vilardeiras/")
-    d.say("Busca unha instalación. Lista accesible ou mapa.")
+    """Guión v2 (docs/demo/guion-demo.md): alta por correo → reserva con desconto → pagamento
+    rexeitado e reintento → saúde → código e pechadura → peche con valoración → incidencia →
+    orde do operario → observatorio → comparativa da deputación."""
+    c = base + "/c/vilardeiras"
+    email = "pitch.vecina@example.org"
+    # 1. Alta: solicitar a app
+    d.go(c + "/")
+    d.say("Eira · Reservar é o fácil. O difícil é abrir a porta.", 3)
+    page.click("text=Solicita a app de deportes")
+    page.wait_for_load_state("networkidle")
+    page.fill("#id_name", "Sabela Proba")
+    page.fill("#id_email", email)
+    page.fill("#id_birth_year", "1990")
+    page.fill("#id_postcode", "15999")
+    page.check("#id_resident")
+    d.say("Sabela pide a app. O concello contrasta o padrón sen copialo: só «figura» ou «non».", 3.2)
+    page.click("main button[type=submit]")
+    page.wait_for_load_state("networkidle")
+    d.go(base + f"/dev/mailbox/?para={email}")
+    d.say("Recibe un correo coa ligazón de instalación e o seu código de empadroamento.", 3)
+    body = page.locator("pre").first.inner_text()
+    link = re.search(r"(http\S+/app/instalar/\?codigo=\S+)", body).group(1)
+    d.go(link)
+    d.say("Instrucións para Android e iPhone. A app instálase desde o navegador.", 2.8)
+    page.get_by_role("link", name="Abrir a app").click()
+    page.wait_for_load_state("networkidle")
+    page.fill("#id_email", email)
+    page.click("main button[type=submit]")
+    page.wait_for_load_state("networkidle")
+    page.goto(base + f"/dev/mailbox/?para={email}")
+    otp = re.search(r"\b(\d{6})\b", page.locator("pre").first.inner_text()).group(1)
+    d.go(base + "/acceso/codigo/")
+    page.fill("#id_code", otp)
+    page.click("main button[type=submit]")
+    page.wait_for_load_state("networkidle")
+    d.say("Primeira apertura: entra co correo, sen contrasinal, e o código xa vén cuberto.", 3)
+    page.click("main button[type=submit]")
+    page.wait_for_load_state("networkidle")
+    d.say("«Tes fillos ou persoas ao teu cargo?» A familia, desde o primeiro minuto.", 2.8)
+    page.click("text=Non, ir á app")
+    page.wait_for_load_state("networkidle")
+    # 2. Saúde no dispositivo
+    d.go(base + "/saude/")
+    page.fill("#h-age", "36")
+    page.fill("#h-weight", "64")
+    page.fill("#h-minutes", "80")
+    page.click("text=Gardar e ver consellos")
+    page.wait_for_timeout(400)
+    d.say("Peso e idade quedan no teléfono. Non se envían a ningures.", 2.8)
+    # 3. Reserva cunha franxa con desconto
+    d.go(c + "/")
     page.click("main a:has-text('Pista de pádel da Pereira')")
     page.wait_for_load_state("networkidle")
-    d.say("Grella semanal: libre, ocupada ou ★ recomendada (pouca demanda).", 3)
-    # No escritorio a app da veciñanza vai dentro do marco de teléfono: vale a franxa visible.
-    slot = page.locator("a.slot:visible")
+    slot = page.locator("a.slot-recommended:visible")
     slot.first.scroll_into_view_if_needed()
+    d.say("★ Franxas tranquilas: máis baratas, para repartir mellor o uso.", 3)
     slot.first.click()
     page.wait_for_load_state("networkidle")
-    d.say("Normas versionadas: queda gardado que versión aceptou e cando. E o tempo previsto.", 3.2)
+    d.say("Prezo de veciñanza co desconto á vista. Normas versionadas e tempo previsto.", 3.2)
     page.check("#id_accept_rules")
     page.click("main button.btn-lg")
     page.wait_for_load_state("networkidle")
-    d.say("Pagamento no TPV do concello (simulado).")
+    d.say("TPV do concello (simulado). Primeiro intento: a tarxeta é rexeitada.", 2.8)
+    page.click("button[value=ko]")
+    page.wait_for_load_state("networkidle")
+    d.say("Rexeitado: a reserva NON se confirma e a franxa queda libre ao momento.", 3.2)
+    page.click("text=Tentalo de novo")
+    page.wait_for_load_state("networkidle")
+    page.check("#id_accept_rules")
+    page.click("main button.btn-lg")
+    page.wait_for_load_state("networkidle")
     page.click("button[value=ok]")
     page.wait_for_load_state("networkidle")
+    d.say("Só a notificación asinada da pasarela confirma o pagamento.", 2.8)
     page.click("text=Ver o acceso e a reserva")
     page.wait_for_load_state("networkidle")
-    page.locator(".access-code").scroll_into_view_if_needed()
-    d.say("Reserva confirmada: código de 6 díxitos válido só na súa franxa (±10 min).", 3.4)
-    code = page.locator(".access-code").inner_text().strip()
-    # 3. Simulador de pechadura
+    code = page.locator(".access-code").first.inner_text().strip()
+    page.locator("[data-health-booking] .rec").first.wait_for()
+    page.locator("[data-health-booking]").scroll_into_view_if_needed()
+    d.say("Consellos para esta sesión: a que hora beber, canto para o seu peso, e a previsión.", 3.4)
+    # 4. Pechadura sen conexión
+    page.locator(".access-code").first.scroll_into_view_if_needed()
+    d.say("Código de 6 díxitos válido só na súa franxa.", 2.6)
     page.click("text=Probalo no simulador de pechadura")
     page.wait_for_load_state("networkidle")
-    d.say("A pechadura non ten internet: só o segredo compartido e o seu reloxo.")
     page.fill("#code", code)
     page.click("text=Probar código")
     page.wait_for_load_state("networkidle")
     page.locator(".lock-screen").scroll_into_view_if_needed()
-    d.say("Á hora da reserva: ABERTO.", 3)
-    page.click("button[value='60']")
-    page.wait_for_load_state("networkidle")
-    page.click("button[value='60']")
-    page.wait_for_load_state("networkidle")
-    page.fill("#code", code)
-    page.click("text=Probar código")
-    page.wait_for_load_state("networkidle")
-    page.locator(".lock-screen").scroll_into_view_if_needed()
-    d.say("Dúas horas despois, o mesmo código: DENEGADO.", 3)
-    # 4. Checklist de peche
-    d.go(base + "/c/vilardeiras/reservas/")
-    d.say("Ao rematar, Eira pide confirmar que todo queda pechado.")
+    d.say("A pechadura non ten internet: só o segredo compartido e o seu reloxo. ABERTO.", 3.2)
+    # 5. Peche con valoración «Mal» → incidencia
+    d.login(base, "uxia@demo.eira.example")
+    d.go(c + "/reservas/")
     page.click("text=Checklist de peche")
     page.wait_for_load_state("networkidle")
-    page.check("#id_door_ok_1")
+    page.check("#id_door_ok_0")
     page.check("#id_all_ok_0")
-    d.say("A porta non pechou ben: Uxía marca «Non».")
+    page.locator("label[for=sc-bad]").click()
+    page.locator("label[for=tg-lights_broken]").click()
+    page.fill("#id_v-comment", "Dúas lámpadas non acenden.")
+    page.locator("label[for=sc-bad]").scroll_into_view_if_needed()
+    d.say("Ao marchar: checklist de peche e «Que tal foi?». Mal: as luces non acenden.", 3.2)
     page.click("main button[type=submit]")
     page.wait_for_load_state("networkidle")
-    d.say("Créase unha incidencia automaticamente.")
-    inc = Incident.objects.filter(
-        source="checklist", reporter__email="uxia@demo.eira.example"
-    ).latest("created_at")
-    # 5. Concello
+    d.say("Créase unha incidencia de iluminación automaticamente.", 2.6)
+    inc = Incident.objects.filter(reporter__email="uxia@demo.eira.example").latest("created_at")
+    # 6. Concello: valida e crea a orde
     d.login(base, "admin@vilardeiras.demo.eira.example")
-    d.go(base + "/c/vilardeiras/xestion/")
-    d.say("O concello: panel do día con reservas, chaves e incidencias por validar.", 3.2)
-    d.go(f"{base}/c/vilardeiras/xestion/incidencias/{inc.pk}/")
-    d.say("Valida a incidencia (a veciña recibe un aviso).")
+    d.go(c + "/xestion/")
+    d.say("O concello: panel do día, cobros, incidencias e valoracións.", 2.8)
+    d.go(f"{c}/xestion/incidencias/{inc.pk}/")
     page.click("button:has-text('Validar')")
     page.wait_for_load_state("networkidle")
     page.select_option("#id_assigned_to", label="Brais (mantemento)")
-    d.say("Crea unha orde de traballo para Brais.")
+    d.say("Valida a incidencia e crea unha orde de traballo para Brais.", 2.8)
     page.click("button:has-text('Crear orde')")
     page.wait_for_load_state("networkidle")
-    # 6. Operario
+    # 7. Operario
     d.login(base, "brais@demo.eira.example")
-    d.go(base + "/c/vilardeiras/operario/")
-    d.say("Brais, de mantemento, ve as súas ordes. Funciona sen cobertura.")
+    d.go(c + "/operario/")
+    d.say("Brais ve só as súas ordes no móbil. Funciona sen cobertura.", 2.8)
     page.click(f"text=Incidencia #{inc.pk}")
     page.wait_for_load_state("networkidle")
     page.locator("input[name=done]").first.check()
-    page.fill("#id_closing_notes", "Fechadura axustada.")
-    d.say("Checklist, foto opcional e peche.")
+    page.fill("#id_closing_notes", "Lámpadas substituídas.")
     page.click("button[value=close]")
     page.wait_for_load_state("networkidle")
-    d.say("Orde pechada: a incidencia queda resolta e Uxía recibe «Arranxado!».")
-    # 7. Indicadores e deputación
+    d.say("Orde pechada: Uxía recibe «Arranxado!».", 2.6)
+    # 8. Observatorio e valoracións
     d.login(base, "admin@vilardeiras.demo.eira.example")
-    d.go(base + "/c/vilardeiras/xestion/indicadores/")
-    d.say(
-        "Indicadores: ocupación, non presentadas, infrauso, incidencias, ingresos. Con táboa e CSV/ODS.",
-        3.4,
-    )
-    page.mouse.wheel(0, 900)
-    d.say("Mapa de calor por franxa horaria: datos para decidir horarios.", 3)
+    d.go(c + "/xestion/valoracions/")
+    d.say("Valoracións: índice por instalación e comentarios, sen nomes.", 3)
+    d.go(c + "/actividades/observatorio/?semanas=12")
+    d.say("Observatorio da actividade física: anónimo, con grupos de 10 ou máis, fronte á OMS.", 3.2)
+    # 9. Deputación
     d.login(base, "deputacion@demo.eira.example")
-    d.say("A deputación compara concellos e dá de alta novos en tres pasos.", 3)
+    d.say("A deputación compara concellos: uso por habitante, satisfacción, tendencia.", 3.2)
     d.say("Eira · software libre EUPL · da reserva á porta, e da porta aos datos.", 3.4)
 
 
 @pytest.mark.parametrize("viewport, name", [(MOBILE, "movil"), (DESKTOP, "escritorio")])
 def test_record_pitch_video(browser, base, viewport, name, tmp_path):
-    shots = OUT / f"pasos-{name}"
+    shots = SHOTS / f"pitch-{name}"
     shutil.rmtree(shots, ignore_errors=True)
     shots.mkdir(parents=True)
     ctx = browser.new_context(

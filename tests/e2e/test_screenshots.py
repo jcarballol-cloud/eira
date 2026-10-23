@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: EUPL-1.2
-"""Capturas automáticas das pantallas clave (móbil e escritorio) en docs/capturas/.
+"""Capturas automáticas das pantallas clave (móbil, tableta e escritorio) en docs/capturas/v2/pantallas/.
+As de v1 quedan en docs/capturas/ como «antes».
 
 python tools/tasks.py screenshots
 """
@@ -10,16 +11,17 @@ import pytest
 from django.conf import settings
 from django.utils import timezone
 
+from apps.accounts.models import AppRequest
 from apps.activities.models import Group, Session
 from apps.bookings.models import Booking
 from apps.facilities.models import Facility
 from apps.incidents.models import Incident
 from apps.maintenance.models import WorkOrder
 
-from .conftest import DESKTOP, MOBILE
+from .conftest import DESKTOP, MOBILE, TABLET
 
 pytestmark = [pytest.mark.e2e, pytest.mark.django_db(transaction=False)]
-OUT = Path(settings.BASE_DIR) / "docs" / "capturas"
+OUT = Path(settings.BASE_DIR) / "docs" / "capturas" / "v2" / "pantallas"
 
 
 def shots():
@@ -46,6 +48,9 @@ def shots():
     )
     group = Group.objects.filter(municipality__slug="vilardeiras", rpe_scale="omni").first()
     session = Session.objects.filter(group=group, closed_at__isnull=False).order_by("-date").first()
+    signup = AppRequest.objects.filter(
+        municipality__slug="vilardeiras", invitation__isnull=False
+    ).first()
     at = timezone.localtime(code_booking.start + timezone.timedelta(minutes=2)).strftime(
         "%Y-%m-%dT%H:%M"
     )
@@ -106,10 +111,35 @@ def shots():
         ),
         ("20-observatorio", None, f"{c}/actividades/observatorio/"),
         ("21-deputacion", "deputacion@demo.eira.example", "/rexion/marismas/"),
+        ("22-app-inicio", "uxia@demo.eira.example", f"{c}/app/"),
+        ("23-solicitar-app", None, f"{c}/app/solicitar/"),
+        ("24-instalar-app", None, f"{c}/app/instalar/?codigo=ABCD-2345"),
+        ("25-privacidade", "uxia@demo.eira.example", "/conta/privacidade/"),
+        ("26-altas-app", "admin@vilardeiras.demo.eira.example", f"{c}/xestion/altas/"),
+        (
+            "27-folla-qr",
+            "admin@vilardeiras.demo.eira.example",
+            f"{c}/xestion/altas/{signup.pk}/folla/",
+        ),
+        ("28-cobros", "admin@vilardeiras.demo.eira.example", f"{c}/xestion/cobros/"),
+        ("29-valoracions", "admin@vilardeiras.demo.eira.example", f"{c}/xestion/valoracions/"),
+        (
+            "30-grupo-fotos",
+            "admin@vilardeiras.demo.eira.example",
+            f"{c}/xestion/actividades/grupo/{group.pk}/",
+        ),
+        (
+            "31-asistencia-fotos",
+            "antia@demo.eira.example",
+            f"{c}/monitor/sesion/{session.pk}/asistencia/",
+        ),
+        ("32-creditos-fotos", None, "/creditos/"),
     ]
 
 
-@pytest.mark.parametrize("viewport, suffix", [(MOBILE, "movil"), (DESKTOP, "escritorio")])
+@pytest.mark.parametrize(
+    "viewport, suffix", [(MOBILE, "movil"), (TABLET, "tableta"), (DESKTOP, "escritorio")]
+)
 def test_screenshots(new_page, base, viewport, suffix):
     OUT.mkdir(parents=True, exist_ok=True)
     pages = {}
@@ -120,7 +150,9 @@ def test_screenshots(new_page, base, viewport, suffix):
         resp = page.goto(base + path)
         assert resp.status == 200, (name, path, resp.status)
         page.wait_for_load_state("networkidle")
-        page.screenshot(path=str(OUT / f"{name}-{suffix}.png"), full_page=True)
+        # Co marco de teléfono ou tableta, a páxina completa engadiría un oco baleiro baixo o marco
+        framed = page.evaluate("document.body.classList.contains('framed')")
+        page.screenshot(path=str(OUT / f"{name}-{suffix}.png"), full_page=not framed)
     # O momento estrela: o código da reserva abre a pechadura sen conexión
     page = pages["uxia@demo.eira.example"]
     gym = Facility.objects.get(municipality__slug="vilardeiras", kind="gym")
@@ -142,3 +174,5 @@ def test_screenshots(new_page, base, viewport, suffix):
     page.click("text=Probar código")
     page.wait_for_load_state("networkidle")
     page.screenshot(path=str(OUT / f"07b-simulador-aberto-{suffix}.png"), full_page=True)
+    for p in pages.values():
+        p.close()

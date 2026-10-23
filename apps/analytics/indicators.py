@@ -6,6 +6,7 @@ from collections import Counter, defaultdict
 
 from django.db.models import Count, Sum
 from django.utils import timezone
+from django.utils.formats import number_format
 from django.utils.translation import gettext as _
 
 from apps.bookings.models import Booking
@@ -175,7 +176,7 @@ def hbar(items, value_key, label_key, suffix=""):
             "label": item[label_key],
             "value": item[value_key],
             "pct": 100 * max(item[value_key], 0) / peak,
-            "display": f"{item[value_key]}{suffix}",
+            "display": f"{number_format(item[value_key])}{suffix}",
         }
         for item in items
     ]

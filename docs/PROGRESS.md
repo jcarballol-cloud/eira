@@ -54,7 +54,7 @@ guión de 3 min verificado cun test E2E, 44 capturas automáticas en `docs/captu
 - ✅ Auditoría de publicación, demo pública preparada (Caddy) con RAM medida, vídeo do pitch, revisión de nomes.
 
 ## Números
-- 160 tests unitarios/integración + 11 E2E (axe en 53 páxinas × 2 viewports con 0 violacións).
+- v2: 298 tests unitarios e de integración + 16 E2E (+2 de vídeo); axe en 68 páxinas × 3 viewports, 0 violacións.
 
 ## Bloqueos
 - Ningún bloqueo activo. Ver riscos en `INFORME_MANANA.md`.
@@ -62,4 +62,9 @@ guión de 3 min verificado cun test E2E, 44 capturas automáticas en `docs/captu
 ## v2 (tarde do 23/10)
 - ✅ F0 aprendizaxes e plan · F1 ferramenta por perfil e permisos reais (65 tests de matriz) · F3 cobros crible (17 tests).
 - ✅ F5 mapas: Referer de orixe, teselas por concello, política OSM documentada, E2E de teselas 200.
+- ✅ F4 deseño: fotos libres de Commons con créditos, formulario con lapelas, accesibilidade con iconas, escala de esforzo nova.
+- ✅ F7 valoracións, observatorio con filtros e exportación, comparativa da deputación e alta de concello en 6 pasos.
+- ✅ F8 RXPD visible: matriz, RAT, textos modelo, centro de privacidade, menores de 14, fotos, cookies e conservación.
+- ✅ F6 saúde: recomendacións persoais en cada reserva, no dispositivo (na conta só con consentimento art. 9).
+- ✅ F9 guión e vídeos novos, 99 capturas en 3 viewports, axe en 68 páxinas × 3 viewports, rendemento, castelán completo, servidor da LAN.
 - ✅ F2 alta: solicitar a app con padrón simulado, correo con ligazón e código, instalación Android/iPhone, primeira apertura, mostrador con folla QR, persoas apuntadas polo monitor e validadas polo concello (16 tests + E2E).

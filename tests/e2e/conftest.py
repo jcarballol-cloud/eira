@@ -11,6 +11,7 @@ os.environ.setdefault("DJANGO_ALLOW_ASYNC_UNSAFE", "true")
 
 MOBILE = {"width": 390, "height": 844}
 DESKTOP = {"width": 1280, "height": 900}
+TABLET = {"width": 820, "height": 1180}  # tableta vertical (iPad Air)
 
 
 @pytest.fixture(scope="session")

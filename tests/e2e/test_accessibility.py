@@ -11,7 +11,7 @@ from apps.facilities.models import Facility
 from apps.incidents.models import Incident
 from apps.maintenance.models import WorkOrder
 
-from .conftest import DESKTOP, MOBILE
+from .conftest import DESKTOP, MOBILE, TABLET
 
 pytestmark = [pytest.mark.e2e, pytest.mark.django_db(transaction=False)]
 
@@ -134,7 +134,7 @@ def format_violations(results):
     return "\n".join(out)
 
 
-@pytest.mark.parametrize("viewport", [MOBILE, DESKTOP], ids=["movil", "escritorio"])
+@pytest.mark.parametrize("viewport", [MOBILE, TABLET, DESKTOP], ids=["movil", "tableta", "escritorio"])
 def test_axe_main_pages(new_page, base, viewport):
     failures = []
     checked = 0

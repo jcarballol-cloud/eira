@@ -510,6 +510,7 @@ html.pref-reduced-motion *, html.pref-reduced-motion *::before, html.pref-reduce
 .list > li.alert { padding: .9rem 1rem; border-bottom: 0; }
 
 /* Gráficos de barras en HTML */
+.hbars { margin-left: 0; margin-right: 0; }
 .hbars .list > li.hbar-row { display: grid; grid-template-columns: minmax(7rem, 38%) 1fr auto; gap: .6rem; align-items: center; padding: .35rem 0; border-bottom: 0; }
 .hbar-label { font-size: .92rem; overflow-wrap: anywhere; }
 .hbar-track { height: 1.1rem; background: var(--neboa); border-radius: 6px; overflow: hidden; }

@@ -124,8 +124,12 @@ def test_incident_photos_are_private(client, citizen, outsider, padel_a, admin_a
     client.force_login(citizen)
     client.post(
         "/c/concello-a/incidencias/nova/",
-        {"facility": padel_a.pk, "category": "damage", "description": "x",
-         "photo": SimpleUploadedFile("f.jpg", jpeg_with_gps(), content_type="image/jpeg")},
+        {
+            "facility": padel_a.pk,
+            "category": "damage",
+            "description": "x",
+            "photo": SimpleUploadedFile("f.jpg", jpeg_with_gps(), content_type="image/jpeg"),
+        },
     )
     url = Incident.objects.get().photo.url
     assert client.get(url).status_code == 200  # quen a enviou

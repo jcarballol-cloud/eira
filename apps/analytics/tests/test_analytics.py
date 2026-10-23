@@ -91,3 +91,21 @@ def test_bar_widths_use_css_classes(client, admin_a, padel_a, citizen):
     client.force_login(admin_a)
     html = client.get("/c/concello-a/xestion/indicadores/").content.decode()
     assert 'class="hbar-fill w-100"' in html
+
+
+def test_ods_export_is_valid_opendocument(client, admin_a, padel_a, citizen):
+    import zipfile
+    from xml.etree import ElementTree
+
+    past_booking(padel_a, citizen, 2)
+    client.force_login(admin_a)
+    r = client.get("/c/concello-a/xestion/indicadores/?ods=ocupacion")
+    assert r["Content-Type"] == "application/vnd.oasis.opendocument.spreadsheet"
+    with zipfile.ZipFile(io.BytesIO(r.content)) as zf:
+        assert (
+            zf.namelist()[0] == "mimetype"
+            and zf.getinfo("mimetype").compress_type == zipfile.ZIP_STORED
+        )
+        root = ElementTree.fromstring(zf.read("content.xml"))
+    texts = [t.text for t in root.iter("{urn:oasis:names:tc:opendocument:xmlns:text:1.0}p")]
+    assert "instalacion" in texts and padel_a.name in texts

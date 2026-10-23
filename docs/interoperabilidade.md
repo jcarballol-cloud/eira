@@ -8,7 +8,7 @@
 | Notificacións push | **Web Push RFC 8030** + VAPID RFC 8292 | `PushAdapter`, endpoint de subscrición, service worker con `push` | Esqueleto (envío simulado) |
 | Xeodatos | **GeoJSON RFC 7946** | Mapa de instalacións; `geo/instalacions.geojson` na exportación | Implementado |
 | Datos tabulares | **CSV RFC 4180** (UTF-8) | Indicadores, datos abertos, exportación | Implementado |
-| Folla de cálculo | ODS | O CSV ábrese directamente en LibreOffice; xeración ODS nativa pendente | Pendente |
+| Folla de cálculo | **ODS** (OpenDocument, ISO/IEC 26300) | Indicadores do concello (`?ods=…`), escritor propio sen dependencias | Implementado |
 | Datos abertos | **DCAT-AP** (JSON-LD) | `/c/<slug>/datos-abertos/dcat.jsonld` | Básico implementado |
 | Catálogo de software público | **publiccode.yml** 0.4 | Raíz do repositorio | Implementado (non validado co validador oficial) |
 | Identidade | **SAML 2.0** (Cl@ve) · **OpenID Connect** (Chave365) | `IdentityAdapter`: simulado + esqueletos `ClaveSamlAdapter`, `Chave365OidcAdapter` | Previsto |

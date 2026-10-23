@@ -13,7 +13,17 @@ from . import indicators
 ADMIN_ROLES = ("admin", "region_admin")
 
 
-def _csv(filename, header, rows):
+def _csv(filename, header, rows, ods=False):
+    if ods:
+        from .ods import write_ods
+
+        name = filename.replace(".csv", ".ods")
+        response = HttpResponse(
+            write_ods(name[:-4], header, rows),
+            content_type="application/vnd.oasis.opendocument.spreadsheet",
+        )
+        response["Content-Disposition"] = f'attachment; filename="{name}"'
+        return response
     response = HttpResponse(content_type="text/csv; charset=utf-8")
     response["Content-Disposition"] = f'attachment; filename="{filename}"'
     response.write("﻿")  # BOM para que as follas de cálculo detecten UTF-8
@@ -27,7 +37,8 @@ def _csv(filename, header, rows):
 def dashboard(request):
     weeks = 8 if request.GET.get("semanas") == "8" else 4
     s = indicators.summary(request.tenant, weeks)
-    fmt = request.GET.get("csv")
+    fmt = request.GET.get("csv") or request.GET.get("ods")
+    ods = bool(request.GET.get("ods"))
     if fmt == "ocupacion":
         return _csv(
             "ocupacion.csv",
@@ -36,6 +47,7 @@ def dashboard(request):
                 [r["facility"], r["available"], r["booked"], r["pct"], r["no_shows"]]
                 for r in s["occupancy"]
             ],
+            ods=ods,
         )
     if fmt == "franxas":
         days = ["luns", "martes", "mercores", "xoves", "venres", "sabado", "domingo"]
@@ -46,21 +58,24 @@ def dashboard(request):
                 [f"{row['hour']:02d}:00", *[c["value"] for c in row["cells"]]]
                 for row in s["heatmap"]
             ],
+            ods=ods,
         )
     if fmt == "ingresos":
         return _csv(
             "ingresos.csv",
             ["semana", "cobrado_eur", "devolto_eur", "neto_eur"],
             [
-                [r["week"], r["paid"] / 100, r["refunded"] / 100, r["net"] / 100]
+                [r["week"].isoformat(), r["paid"] / 100, r["refunded"] / 100, r["net"] / 100]
                 for r in s["revenue_weeks"]
             ],
+            ods=ods,
         )
     if fmt == "incidencias":
         return _csv(
             "incidencias.csv",
             ["estado", "total"],
             [[str(k), v] for k, v in s["incidents"]["by_status"]],
+            ods=ods,
         )
     occ_chart = indicators.hbar(s["occupancy"], "pct", "facility", suffix=" %")
     ns_chart = indicators.hbar(

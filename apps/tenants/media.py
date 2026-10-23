@@ -21,7 +21,9 @@ def _can_see(user, municipality_id, reporter_id=None):
         return False
     if user.is_superuser or (reporter_id and reporter_id == user.pk):
         return True
-    if Membership.objects.filter(user=user, municipality_id=municipality_id, role__in=STAFF).exists():
+    if Membership.objects.filter(
+        user=user, municipality_id=municipality_id, role__in=STAFF
+    ).exists():
         return True
     return user.region_memberships.filter(region__municipalities__id=municipality_id).exists()
 
@@ -31,11 +33,15 @@ def protected_serve(request, path):
         from apps.incidents.models import Incident
         from apps.maintenance.models import WorkOrderPhoto
 
-        incident = Incident.objects.filter(photo=path).values("municipality_id", "reporter_id").first()
+        incident = (
+            Incident.objects.filter(photo=path).values("municipality_id", "reporter_id").first()
+        )
         if incident:
             allowed = _can_see(request.user, incident["municipality_id"], incident["reporter_id"])
         else:
-            photo = WorkOrderPhoto.objects.filter(image=path).values("order__municipality_id").first()
+            photo = (
+                WorkOrderPhoto.objects.filter(image=path).values("order__municipality_id").first()
+            )
             allowed = bool(photo) and _can_see(request.user, photo["order__municipality_id"])
         if not allowed:
             raise Http404

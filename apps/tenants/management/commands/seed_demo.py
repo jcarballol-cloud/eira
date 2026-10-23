@@ -397,7 +397,9 @@ class Command(BaseCommand):
                                 "used" if r < 0.82 else ("no_show" if r < 0.91 else "cancelled")
                             )
                             if status == "no_show" and f.access_level == 0:
-                                status = "used"  # nivel 0: o QR é voluntario, non hai «non presentadas»
+                                status = (
+                                    "used"  # nivel 0: o QR é voluntario, non hai «non presentadas»
+                                )
                         else:
                             status = "confirmed" if self.rng.random() < 0.93 else "cancelled"
                         checked = (

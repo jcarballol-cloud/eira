@@ -79,7 +79,7 @@ Guion del pitch: [`docs/demo/guion-demo.md`](demo/guion-demo.md).
 - **P1:** nada bloqueante. Mejoras: reservas recurrentes (clubes), lista de espera en franjas ocupadas.
 - **P2:** cola offline guarda formularios pero no hay vista para revisar/descartar lo pendiente; firma/resincronización de hora del teclado solo documentada.
 - **P3:** botón de activación de Web Push en la interfaz (solo existe el endpoint y el adaptador simulado); edición de baterías de pruebas desde la UI (hoy se crean en seed/admin).
-- **P4:** exportación ODS nativa (hoy CSV); validación DCAT-AP con validador oficial.
+- **P4:** validación DCAT-AP con validador oficial; ODS también en datos abiertos y exportación (hoy solo en indicadores).
 - **P5:** vídeo/GIF del recorrido; ensayo cronometrado del pitch.
 
 ## 5. Decisiones que conviene revisar

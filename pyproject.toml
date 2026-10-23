@@ -36,7 +36,10 @@ testpaths = ["apps", "tests"]
 pythonpath = ["."]
 django_find_project = false
 addopts = "-q --strict-markers"
-markers = ["e2e: browser end-to-end tests (Playwright + axe)"]
+markers = [
+    "e2e: browser end-to-end tests (Playwright + axe)",
+    "video: grava o vídeo da demo (non vai na CI)",
+]
 filterwarnings = ["ignore:No directory at:UserWarning"]
 
 [tool.ruff]

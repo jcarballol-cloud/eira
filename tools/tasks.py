@@ -48,7 +48,12 @@ def test():
 
 def e2e():
     i18n()
-    run(PY, "-m", "pytest", "tests/e2e", "-m", "e2e", "-p", "no:cacheprovider")
+    run(PY, "-m", "pytest", "tests/e2e", "-m", "e2e and not video", "-p", "no:cacheprovider")
+
+
+def video():
+    i18n()
+    run(PY, "-m", "pytest", "tests/e2e/test_video.py", "-m", "video", "-p", "no:cacheprovider")
 
 
 def lint():
@@ -89,7 +94,7 @@ def screenshots():
 
 TASKS = {
     f.__name__: f
-    for f in (dev, seed, test, e2e, lint, licenses, i18n, openapi, publiccode, screenshots)
+    for f in (dev, seed, test, e2e, lint, licenses, i18n, openapi, publiccode, screenshots, video)
 }
 
 if __name__ == "__main__":

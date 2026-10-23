@@ -15,7 +15,7 @@
 
 <div class="grid grid-2">
   <section class="card" aria-labelledby="occ-title">
-    <div class="row-between"><h2 id="occ-title">{% translate "Ocupación por instalación" %}</h2><a href="?semanas={{ weeks }}&amp;csv=ocupacion">{% icon 'download' %} CSV<span class="visually-hidden"> {% translate "ocupación" %}</span></a> · <a href="?semanas={{ weeks }}&amp;ods=ocupacion">ODS<span class="visually-hidden"> {% translate "ocupación" %}</span></a></div>
+    <div class="row-between"><h2 id="occ-title">{% translate "Ocupación por instalación" %}</h2><span class="nowrap"><a href="?semanas={{ weeks }}&amp;csv=ocupacion">{% icon 'download' %} CSV<span class="visually-hidden"> {% translate "ocupación" %}</span></a> · <a href="?semanas={{ weeks }}&amp;ods=ocupacion">ODS<span class="visually-hidden"> {% translate "ocupación" %}</span></a></span></div>
     {% include "includes/hbar.html" with chart=occ_chart cid="occ" title=_("Ocupación por instalación (%)") %}
     <details class="mt-1"><summary>{% translate "Ver datos en táboa" %}</summary>
       <div class="table-wrap mt-1" tabindex="0"><table class="data"><caption class="visually-hidden">{% translate "Ocupación por instalación" %}</caption>
@@ -33,7 +33,7 @@
 </div>
 
 <section class="card mt-2" aria-labelledby="heat-title">
-  <div class="row-between"><h2 id="heat-title">{% translate "Ocupación por franxa horaria" %}</h2><a href="?semanas={{ weeks }}&amp;csv=franxas">{% icon 'download' %} CSV<span class="visually-hidden"> {% translate "franxas" %}</span></a> · <a href="?semanas={{ weeks }}&amp;ods=franxas">ODS<span class="visually-hidden"> {% translate "franxas" %}</span></a></div>
+  <div class="row-between"><h2 id="heat-title">{% translate "Ocupación por franxa horaria" %}</h2><span class="nowrap"><a href="?semanas={{ weeks }}&amp;csv=franxas">{% icon 'download' %} CSV<span class="visually-hidden"> {% translate "franxas" %}</span></a> · <a href="?semanas={{ weeks }}&amp;ods=franxas">ODS<span class="visually-hidden"> {% translate "franxas" %}</span></a></span></div>
   <p class="help">{% translate "Número de reservas por día da semana e hora (todas as instalacións). As cores reforzan o número, que sempre se mostra." %}</p>
   <div class="table-wrap" tabindex="0"><table class="data heat">
     <caption class="visually-hidden">{% translate "Reservas por día da semana e hora" %}</caption>
@@ -48,13 +48,13 @@
     <ul class="list">{% for r in s.underused %}<li class="row-between"><span>{{ r.facility }}</span><span class="badge badge-warn">{{ r.pct }} %</span></li>{% empty %}<li class="muted">{% translate "Ningunha instalación por baixo do 20 %." %}</li>{% endfor %}</ul>
   </section>
   <section class="card" aria-labelledby="inc2-title">
-    <div class="row-between"><h2 id="inc2-title">{% translate "Incidencias" %}</h2><a href="?semanas={{ weeks }}&amp;csv=incidencias">{% icon 'download' %} CSV<span class="visually-hidden"> {% translate "incidencias" %}</span></a> · <a href="?semanas={{ weeks }}&amp;ods=incidencias">ODS<span class="visually-hidden"> {% translate "incidencias" %}</span></a></div>
+    <div class="row-between"><h2 id="inc2-title">{% translate "Incidencias" %}</h2><span class="nowrap"><a href="?semanas={{ weeks }}&amp;csv=incidencias">{% icon 'download' %} CSV<span class="visually-hidden"> {% translate "incidencias" %}</span></a> · <a href="?semanas={{ weeks }}&amp;ods=incidencias">ODS<span class="visually-hidden"> {% translate "incidencias" %}</span></a></span></div>
     <table class="data"><caption class="visually-hidden">{% translate "Incidencias por estado" %}</caption><tbody>{% for label, n in s.incidents.by_status %}<tr><th scope="row">{{ label }}</th><td class="num">{{ n }}</td></tr>{% endfor %}</tbody></table>
   </section>
 </div>
 
 <section class="card mt-2" aria-labelledby="rev-title">
-  <div class="row-between"><h2 id="rev-title">{% translate "Ingresos netos por semana" %}</h2><a href="?semanas={{ weeks }}&amp;csv=ingresos">{% icon 'download' %} CSV<span class="visually-hidden"> {% translate "ingresos" %}</span></a> · <a href="?semanas={{ weeks }}&amp;ods=ingresos">ODS<span class="visually-hidden"> {% translate "ingresos" %}</span></a></div>
+  <div class="row-between"><h2 id="rev-title">{% translate "Ingresos netos por semana" %}</h2><span class="nowrap"><a href="?semanas={{ weeks }}&amp;csv=ingresos">{% icon 'download' %} CSV<span class="visually-hidden"> {% translate "ingresos" %}</span></a> · <a href="?semanas={{ weeks }}&amp;ods=ingresos">ODS<span class="visually-hidden"> {% translate "ingresos" %}</span></a></span></div>
   {% include "includes/hbar.html" with chart=rev_chart cid="rev" title=_("Ingresos netos por semana (euros)") %}
   <details class="mt-1"><summary>{% translate "Ver datos en táboa" %}</summary>
     <table class="data mt-1"><caption class="visually-hidden">{% translate "Ingresos" %}</caption><thead><tr><th scope="col">{% translate "Semana do" %}</th><th scope="col" class="num">{% translate "Cobrado" %}</th><th scope="col" class="num">{% translate "Devolto" %}</th><th scope="col" class="num">{% translate "Neto" %}</th></tr></thead>

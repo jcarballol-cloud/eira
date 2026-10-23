@@ -69,8 +69,11 @@ def run_script(page, base, d):
     page.click("text=Pista de pádel da Pereira")
     page.wait_for_load_state("networkidle")
     d.say("Grella semanal: libre, ocupada ou ★ recomendada (pouca demanda).", 3)
-    slot = page.locator(".day-list details[open] a.slot") if page.viewport_size["width"] < 700 else \
-        page.locator("table.week a.slot")
+    slot = (
+        page.locator(".day-list details[open] a.slot")
+        if page.viewport_size["width"] < 700
+        else page.locator("table.week a.slot")
+    )
     slot.first.scroll_into_view_if_needed()
     slot.first.click()
     page.wait_for_load_state("networkidle")
@@ -113,7 +116,9 @@ def run_script(page, base, d):
     page.click("main button[type=submit]")
     page.wait_for_load_state("networkidle")
     d.say("Créase unha incidencia automaticamente.")
-    inc = Incident.objects.filter(source="checklist", reporter__email="uxia@demo.eira.example").latest("created_at")
+    inc = Incident.objects.filter(
+        source="checklist", reporter__email="uxia@demo.eira.example"
+    ).latest("created_at")
     # 5. Concello
     d.login(base, "admin@vilardeiras.demo.eira.example")
     d.go(base + "/c/vilardeiras/xestion/")
@@ -141,7 +146,10 @@ def run_script(page, base, d):
     # 7. Indicadores e deputación
     d.login(base, "admin@vilardeiras.demo.eira.example")
     d.go(base + "/c/vilardeiras/xestion/indicadores/")
-    d.say("Indicadores: ocupación, non presentadas, infrauso, incidencias, ingresos. Con táboa e CSV/ODS.", 3.4)
+    d.say(
+        "Indicadores: ocupación, non presentadas, infrauso, incidencias, ingresos. Con táboa e CSV/ODS.",
+        3.4,
+    )
     page.mouse.wheel(0, 900)
     d.say("Mapa de calor por franxa horaria: datos para decidir horarios.", 3)
     d.login(base, "deputacion@demo.eira.example")
@@ -154,8 +162,13 @@ def test_record_pitch_video(browser, base, viewport, name, tmp_path):
     shots = OUT / f"pasos-{name}"
     shutil.rmtree(shots, ignore_errors=True)
     shots.mkdir(parents=True)
-    ctx = browser.new_context(viewport=viewport, locale="gl-ES", bypass_csp=True,
-                              record_video_dir=str(tmp_path), record_video_size=viewport)
+    ctx = browser.new_context(
+        viewport=viewport,
+        locale="gl-ES",
+        bypass_csp=True,
+        record_video_dir=str(tmp_path),
+        record_video_size=viewport,
+    )
     page = ctx.new_page()
     run_script(page, base, Director(page, shots))
     video = page.video

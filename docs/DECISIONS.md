@@ -72,3 +72,20 @@ Formato: data · decisión · motivo · alternativas descartadas.
 
 ## 2026-10-23 · Módulos chamados `manage.py` dentro das apps
 - **Decisión:** as vistas de xestión viven en `apps/<app>/manage.py`. Por iso `pytest` leva `django_find_project = false` (pytest-django confundíaos co `manage.py` do proxecto).
+
+## 2026-10-23 · Revisión dos nomes ficticios (mañá)
+- **Decisión:** mantéñense «Vilardeiras», «Pontedouro» e «Deputación das Marismas».
+- **Comprobación:** buscas web estándar e ampliadas dos nomes exactos (23/10/2026): non aparece ningún concello, parroquia, lugar nin deputación/mancomunidade con eses nomes en Galicia. Os máis parecidos son Vilardevós (concello de Ourense), Pontedeume (concello da Coruña) e «Las Marismas» (Andalucía). Non se consultou o Nomenclátor do IGE directamente (pendente).
+- **Aviso:** os nomes das parroquias dentro dos concellos ficticios (Bustelo, A Pereira, Outeiro, Fontela, San Martiño, Centro, A Ribeira, Monteagudo, O Castro, Lamas) son topónimos xenéricos que existen en moitos lugares reais de Galicia (p. ex. Monteagudo é unha parroquia de Arteixo). Mantéñense porque sempre aparecen dentro dun concello inexistente; se se quere evitar calquera coincidencia, cambiar a lista en `apps/tenants/management/commands/seed_demo.py` (`MUNICIPALITIES[*]["parishes"]`).
+
+## 2026-10-23 · Esquema OpenAPI independente do motor
+- **Decisión:** `tools/tasks.py openapi` xera sempre o esquema con SQLite en memoria.
+- **Motivo:** drf-spectacular deriva os límites dos enteiros da base de datos; con PostgreSQL (CI) o ficheiro cambiaba e a comprobación `git diff --exit-code` da CI fallaría.
+
+## 2026-10-23 · Franxas xa empezadas
+- **Decisión:** unha franxa que xa comezou non se mostra como reservable.
+- **Motivo:** a grella ofrecíaa como libre e despois a reserva rexeitábaa (detectado nas probas E2E á hora de comer).
+
+## 2026-10-23 · Demo pública
+- **Decisión:** compose de produción con Caddy (HTTPS automático, Let's Encrypt gratuíto), servizo `reseed` cun bucle de shell en vez de cron, e bloqueo consultivo de PostgreSQL en `seed_demo` para que nunca se executen dúas cargas á vez.
+- **Descartado:** cron/supercronic nun contedor aparte (dependencia extra); Traefik (máis configuración).

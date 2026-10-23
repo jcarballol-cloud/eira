@@ -154,9 +154,9 @@ def test_pitch_script(new_page, base):
     uxia.check("#id_all_ok_0")
     uxia.click("main button[type=submit]")
     assert "Creamos a incidencia" in uxia.locator(".messages").inner_text()
-    inc = Incident.objects.filter(source="checklist", reporter__email="uxia@demo.eira.example").latest(
-        "created_at"
-    )
+    inc = Incident.objects.filter(
+        source="checklist", reporter__email="uxia@demo.eira.example"
+    ).latest("created_at")
 
     admin = new_page(persona="admin@vilardeiras.demo.eira.example")
     admin.goto(base + "/c/vilardeiras/xestion/")

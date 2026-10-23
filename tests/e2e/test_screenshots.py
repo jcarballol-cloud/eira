@@ -80,7 +80,11 @@ def shots():
         ("09-incidencia-nova", "uxia@demo.eira.example", f"{c}/incidencias/nova/"),
         ("10-saude", None, "/saude/"),
         ("11-panel-do-dia", "admin@vilardeiras.demo.eira.example", f"{c}/xestion/"),
-        ("12-alta-asistida", "admin@vilardeiras.demo.eira.example", f"{c}/xestion/instalacions/nova/"),
+        (
+            "12-alta-asistida",
+            "admin@vilardeiras.demo.eira.example",
+            f"{c}/xestion/instalacions/nova/",
+        ),
         ("13-indicadores", "admin@vilardeiras.demo.eira.example", f"{c}/xestion/indicadores/"),
         (
             "14-incidencia-xestion",
@@ -95,7 +99,11 @@ def shots():
         ("16-operario-ordes", "brais@demo.eira.example", f"{c}/operario/"),
         ("17-operario-orde", "brais@demo.eira.example", f"{c}/operario/orde/{order.pk}/"),
         ("18-monitor-hoxe", "antia@demo.eira.example", f"{c}/monitor/"),
-        ("19-monitor-esforzo", "antia@demo.eira.example", f"{c}/monitor/sesion/{session.pk}/esforzo/"),
+        (
+            "19-monitor-esforzo",
+            "antia@demo.eira.example",
+            f"{c}/monitor/sesion/{session.pk}/esforzo/",
+        ),
         ("20-observatorio", None, f"{c}/actividades/observatorio/"),
         ("21-deputacion", "deputacion@demo.eira.example", "/rexion/marismas/"),
     ]

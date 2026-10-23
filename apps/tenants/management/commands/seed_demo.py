@@ -9,7 +9,7 @@ import random
 from decimal import Decimal
 
 from django.core.management.base import BaseCommand
-from django.db import transaction
+from django.db import connection, transaction
 from django.db.models import F
 from django.utils import timezone
 
@@ -37,6 +37,7 @@ from apps.notifications.models import Notification
 from apps.tenants.models import Municipality, Region
 
 DEMO_DOMAIN = "demo.eira.example"
+SEED_LOCK_ID = 7_314_201  # identificador arbitrario do bloqueo consultivo
 FIRST_NAMES = [
     "Sabela",
     "Iago",
@@ -234,11 +235,15 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        if options["if_empty"] and Municipality.objects.exists():
-            self.stdout.write("Xa hai datos: non se carga a demo.")
-            return
         self.rng = random.Random(2026)
         with transaction.atomic():
+            # Serializa cargas simultáneas (p. ex. primeiro arranque da app e rexeneración nocturna)
+            if connection.vendor == "postgresql":
+                with connection.cursor() as cursor:
+                    cursor.execute("SELECT pg_advisory_xact_lock(%s)", [SEED_LOCK_ID])
+            if options["if_empty"] and Municipality.objects.exists():
+                self.stdout.write("Xa hai datos: non se carga a demo.")
+                return
             self.reset()
             region = Region.objects.create(
                 name="Deputación das Marismas", slug="marismas", kind=Region.Kind.PROVINCE

@@ -1,0 +1,90 @@
+# SPDX-License-Identifier: EUPL-1.2
+# Demo pública de Eira nun VPS pequeno: Caddy (HTTPS automático) + app (gunicorn) + PostgreSQL,
+# con datos FICTICIOS que se rexeneran cada noite. Pasos en docs/despregamento-demo.md.
+#
+#   cd deploy/demo && cp .env.example .env && (editar .env) && docker compose up -d --build
+name: eira-demo
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: eira
+      POSTGRES_USER: eira
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD en .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U eira -d eira"]
+      interval: 5s
+      retries: 20
+    mem_limit: 256m
+
+  app:
+    build:
+      context: ../..
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://eira:${POSTGRES_PASSWORD}@db:5432/eira
+      EIRA_DEBUG: "0"
+      EIRA_DEMO_TOOLS: "1"          # bandexa de correo, TPV e simulador (datos ficticios)
+      EIRA_SEED_DEMO: "1"           # carga a demo no primeiro arranque
+      EIRA_AI_ADAPTER: apps.integrations.ai.FakeAIAdapter
+      EIRA_SECURE_COOKIES: "1"
+      EIRA_BEHIND_PROXY: "1"
+      EIRA_HSTS_SECONDS: "31536000"
+      EIRA_CACHE_DIR: /tmp/eira-cache
+      EIRA_ALLOWED_HOSTS: ${EIRA_DOMAIN}
+      EIRA_CSRF_TRUSTED_ORIGINS: https://${EIRA_DOMAIN}
+      EIRA_BASE_DOMAIN: ${EIRA_DOMAIN}
+    command: ["gunicorn", "eira.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "2",
+              "--max-requests", "1000", "--max-requests-jitter", "100", "--access-logfile", "-"]
+    volumes:
+      - media:/app/media
+    mem_limit: 512m
+
+  # Rexenera os datos ficticios cada noite (ás 04:00 UTC) para que a demo estea sempre «ao día»
+  reseed:
+    build:
+      context: ../..
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://eira:${POSTGRES_PASSWORD}@db:5432/eira
+      EIRA_DEBUG: "0"
+      EIRA_DEMO_TOOLS: "1"
+    entrypoint: ["sh", "/app/tools/demo-reseed-loop.sh"]
+    volumes:
+      - media:/app/media
+    mem_limit: 256m
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on: [app]
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+    environment:
+      EIRA_DOMAIN: ${EIRA_DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - media:/srv/media:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    mem_limit: 128m
+
+volumes:
+  pgdata:
+  media:
+  caddy_data:
+  caddy_config:

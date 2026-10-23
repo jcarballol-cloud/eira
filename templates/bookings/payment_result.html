@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Pagamento" %}{% endblock %}
+{% block content %}
+{% include "bookings/_steps.html" %}
+<section class="app-card">
+  <p class="eyebrow">{{ booking.facility.name }} · {{ booking.start|date:"D j/n" }} {{ booking.start|hhmm }}</p>
+  {% include "bookings/_payment_status.html" %}
+</section>
+{% endblock %}

@@ -264,7 +264,8 @@ def test_failed_payment_keeps_pending(client, padel_a, citizen):
     )
     r = client.post(r["Location"], {"result": "ko"})
     client.get(r["Location"])
-    assert Booking.objects.get(user=citizen).status == Booking.Status.PENDING_PAYMENT
+    b = Booking.objects.get(user=citizen)
+    assert b.status == Booking.Status.REJECTED  # pago rexeitado: a franxa queda libre
 
 
 def test_staff_booking_on_behalf(client, admin_a, padel_a):
@@ -278,7 +279,7 @@ def test_staff_booking_on_behalf(client, admin_a, padel_a):
             "holder_name": "Veciño por teléfono",
             "holder_phone": "600000000",
             "channel": "phone",
-            "paid_at_counter": "on",
+            "payment": "cash",
             "rules_read": "on",
         },
     )

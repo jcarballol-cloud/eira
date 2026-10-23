@@ -10,7 +10,7 @@ from decimal import Decimal
 
 from django.core.management.base import BaseCommand
 from django.db import connection, transaction
-from django.db.models import F
+from django.db.models import F, OuterRef, Subquery
 from django.utils import timezone
 
 from apps.access.models import AccessEvent, KeyHandover
@@ -442,6 +442,7 @@ class Command(BaseCommand):
                         )
         Booking.objects.bulk_create(bookings, batch_size=1000)
         Booking.objects.filter(municipality=m).update(created_at=F("start") - dt.timedelta(days=2))
+        self.payments_for(m)
         # Eventos de acceso coherentes (mostra) e entregas de chave
         events = []
         for b in Booking.objects.filter(municipality=m, status="used").select_related("facility")[
@@ -456,6 +457,52 @@ class Command(BaseCommand):
                 )
             )
         AccessEvent.objects.bulk_create(events, batch_size=1000)
+
+    def payments_for(self, m):
+        """Cobros históricos coherentes coas reservas (para a conciliación)."""
+        from apps.bookings.models import Payment
+        from apps.bookings.payments import new_reference
+
+        method = {"online": "online", "phone": "card_terminal", "counter": "cash"}
+        rows = []
+        for b in Booking.objects.filter(municipality=m, paid_cents__gt=0).select_related(
+            "facility"
+        ):
+            status = (
+                Payment.Status.REFUNDED if b.refunded_cents >= b.paid_cents else Payment.Status.PAID
+            )
+            rows.append(
+                Payment(
+                    municipality=m,
+                    booking=b,
+                    concept=f"{b.facility.name} · {b.reference}",
+                    amount_cents=b.paid_cents,
+                    refunded_cents=b.refunded_cents,
+                    status=status,
+                    method=method.get(b.channel, "online"),
+                    reference=new_reference(),
+                    signature_ok=b.channel == "online",
+                    provider_code="0000",
+                )
+            )
+        Payment.objects.bulk_create(rows, batch_size=1000)
+        Payment.objects.filter(municipality=m).update(
+            created_at=Subquery(
+                Booking.objects.filter(pk=OuterRef("booking_id")).values("created_at")[:1]
+            )
+        )
+        # algúns intentos rexeitados para que a conciliación os mostre
+        for b in Booking.objects.filter(municipality=m, status="cancelled", paid_cents=0)[:6]:
+            Payment.objects.create(
+                municipality=m,
+                booking=b,
+                concept=f"{b.facility.name} · {b.reference}",
+                amount_cents=b.price_cents or 400,
+                status=Payment.Status.REJECTED,
+                reference=new_reference(),
+                provider_code="0190",
+                signature_ok=True,
+            )
 
     def closures(self, m, facilities):
         today = timezone.localdate()
@@ -637,7 +684,11 @@ class Command(BaseCommand):
             ).filter(status__in=["confirmed", "pending_payment", "used"]).update(status="cancelled")
             audience = "senior" if user == manuel else "resident"
             price = {t.audience: t.price_cents for t in f.tariffs.all()}.get(audience, 0)
-            return Booking.objects.create(
+            from apps.bookings.models import Payment
+            from apps.bookings.payments import new_reference
+
+            ref = new_reference() if price else ""
+            booking = Booking.objects.create(
                 municipality=m,
                 facility=f,
                 user=user,
@@ -646,11 +697,25 @@ class Command(BaseCommand):
                 status=status,
                 tariff_audience=audience,
                 price_cents=price,
+                base_price_cents=price,
                 paid_cents=price,
-                payment_reference="FRDEMOPERSONA" if price else "",
+                payment_reference=ref,
                 rules_version=f.current_rules(),
                 rules_accepted_at=now - dt.timedelta(days=1),
             )
+            if price:
+                Payment.objects.create(
+                    municipality=m,
+                    booking=booking,
+                    concept=f"{f.name} · {booking.reference}",
+                    amount_cents=price,
+                    status=Payment.Status.PAID,
+                    reference=ref,
+                    signature_ok=True,
+                    provider_code="0000",
+                    resolved_at=now,
+                )
+            return booking
 
         # Uxía: reserva no ximnasio (nivel 2) en curso ou a seguinte franxa aberta: o código próbase no simulador
         current = None

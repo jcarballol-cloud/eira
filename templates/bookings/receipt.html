@@ -2,7 +2,7 @@
 {% block title %}{% translate "Recibo" %} {{ booking.reference }}{% endblock %}
 {% block content %}
 <article class="card prose ticket">
-  <div class="row-between"><h1 class="mb-0">{% translate "Recibo" %}</h1><button class="btn btn-secondary no-print" type="button" data-print>{% translate "Imprimir" %}</button></div>
+  <div class="row-between"><h1 class="mb-0">{% translate "Recibo" %}</h1><span class="row no-print"><a class="btn btn-secondary" href="?formato=pdf">{% icon 'download' %} PDF</a><button class="btn btn-secondary" type="button" data-print>{% translate "Imprimir" %}</button></span></div>
   <p class="muted">{% blocktranslate with n=tenant.name %}Concello de {{ n }} · Servizo municipal de deportes{% endblocktranslate %}</p>
   <dl class="kv">
     <dt>{% translate "Referencia" %}</dt><dd class="mono">{{ booking.reference }}</dd>
@@ -10,6 +10,7 @@
     <dt>{% translate "Instalación" %}</dt><dd>{{ booking.facility.name }}</dd>
     <dt>{% translate "Data de uso" %}</dt><dd>{{ booking.start|date:"d/m/Y" }} {{ booking.start|hhmm }}–{{ booking.end|hhmm }}</dd>
     <dt>{% translate "Tarifa" %}</dt><dd>{{ booking.tariff_audience }}</dd>
+    {% if booking.discount_pct %}<dt>{% translate "Prezo habitual" %}</dt><dd><del>{{ booking.base_price_cents|euros }}</del> · −{{ booking.discount_pct }} % {% translate "franxa tranquila" %}</dd>{% endif %}
     <dt>{% translate "Pagado" %}</dt><dd><strong>{{ booking.paid_cents|euros }}</strong></dd>
     {% if booking.refunded_cents %}<dt>{% translate "Devolto" %}</dt><dd>{{ booking.refunded_cents|euros }}</dd>{% endif %}
     <dt>{% translate "Operación" %}</dt><dd class="mono">{{ booking.payment_reference }}</dd>

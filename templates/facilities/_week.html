@@ -7,7 +7,7 @@
 </div>
 <ul class="legend" aria-label="{% translate 'Lenda' %}">
   <li><span class="swatch slot-free" aria-hidden="true"></span>○ {% translate "Libre" %}</li>
-  <li><span class="swatch slot-recommended" aria-hidden="true"></span>★ {% translate "Recomendada (pouca demanda)" %}</li>
+  <li><span class="swatch slot-recommended" aria-hidden="true"></span>★ {% translate "Recomendada (pouca demanda)" %}{% if tenant.low_demand_discount_pct %} · −{{ tenant.low_demand_discount_pct }} %{% endif %}</li>
   {% if facility.is_shared %}<li><span class="swatch slot-few" aria-hidden="true"></span>◔ {% translate "Pouca xente" %}</li>{% endif %}
   <li><span class="swatch slot-busy" aria-hidden="true"></span>● {% translate "Ocupada" %}</li>
   <li><span class="swatch slot-closed" aria-hidden="true"></span>✕ {% translate "Pechada" %}</li>

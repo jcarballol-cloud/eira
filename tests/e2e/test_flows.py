@@ -47,6 +47,8 @@ def test_email_login_and_booking_with_offline_code(new_page, base):
     assert "/dev/tpv/" in page.url
     page.click("button[value=ok]")
     page.wait_for_load_state()
+    page.click("text=Ver o acceso e a reserva")
+    page.wait_for_load_state()
     access_code = page.locator(".access-code").inner_text().strip()
     assert re.fullmatch(r"\d{6}", access_code)
     booking = Booking.objects.get(user__email="nova.vecina@example.org")

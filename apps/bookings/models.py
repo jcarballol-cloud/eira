@@ -37,6 +37,8 @@ class Booking(TenantModel):
     class Status(models.TextChoices):
         PENDING_PAYMENT = "pending_payment", _("Pendente de pagamento")
         CONFIRMED = "confirmed", _("Confirmada")
+        REJECTED = "rejected", _("Pagamento rexeitado")
+        EXPIRED = "expired", _("Caducada sen pagar")
         CANCELLED = "cancelled", _("Cancelada")
         USED = "used", _("Usada")
         NO_SHOW = "no_show", _("Non presentada")
@@ -76,6 +78,8 @@ class Booking(TenantModel):
     paid_cents = models.PositiveIntegerField(default=0)
     refunded_cents = models.PositiveIntegerField(default=0)
     payment_reference = models.CharField(max_length=40, blank=True)
+    base_price_cents = models.PositiveIntegerField(default=0)  # antes do desconto
+    discount_pct = models.PositiveSmallIntegerField(default=0)  # franxa de baixa demanda
     hold_expires_at = models.DateTimeField(null=True, blank=True)
     rules_version = models.ForeignKey(RulesVersion, null=True, on_delete=models.PROTECT)
     rules_accepted_at = models.DateTimeField(null=True, blank=True)
@@ -155,3 +159,73 @@ class Booking(TenantModel):
         if self.status != self.Status.CONFIRMED or timezone.now() < self.cancellation_cutoff():
             return 0
         return self.paid_cents * self.municipality.late_cancel_penalty_pct // 100
+
+
+class Payment(TenantModel):
+    """Cobro dunha reserva ou dunha inscrición. Só unha notificación verificada (ou o persoal no
+    mostrador) pode pasalo a pagado ou rexeitado; un pagamento resolto xa non cambia."""
+
+    class Status(models.TextChoices):
+        PENDING = "pending", _("Pendente")
+        PAID = "paid", _("Pagado")
+        REJECTED = "rejected", _("Rexeitado")
+        EXPIRED = "expired", _("Caducado")
+        REFUNDED = "refunded", _("Devolto")
+        PARTIALLY_REFUNDED = "partially_refunded", _("Devolto en parte")
+
+    class Method(models.TextChoices):
+        ONLINE = "online", _("TPV en liña")
+        CASH = "cash", _("Efectivo no mostrador")
+        CARD_TERMINAL = "card_terminal", _("Tarxeta no TPV físico")
+
+    FINAL = {
+        Status.PAID,
+        Status.REJECTED,
+        Status.EXPIRED,
+        Status.REFUNDED,
+        Status.PARTIALLY_REFUNDED,
+    }
+
+    booking = models.ForeignKey(
+        Booking, null=True, blank=True, on_delete=models.SET_NULL, related_name="payments"
+    )
+    enrollment = models.ForeignKey(
+        "activities.Enrollment",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="payments",
+    )
+    concept = models.CharField(_("concepto"), max_length=200)
+    amount_cents = models.PositiveIntegerField(_("importe"))
+    refunded_cents = models.PositiveIntegerField(default=0)
+    status = models.CharField(
+        _("estado"), max_length=20, choices=Status.choices, default=Status.PENDING
+    )
+    method = models.CharField(
+        _("método"), max_length=20, choices=Method.choices, default=Method.ONLINE
+    )
+    reference = models.CharField(_("referencia"), max_length=40, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    resolved_at = models.DateTimeField(null=True, blank=True)
+    provider_code = models.CharField(max_length=10, blank=True)  # p. ex. Ds_Response
+    signature_ok = models.BooleanField(default=False)
+    recorded_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = _("cobro")
+        verbose_name_plural = _("cobros")
+
+    def __str__(self):
+        return f"{self.reference} · {self.amount_cents / 100:.2f} € · {self.status}"
+
+    @property
+    def is_final(self):
+        return self.status in self.FINAL
+
+    @property
+    def net_cents(self):
+        return self.amount_cents - self.refunded_cents if self.status != self.Status.PENDING else 0

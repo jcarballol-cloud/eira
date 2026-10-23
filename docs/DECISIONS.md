@@ -104,3 +104,16 @@ Formato: data · decisión · motivo · alternativas descartadas.
 - **Decisión:** catro disposicións: pública (sen sesión), app móbil (veciñanza e operario, con barra de lapelas inferior), tableta (monitora) e escritorio con barra lateral (concello e deputación). Unha única `base.html` escolle a disposición segundo o perfil.
 - **Decisión:** marco de dispositivo para a demo con `?marco=0/1` (cookie); por defecto activo cando `EIRA_DEMO_TOOLS=1`. Por CSS só aparece en pantallas grandes (≥ 700 px para o móbil e ≥ 1100 px para a tableta); nun móbil real a app ocupa a pantalla.
 - **Decisión:** o logo leva sempre á pantalla principal do perfil (`profiles.home_url`); «Saír» está sempre na cabeceira e «Cambiar de perfil» na barra de demo.
+
+## 2026-10-23 · v2 F3 · Cobros
+- **Fallo corrixido:** o TPV simulado permitía cambiar o resultado dunha operación xa resolta (KO → «atrás» → «Pagar») e a volta do navegador era a que decidía. Agora:
+  - **só a notificación servidor a servidor asinada** (HMAC-SHA256 sobre os parámetros en base64, como Redsys) cambia o estado do pagamento;
+  - un pagamento resolto xa non cambia nunca;
+  - a URL de volta só mostra o estado (e consulta cada 2 s mentres está pendente).
+- **Estados:** `Payment` (pendente → pagado | rexeitado | caducado | devolto/devolto en parte) e `Booking` (`pending_payment` → `confirmed` | `rejected` | `expired`, ademais de `cancelled`/`used`/`no_show`).
+- **Rexeitado:** libera a franxa ao momento e envía un aviso de «pagamento non completado» só na app (non por correo), nunca unha confirmación.
+- **Bloqueo:** 10 min (`EIRA_PAYMENT_HOLD_MINUTES`). Un pagamento aceptado que chega tarde confírmase se a franxa segue libre; se non, devólvese automaticamente e avísase.
+- **Reservas feitas polo persoal sen cobrar:** a franxa gárdase ata a hora de uso para cobrar no mostrador (decisión práctica para concellos pequenos).
+- **Tarifas:** aplícase a **máis favorable** entre as que lle corresponden á persoa (empadroamento, idade, colectivo validado). A tarifa reducida valídaa o persoal (`Eligibility`), que só garda o colectivo e a data, nunca a documentación.
+- **Desconto en franxas tranquilas:** é o das franxas «recomendadas» (como moito 2 por día e por instalación). Configurable por concello (por defecto −20 %; 0 desactívao) e gárdase na reserva (prezo base e %).
+- **Recibo PDF:** xerador mínimo propio (Helvetica e WinAnsi, unha páxina), sen dependencias.

@@ -10,7 +10,7 @@
       <dt>{% translate "Instalación" %}</dt><dd>{{ facility.name }}</dd>
       <dt>{% translate "Día" %}</dt><dd>{{ start|date:"l j \d\e F" }}</dd>
       <dt>{% translate "Hora" %}</dt><dd>{{ start|hhmm }}–{{ end|hhmm }}</dd>
-      <dt>{% translate "Prezo" %}</dt><dd>{% if price %}{{ price|euros }}{% else %}{% translate "Gratuíta" %}{% endif %} <small>({{ audience_label }})</small></dd>
+      <dt>{% translate "Prezo" %}</dt><dd>{% if price %}{% if discount %}<del aria-label="{% translate 'Prezo habitual' %} {{ base_price|euros }}">{{ base_price|euros }}</del> <strong class="price-now">{{ price|euros }}</strong> <span class="badge badge-warn">★ −{{ discount }} % {% translate "franxa tranquila" %}</span>{% else %}{{ price|euros }}{% endif %}{% else %}{% translate "Gratuíta" %}{% endif %} <small>({{ audience_label }})</small></dd>
     </dl>
     {% if rules %}
     <section aria-labelledby="r-title" class="card-flat mb-2">
@@ -19,6 +19,7 @@
       <p class="help">{% blocktranslate trimmed with h=tenant.cancellation_hours p=tenant.late_cancel_penalty_pct %}Podes cancelar ou cambiar gratis ata {{ h }} horas antes. Despois, a cancelación ten unha penalización do {{ p }} %.{% endblocktranslate %}</p>
     </section>
     {% endif %}
+    {% if price %}<p class="help">{% blocktranslate with m=hold_minutes %}Gardámosche a franxa {{ m }} minutos mentres pagas. A reserva só se confirma cando o banco acepta o pagamento.{% endblocktranslate %}</p>{% endif %}
     <form method="post" novalidate>
       {% csrf_token %}
       <input type="hidden" name="inicio" value="{{ start|date:'c' }}">

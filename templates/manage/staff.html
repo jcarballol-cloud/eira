@@ -15,5 +15,11 @@
     <form method="post" action="{% turl 'manage:issue_invitation' %}" class="row">{% csrf_token %}<label for="note" class="visually-hidden">{% translate "Nota interna" %}</label><input id="note" name="note" type="text" placeholder="{% translate 'Nota interna (opcional)' %}"><button class="btn" type="submit">{% translate "Xerar código" %}</button></form>
     <ul class="list mt-1">{% for i in invitations %}<li class="row-between"><span class="mono">{{ i.code }}</span><span>{% if i.used_at %}<span class="badge badge-ok">{% translate "Usado" %}</span>{% elif i.is_valid %}<span class="badge">{% translate "Dispoñible" %}</span>{% else %}<span class="badge badge-muted">{% translate "Caducado" %}</span>{% endif %} {{ i.note }}</span></li>{% endfor %}</ul>
   </section>
+  <section class="card" aria-labelledby="elig-title">
+    <h2 id="elig-title">{% translate "Tarifa reducida" %}</h2>
+    <p>{% translate "Valida no mostrador o dereito a tarifa reducida (discapacidade, desemprego, familia numerosa). Eira só garda o colectivo e a data, nunca a documentación." %}</p>
+    <form method="post" novalidate>{% csrf_token %}<input type="hidden" name="action" value="eligibility">{% with form=elig_form %}{% include "includes/form.html" %}{% endwith %}<button class="btn" type="submit">{% translate "Validar" %}</button></form>
+    <ul class="list mt-1">{% for e in eligibilities %}<li class="row-between"><span>{{ e.user.email }}</span><span class="badge {% if e.is_valid %}badge-ok{% else %}badge-muted{% endif %}">{{ e.get_kind_display }}{% if e.expires_on %} · {{ e.expires_on|date:"d/m/Y" }}{% endif %}</span></li>{% endfor %}</ul>
+  </section>
 </div>
 {% endblock %}

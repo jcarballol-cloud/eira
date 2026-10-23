@@ -1,0 +1,32 @@
+{% load i18n eira %}<div id="pay-status" {% if booking.status == 'pending_payment' %}hx-get="{% turl 'bookings:payment_return' booking.pk %}" hx-trigger="load delay:2s" hx-swap="outerHTML"{% endif %}>
+{% if booking.status == 'confirmed' or booking.status == 'used' %}
+  <div class="result result--ok" role="status" data-announce="{% translate 'Pagamento aceptado. Reserva confirmada.' %}">
+    {% icon 'check' 'result__icon' %}
+    <h1>{% translate "Reserva confirmada" %}</h1>
+    <p>{% blocktranslate with p=booking.paid_cents|euros %}Pagamento aceptado: {{ p }}.{% endblocktranslate %} {% translate "Enviámosche a confirmación." %}</p>
+    <a class="btn btn-lg btn-block" href="{% turl 'bookings:detail' booking.pk %}">{% translate "Ver o acceso e a reserva" %}</a>
+  </div>
+{% elif booking.status == 'rejected' %}
+  <div class="result result--ko" role="alert" data-announce="{% translate 'Pagamento rexeitado' %}">
+    {% icon 'x' 'result__icon' %}
+    <h1>{% translate "O pagamento non se completou" %}</h1>
+    <p>{% translate "O banco rexeitou a operación. Non se fixo ningún cargo e a franxa quedou libre." %}</p>
+    <a class="btn btn-lg btn-block" href="{% turl 'facilities:book' booking.facility_id %}?inicio={{ booking.start|date:'c'|urlencode }}">{% translate "Tentalo de novo" %}</a>
+    <a class="btn btn-ghost btn-block" href="{% turl 'facilities:detail' booking.facility_id %}">{% translate "Escoller outra franxa" %}</a>
+  </div>
+{% elif booking.status == 'expired' %}
+  <div class="result result--ko" role="alert">
+    {% icon 'clock' 'result__icon' %}
+    <h1>{% translate "Esgotouse o tempo para pagar" %}</h1>
+    <p>{% translate "A franxa quedou libre. Podes reservala de novo se segue dispoñible." %}</p>
+    <a class="btn btn-lg btn-block" href="{% turl 'facilities:detail' booking.facility_id %}">{% translate "Volver á grella" %}</a>
+  </div>
+{% else %}
+  <div class="result" role="status" aria-busy="true">
+    <div class="spinner" aria-hidden="true"></div>
+    <h1>{% translate "Agardando a confirmación do banco…" %}</h1>
+    <p class="muted">{% translate "Só confirmamos a reserva cando o banco nos avisa de que o pagamento foi aceptado." %}</p>
+    <a class="btn btn-secondary" href="{% turl 'bookings:retry_payment' booking.pk %}">{% translate "Volver á pasarela de pagamento" %}</a>
+  </div>
+{% endif %}
+</div>

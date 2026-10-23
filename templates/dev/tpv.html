@@ -1,16 +1,23 @@
 {% extends "base.html" %}{% load i18n eira %}
 {% block title %}{% translate "TPV simulado" %}{% endblock %}
 {% block content %}
-{% include "bookings/_steps.html" with step=3 %}
-<section class="card prose">
-  <p class="eyebrow">{% translate "Pasarela de pagamento simulada (tipo Redsys)" %}</p>
-  <h1>{% translate "Pagamento" %}</h1>
-  <dl class="kv big"><dt>{% translate "Concepto" %}</dt><dd>{{ payment.description }}</dd><dt>{% translate "Importe" %}</dt><dd><strong>{{ payment.amount_cents|euros }}</strong></dd><dt>{% translate "Operación" %}</dt><dd class="mono">{{ payment.reference }}</dd></dl>
-  <p class="alert">{% translate "Prototipo: non se pide ningunha tarxeta. No despregamento real, aquí apareceria o TPV da entidade bancaria do concello." %}</p>
-  <form method="post" class="form-actions">
-    {% csrf_token %}
-    <button class="btn btn-lg" type="submit" name="result" value="ok">{% translate "Pagar" %}</button>
-    <button class="btn btn-secondary" type="submit" name="result" value="ko">{% translate "Simular pagamento rexeitado" %}</button>
-  </form>
+<section class="tpv">
+  <div class="tpv__bank">{% icon 'lock' %} {% translate "Pasarela de pagamento segura · simulación tipo Redsys" %}</div>
+  <h1>{% translate "Pagamento con tarxeta" %}</h1>
+  <dl class="kv big"><dt>{% translate "Comercio" %}</dt><dd>{% translate "Servizo municipal de deportes" %}</dd>
+    <dt>{% translate "Concepto" %}</dt><dd>{{ payment.description }}</dd>
+    <dt>{% translate "Importe" %}</dt><dd><strong>{{ payment.amount_cents|euros }}</strong></dd>
+    <dt>{% translate "Pedido" %}</dt><dd class="mono">{{ payment.reference }}</dd></dl>
+  {% if already %}
+    <div class="alert alert-warn" role="alert">{% translate "Esta operación xa está resolta e non se pode volver pagar nin cambiar." %}</div>
+    <a class="btn" href="{{ payment.return_url }}">{% translate "Volver ao comercio" %}</a>
+  {% else %}
+    <p class="alert">{% translate "Prototipo: non se pide ningunha tarxeta. No despregamento real, aquí estaría o TPV virtual da entidade bancaria do concello." %}</p>
+    <form method="post" class="form-actions">
+      {% csrf_token %}
+      <button class="btn btn-lg" type="submit" name="result" value="ok">{% translate "Pagar" %}</button>
+      <button class="btn btn-secondary" type="submit" name="result" value="ko">{% translate "Simular pagamento rexeitado" %}</button>
+    </form>
+  {% endif %}
 </section>
 {% endblock %}

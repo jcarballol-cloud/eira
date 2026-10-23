@@ -208,6 +208,33 @@ class LoginCode(models.Model):
         return ok
 
 
+class Eligibility(models.Model):
+    """Dereito a tarifa reducida (discapacidade, desemprego, familia numerosa…) validado polo persoal.
+    Non se garda a documentación nin o motivo detallado: só o colectivo e a data."""
+
+    class Kind(models.TextChoices):
+        DISABILITY = "disability", _("Persoa con discapacidade")
+        UNEMPLOYED = "unemployed", _("Persoa en desemprego")
+        LARGE_FAMILY = "large_family", _("Familia numerosa ou monoparental")
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="eligibilities")
+    municipality = models.ForeignKey(
+        Municipality, on_delete=models.CASCADE, related_name="eligibilities"
+    )
+    kind = models.CharField(_("colectivo"), max_length=20, choices=Kind.choices)
+    validated_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name="+")
+    validated_at = models.DateTimeField(default=timezone.now)
+    expires_on = models.DateField(_("válido ata"), null=True, blank=True)
+
+    class Meta:
+        verbose_name = _("tarifa reducida validada")
+        verbose_name_plural = _("tarifas reducidas validadas")
+
+    @property
+    def is_valid(self):
+        return self.expires_on is None or self.expires_on >= timezone.localdate()
+
+
 class Household(models.Model):
     """Unidade familiar: unha persoa adulta responsable e menores ao seu cargo."""
 

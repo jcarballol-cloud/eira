@@ -2,6 +2,7 @@
 import datetime as dt
 
 from django import forms
+from django.conf import settings
 from django.contrib import messages
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -17,7 +18,7 @@ from apps.integrations.registry import get_adapter
 from apps.integrations.weather import advice
 from apps.tenants.urlutils import neighbour_required, treverse
 
-from . import ics, services
+from . import ics, payments, services
 from .models import Booking
 
 
@@ -46,6 +47,12 @@ class ConfirmForm(forms.Form):
     )
 
 
+def _go_to_gateway(request, booking):
+    url_ok = treverse(request.tenant, "bookings:payment_return", booking.pk) + "?resultado=ok"
+    url_ko = treverse(request.tenant, "bookings:payment_return", booking.pk) + "?resultado=ko"
+    return redirect(payments.start_online_payment(booking=booking, url_ok=url_ok, url_ko=url_ko))
+
+
 @neighbour_required
 def book(request, pk):
     tenant = request.tenant
@@ -54,7 +61,7 @@ def book(request, pk):
     if start is None:
         return redirect(treverse(tenant, "facilities:detail", facility.pk))
     rules = facility.current_rules()
-    audience, price = services.price_for(facility, request.user)
+    quote = services.price_for(facility, request.user, start=start)
     form = ConfirmForm(request.POST or None)
     error = None
     if request.method == "POST" and form.is_valid():
@@ -64,13 +71,7 @@ def book(request, pk):
             error = str(exc)
         else:
             if booking.status == Booking.Status.PENDING_PAYMENT:
-                return_url = treverse(tenant, "bookings:payment_return", booking.pk)
-                ref, url = get_adapter("payment").create(
-                    booking.price_cents, f"{facility.name} {booking.reference}", return_url
-                )
-                booking.payment_reference = ref
-                booking.save(update_fields=["payment_reference"])
-                return redirect(url)
+                return _go_to_gateway(request, booking)
             messages.success(request, _("Reserva confirmada."))
             return redirect(treverse(tenant, "bookings:detail", booking.pk))
     forecast, tips = weather_for(facility, start)
@@ -82,34 +83,47 @@ def book(request, pk):
             "start": start,
             "end": start + dt.timedelta(minutes=facility.slot_minutes),
             "rules": rules,
-            "price": price,
-            "audience": audience,
+            "price": quote.price,
+            "base_price": quote.base,
+            "discount": quote.discount,
+            "audience": quote.audience,
+            "hold_minutes": settings.EIRA_PAYMENT_HOLD_MINUTES,
             "form": form,
             "error": error,
             "nav": "facilities",
             "forecast": forecast,
             "tips": tips,
-            "audience_label": dict(facility.tariffs.model.Audience.choices).get(audience, ""),
+            "audience_label": dict(facility.tariffs.model.Audience.choices).get(quote.audience, ""),
         },
     )
 
 
 @neighbour_required
 def payment_return(request, pk):
-    booking = get_object_or_404(Booking, municipality=request.tenant, pk=pk, user=request.user)
-    status = (
-        get_adapter("payment").status(booking.payment_reference)
-        if booking.payment_reference
-        else None
+    """Volta da pasarela. **Non decide nada**: mostra o estado que fixou a notificación asinada."""
+    booking = get_object_or_404(
+        Booking.objects.select_related("facility"),
+        municipality=request.tenant,
+        pk=pk,
+        user=request.user,
     )
-    if status and status.paid:
-        services.mark_paid(booking, status.reference, status.amount_cents)
-        messages.success(request, _("Pagamento recibido. Reserva confirmada."))
-    elif booking.status == Booking.Status.PENDING_PAYMENT:
-        messages.error(
-            request, _("O pagamento non se completou. A franxa queda gardada uns minutos.")
-        )
-    return redirect(treverse(request.tenant, "bookings:detail", booking.pk))
+    payment = booking.payments.order_by("-created_at").first()
+    template = (
+        "bookings/_payment_status.html"
+        if request.headers.get("HX-Request")
+        else "bookings/payment_result.html"
+    )
+    return render(
+        request,
+        template,
+        {
+            "booking": booking,
+            "payment": payment,
+            "returned": request.GET.get("resultado", ""),
+            "nav": "bookings",
+            "step": 3,
+        },
+    )
 
 
 @neighbour_required
@@ -121,13 +135,11 @@ def retry_payment(request, pk):
         user=request.user,
         status=Booking.Status.PENDING_PAYMENT,
     )
-    return_url = treverse(request.tenant, "bookings:payment_return", booking.pk)
-    ref, url = get_adapter("payment").create(
-        booking.price_cents, f"{booking.facility.name} {booking.reference}", return_url
-    )
-    booking.payment_reference = ref
-    booking.save(update_fields=["payment_reference"])
-    return redirect(url)
+    if booking.hold_expires_at and booking.hold_expires_at <= timezone.now():
+        services.expire_holds()
+        messages.error(request, _("O tempo para pagar esgotouse e a franxa quedou libre."))
+        return redirect(treverse(request.tenant, "facilities:detail", booking.facility_id))
+    return _go_to_gateway(request, booking)
 
 
 @neighbour_required
@@ -273,7 +285,80 @@ def receipt(request, pk):
     booking = _own_booking(request, pk)
     if booking.paid_cents == 0 and booking.price_cents > 0:
         raise Http404
+    if request.GET.get("formato") == "pdf":
+        return receipt_pdf(booking)
     return render(request, "bookings/receipt.html", {"booking": booking, "nav": "bookings"})
+
+
+def receipt_pdf(booking):
+    from .pdf import simple_pdf
+
+    start = timezone.localtime(booking.start)
+    end = timezone.localtime(booking.end)
+    payment = booking.payments.exclude(status="pending").first()
+    lines = [
+        (_("Concello de %(n)s") % {"n": booking.municipality.name}, 16, True),
+        (_("Servizo municipal de deportes · Recibo"), 11, False),
+        ("", 8, False),
+        (_("Referencia da reserva: %(r)s") % {"r": booking.reference}, 11, True),
+        (_("Persoa: %(p)s") % {"p": booking.holder_label or "—"}, 11, False),
+        (_("Instalación: %(f)s") % {"f": booking.facility.name}, 11, False),
+        (
+            _("Uso: %(d)s de %(a)s a %(b)s")
+            % {
+                "d": start.strftime("%d/%m/%Y"),
+                "a": start.strftime("%H:%M"),
+                "b": end.strftime("%H:%M"),
+            },
+            11,
+            False,
+        ),
+        (_("Tarifa: %(t)s") % {"t": booking.tariff_audience}, 11, False),
+    ]
+    if booking.discount_pct:
+        lines.append(
+            (
+                _("Prezo habitual: %(b)s € · desconto franxa tranquila −%(d)s %%")
+                % {
+                    "b": f"{booking.base_price_cents / 100:.2f}".replace(".", ","),
+                    "d": booking.discount_pct,
+                },
+                11,
+                False,
+            )
+        )
+    lines += [
+        (
+            _("Importe pagado: %(p)s €")
+            % {"p": f"{booking.paid_cents / 100:.2f}".replace(".", ",")},
+            13,
+            True,
+        ),
+    ]
+    if booking.refunded_cents:
+        lines.append(
+            (
+                _("Devolto: %(p)s €")
+                % {"p": f"{booking.refunded_cents / 100:.2f}".replace(".", ",")},
+                11,
+                False,
+            )
+        )
+    if payment:
+        lines.append(
+            (
+                _("Operación: %(r)s · %(m)s")
+                % {"r": payment.reference, "m": payment.get_method_display()},
+                10,
+                False,
+            )
+        )
+    lines += [("", 8, False), (_("Documento xerado por Eira (software libre EUPL-1.2)."), 9, False)]
+    response = HttpResponse(
+        simple_pdf(lines, title=f"Recibo {booking.reference}"), content_type="application/pdf"
+    )
+    response["Content-Disposition"] = f'attachment; filename="recibo-{booking.reference}.pdf"'
+    return response
 
 
 @neighbour_required

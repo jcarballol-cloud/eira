@@ -181,6 +181,7 @@ class Tariff(models.Model):
         NON_RESIDENT = "non_resident", _("Persoas non empadroadas")
         YOUTH = "youth", _("Mocidade (ata 25 anos, empadroada)")
         SENIOR = "senior", _("Maiores de 65 (empadroadas)")
+        REDUCED = "reduced", _("Colectivos con tarifa reducida (validado polo concello)")
 
     facility = models.ForeignKey(Facility, on_delete=models.CASCADE, related_name="tariffs")
     audience = models.CharField(_("colectivo"), max_length=20, choices=Audience.choices)

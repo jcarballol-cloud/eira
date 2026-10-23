@@ -18,8 +18,8 @@
         <thead><tr><th scope="col">{% translate "Hora" %}</th><th scope="col">{% translate "Instalación" %}</th><th scope="col">{% translate "Persoa" %}</th><th scope="col">{% translate "Estado" %}</th><th scope="col">{% translate "Acceso" %}</th></tr></thead>
         <tbody>
         {% for b in bookings %}
-          <tr><td class="nowrap">{{ b.start|hhmm }}–{{ b.end|hhmm }}</td><td>{{ b.facility.name }}</td><td>{{ b.holder_label|default:"—" }}{% if b.channel != 'online' %} <span class="badge">{{ b.get_channel_display }}</span>{% endif %}</td>
-            <td><span class="badge {% if b.status == 'used' %}badge-ok{% elif b.status == 'no_show' %}badge-alert{% elif b.status == 'pending_payment' %}badge-warn{% endif %}">{{ b.get_status_display }}</span></td>
+          <tr><td class="nowrap"><a href="{% turl 'manage:booking' b.pk %}">{{ b.start|hhmm }}–{{ b.end|hhmm }}</a></td><td>{{ b.facility.name }}</td><td>{{ b.holder_label|default:"—" }}{% if b.channel != 'online' %} <span class="badge">{{ b.get_channel_display }}</span>{% endif %}</td>
+            <td>{% include "includes/booking_status.html" %}</td>
             <td>{% if b.checked_in_at %}{% icon 'check' %} {{ b.checked_in_at|hhmm }}{% else %}<small>{{ b.facility.get_access_level_display }}</small>{% endif %}</td></tr>
         {% empty %}<tr><td colspan="5">{% translate "Hoxe non hai reservas." %}</td></tr>{% endfor %}
         </tbody></table></div>

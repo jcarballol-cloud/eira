@@ -35,19 +35,25 @@ def outbox(request):
 
 
 def tpv(request, reference):
-    payment = get_object_or_404(FakePayment, reference=reference)
+    """Pasarela simulada tipo Redsys. Unha operación resolta xa non se pode cambiar (idempotente)."""
+    from apps.bookings.payments import handle_notification
+
+    from .registry import get_adapter
+
+    fake = get_object_or_404(FakePayment, reference=reference)
+    if fake.status != FakePayment.Status.PENDING:
+        return render(request, "dev/tpv.html", {"payment": fake, "already": True})
     if request.method == "POST":
-        payment.status = (
-            FakePayment.Status.PAID
-            if request.POST.get("result") == "ok"
-            else FakePayment.Status.FAILED
-        )
-        payment.save(update_fields=["status"])
-        target = payment.return_url
+        ok = request.POST.get("result") == "ok"
+        fake.status = FakePayment.Status.PAID if ok else FakePayment.Status.FAILED
+        fake.save(update_fields=["status"])
+        # Notificación servidor a servidor (simulada en proceso; nun TPV real é un POST á URL de notificación)
+        handle_notification(get_adapter("payment").build_notification(fake, ok))
+        target = fake.return_url if ok else (fake.return_url_ko or fake.return_url)
         if not url_has_allowed_host_and_scheme(target, allowed_hosts={request.get_host()}):
             target = "/"
         return redirect(target)
-    return render(request, "dev/tpv.html", {"payment": payment})
+    return render(request, "dev/tpv.html", {"payment": fake})
 
 
 def clave(request):

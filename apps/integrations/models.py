@@ -39,6 +39,7 @@ class FakePayment(models.Model):
     amount_cents = models.PositiveIntegerField()
     description = models.CharField(max_length=200)
     return_url = models.CharField(max_length=300)
+    return_url_ko = models.CharField(max_length=300, blank=True)
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
     refunded_cents = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

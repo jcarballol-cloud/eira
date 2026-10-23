@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
-from apps.accounts.models import Membership, ResidencyInvitation, Role, User, audit
+from apps.accounts.models import Eligibility, Membership, ResidencyInvitation, Role, User, audit
 from apps.bookings.services import apply_closure
 from apps.facilities.models import Closure, Facility
 
@@ -102,10 +102,42 @@ class StaffForm(forms.Form):
     role = forms.ChoiceField(label=gettext_lazy("Rol"), choices=Role.choices)
 
 
+class EligibilityForm(forms.Form):
+    email = forms.EmailField(label=gettext_lazy("Correo da persoa"))
+    kind = forms.ChoiceField(label=gettext_lazy("Colectivo"), choices=Eligibility.Kind.choices)
+    expires_on = forms.DateField(
+        label=gettext_lazy("Válido ata"),
+        required=False,
+        widget=forms.DateInput(attrs={"type": "date"}),
+    )
+
+
 @role_required(*ADMIN_ROLES)
 def staff(request):
-    form = StaffForm(request.POST or None)
-    if request.method == "POST":
+    form = StaffForm(request.POST if request.POST.get("action") != "eligibility" else None)
+    elig_form = EligibilityForm(
+        request.POST if request.POST.get("action") == "eligibility" else None, prefix="elig"
+    )
+    if request.method == "POST" and request.POST.get("action") == "eligibility":
+        if elig_form.is_valid():
+            d = elig_form.cleaned_data
+            user = User.objects.filter(email=d["email"].lower()).first()
+            if user is None:
+                elig_form.add_error("email", _("Non hai ningunha conta con ese correo."))
+            else:
+                Eligibility.objects.create(
+                    user=user,
+                    municipality=request.tenant,
+                    kind=d["kind"],
+                    expires_on=d["expires_on"],
+                    validated_by=request.user,
+                )
+                audit("eligibility.validate", request.user, request.tenant, user, kind=d["kind"])
+                messages.success(
+                    request, _("Tarifa reducida validada para %(e)s.") % {"e": user.email}
+                )
+                return redirect(treverse(request.tenant, "manage:staff"))
+    elif request.method == "POST":
         if request.POST.get("remove"):
             Membership.objects.filter(
                 municipality=request.tenant, pk=request.POST["remove"]
@@ -138,6 +170,10 @@ def staff(request):
         request,
         "manage/staff.html",
         {
+            "elig_form": elig_form,
+            "eligibilities": Eligibility.objects.filter(municipality=request.tenant).select_related(
+                "user"
+            )[:30],
             "form": form,
             "members": members,
             "invitations": invitations,

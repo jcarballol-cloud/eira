@@ -91,6 +91,11 @@ class Municipality(models.Model):
     max_active_bookings = models.PositiveIntegerField(
         _("reservas activas máximas por persoa"), default=4
     )
+    low_demand_discount_pct = models.PositiveIntegerField(
+        _("desconto nas franxas de baixa demanda (%)"),
+        default=20,
+        help_text=_("Aplícase ás franxas recomendadas (★). 0 = sen desconto."),
+    )
     no_show_grace_minutes = models.PositiveIntegerField(
         _("minutos de cortesía para non presentado"), default=15
     )

@@ -24,6 +24,7 @@ PASSTHROUGH_PREFIXES = (
     "/sw.js",
     "/manifest.webmanifest",
     "/acceso/",
+    "/pagamentos/",
     "/conta/",
     "/preferencias/",
     "/rexion/",

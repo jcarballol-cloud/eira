@@ -4,6 +4,7 @@
 import datetime as dt
 from dataclasses import dataclass, field
 
+from django.conf import settings
 from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
@@ -15,7 +16,6 @@ from apps.notifications.services import notify
 
 from .models import Booking
 
-HOLD_MINUTES = 15
 RECOMMENDED_PER_DAY = 2
 RECOMMEND_THRESHOLD = 0.3
 
@@ -65,6 +65,7 @@ class Slot:
     closure_reason: str = ""
     mine: object = None
     labels: dict = field(default_factory=dict)
+    discount_pct: int = 0
 
     @property
     def bookable(self):
@@ -95,78 +96,93 @@ class Slot:
         }[self.status]
 
 
-def week_grid(facility, monday, user=None, now=None):
-    """Grella semanal: días (columnas) × horas (filas). Devolve tamén a lista por día (móbil)."""
+def _context(facility, start, end):
     from apps.analytics.recommend import expected_occupancy
 
+    bookings = list(Booking.objects.filter(facility=facility).holding().overlapping(start, end))
+    closures = list(closures_overlapping(facility, start, end))
+    return bookings, closures, expected_occupancy(facility)
+
+
+def day_slots(facility, day, user=None, now=None, ctx=None):
+    """Franxas dun día co seu estado. As «recomendadas» levan o desconto de baixa demanda do concello."""
     now = now or timezone.now()
-    days = [monday + dt.timedelta(days=i) for i in range(7)]
-    week_start = _aware(monday, dt.time.min)
-    week_end = week_start + dt.timedelta(days=7)
-    bookings = list(
-        Booking.objects.filter(facility=facility).holding().overlapping(week_start, week_end)
-    )
-    closures = list(closures_overlapping(facility, week_start, week_end))
-    expected = expected_occupancy(facility)
+    if ctx is None:
+        ctx = _context(
+            facility, _aware(day, dt.time.min), _aware(day + dt.timedelta(days=1), dt.time.min)
+        )
+    bookings, closures, expected = ctx
     step = dt.timedelta(minutes=facility.slot_minutes)
     max_day = timezone.localdate() + dt.timedelta(days=facility.municipality.max_advance_days)
-
-    by_day = {}
-    times = set()
-    for day in days:
-        slots = []
-        for start in slot_starts(facility, day):
-            end = start + step
-            overlapping = [b for b in bookings if b.start < end and b.end > start]
-            mine = next(
-                (b for b in overlapping if user and user.is_authenticated and b.user_id == user.pk),
-                None,
-            )
-            closure = next((c for c in closures if c.starts_at < end and c.ends_at > start), None)
-            n = len(overlapping)
-            if mine:
-                status = "mine"
-            elif closure:
-                status = "closed"
-            elif start <= now or day > max_day:  # unha franxa xa empezada non se pode reservar
-                status = "past"
-            elif n >= facility.capacity:
-                status = "busy"
-            elif facility.capacity > 1 and n / facility.capacity < 0.5:
-                status = "few"
-            else:
-                status = "free"
-            slots.append(
-                Slot(
-                    start,
-                    end,
-                    status,
-                    n,
-                    facility.capacity,
-                    closure.reason if closure else "",
-                    mine,
-                )
-            )
-            times.add(timezone.localtime(start).time())
-        # Recomendadas: como moito as 2 franxas libres con menor demanda histórica do día
-        candidates = sorted(
-            (expected.get((s.start.weekday(), timezone.localtime(s.start).hour), 1), i)
-            for i, s in enumerate(slots)
-            if s.status in ("free", "few")
+    slots = []
+    for start in slot_starts(facility, day):
+        end = start + step
+        overlapping = [b for b in bookings if b.start < end and b.end > start]
+        mine = next(
+            (b for b in overlapping if user and user.is_authenticated and b.user_id == user.pk),
+            None,
         )
-        for value, i in candidates[:RECOMMENDED_PER_DAY]:
-            if value < RECOMMEND_THRESHOLD:
-                slots[i].status = "recommended"
-        by_day[day] = slots
+        closure = next((c for c in closures if c.starts_at < end and c.ends_at > start), None)
+        n = len(overlapping)
+        if mine:
+            status = "mine"
+        elif closure:
+            status = "closed"
+        elif start <= now or day > max_day:  # unha franxa xa empezada non se pode reservar
+            status = "past"
+        elif n >= facility.capacity:
+            status = "busy"
+        elif facility.capacity > 1 and n / facility.capacity < 0.5:
+            status = "few"
+        else:
+            status = "free"
+        slots.append(
+            Slot(start, end, status, n, facility.capacity, closure.reason if closure else "", mine)
+        )
+    # Recomendadas: como moito as 2 franxas libres con menor demanda histórica do día
+    candidates = sorted(
+        (
+            expected.get(
+                (timezone.localtime(s.start).weekday(), timezone.localtime(s.start).hour), 1
+            ),
+            i,
+        )
+        for i, s in enumerate(slots)
+        if s.status in ("free", "few")
+    )
+    discount = facility.municipality.low_demand_discount_pct
+    for value, i in candidates[:RECOMMENDED_PER_DAY]:
+        if value < RECOMMEND_THRESHOLD:
+            slots[i].status = "recommended"
+            slots[i].discount_pct = discount
+    return slots
 
-    rows = []
-    for t in sorted(times):
-        cells = []
-        for day in days:
-            cells.append(
-                next((s for s in by_day[day] if timezone.localtime(s.start).time() == t), None)
-            )
-        rows.append({"time": t, "cells": cells})
+
+def low_demand_discount(facility, start):
+    """Desconto (%) se a franxa é unha das recomendadas por baixa demanda; 0 se non."""
+    for s in day_slots(facility, timezone.localdate(start)):
+        if s.start == start:
+            return s.discount_pct
+    return 0
+
+
+def week_grid(facility, monday, user=None, now=None):
+    """Grella semanal: días (columnas) × horas (filas). Devolve tamén a lista por día (móbil)."""
+    days = [monday + dt.timedelta(days=i) for i in range(7)]
+    week_start = _aware(monday, dt.time.min)
+    ctx = _context(facility, week_start, week_start + dt.timedelta(days=7))
+    by_day = {day: day_slots(facility, day, user, now, ctx) for day in days}
+    times = sorted({timezone.localtime(s.start).time() for slots in by_day.values() for s in slots})
+    rows = [
+        {
+            "time": t,
+            "cells": [
+                next((s for s in by_day[d] if timezone.localtime(s.start).time() == t), None)
+                for d in days
+            ],
+        }
+        for t in times
+    ]
     # Día despregado por defecto na vista móbil: o primeiro con franxas reservables
     open_day = next(
         (d for d in days if any(s.bookable for s in by_day[d])),
@@ -183,33 +199,56 @@ def week_grid(facility, monday, user=None, now=None):
 # ---------------------------------------------------------------- tarifas
 
 
-def audience_for(facility, user):
+def applicable_audiences(facility, user):
+    """Colectivos aos que a persoa ten dereito: empadroamento, idade e tarifa reducida validada."""
     if user is None or not user.is_resident(facility.municipality):
-        return Tariff.Audience.NON_RESIDENT
+        return [Tariff.Audience.NON_RESIDENT]
+    out = [Tariff.Audience.RESIDENT]
     age = user.age
-    tariffs = {t.audience for t in facility.tariffs.all()}
-    if age is not None and age <= 25 and Tariff.Audience.YOUTH in tariffs:
-        return Tariff.Audience.YOUTH
-    if age is not None and age >= 65 and Tariff.Audience.SENIOR in tariffs:
-        return Tariff.Audience.SENIOR
-    return Tariff.Audience.RESIDENT
+    if age is not None and age <= 25:
+        out.append(Tariff.Audience.YOUTH)
+    if age is not None and age >= 65:
+        out.append(Tariff.Audience.SENIOR)
+    if any(e.is_valid for e in user.eligibilities.filter(municipality=facility.municipality)):
+        out.append(Tariff.Audience.REDUCED)
+    return out
 
 
-def price_for(facility, user, audience=None):
-    audience = audience or audience_for(facility, user)
+def audience_for(facility, user):
+    return price_for(facility, user)[0]
+
+
+class PriceQuote(tuple):
+    """(colectivo, prezo) para compatibilidade, con base e desconto como atributos."""
+
+    def __new__(cls, audience, price, base, discount):
+        obj = super().__new__(cls, (audience, price))
+        obj.audience, obj.price, obj.base, obj.discount = audience, price, base, discount
+        return obj
+
+
+def price_for(facility, user, audience=None, start=None):
+    """Prezo que se mostra antes de pagar: aplícase a tarifa máis favorable á persoa e, nas franxas
+    de baixa demanda, o desconto do concello."""
     tariffs = {t.audience: t.price_cents for t in facility.tariffs.all()}
-    price = tariffs.get(audience)
-    if price is None:
-        price = tariffs.get(Tariff.Audience.RESIDENT, 0)
-    return audience, price
+    if audience:
+        options = [(tariffs.get(audience, tariffs.get(Tariff.Audience.RESIDENT, 0)), audience)]
+    else:
+        options = [(tariffs[a], a) for a in applicable_audiences(facility, user) if a in tariffs]
+        if not options:
+            options = [(tariffs.get(Tariff.Audience.RESIDENT, 0), Tariff.Audience.RESIDENT)]
+    base, audience = min(options, key=lambda o: o[0])
+    discount = low_demand_discount(facility, start) if (start and base) else 0
+    final = base * (100 - discount) // 100 if discount else base
+    return PriceQuote(audience, final, base, discount)
 
 
 # ---------------------------------------------------------------- operacións
 
 
-def _validate_slot(facility, start, end, exclude=None, now=None):
+def _validate_slot(facility, start, end, exclude=None, now=None, check_past=True):
     now = now or timezone.now()
-    if start <= now:
+    if check_past and start <= now:
         raise BookingError(_("Esa franxa xa pasou."))
     if timezone.localdate(start) > timezone.localdate() + dt.timedelta(
         days=facility.municipality.max_advance_days
@@ -257,7 +296,8 @@ def create_booking(
                 raise BookingError(
                     _("Xa tes o máximo de reservas activas permitidas neste concello.")
                 )
-        audience, price = price_for(facility, user)
+        quote = price_for(facility, user, start=start)
+        audience, price = quote.audience, quote.price
         booking = Booking.objects.create(
             municipality=facility.municipality,
             facility=facility,
@@ -270,8 +310,13 @@ def create_booking(
             holder_phone=holder_phone,
             tariff_audience=audience,
             price_cents=price,
+            base_price_cents=quote.base,
+            discount_pct=quote.discount,
             status=Booking.Status.CONFIRMED if price == 0 else Booking.Status.PENDING_PAYMENT,
-            hold_expires_at=timezone.now() + dt.timedelta(minutes=HOLD_MINUTES) if price else None,
+            hold_expires_at=timezone.now()
+            + dt.timedelta(minutes=settings.EIRA_PAYMENT_HOLD_MINUTES)
+            if price
+            else None,
             rules_version=rules_version,
             rules_accepted_at=timezone.now(),
         )
@@ -325,10 +370,16 @@ def cancel_booking(booking, by=None, reason="", force_full_refund=False):
         raise BookingError(_("A reserva xa comezou."))
     penalty = 0 if force_full_refund else booking.penalty_if_cancelled_now()
     refund = max(0, booking.paid_cents - penalty)
-    if refund and booking.payment_reference:
-        from apps.integrations.registry import get_adapter
+    if refund:
+        from .payments import refund_booking
 
-        get_adapter("payment").refund(booking.payment_reference, refund)
+        refund_booking(booking, refund)
+    if booking.status == Booking.Status.PENDING_PAYMENT:
+        from .models import Payment
+
+        booking.payments.filter(status=Payment.Status.PENDING).update(
+            status=Payment.Status.EXPIRED, resolved_at=timezone.now()
+        )
     booking.status = Booking.Status.CANCELLED
     booking.cancelled_at = timezone.now()
     booking.cancel_reason = reason[:200]
@@ -437,10 +488,9 @@ def apply_closure(closure, by=None):
 
 
 def expire_holds(now=None):
-    now = now or timezone.now()
-    return Booking.objects.filter(
-        status=Booking.Status.PENDING_PAYMENT, hold_expires_at__lte=now
-    ).update(status=Booking.Status.CANCELLED, cancelled_at=now, cancel_reason="hold expired")
+    from .payments import expire_pending
+
+    return expire_pending(now)
 
 
 def mark_no_shows(now=None):

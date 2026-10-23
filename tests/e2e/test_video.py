@@ -84,6 +84,8 @@ def run_script(page, base, d):
     d.say("Pagamento no TPV do concello (simulado).")
     page.click("button[value=ok]")
     page.wait_for_load_state("networkidle")
+    page.click("text=Ver o acceso e a reserva")
+    page.wait_for_load_state("networkidle")
     page.locator(".access-code").scroll_into_view_if_needed()
     d.say("Reserva confirmada: código de 6 díxitos válido só na súa franxa (±10 min).", 3.4)
     code = page.locator(".access-code").inner_text().strip()

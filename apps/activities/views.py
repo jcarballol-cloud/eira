@@ -10,7 +10,7 @@ from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from apps.analytics import observatory
-from apps.integrations.registry import get_adapter
+from apps.bookings.payments import start_online_payment
 from apps.tenants.urlutils import module_required, neighbour_required, role_required, treverse
 
 from . import services
@@ -49,14 +49,12 @@ def enroll(request, pk):
             messages.error(request, str(exc))
             return redirect(request.path)
         if e.status == Enrollment.Status.PENDING_PAYMENT:
-            ref, url = get_adapter("payment").create(
-                group.fee_cents,
-                f"{group} · {e.participant_name}",
-                treverse(request.tenant, "activities:payment_return", e.pk),
+            back = treverse(request.tenant, "activities:payment_return", e.pk)
+            return redirect(
+                start_online_payment(
+                    enrollment=e, url_ok=back + "?resultado=ok", url_ko=back + "?resultado=ko"
+                )
             )
-            e.payment_reference = ref
-            e.save(update_fields=["payment_reference"])
-            return redirect(url)
         if e.status == Enrollment.Status.WAITLIST:
             messages.warning(
                 request,
@@ -76,13 +74,14 @@ def enroll(request, pk):
 
 @neighbour_required
 def payment_return(request, pk):
+    """Volta da pasarela: o estado xa o fixou a notificación asinada; aquí só se informa."""
     e = get_object_or_404(Enrollment, municipality=request.tenant, pk=pk, user=request.user)
-    status = get_adapter("payment").status(e.payment_reference) if e.payment_reference else None
-    if status and status.paid:
-        services.mark_enrollment_paid(e, status.reference, status.amount_cents)
+    if e.status == Enrollment.Status.ACTIVE:
         messages.success(request, _("Pagamento recibido. Inscrición confirmada."))
+    elif e.status == Enrollment.Status.PENDING_PAYMENT:
+        messages.info(request, _("Agardando a confirmación do banco."))
     else:
-        messages.error(request, _("O pagamento non se completou."))
+        messages.error(request, _("O pagamento non se completou. Non se fixo ningún cargo."))
     return redirect(treverse(request.tenant, "activities:mine"))
 
 

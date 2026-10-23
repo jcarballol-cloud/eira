@@ -78,3 +78,5 @@ guión de 3 min verificado cun test E2E, 44 capturas automáticas en `docs/captu
     - Seed: ~4 % de cancelacións, todas con motivo, e o 20 % delas fóra de prazo e sen devolución.
     - Etiquetas: «Cancelada · importe devolto», «Cancelada · devolto en parte», «Cancelada · sen devolución» e, para a chave, «Chave devolta».
     - Tests: as etiquetas e a coherencia da seed (devolucións só en canceladas, con motivo, < 5 % e nunca maiores ca o pagado).
+- ✅ v3: 5 ferramentas de demo e Cl@ve · 2 selector de franxas · 1 densidade · 6 tableta tipo AFS +50 · 4 portada da demo · 8 pé, menú e «Devolto» · 3 consellos co tempo · 7 axenda en calendario · 9 vídeos, capturas e castelán.
+- Números v3: 332 tests unitarios/integración + 35 E2E (+2 de vídeo); axe 72 páxinas × 3 viewports, 0 violacións.

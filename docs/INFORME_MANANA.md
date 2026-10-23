@@ -3,6 +3,48 @@
 **Fecha:** 23/10/2026 · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
 
 
+## v3. Pulido fino (23–24/10)
+
+**Servidor de demo:** <http://localhost:8000> · LAN `http://<IP do equipo>:8000`.
+- Corre en una ventana de PowerShell aparte, titulada «Eira demo · 0.0.0.0:8000» (PID 41660), con `runserver --noreload` y la IA simulada; no se ha cargado ningún modelo.
+- Los datos de demo se regeneraron justo antes de arrancar. Para pararlo, cierra la ventana.
+- Comprobado por la IP LAN: portada, correo, cerradura y cuatro perfiles (Uxía, Antía, Concello de Vilardeiras y Rosa de Pontedouro).
+
+**Commits locales**, sin push: `49921e1` (5), `134b8ab` (2), `a87d788` (1), `641a4d4` (6), `50313a8` (4 y lema), `e6c4a91` (8), `56b8626` (3), `b58b8cd` (7) y `33dbe2d` (9).
+
+Antes de corregir, reproduje cada problema con capturas o tests.
+
+| # | Qué | Causa encontrada | Verificado |
+|---|---|---|---|
+| 5 | Herramientas de demo independientes: correo, cerradura, TPV y Cl@ve con diseño neutro, nunca dentro del marco del perfil; desde la barra de demo se abren en pestaña nueva | Heredaban `base.html` con el marco del perfil activo | ✅ 10 E2E (con y sin sesión, móvil y escritorio): sin `framed`, sin scroll horizontal, correo con salto de línea y enlaces, columnas sin solaparse, ABIERTO |
+| 5 | «Cosas raras» de la cerradura | El bloqueo por intentos usaba el reloj **simulado**: con 5 fallos a una hora futura el teclado quedaba bloqueado horas reales para todo el mundo. Además, sin parámetros abría el primer dispositivo de la base de datos, y el código de la persona daba DENEGADO | ✅ test que reproducía el fallo; ahora el bloqueo va con el tiempo real, preselecciona la próxima reserva de la persona y hay botón «Restablecer» |
+| 5 | Cl@ve | Con otra sesión abierta, `login()` vacía la sesión y se perdía el destino, así que acababa en Pontedouro. Al reutilizar la identificación (volver atrás) no se explicaba nada | ✅ 3 tests y E2E de principio a fin |
+| 2 | Selector de franjas: tira de días, pastillas con hora y precio (★ y precio tachado), leyenda única y resumen fijo «Reservar»; accesible y con texto grande | — | ✅ 5 E2E: teclado, etiquetas accesibles, nada desborda, texto grande a 2 columnas y funciona sin JavaScript |
+| 1 | Densidad compacta (base de 15 px y botones de 38 px). «Texto grande» y la tableta conservan los tamaños grandes | Además apareció un fallo previo: la barra de pestanas quedaba fuera de la pantalla en la app sin marco | ✅ capturas antes/después en `docs/capturas/v3/densidade/` |
+| 6 | Tableta como el quiosco de AFS +50 (se tomó la versión más reciente, `src/modules/asistencia/kiosko`; solo la lógica): abecedario del primer apellido con contadores y Ñ, buscador, Entrada/Salida, RPE OMNI/Borg con colores, «¡Gracias!» con vuelta a los 3 s, quién falta y cola sin conexión | — | ✅ 12 tests unitarios y 3 E2E: las 40 personas entran, salidas con RPE, búsqueda sin acentos, Ñ y cola sin conexión que se sincroniza |
+| 4 | Portada de la demo en dos pasos (concello → perfil, con «qué verás» y miniatura) y barra con el concello y el perfil activos | — | ✅ axe en ambos pasos y tests |
+| 8 | Lema sustituido en portada, README, guion, vídeo, meta descripción, `publiccode.yml` y `CLAUDE.md` | — | ✅ test |
+| 8 | Pie siempre abajo | — | ✅ medido: termina en el px 900 de 900 |
+| 8 | Menú lateral | Solo fallaba el Observatorio (la vista no pasaba `sub`) | ✅ test sobre las 16 entradas |
+| 8 | «Devuelto» | La seed cancelaba el 9 % de las reservas con reembolso total y sin motivo, y «Devolta» también se usaba para la llave | ✅ seed coherente (≈4 %, con motivo), etiquetas «Cancelada · importe devolto» y «Chave devolta», y tests |
+| 3 | Consejos de salud: de 2 a 4 de una línea con cifra y «Ver más», con la previsión de la instalación para la franja (sensación térmica, humedad, UV, viento y lluvia); también en la tarjeta de la próxima reserva | Antes eran 8 consejos largos, sin sensación ni humedad | ✅ E2E: una línea en móvil y el peso no sale del teléfono; tests de sensación térmica y de coherencia con la estación |
+| 7 | Agenda del concello en semana y mes, con filtros, colores por estado y `.ics` | — | ✅ 5 tests y axe |
+| 9 | Guion v3, vídeos regrabados (≈ 2 min, ahora con la tableta), capturas en `docs/capturas/v3/` (pitch, 99 pantallas en 3 tamaños y antes/después por punto) y castellano completo (173 cadenas nuevas) | — | ✅ |
+
+**Números:** 332 tests unitarios y de integración, y 35 E2E (más los 2 de vídeo), todo en verde. axe 0 violaciones en 72 páginas × 3 viewports.
+
+**NO verificado o con límites:**
+- **MeteoSIX**: el lector se probó con una respuesta de ejemplo según la documentación, no con la API real (necesita clave). El UV se estima.
+- **Tableta sin conexión**: probada con Playwright (modo sin red), no en una tableta física durante una sesión real.
+- **Traducción v3**: 173 cadenas traducidas por un subagente con verificación automática de marcadores; solo revisé algunas a mano.
+- **Miniaturas de la portada**: son capturas de la demo y no se actualizan solas si cambia el diseño.
+
+**Decisiones que conviene revisar** (detalle en `docs/DECISIONS.md`, secciones «v3 ·»):
+- **Apellidos opcionales.** Antes no se pedían a los menores; ahora son opcionales para todos, porque el abecedario de la tableta los necesita.
+- **Pontedouro sin escuelas.** Tiene perfiles propios en la demo, pero no tiene escuelas.
+- **Primera hora.** En las sesiones tempranas, la regla de las 2 h sustituye a la de las 4 h.
+
+
 ## v2. De prototipo a producto (23/10, tarde y noche)
 
 **Servidor de demo:** <http://localhost:8000> · LAN `http://<IP do equipo>:8000`.

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 03:21+0200\n"
+"POT-Creation-Date: 2026-10-23 03:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2048,6 +2048,12 @@ msgstr "8 semanas"
 msgid "Resumo semanal"
 msgstr "Resumo semanal"
 
+msgid "Xerar de novo"
+msgstr "Xerar de novo"
+
+msgid "Aínda non hai resumo desta semana."
+msgstr "Aínda non hai resumo desta semana."
+
 msgid ""
 "Xerado só con datos agregados. Se se usa IA, é un modelo de pesos abertos "
 "aloxado polo propio concello."
@@ -3404,8 +3410,8 @@ msgstr "obrigatorio"
 msgid "Revisa os campos marcados."
 msgstr "Revisa os campos marcados."
 
-msgid "Os mesmos datos están na táboa que segue ao gráfico."
-msgstr "Os mesmos datos están na táboa que segue ao gráfico."
+msgid "Sen datos no período."
+msgstr "Sen datos no período."
 
 msgid "Calendario de mantemento"
 msgstr "Calendario de mantemento"
@@ -3995,7 +4001,6 @@ msgid "Mañá"
 msgstr "Mañá"
 
 #, python-format
-#| msgid_plural "%(n)s instalacións"
 msgid "%(n)s inscrita"
 msgid_plural "%(n)s inscritas"
 msgstr[0] "%(n)s inscrita"
@@ -4057,6 +4062,9 @@ msgstr "Crear concello"
 
 msgid "Atrás"
 msgstr "Atrás"
+
+#~ msgid "Os mesmos datos están na táboa que segue ao gráfico."
+#~ msgstr "Os mesmos datos están na táboa que segue ao gráfico."
 
 #~ msgid "Hoxe"
 #~ msgstr "Hoxe"

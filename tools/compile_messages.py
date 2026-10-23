@@ -21,7 +21,7 @@ for po_path in sorted((ROOT / "locale").glob("*/LC_MESSAGES/*.po")):
                 entry.msgstr_plural = {0: entry.msgid, 1: entry.msgid_plural}
             else:
                 entry.msgstr = entry.msgid
-            entry.previous_msgid = None
+            entry.previous_msgid = entry.previous_msgid_plural = entry.previous_msgctxt = None
             if "fuzzy" in entry.flags:
                 entry.flags.remove("fuzzy")
         po.metadata["Language"] = "gl"

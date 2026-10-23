@@ -118,3 +118,21 @@ def test_reporter_sees_only_own_incidents(client, citizen, outsider, padel_a):
     )
     client.force_login(citizen)
     assert client.get(f"/c/concello-a/incidencias/{inc.pk}/").status_code == 404
+
+
+def test_incident_photos_are_private(client, citizen, outsider, padel_a, admin_a, admin_b):
+    client.force_login(citizen)
+    client.post(
+        "/c/concello-a/incidencias/nova/",
+        {"facility": padel_a.pk, "category": "damage", "description": "x",
+         "photo": SimpleUploadedFile("f.jpg", jpeg_with_gps(), content_type="image/jpeg")},
+    )
+    url = Incident.objects.get().photo.url
+    assert client.get(url).status_code == 200  # quen a enviou
+    client.force_login(admin_a)
+    assert client.get(url).status_code == 200  # persoal do concello
+    for who in (outsider, admin_b):
+        client.force_login(who)
+        assert client.get(url).status_code == 404  # outras persoas e outros concellos
+    client.logout()
+    assert client.get(url).status_code == 404

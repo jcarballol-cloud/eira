@@ -2,10 +2,10 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
-from django.views.static import serve
 from drf_spectacular.views import SpectacularAPIView
 
 from apps.tenants import views as core
+from apps.tenants.media import protected_serve
 
 urlpatterns = [
     path("", core.home, name="home"),
@@ -27,8 +27,8 @@ urlpatterns = [
 if settings.EIRA_DEMO_TOOLS:
     urlpatterns.append(path("dev/", include("apps.integrations.urls_dev")))
 
-# Ficheiros subidos: en produción sérveos o proxy inverso (ver docs/despregamento.md).
-urlpatterns.append(path("media/<path:path>", serve, {"document_root": settings.MEDIA_ROOT}))
+# Ficheiros subidos: públicos (instalacións) ou privados con control de acceso (incidencias, ordes).
+urlpatterns.append(path("media/<path:path>", protected_serve, name="media"))
 
 handler404 = "apps.tenants.views.not_found"
 handler403 = "apps.tenants.views.forbidden"

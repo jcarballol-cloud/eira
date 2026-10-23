@@ -54,7 +54,7 @@ asignarlle unha persoa con `RegionMembership`.
 ## Ficheiros e copias
 
 - Base de datos: copias de PostgreSQL (`pg_dump`) segundo a política do CPD.
-- Ficheiros subidos: volume `media` (servir con nginx en `/media/`).
+- Ficheiros subidos: volume `media`. O proxy pode servir directamente `/media/facilities/` e `/media/tenants/` (públicos); `/media/incidents/` e `/media/workorders/` deben pasar á aplicación, que comproba permisos.
 - Portabilidade: cada concello pode descargar a súa exportación íntegra en calquera momento.
 
 ## Actualizacións

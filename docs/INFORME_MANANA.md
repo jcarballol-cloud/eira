@@ -96,7 +96,7 @@ Todas en [`docs/DECISIONS.md`](DECISIONS.md). Las más discutibles:
 ## 6. Riesgos para la entrega del 18/11
 
 - **Fuerza bruta en nivel 2** con 6 dígitos: mitigada (bloqueo exponencial + aviso), pero conviene presentar 8 dígitos como opción para instalaciones sensibles y explicarlo bien en la memoria.
-- **Media servida por Django** (`/media/`): en producción debe servirla el proxy; las fotos de incidencias son accesibles a quien conozca la URL (nombres aleatorios). Valorar servirlas con control de acceso.
+- **Ficheros subidos**: las fotos de incidencias y órdenes ya se sirven con control de acceso (solo quien informó y el personal del concello; test). En producción el proxy debe servir directamente solo `media/facilities/` y `media/tenants/` y pasar el resto a la app.
 - **Rate limit en caché local**: con varios procesos gunicorn necesita caché compartida (`EIRA_CACHE_DIR` ya configurado en compose).
 - **Datos de demo dependen de la hora**: el seed crea reservas alrededor de la hora actual; re-ejecutar `make seed` justo antes del pitch.
 - **Tiles de OpenStreetMap**: único recurso externo; sin red, usar la vista de lista. Revisar la política de uso de OSM para producción.

@@ -109,3 +109,35 @@ def test_ods_export_is_valid_opendocument(client, admin_a, padel_a, citizen):
         root = ElementTree.fromstring(zf.read("content.xml"))
     texts = [t.text for t in root.iter("{urn:oasis:names:tc:opendocument:xmlns:text:1.0}p")]
     assert "instalacion" in texts and padel_a.name in texts
+
+
+def test_ai_summary_cached_and_optional(client, admin_a, padel_a, settings):
+    from apps.analytics import ai_summary
+
+    muni = padel_a.municipality
+    muni.modules = {**muni.modules, "ai_summary": True}
+    muni.save()
+    client.force_login(admin_a)
+    assert "Resumo semanal" in client.get("/c/concello-a/xestion/indicadores/").content.decode()
+    assert ai_summary.cached(muni)
+    settings.EIRA_AI_ENABLED = False  # desactivado: o panel funciona igual, sen resumo
+    html = client.get("/c/concello-a/xestion/indicadores/").content.decode()
+    assert "Resumo semanal" not in html and "Ocupación media" in html
+
+
+def test_ai_failure_never_breaks_dashboard(client, admin_a, padel_a, settings):
+    from apps.integrations.registry import reset_adapters
+
+    muni = padel_a.municipality
+    muni.modules = {**muni.modules, "ai_summary": True}
+    muni.save()
+    settings.EIRA_ADAPTERS = {
+        **settings.EIRA_ADAPTERS,
+        "ai": "apps.integrations.ai.OpenAICompatibleAdapter",
+    }
+    settings.EIRA_AI_BASE_URL = "http://127.0.0.1:9/v1"  # porto pechado
+    settings.EIRA_AI_TIMEOUT = 2
+    reset_adapters()
+    client.force_login(admin_a)
+    r = client.post("/c/concello-a/xestion/indicadores/", {"action": "ai"})
+    assert r.status_code == 200 and "non está dispoñible" in r.content.decode()

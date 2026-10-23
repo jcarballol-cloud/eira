@@ -37,7 +37,7 @@ Guion del pitch: [`docs/demo/guion-demo.md`](demo/guion-demo.md).
 
 | Qué | Cómo se verificó |
 |---|---|
-| 155 tests unitarios/integración + 11 E2E | `python tools/tasks.py test` → todos pasan |
+| 159 tests unitarios/integración + 11 E2E | `python tools/tasks.py test` → todos pasan |
 | Aislamiento entre concellos (web, gestión, API, subdominio, dominio propio) | `apps/tenants/tests/test_isolation.py` |
 | Permisos por rol (ciudadanía, admin, mantenimiento, monitor, diputación) | tests de aislamiento y de cada app |
 | Reserva completa: grilla → normas versionadas → pago simulado → código → .ics → recibo → cancelación con reembolso | `test_full_booking_flow_through_views` + E2E `test_email_login_and_booking_with_offline_code` |
@@ -63,13 +63,14 @@ Guion del pitch: [`docs/demo/guion-demo.md`](demo/guion-demo.md).
 | `docker compose up --build` con PostgreSQL y demo | arrancado y comprobadas 8 URLs (200) |
 | 44 capturas (móvil y escritorio) | `docs/capturas/`, generadas con `tools/tasks.py screenshots` |
 | ruff lint + format | sin errores |
+| IA autoalojada real: resumen semanal en gallego con **Ollama + qwen3:8b** (pesos abiertos) local, solo agregados | `manage.py ai_weekly_summary -v 2` con `EIRA_AI_ADAPTER=…OpenAICompatibleAdapter` (≈1 min en esta máquina); fallo del modelo no rompe el panel (test) |
+| Exportación ODS de indicadores; fotos de incidencias privadas | `test_ods_export_is_valid_opendocument`, `test_incident_photos_are_private` |
 
 ## 3. Hecho pero NO verificado
 
 - **CI de GitHub** (`.github/workflows/ci.yml`): escrito, nunca ejecutado (sin push por norma).
 - **publiccode.yml**: YAML válido, pero no pasado por `publiccode-parser` (no disponible offline).
 - **Adaptadores reales** (Cl@ve SAML, Chave365 OIDC, Redsys, MeteoSIX, Telegram Bot API, Web Push VAPID, cerradura HTTP): solo esqueletos documentados; no funcionales.
-- **`OpenAICompatibleAdapter`**: código escrito, no probado contra un llama.cpp/Ollama real (sí el fake y el filtro de datos personales).
 - **Lectores de pantalla reales**, zoom 200/400 % y mapa Leaflet con teclado: no probados manualmente.
 - **Service worker / caché de lectura** en móvil real (instalación de la PWA): no probado fuera de Chromium headless.
 - **Subdominios reales con DNS/HTTPS**: probado solo con cabecera Host en tests.

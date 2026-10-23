@@ -209,6 +209,7 @@ EIRA_ADAPTERS = {
 EIRA_AI_ENABLED = env_bool("EIRA_AI_ENABLED", True)
 EIRA_AI_BASE_URL = env("EIRA_AI_BASE_URL", "http://localhost:11434/v1")
 EIRA_AI_MODEL = env("EIRA_AI_MODEL", "llama3.1")
+EIRA_AI_TIMEOUT = int(env("EIRA_AI_TIMEOUT", 180))  # segundos (modelos locais en CPU poden tardar)
 EIRA_METEOSIX_API_KEY = env("EIRA_METEOSIX_API_KEY", "")
 EIRA_DEFAULT_FROM_EMAIL = env("EIRA_FROM_EMAIL", "non-responder@eira.invalid")
 

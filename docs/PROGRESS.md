@@ -51,7 +51,7 @@ Datos ficticios (Vilardeiras, Pontedouro, Deputación das Marismas), selector de
 guión de 3 min verificado cun test E2E, 44 capturas automáticas en `docs/capturas/`.
 
 ## Números
-- 155 tests unitarios/integración + 11 E2E (axe en 53 páxinas × 2 viewports con 0 violacións).
+- 159 tests unitarios/integración + 11 E2E (axe en 53 páxinas × 2 viewports con 0 violacións).
 
 ## Bloqueos
 - Ningún bloqueo activo. Ver riscos en `INFORME_MANANA.md`.

@@ -86,14 +86,20 @@ def dashboard(request):
         for r in s["revenue_weeks"]
     ]
     rev_chart = indicators.hbar(rev_items, "value", "label", suffix=" €")
-    ai_summary = None
-    if request.tenant.module_enabled("ai_summary") and settings.EIRA_AI_ENABLED:
-        from apps.integrations.registry import get_adapter
+    from apps.integrations.ai import FakeAIAdapter
+    from apps.integrations.registry import get_adapter
 
-        try:
-            ai_summary = get_adapter("ai").weekly_summary(indicators.ai_aggregates(request.tenant))
-        except Exception:  # o asistente é opcional: nunca rompe o panel
-            ai_summary = _("O asistente non está dispoñible agora.")
+    from . import ai_summary as ai
+
+    summary_text = ai.cached(request.tenant)
+    if request.method == "POST" and request.POST.get("action") == "ai":
+        summary_text = ai.generate(request.tenant) or _("O asistente non está dispoñible agora.")
+    elif (
+        summary_text is None
+        and ai.enabled(request.tenant)
+        and isinstance(get_adapter("ai"), FakeAIAdapter)
+    ):
+        summary_text = ai.generate(request.tenant)  # o resumo por regras é instantáneo
     return render(
         request,
         "analytics/dashboard.html",
@@ -104,7 +110,8 @@ def dashboard(request):
             "ns_chart": ns_chart,
             "rev_chart": rev_chart,
             "weekdays": [_("Lu"), _("Ma"), _("Mé"), _("Xo"), _("Ve"), _("Sá"), _("Do")],
-            "ai_summary": ai_summary,
+            "ai_summary": summary_text,
+            "ai_enabled": ai.enabled(request.tenant),
             "nav": "manage",
             "sub": "indicators",
         },

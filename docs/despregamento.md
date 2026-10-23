@@ -38,6 +38,7 @@ asignarlle unha persoa con `RegionMembership`.
 ```cron
 */15 * * * *  docker compose exec -T app python manage.py booking_maintenance
 0 5 * * *     docker compose exec -T app python manage.py generate_work_orders --days 14
+0 6 * * 1     docker compose exec -T app python manage.py ai_weekly_summary   # só se a IA está activada
 ```
 
 ## Integracións reais
@@ -49,7 +50,7 @@ asignarlle unha persoa con `RegionMembership`.
 | Pagos | `EIRA_PAYMENT_ADAPTER=…RedsysAdapter` | TPV virtual da entidade do concello |
 | Meteo | `EIRA_WEATHER_ADAPTER=…MeteoSixAdapter`, `EIRA_METEOSIX_API_KEY` | Clave gratuíta de MeteoGalicia |
 | Mapa | `EIRA_TILE_URL`, `EIRA_TILE_ORIGIN` | Servidor de teselas propio ou OSM respectando a súa política de uso |
-| IA (opcional) | `EIRA_AI_ADAPTER=…OpenAICompatibleAdapter`, `EIRA_AI_BASE_URL`, `EIRA_AI_MODEL` | llama.cpp/Ollama no CPD; desactivable con `EIRA_AI_ENABLED=0` |
+| IA (opcional) | `EIRA_AI_ADAPTER=…OpenAICompatibleAdapter`, `EIRA_AI_BASE_URL`, `EIRA_AI_MODEL` | llama.cpp/Ollama no CPD (probado con Ollama + qwen3:8b); `EIRA_AI_TIMEOUT`; o resumo cachéase por semana (require caché compartida: `EIRA_CACHE_DIR`); desactivable con `EIRA_AI_ENABLED=0` |
 
 ## Ficheiros e copias
 

@@ -8,6 +8,7 @@ A plataforma funciona igual co adaptador desactivado (EIRA_AI_ENABLED=0).
 """
 
 import json
+import re
 import urllib.request
 
 from django.conf import settings
@@ -74,6 +75,8 @@ class OpenAICompatibleAdapter(AIAdapter):
             data=json.dumps(payload).encode(),
             headers={"Content-Type": "application/json"},
         )
-        with urllib.request.urlopen(req, timeout=30) as resp:  # noqa: S310
+        with urllib.request.urlopen(req, timeout=settings.EIRA_AI_TIMEOUT) as resp:  # noqa: S310
             data = json.load(resp)
-        return data["choices"][0]["message"]["content"]
+        text = data["choices"][0]["message"]["content"]
+        # Algúns modelos de razoamento (p. ex. Qwen3) devolven o seu «pensamento» entre etiquetas
+        return re.sub(r"<think>.*?</think>", "", text, flags=re.S).strip()

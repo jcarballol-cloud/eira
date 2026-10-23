@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% load i18n static %}
+{% block title %}{% translate "Créditos das fotos" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{% translate "Créditos das fotos" %}</h1>
+<p>{% translate "As fotos de referencia das instalacións veñen de Wikimedia Commons con licenzas libres. Recortáronse a 3:2, quitáronse os metadatos e convertéronse a WebP. Cada concello pode substituílas polas súas." %}</p></div></div>
+<ul class="grid grid-3 list credits-grid" role="list">
+  {% for c in items %}
+  <li class="card-flat">
+    <img src="{% static 'img/fotos/' %}{{ c.file }}-480.webp" alt="{{ c.alt }}" width="480" height="320" loading="lazy" decoding="async">
+    <p class="mb-0 mt-1"><a href="{{ c.source }}" rel="noopener">{{ c.title }}</a></p>
+    <p class="help mb-0">{% translate "Autoría" %}: {{ c.author }}<br>{% translate "Licenza" %}: {% if c.license_url %}<a href="{{ c.license_url }}" rel="license noopener">{{ c.license }}</a>{% else %}{{ c.license }}{% endif %}</p>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

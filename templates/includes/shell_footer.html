@@ -11,6 +11,7 @@
         <li><a href="{% turl 'open_data:index' %}">{% translate "Datos abertos" %}</a></li>
       {% endif %}
       <li><a href="{% url 'preferences' %}?next={{ request.get_full_path|urlencode }}">{% translate "Preferencias de lectura" %}</a></li>
+      <li><a href="{% url 'credits' %}">{% translate "Créditos das fotos" %}</a></li>
       <li><a href="{% url 'schema' %}">API (OpenAPI 3.1)</a></li>
     </ul>
   </div>

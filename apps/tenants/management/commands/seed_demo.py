@@ -343,6 +343,11 @@ class Command(BaseCommand):
                 **extra,
             )
             apply_template(f, key)
+            if f.step_free:  # accesibilidade completa nas instalacións cubertas grandes
+                f.lift = f.indoor and t["kind"] != "padel"
+                f.hearing_loop = t["kind"] in ("sports_hall", "pool")
+                f.braille_signage = t["kind"] == "pool"
+                f.save(update_fields=["lift", "hearing_loop", "braille_signage"])
             facilities.append(f)
         # Persoas: roles e empadroamento
         for email, _name, slug, role, resident, _year in PERSONAS:

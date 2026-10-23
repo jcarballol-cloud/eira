@@ -19,7 +19,7 @@
   </section>
 
   <aside class="stack" aria-label="{% translate 'Información da instalación' %}">
-    {% if facility.photo %}<img class="card" src="{{ facility.photo.url }}" alt="{{ facility.photo_alt }}">{% endif %}
+    {% facility_photo facility "(min-width: 960px) 21rem, 100vw" caption=True %}
     <section class="card" aria-labelledby="acc-title">
       <h2 id="acc-title">{% translate "Como se accede" %}</h2>
       <p><span class="badge badge-level">{{ facility.get_access_level_display }}</span></p>
@@ -41,7 +41,7 @@
     <section class="card" aria-labelledby="a11y-title">
       <h2 id="a11y-title">{% icon 'accessible' %} {% translate "Accesibilidade física" %}</h2>
       {% with feats=facility.accessibility_features %}
-      {% if feats %}<ul>{% for f in feats %}<li>{{ f|capfirst }}</li>{% endfor %}</ul>{% else %}<p class="muted">{% translate "Sen información de accesibilidade." %}</p>{% endif %}
+      {% if feats %}<ul class="feature-list" role="list">{% for f in feats %}<li>{% icon f.icon %}<span>{{ f.label|capfirst }}</span></li>{% endfor %}</ul>{% else %}<p class="muted">{% translate "Sen información de accesibilidade." %}</p>{% endif %}
       {% endwith %}
       {% if facility.accessibility_notes %}<p>{{ facility.accessibility_notes }}</p>{% endif %}
     </section>

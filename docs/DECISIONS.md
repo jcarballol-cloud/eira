@@ -139,3 +139,22 @@ Formato: data · decisión · motivo · alternativas descartadas.
   - Para validar un menor fai falta marcar a autorización en papel. Queda como consentimento `text_version="papel"`.
   - O concello pode descartar a persoa.
 - **Contido que responde ao panel (container queries):** os marcos de teléfono e tableta da demo vense coma os dispositivos reais.
+
+## v2 F4 — Deseño
+- **Fotos de referencia libres (16, de Wikimedia Commons).**
+  - Licenzas aceptadas: CC0, CC BY, CC BY-SA e dominio público. Cada licenza comprobouse unha por unha cunha consulta individual á API.
+  - Escolléronse detalles ou espazos baleiros: sen persoas identificables nin marcas.
+  - Tratamento: recorte a 3:2, sen EXIF, WebP en 480/960/1440 px, `loading="lazy"`, `srcset` e texto alternativo propio en galego.
+  - Créditos en `CREDITS.md`, en `/creditos/` e no pé da foto na ficha.
+  - As fotos CC BY-SA modificadas seguen baixo CC BY-SA, non baixo a EUPL.
+- **Fotos do concello.** Se o concello sube unha, substitúe a de referencia. Gárdase reencodada (sen metadatos) e xéranse as variantes WebP.
+- **Formulario da instalación.**
+  - Lapelas WAI-ARIA (frechas, Inicio, Fin). Sen JavaScript vense todas as seccións seguidas.
+  - Se hai erros, ábrese a lapela que os ten e esta leva a marca «!».
+- **Accesibilidade física.** Sete características, cada unha cunha icona de liña: sen chanzos, ascensor, aseo, vestiario, aparcadoiro, bucle magnético e braille. Na ficha amósanse como lista limpa.
+- **Escala de esforzo (patrón do quiosco de AFS +50, sen datos).**
+  - Unha persoa por pantalla e avance automático aos 650 ms. Pódese ir a «Anterior» ou «Saltar», e ao final hai un resumo antes de pechar.
+  - Cores OKLCH (L 0.86, C 0.07, matiz de 150° a 30°).
+  - Infancia: cinco caras OMNI de debuxo propio. Adultos: número grande coa etiqueta Borg CR-10.
+  - Quen non ten consentimento sáltase. Sen JavaScript, todas as persoas na mesma páxina.
+- `[hidden]` gaña sempre ao `display` dos compoñentes, e os `input` ocultos non tapan os clics.

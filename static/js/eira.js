@@ -52,6 +52,105 @@
   window.addEventListener("online", function () { updateOnline(); flushQueue(); });
   window.addEventListener("offline", updateOnline);
 
+  // Escala de esforzo: unha persoa tras outra, con avance automático ao escoller
+  function setupRpe(form) {
+    var people = Array.prototype.slice.call(form.querySelectorAll(".rpe-person"));
+    if (!people.length) return;
+    var done = form.querySelector("[data-rpe-done]");
+    var dots = Array.prototype.slice.call(form.querySelectorAll("[data-dot]"));
+    var current = 0;
+    var timer = null;
+    form.classList.add("is-flow");
+    form.querySelectorAll(".rpe-progress, .rpe-nav, [data-rpe-back], .rpe-done__title, [data-rpe-summary]").forEach(function (el) { el.hidden = false; });
+    function answered(p) { return !!p.querySelector("input:checked"); }
+    function summary() {
+      var list = form.querySelector("[data-rpe-summary]");
+      list.textContent = "";
+      people.forEach(function (p) {
+        var li = document.createElement("li");
+        var name = document.createElement("span");
+        name.textContent = p.getAttribute("data-name");
+        var val = document.createElement("strong");
+        var c = p.querySelector("input:checked");
+        val.textContent = c ? c.value : (p.getAttribute("data-skip") || "—");
+        li.appendChild(name);
+        li.appendChild(val);
+        list.appendChild(li);
+      });
+    }
+    function show(i) {
+      window.clearTimeout(timer);
+      current = i;
+      people.forEach(function (p, j) { p.classList.toggle("is-current", j === i); });
+      done.classList.toggle("is-current", i >= people.length);
+      dots.forEach(function (d, j) {
+        d.classList.toggle("is-current", j === i);
+        d.classList.toggle("is-done", answered(people[j]));
+      });
+      if (i >= people.length) {
+        summary();
+        var t = form.querySelector(".rpe-done__title");
+        t.setAttribute("tabindex", "-1");
+        t.focus();
+        if (window.eiraAnnounce) window.eiraAnnounce(t.textContent);
+        return;
+      }
+      var p = people[i];
+      if (window.eiraAnnounce) window.eiraAnnounce(p.getAttribute("data-name") + ", " + p.querySelector(".rpe-count").textContent);
+      var target = p.querySelector("input:checked") || p.querySelector("input") || p.querySelector("[data-rpe-next]");
+      if (target) target.focus({ preventScroll: true });
+    }
+    form.addEventListener("change", function (e) {
+      if (e.target.type !== "radio") return;
+      if (dots[current]) dots[current].classList.add("is-done");
+      window.clearTimeout(timer);
+      // Pausa curta: a persoa ve a súa elección antes de pasar á seguinte
+      timer = window.setTimeout(function () { show(current + 1); }, 650);
+    });
+    form.addEventListener("click", function (e) {
+      if (e.target.closest("[data-rpe-next]")) show(current + 1);
+      else if (e.target.closest("[data-rpe-prev]")) show(Math.max(0, current - 1));
+      else if (e.target.closest("[data-rpe-back]")) show(people.length - 1);
+    });
+    var firstPending = people.findIndex(function (p) { return p.querySelector("input") && !answered(p); });
+    show(firstPending === -1 ? 0 : firstPending);
+  }
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("[data-rpe-flow]").forEach(setupRpe);
+  });
+
+  // Lapelas accesibles: [data-tabs] > [role=tablist] + [role=tabpanel]
+  function setupTabs(root) {
+    var tabs = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));
+    if (!tabs.length) return;
+    function select(tab, focus) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute("aria-selected", String(on));
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+      });
+      if (focus) tab.focus();
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener("click", function () { select(t, false); });
+      t.addEventListener("keydown", function (e) {
+        var j = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+        if (j === undefined) return;
+        e.preventDefault();
+        select(tabs[(j + tabs.length) % tabs.length], true);
+      });
+    });
+    root.querySelector('[role="tablist"]').hidden = false;
+    root.classList.add("is-ready");
+    var withErrors = root.querySelector("[data-has-errors]");
+    var first = withErrors ? document.getElementById(withErrors.getAttribute("aria-labelledby")) : tabs[0];
+    select(first, false);
+  }
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("[data-tabs]").forEach(setupTabs);
+  });
+
   // Instalación da app (Chrome/Android); en iPhone móstranse as instrucións
   var installEvent = null;
   window.addEventListener("beforeinstallprompt", function (e) {

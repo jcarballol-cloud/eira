@@ -2,29 +2,48 @@
 {% block title %}{% translate "Esforzo percibido" %}{% endblock %}
 {% block content %}
 <div class="tablet">
-<p class="eyebrow">{{ session.group.get_rpe_scale_display }}</p>
-<h1>{% translate "Como de duro foi?" %}</h1>
-<p>{% translate "Cada persoa sinala a cara que mellor describe o seu cansazo. Calcúlase a carga da sesión (esforzo × minutos)." %}</p>
-<form method="post">
+<form method="post" class="rpe-flow" data-rpe-flow data-total="{{ rows|length }}">
   {% csrf_token %}
+  <header class="rpe-head">
+    <p class="eyebrow mb-0">{{ session.group.activity.name }} · {{ session.group.name }} · {{ session.group.get_rpe_scale_display }}</p>
+    <h1 class="rpe-question">{% translate "Como de duro foi?" %}</h1>
+    <ol class="rpe-progress" aria-hidden="true" hidden>{% for row in rows %}<li data-dot="{{ forloop.counter0 }}"></li>{% endfor %}</ol>
+  </header>
+
   {% for row in rows %}
-  <fieldset class="card mb-2">
-    <legend class="big">{{ row.att.enrollment.participant_name }}</legend>
+  <fieldset class="rpe-person" data-index="{{ forloop.counter0 }}" data-name="{{ row.att.enrollment.participant_name }}"{% if not row.allowed %} data-skip="{% translate 'sen permiso' %}"{% endif %}>
+    <legend><span class="rpe-name">{{ row.att.enrollment.participant_name }}</span> <span class="rpe-count">{% blocktranslate with n=forloop.counter t=rows|length %}{{ n }} de {{ t }}{% endblocktranslate %}</span></legend>
     {% if row.allowed %}
-    <div class="rpe-scale">
+    <div class="rpe-scale rpe-scale--{{ session.group.rpe_scale }}">
       {% for p in points %}
       <div class="rpe-cell">
         <input type="radio" name="rpe{{ row.att.enrollment_id }}" id="r{{ row.att.enrollment_id }}-{{ p.value }}" value="{{ p.value }}" {% if row.att.rpe == p.value %}checked{% endif %}>
-        <label for="r{{ row.att.enrollment_id }}-{{ p.value }}">{% icon 'face-'|add:p.face %}<span class="num">{{ p.value }}</span><span>{{ p.label }}</span></label>
+        <label for="r{{ row.att.enrollment_id }}-{{ p.value }}" class="rpe-v{{ p.value }}">
+          {% if session.group.rpe_scale == 'omni' %}{% icon p.face 'rpe-face' %}{% endif %}
+          <span class="num">{{ p.value }}</span>
+          <span class="lbl">{{ p.label }}</span>
+        </label>
       </div>
       {% endfor %}
     </div>
     {% else %}
-      <p class="muted">{% translate "Sen consentimento para rexistrar o esforzo deste menor." %}</p>
+      <p class="rpe-skip-note">{% icon 'shield' %} {% translate "Sen consentimento da familia para rexistrar o esforzo. Pasa á seguinte persoa." %}</p>
     {% endif %}
+    <div class="rpe-nav" hidden>
+      <button type="button" class="btn btn-secondary" data-rpe-prev {% if forloop.first %}disabled{% endif %}>← {% translate "Anterior" %}</button>
+      <button type="button" class="btn btn-ghost" data-rpe-next>{% if row.allowed %}{% translate "Saltar" %}{% else %}{% translate "Seguinte" %}{% endif %} →</button>
+    </div>
   </fieldset>
   {% empty %}<p class="muted">{% translate "Ninguén marcado como presente." %}</p>{% endfor %}
-  <div class="form-actions"><button class="btn btn-lg" type="submit">{% translate "Pechar sesión" %}</button></div>
+
+  <section class="rpe-done" data-rpe-done aria-labelledby="done-title">
+    <h2 id="done-title" class="rpe-done__title" hidden>{% translate "Todo listo" %}</h2>
+    <ul class="rpe-summary" data-rpe-summary hidden></ul>
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary btn-lg" data-rpe-back hidden>← {% translate "Revisar" %}</button>
+      <button class="btn btn-lg" type="submit">{% translate "Pechar sesión" %}</button>
+    </div>
+  </section>
 </form>
 </div>
 {% endblock %}

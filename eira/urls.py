@@ -18,6 +18,7 @@ urlpatterns = [
     path("rexion/<slug:region>/", include("apps.tenants.urls_region")),
     path("saude/", core.health, name="health"),
     path("offline/", core.offline, name="offline"),
+    path("creditos/", core.credits, name="credits"),
     path("sw.js", core.service_worker, name="service_worker"),
     path("manifest.webmanifest", core.manifest, name="manifest"),
     path("pagamentos/notificacion/", gateway_notification, name="payment_notification"),

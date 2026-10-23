@@ -110,6 +110,15 @@ def theme_css(request):
     return response
 
 
+def credits(request):
+    """Créditos das fotos de referencia (atribución esixida por CC BY e CC BY-SA)."""
+    from apps.facilities.photos import ALT
+    from apps.facilities.photos import credits as photo_credits
+
+    items = [{**c, "alt": ALT.get(c["file"], "")} for c in photo_credits()]
+    return render(request, "core/credits.html", {"items": items})
+
+
 def privacy(request):
     return render(request, "core/privacy.html", {"min_aggregation": settings.EIRA_MIN_AGGREGATION})
 

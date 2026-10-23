@@ -43,7 +43,7 @@
 <ul class="grid grid-3 list" role="list">
   {% for f in facilities %}
     <li class="card facility-card">
-      <div class="thumb">{% if f.photo %}<img src="{{ f.photo.url }}" alt="{{ f.photo_alt }}">{% else %}{% icon f.kind 'icon-lg' %}{% endif %}</div>
+      <div class="thumb">{% facility_photo f %}<span class="thumb-kind" aria-hidden="true">{% icon f.kind %}</span></div>
       <div class="body">
         <h3><a href="{% turl 'facilities:detail' f.pk %}">{{ f.name }}</a></h3>
         <small>{{ f.get_kind_display }}{% if f.parish %} · {{ f.parish.name }}{% endif %}</small>

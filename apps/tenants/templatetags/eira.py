@@ -101,3 +101,10 @@ def pct(value, total):
         return round(100 * float(value) / float(total)) if total else 0
     except (TypeError, ValueError):
         return 0
+
+
+@register.inclusion_tag("includes/facility_photo.html")
+def facility_photo(facility, sizes="(min-width: 700px) 360px, 100vw", caption=False, eager=False):
+    from apps.facilities.photos import photo_for
+
+    return {"p": photo_for(facility), "sizes": sizes, "caption": caption, "eager": eager}

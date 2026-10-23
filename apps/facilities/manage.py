@@ -15,6 +15,7 @@ from apps.tenants.urlutils import role_required, treverse
 
 from .catalog import TEMPLATES, apply_template, ensure_lock, template_choices
 from .models import Closure, Facility, OpeningHours, Parish, RulesVersion, Tariff
+from .photos import make_variants
 
 ADMIN_ROLES = ("admin", "region_admin")
 
@@ -46,6 +47,9 @@ class FacilityForm(forms.ModelForm):
             "adapted_toilet",
             "adapted_changing",
             "accessible_parking",
+            "lift",
+            "hearing_loop",
+            "braille_signage",
             "accessibility_notes",
         ]
         widgets = {
@@ -54,9 +58,65 @@ class FacilityForm(forms.ModelForm):
             "photo": forms.ClearableFileInput(attrs={"accept": "image/jpeg,image/png,image/webp"}),
         }
 
+    # Lapelas do formulario compacto: (id, título, campos)
+    GROUPS = (
+        (
+            "datos",
+            _("Datos"),
+            (
+                "name",
+                "kind",
+                "parish",
+                "address",
+                "description",
+                "latitude",
+                "longitude",
+                "capacity",
+                "slot_minutes",
+                "indoor",
+                "lighting",
+            ),
+        ),
+        ("foto", _("Foto"), ("photo", "photo_alt")),
+        (
+            "acceso",
+            _("Acceso"),
+            (
+                "access_level",
+                "key_holder_name",
+                "key_holder_place",
+                "key_holder_hours",
+                "key_holder_phone",
+                "key_holder_email",
+            ),
+        ),
+        (
+            "accesibilidade",
+            _("Accesibilidade"),
+            tuple(f for f, _i in Facility.ACCESSIBILITY) + ("accessibility_notes",),
+        ),
+    )
+
     def __init__(self, *args, tenant=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["parish"].queryset = Parish.objects.for_tenant(tenant)
+
+    def groups(self):
+        icons = dict(Facility.ACCESSIBILITY)
+        out = []
+        for key, title, names in self.GROUPS:
+            fields = [self[n] for n in names if n in self.fields]
+            for f in fields:
+                f.feature_icon = icons.get(f.name)
+            out.append(
+                {
+                    "key": key,
+                    "title": title,
+                    "fields": fields,
+                    "errors": any(f.errors for f in fields),
+                }
+            )
+        return out
 
     def clean_photo(self):
         photo = self.cleaned_data.get("photo")
@@ -111,6 +171,7 @@ def facility_new(request):
         facility.municipality = request.tenant
         facility.is_published = False
         facility.save()
+        make_variants(facility.photo)
         apply_template(facility, key, request.user)
         audit("facility.create", request.user, request.tenant, facility, template=key)
         return redirect(treverse(request.tenant, "manage:facility_review", facility.pk))
@@ -156,6 +217,8 @@ def facility_edit(request, pk):
     )
     if request.method == "POST" and form.is_valid():
         form.save()
+        if "photo" in form.changed_data:
+            make_variants(facility.photo)
         ensure_lock(facility)
         audit("facility.update", request.user, request.tenant, facility)
         messages.success(request, _("Cambios gardados."))

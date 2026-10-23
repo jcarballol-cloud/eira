@@ -1,10 +1,41 @@
-{% extends "manage/base.html" %}{% load i18n %}
+{% extends "manage/base.html" %}{% load i18n eira %}
 {% block title %}{{ facility.name }}{% endblock %}
 {% block content %}
 {% include "manage/_facility_tabs.html" %}
-<form method="post" enctype="multipart/form-data" class="card" novalidate>
+<form method="post" enctype="multipart/form-data" class="card form-compact" novalidate>
   {% csrf_token %}
-  {% include "includes/form.html" %}
-  <div class="form-actions"><button class="btn" type="submit">{% translate "Gardar" %}</button></div>
+  {% if form.non_field_errors %}<div class="alert alert-error" role="alert"><ul class="errorlist">{% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}</ul></div>{% elif form.errors %}<div class="alert alert-error" role="alert" tabindex="-1" data-focus>{% translate "Revisa os campos marcados." %}</div>{% endif %}
+  {% with groups=form.groups %}
+  <div data-tabs>
+    <div class="tabs" role="tablist" aria-label="{% translate 'Apartados dos datos' %}" hidden>
+      {% for g in groups %}<button type="button" role="tab" id="tab-{{ g.key }}" aria-controls="panel-{{ g.key }}" aria-selected="false" tabindex="-1">{{ g.title }}{% if g.errors %} <span class="tab-error" aria-label="{% translate 'con erros' %}">!</span>{% endif %}</button>{% endfor %}
+    </div>
+    {% for g in groups %}
+    <section class="tab-panel" role="tabpanel" id="panel-{{ g.key }}" aria-labelledby="tab-{{ g.key }}" {% if g.errors %}data-has-errors{% endif %}>
+      <h2 class="h3 tab-panel__title">{{ g.title }}</h2>
+      {% if g.key == 'foto' %}
+        <div class="photo-edit">
+          {% facility_photo facility "16rem" %}
+          <p class="help">{% if facility.photo %}{% translate "Foto propia do concello." %}{% else %}{% translate "Agora amósase unha foto de referencia libre do tipo de instalación. Sube unha propia (sen persoas recoñecibles): gárdase sen metadatos e en varios tamaños." %}{% endif %}</p>
+        </div>
+        {% for field in g.fields %}{% include "includes/field.html" %}{% endfor %}
+      {% elif g.key == 'accesibilidade' %}
+        <fieldset class="field">
+          <legend>{% translate "Que ten esta instalación?" %}</legend>
+          <div class="feature-grid">
+          {% for field in g.fields %}{% if field.feature_icon %}
+            <div class="feature-check">{{ field }}<label for="{{ field.auto_id }}">{% icon field.feature_icon %}<span>{{ field.label|capfirst }}</span></label></div>
+          {% endif %}{% endfor %}
+          </div>
+        </fieldset>
+        {% for field in g.fields %}{% if not field.feature_icon %}{% include "includes/field.html" %}{% endif %}{% endfor %}
+      {% else %}
+        <div class="form-grid">{% for field in g.fields %}{% include "includes/field.html" %}{% endfor %}</div>
+      {% endif %}
+    </section>
+    {% endfor %}
+  </div>
+  {% endwith %}
+  <div class="form-actions form-actions--sticky"><button class="btn" type="submit">{% translate "Gardar" %}</button></div>
 </form>
 {% endblock %}

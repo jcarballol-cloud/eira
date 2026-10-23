@@ -67,6 +67,9 @@ class Facility(TenantModel):
     adapted_toilet = models.BooleanField(_("aseo adaptado"), default=False)
     adapted_changing = models.BooleanField(_("vestiario adaptado"), default=False)
     accessible_parking = models.BooleanField(_("aparcadoiro reservado"), default=False)
+    lift = models.BooleanField(_("ascensor ou plataforma"), default=False)
+    hearing_loop = models.BooleanField(_("bucle magnético"), default=False)
+    braille_signage = models.BooleanField(_("sinalización en braille e relevo"), default=False)
     accessibility_notes = models.TextField(_("notas de accesibilidade"), blank=True)
     capacity = models.PositiveIntegerField(
         _("prazas simultáneas"),
@@ -103,12 +106,23 @@ class Facility(TenantModel):
     def current_rules(self):
         return self.rules_versions.order_by("-version").first()
 
+    # (campo, icona) na orde en que se amosan
+    ACCESSIBILITY = (
+        ("step_free", "ramp"),
+        ("lift", "lift"),
+        ("adapted_toilet", "toilet"),
+        ("adapted_changing", "hanger"),
+        ("accessible_parking", "parking"),
+        ("hearing_loop", "ear"),
+        ("braille_signage", "braille"),
+    )
+
     def accessibility_features(self):
-        labels = []
-        for field in ("step_free", "adapted_toilet", "adapted_changing", "accessible_parking"):
-            if getattr(self, field):
-                labels.append(self._meta.get_field(field).verbose_name)
-        return labels
+        return [
+            {"icon": icon, "label": self._meta.get_field(field).verbose_name}
+            for field, icon in self.ACCESSIBILITY
+            if getattr(self, field)
+        ]
 
 
 class Weekday(models.IntegerChoices):

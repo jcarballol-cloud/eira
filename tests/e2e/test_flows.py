@@ -140,3 +140,43 @@ def test_spanish_interface(new_page, base):
     page.wait_for_load_state()
     assert page.locator("html").get_attribute("lang") == "es"
     assert page.locator("h1").inner_text() == "Instalaciones deportivas"
+
+
+def test_pitch_script(new_page, base):
+    """O guión de docs/demo/guion-demo.md: checklist «non» → incidencia → orde → peche → aviso."""
+    from apps.incidents.models import Incident
+    from apps.notifications.models import Notification
+
+    uxia = new_page(viewport=MOBILE, persona="uxia@demo.eira.example")
+    uxia.goto(base + "/c/vilardeiras/reservas/")
+    uxia.click("text=Checklist de peche")
+    uxia.check("#id_door_ok_1")  # «Non»
+    uxia.check("#id_all_ok_0")
+    uxia.click("main button[type=submit]")
+    assert "Creamos a incidencia" in uxia.locator(".messages").inner_text()
+    inc = Incident.objects.filter(source="checklist", reporter__email="uxia@demo.eira.example").latest(
+        "created_at"
+    )
+
+    admin = new_page(persona="admin@vilardeiras.demo.eira.example")
+    admin.goto(base + "/c/vilardeiras/xestion/")
+    admin.click(f"a[href$='/xestion/incidencias/{inc.pk}/']")
+    admin.click("button:has-text('Validar')")
+    admin.select_option("#id_assigned_to", label="Brais (mantemento)")
+    admin.click("button:has-text('Crear orde')")
+    inc.refresh_from_db()
+    assert inc.status == "work_order"
+
+    brais = new_page(viewport=MOBILE, persona="brais@demo.eira.example")
+    brais.goto(base + "/c/vilardeiras/operario/")
+    brais.click(f"text=Incidencia #{inc.pk}")
+    brais.locator("input[name=done]").first.check()
+    brais.click("button[value=close]")
+    inc.refresh_from_db()
+    assert inc.status == "resolved"
+    assert Notification.objects.filter(
+        user__email="uxia@demo.eira.example", title__startswith="Arranxado"
+    ).exists()
+
+    admin.goto(base + "/c/vilardeiras/xestion/indicadores/")
+    assert admin.locator("svg.chart rect.bar").count() > 0

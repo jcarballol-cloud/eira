@@ -271,3 +271,12 @@ Formato: data · decisión · motivo · alternativas descartadas.
 - **Sen conexión.** Cada toque vai a unha cola en `localStorage` por sesión e envíase en lote a `…/rexistro/api/` (idempotente) ao volver a rede e cada 15 s. Ao abrir, os toques pendentes reaplícanse.
 - A lista rápida anterior queda como alternativa sen JavaScript.
 - **Demo:** grupo «Ximnasia activa · Grupo grande (40)» con 40 persoas ficticias (nomes e apelidos galegos combinados ao chou, con partículas, acentos e Ñ) e sesión todos os días.
+
+## v3 · 4 — Portada da demo e lema
+- **Dous pasos.**
+  1. Escoller concello: Vilardeiras (rural pequeno, sen conserxe, con escolas) ou Pontedouro (mediano, pechaduras conectadas, máis volume), cunha frase que explica a diferenza. Ou entrar como a deputación, que ve os dous.
+  2. «Quen es en X?»: cada tarxeta di **que verá** (app da veciñanza, panel do concello, app do operario, tableta da monitora…), **onde entra**, e leva unha miniatura real da súa pantalla de inicio (`static/img/demo/*.webp`).
+- O paso vai na URL (`?concello=`): funciona sen JavaScript e pódese ligar.
+- **Pontedouro** ten agora perfís propios ficticios (Rosa, veciña; Tino, mantemento) e unha reserva próxima para Rosa. A función de reservas da seed usa o concello da instalación.
+- **Barra de demo:** amosa sempre o concello e o perfil activos («Vilardeiras · Brais (operario de mantemento)») e un botón «Cambiar» que volve ao paso 2 dese concello.
+- **Lema:** «Reservar é o fácil…» retirado da portada, o README, o guión, o vídeo, a meta descrición, o `publiccode.yml` e o `CLAUDE.md`. Substitúeo «Eira · Software libre para a xestión deportiva municipal» e o subtítulo «Reservas, acceso ás instalacións, mantemento e actividades deportivas do concello, nunha soa plataforma.»

@@ -2,7 +2,7 @@
 
 Plataforma libre (EUPL-1.2) de xestión, reserva e **acceso** a instalacións deportivas municipais
 para concellos pequenos. Candidatura ao I Certame GOBTEC de Software Libre 2026 (AGASOL).
-Prazo de entrega: **18/11/2026**. Idea central: «reservar é o fácil; o difícil é abrir a porta».
+Prazo de entrega: **18/11/2026**. Descrición: «Eira · Software libre para a xestión deportiva municipal» (reservas, acceso ás instalacións, mantemento e actividades deportivas, nunha soa plataforma).
 
 ## Stack
 - Python 3.12+ (venv con 3.13), **Django 5.2**, DRF + drf-spectacular (OpenAPI 3.1).

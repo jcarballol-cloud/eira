@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>{% block title %}{% endblock %}{% if tenant %} · {{ tenant.name }}{% endif %} · Eira</title>
-  <meta name="description" content="{% block description %}{% translate "Eira: reserva e acceso ás instalacións deportivas municipais." %}{% endblock %}">
+  <meta name="description" content="{% block description %}{% translate "Eira · Software libre para a xestión deportiva municipal. Reservas, acceso ás instalacións, mantemento e actividades deportivas do concello, nunha soa plataforma." %}{% endblock %}">
   <meta name="theme-color" content="#16252B">
   <meta name="htmx-config" content='{"includeIndicatorStyles":false,"allowEval":false,"allowScriptTags":false,"selfRequestsOnly":true}'>
   <link rel="manifest" href="{% url 'manifest' %}">
@@ -22,7 +22,8 @@
   {% if demo_tools %}
   <div class="demo-bar" role="note">
     <span class="demo-bar__label">{% translate "Demo · datos ficticios" %}</span>
-    <a href="{% url 'home' %}#demo">{% icon 'users' %} {% translate "Cambiar de perfil" %}</a>
+    {% if demo_persona %}<span class="demo-bar__who">{% icon 'user' %} <strong>{{ demo_place|default:"" }}</strong>{% if demo_place %} · {% endif %}{{ demo_persona.name }} <small>({{ demo_persona.role|lower }})</small></span>{% endif %}
+    <a href="{{ demo_change_url }}" class="demo-bar__change">{% icon 'users' %} {% if demo_persona %}{% translate "Cambiar" %}{% else %}{% translate "Escoller perfil" %}{% endif %}</a>
     <a href="{% url 'dev:mailbox' %}" target="_blank" rel="noopener">{% translate "Correo simulado" %}<span class="visually-hidden"> ({% translate "abre nunha pestana nova" %})</span></a>
     <a href="{% url 'dev:lock_simulator' %}" target="_blank" rel="noopener">{% translate "Pechadura" %}<span class="visually-hidden"> ({% translate "abre nunha pestana nova" %})</span></a>
     {% if layout == 'app' or layout == 'tablet' %}<a href="?marco={% if framed %}0{% else %}1{% endif %}">{% if framed %}{% translate "Sen marco" %}{% else %}{% translate "Ver en marco" %}{% endif %}</a>{% endif %}

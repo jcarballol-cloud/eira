@@ -15,7 +15,7 @@ from django.conf import settings
 
 from apps.incidents.models import Incident
 
-from .conftest import DESKTOP, MOBILE
+from .conftest import DESKTOP, MOBILE, demo_url
 
 pytestmark = [pytest.mark.e2e, pytest.mark.video, pytest.mark.django_db(transaction=False)]
 OUT = Path(settings.BASE_DIR) / "docs" / "demo"
@@ -53,7 +53,7 @@ class Director:
         self.page.wait_for_load_state("networkidle")
 
     def login(self, base, email):
-        self.go(base + "/")
+        self.go(demo_url(base, email))
         self.page.locator(f"form:has(input[value='{email}']) button").scroll_into_view_if_needed()
         self.page.wait_for_timeout(600)
         self.page.locator(f"form:has(input[value='{email}']) button").click()
@@ -68,7 +68,7 @@ def run_script(page, base, d):
     email = "pitch.vecina@example.org"
     # 1. Alta: solicitar a app
     d.go(c + "/")
-    d.say("Eira · Reservar é o fácil. O difícil é abrir a porta.", 3)
+    d.say("Eira · Software libre para a xestión deportiva municipal.", 3)
     page.click("text=Solicita a app de deportes")
     page.wait_for_load_state("networkidle")
     page.fill("#id_name", "Sabela Proba")

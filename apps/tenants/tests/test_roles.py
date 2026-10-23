@@ -166,3 +166,24 @@ def test_device_frame_toggle(client, people):
     assert (
         "framed" not in client.get(f"{C}/xestion/?marco=1").content.decode().split("<body")[1][:120]
     )
+
+
+def test_demo_home_two_steps_and_demo_bar(client, settings, people, muni_a):
+    from apps.integrations import demo
+
+    settings.EIRA_DEMO_TOOLS = True
+    demo.DEMO_TENANTS.append({"slug": "concello-a", "kind": "Proba", "summary": "Concello de proba"})
+    try:
+        html = client.get("/").content.decode()
+        assert "Paso 1 de 2" in html and "?concello=concello-a" in html
+        assert 'name="email" value="uxia@demo.eira.example"' not in html  # perfís só no paso 2
+        html = client.get("/?concello=vilardeiras").content.decode()
+        assert "Escolle primeiro un concello" not in html or "Quen es" in html
+    finally:
+        demo.DEMO_TENANTS.pop()
+
+
+def test_lema_antigo_retirado(client, muni_a):
+    html = client.get("/").content.decode()
+    assert "O difícil é abrir a porta" not in html
+    assert "Software libre para a xestión deportiva municipal" in html

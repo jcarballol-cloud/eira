@@ -1,6 +1,6 @@
 # Eira
 
-**Reservar é o fácil. O difícil é abrir a porta.**
+**Eira · Software libre para a xestión deportiva municipal.** Reservas, acceso ás instalacións, mantemento e actividades deportivas do concello, nunha soa plataforma.
 
 Eira é unha plataforma de software libre para que os concellos —sobre todo os pequenos— xestionen as
 súas instalacións deportivas durante todo o ciclo: **atopar → reservar → pagar → acceder → usar →

@@ -34,7 +34,26 @@ def eira(request):
         if nav_region is None:
             rm = user.region_memberships.select_related("region").first()
             nav_region = rm.region if rm else None
+    # Barra de demo: concello e perfil activos
+    demo_persona = demo_place = None
+    if settings.EIRA_DEMO_TOOLS and user.is_authenticated:
+        from apps.integrations.demo import BY_EMAIL
+
+        demo_persona = BY_EMAIL.get(user.email)
+        if demo_persona:
+            demo_place = (
+                nav_region.name
+                if nav_region and not tenant
+                else (tenant or app_tenant).name
+                if (tenant or app_tenant)
+                else None
+            )
     return {
+        "demo_persona": demo_persona,
+        "demo_place": demo_place,
+        "demo_change_url": "/?concello=" + (demo_persona["tenant"] or "") + "#perfil"
+        if demo_persona and demo_persona.get("tenant")
+        else "/#concello",
         "tenant": tenant,
         "nav_region": nav_region,
         "app_tenant": app_tenant,

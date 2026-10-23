@@ -8,13 +8,13 @@ from django.utils import timezone
 
 from apps.bookings.models import Booking
 
-from .conftest import DESKTOP, MOBILE
+from .conftest import DESKTOP, MOBILE, demo_url
 
 pytestmark = [pytest.mark.e2e, pytest.mark.django_db(transaction=False)]
 
 
 def login_as(page, base, email):
-    page.goto(base + "/")
+    page.goto(demo_url(base, email))
     page.locator(f"form:has(input[value='{email}']) button").click()
     page.wait_for_load_state("networkidle")
 

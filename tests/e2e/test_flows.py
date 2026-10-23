@@ -11,7 +11,7 @@ from apps.bookings.models import Booking
 from apps.facilities.models import Facility
 from apps.maintenance.models import WorkOrder
 
-from .conftest import MOBILE
+from .conftest import MOBILE, demo_url
 
 pytestmark = [pytest.mark.e2e, pytest.mark.django_db(transaction=False)]
 
@@ -234,7 +234,7 @@ def test_booking_shows_personal_recommendations_computed_on_device(new_page, bas
     page = new_page(viewport=MOBILE)
     sent = []
     page.on("request", lambda r: sent.append((r.url, r.post_data or "")))
-    page.goto(base + "/")
+    page.goto(demo_url(base, "uxia@demo.eira.example"))
     page.locator("form:has(input[value='uxia@demo.eira.example']) button").click()
     page.wait_for_load_state("networkidle")
     page.evaluate(

@@ -202,6 +202,8 @@ PERSONAS = [
     ),
     ("brais@demo.eira.example", "Brais (mantemento)", "vilardeiras", Role.MAINTENANCE, True, 1979),
     ("antia@demo.eira.example", "Antía (monitora)", "vilardeiras", Role.MONITOR, True, 1994),
+    ("rosa@demo.eira.example", "Rosa", "pontedouro", Role.CITIZEN, True, 1985),
+    ("tino@demo.eira.example", "Tino (mantemento)", "pontedouro", Role.MAINTENANCE, True, 1975),
 ]
 
 
@@ -792,7 +794,7 @@ class Command(BaseCommand):
 
             ref = new_reference() if price else ""
             booking = Booking.objects.create(
-                municipality=m,
+                municipality=f.municipality,
                 facility=f,
                 user=user,
                 start=start,
@@ -808,7 +810,7 @@ class Command(BaseCommand):
             )
             if price:
                 Payment.objects.create(
-                    municipality=m,
+                    municipality=f.municipality,
                     booking=booking,
                     concept=f"{f.name} · {booking.reference}",
                     amount_cents=price,
@@ -844,6 +846,11 @@ class Command(BaseCommand):
         b = make(hall, manuel, next_slot(hall, now + dt.timedelta(days=1), hour=11))
         if b:
             KeyHandover.objects.create(municipality=m, booking=b, custodian_notified_at=now)
+        # Rosa (Pontedouro): unha reserva próxima para que a súa app teña contido
+        rosa = User.objects.get(email="rosa@demo.eira.example")
+        pd = Municipality.objects.get(slug="pontedouro")
+        for f in Facility.objects.filter(municipality=pd, access_level__gte=2).order_by("pk")[:2]:
+            make(f, rosa, next_slot(f, now + dt.timedelta(hours=20), hour=18))
         # Unidade familiar de Uxía con dúas crianzas
         hh = Household.objects.create(responsible=uxia)
         for name, year in (

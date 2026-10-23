@@ -9,7 +9,7 @@ O mesmo percorrido está gravado en `docs/demo/eira-demo-movil.webm` e `docs/dem
 
 | Tempo | Pantalla | Que facer | Que dicir |
 |---|---|---|---|
-| 0:00 | Portada de Vilardeiras | Botón **«Solicita a app de deportes»** | «Reservar é o fácil. O difícil é abrir a porta nunha parroquia sen conserxe.» |
+| 0:00 | Portada de Vilardeiras | Botón **«Solicita a app de deportes»** | «Eira é software libre para a xestión deportiva municipal: reservas, acceso, mantemento e actividades nunha soa plataforma.» |
 | 0:10 | Solicitude | Nome, correo, ano, CP 15999 e «estou empadroada» → Enviar. Abrir a capa «Que facemos con estes datos» | «O concello contrasta o padrón sen copialo: só garda se figura ou non. Información por capas.» |
 | 0:25 | Correo simulado | Abrir o correo: ligazón e código de empadroamento | «Un código que só vale para este correo.» |
 | 0:35 | Instalar → Abrir a app | Instrucións Android/iPhone → entrar co correo (código de 6 díxitos) → o código de empadroamento xa vén cuberto | «Sen contrasinais nin tendas de aplicacións.» |

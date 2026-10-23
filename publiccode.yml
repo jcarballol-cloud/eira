@@ -13,7 +13,7 @@ developmentStatus: development
 softwareType: standalone/web
 description:
   gl:
-    shortDescription: Reserva e acceso ás instalacións deportivas municipais para concellos pequenos.
+    shortDescription: Software libre para a xestión deportiva municipal. Reservas, acceso ás instalacións, mantemento e actividades.
     longDescription: >
       Eira cobre o ciclo completo de cada instalación deportiva municipal: atopar, reservar, pagar,
       acceder, usar, pechar e avisar, manter e medir. Inclúe acceso por niveis (QR, chave custodiada,
@@ -28,7 +28,7 @@ description:
       - Indicadores, datos abertos DCAT-AP e API OpenAPI 3.1
       - Multi-concello con vista de deputación
   es:
-    shortDescription: Reserva y acceso a las instalaciones deportivas municipales para ayuntamientos pequeños.
+    shortDescription: Software libre para la gestión deportiva municipal. Reservas, acceso a las instalaciones, mantenimiento y actividades.
     longDescription: >
       Eira cubre el ciclo completo de cada instalación deportiva municipal: encontrar, reservar, pagar,
       acceder, usar, cerrar y avisar, mantener y medir, con acceso por niveles sin conserje,

@@ -51,6 +51,7 @@ def page_sets():
     return {
         None: [
             "/",
+            "/?concello=vilardeiras",
             f"{c}/",
             f"{c}/?vista=mapa",
             f"{c}/instalacions/{f.pk}/",

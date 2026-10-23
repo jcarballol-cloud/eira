@@ -62,7 +62,15 @@ def new_page(browser, base):
         ctx.close()
 
 
+def demo_url(base, email):
+    """Portada da demo no paso onde está o botón dese perfil (paso 2 do seu concello)."""
+    from apps.integrations.demo import BY_EMAIL
+
+    tenant = BY_EMAIL[email]["tenant"]
+    return f"{base}/?concello={tenant}" if tenant else f"{base}/"
+
+
 def login_as(page, base, email):
-    page.goto(base + "/")
+    page.goto(demo_url(base, email))
     page.locator(f"form:has(input[value='{email}']) button").click()
     page.wait_for_load_state()

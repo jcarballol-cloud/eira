@@ -19,20 +19,23 @@ from .prefs import KEYS, read_prefs, write_prefs
 def home(request):
     request.layout_override = "public"
     municipalities = Municipality.objects.filter(is_active=True).select_related("region")
-    personas = []
+    ctx = {"municipalities": municipalities, "regions": Region.objects.all()}
     if settings.EIRA_DEMO_TOOLS:
-        from apps.integrations.demo import DEMO_PERSONAS
+        # Portada da demo en dous pasos: 1) concello (ou deputación) e 2) quen es nese concello
+        from apps.integrations.demo import DEMO_PERSONAS, DEMO_TENANTS
 
-        personas = DEMO_PERSONAS
-    return render(
-        request,
-        "core/home.html",
-        {
-            "municipalities": municipalities,
-            "regions": Region.objects.all(),
-            "personas": personas,
-        },
-    )
+        by_slug = {m.slug: m for m in municipalities}
+        tenants = [{**t, "m": by_slug[t["slug"]]} for t in DEMO_TENANTS if t["slug"] in by_slug]
+        chosen = next((t for t in tenants if t["slug"] == request.GET.get("concello")), None)
+        ctx.update(
+            {
+                "demo_tenants": tenants,
+                "chosen": chosen,
+                "personas": [p for p in DEMO_PERSONAS if chosen and p["tenant"] == chosen["slug"]],
+                "region_persona": next((p for p in DEMO_PERSONAS if p.get("region")), None),
+            }
+        )
+    return render(request, "core/home.html", ctx)
 
 
 def _safe_next(request, fallback="/"):

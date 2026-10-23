@@ -129,3 +129,29 @@ class SecurityHeadersMiddleware:
         )
         response.setdefault("Cross-Origin-Opener-Policy", "same-origin")
         return response
+
+
+class DemoFrameMiddleware:
+    """Modo presentación: na demo, a app móbil e a tableta móstranse dentro dun marco de dispositivo
+    nun navegador de escritorio. `?marco=0` ou `?marco=1` cámbiao e recórdao nunha cookie.
+    Nun móbil real o CSS ignora o marco (a app ocupa a pantalla enteira)."""
+
+    COOKIE = "eira_marco"
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        param = request.GET.get("marco")
+        if param in ("0", "1"):
+            request.framed = param == "1"
+        else:
+            request.framed = (
+                settings.EIRA_DEMO_TOOLS and request.COOKIES.get(self.COOKIE, "1") == "1"
+            )
+        response = self.get_response(request)
+        if param in ("0", "1"):
+            response.set_cookie(
+                self.COOKIE, param, max_age=60 * 60 * 24 * 30, samesite="Lax", httponly=True
+            )
+        return response

@@ -9,7 +9,7 @@
     <p>{{ incident.description|linebreaksbr }}</p>
     {% if incident.photo %}<img src="{{ incident.photo.url }}" alt="{% translate 'Foto da incidencia' %}">{% endif %}
     {% if incident.reporter %}<p class="muted">{% translate "Informou:" %} {{ incident.reporter }}</p>{% endif %}
-    {% if orders %}<h3>{% translate "Ordes de traballo" %}</h3><ul>{% for o in orders %}<li>#{{ o.pk }} {{ o.title }} · {{ o.get_status_display }}</li>{% endfor %}</ul>{% endif %}
+    {% if orders %}<h3>{% translate "Ordes de traballo" %}</h3><ul>{% for o in orders %}<li><a href="{% turl 'manage:work_order' o.pk %}">#{{ o.pk }} {{ o.title }}</a> · {{ o.get_status_display }}</li>{% endfor %}</ul>{% endif %}
   </section>
   <aside class="stack">
     {% if incident.status == 'received' %}

@@ -4,8 +4,8 @@
 <h1>{% translate "Escolas e grupos" %}</h1>
 <div class="table-wrap" tabindex="0"><table class="data">
   <caption class="visually-hidden">{% translate "Grupos" %}</caption>
-  <thead><tr><th scope="col">{% translate "Actividade" %}</th><th scope="col">{% translate "Grupo" %}</th><th scope="col">{% translate "Monitor/a" %}</th><th scope="col" class="num">{% translate "Inscritas" %}</th><th scope="col" class="num">{% translate "Espera" %}</th><th scope="col">{% translate "Probas" %}</th></tr></thead>
-  <tbody>{% for g in groups %}<tr><td>{{ g.activity.name }}</td><td>{{ g.name }}</td><td>{{ g.monitor|default:"—" }}</td><td class="num">{{ g.enrolled.count }}/{{ g.places }}</td><td class="num">{{ g.enrollments.all|length }}</td><td><a href="{% turl 'monitor:fitness' g.pk %}">{% translate "Rexistrar" %}<span class="visually-hidden"> {{ g }}</span></a></td></tr>{% endfor %}</tbody>
+  <thead><tr><th scope="col">{% translate "Actividade" %}</th><th scope="col">{% translate "Grupo" %}</th><th scope="col">{% translate "Monitor/a" %}</th><th scope="col" class="num">{% translate "Inscritas" %}</th><th scope="col" class="num">{% translate "Espera" %}</th></tr></thead>
+  <tbody>{% for g in groups %}<tr><td>{{ g.activity.name }}</td><td>{{ g.name }}</td><td>{{ g.monitor|default:"—" }}</td><td class="num">{{ g.enrolled.count }}/{{ g.places }}</td><td class="num">{{ g.enrollments.all|length }}</td></tr>{% endfor %}</tbody>
 </table></div>
 <p class="mt-2"><a href="{% turl 'activities:observatory' %}">{% translate "Ver o observatorio anónimo" %}</a></p>
 {% endblock %}

@@ -1,0 +1,20 @@
+{% load i18n eira %}<header class="site-header">
+  <div class="wrap header-row">
+    {% include "includes/brand.html" %}
+    <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="primary-nav">{% translate "Menú" %}</button>
+    <div class="nav-wrap" id="primary-nav" data-collapsed="true">
+      <nav class="nav" aria-label="{% translate 'Principal' %}">
+        {% if tenant %}
+          <a href="{% turl 'tenant_home' %}" {% if nav == 'facilities' %}aria-current="page"{% endif %}>{% translate "Instalacións" %}</a>
+          {% if modules.activities %}<a href="{% turl 'activities:list' %}" {% if nav == 'activities' %}aria-current="page"{% endif %}>{% translate "Actividades" %}</a>{% endif %}
+        {% endif %}
+        {% if user.is_authenticated %}
+          <a href="{{ home_url }}">{% icon 'user' %} {% translate "A miña área" %}</a>
+        {% else %}
+          <a href="{% url 'accounts:login' %}?next={{ request.get_full_path|urlencode }}">{% icon 'user' %} {% translate "Acceder" %}</a>
+        {% endif %}
+      </nav>
+    </div>
+    {% include "includes/lang_form.html" %}
+  </div>
+</header>

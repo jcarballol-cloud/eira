@@ -16,6 +16,7 @@ from .prefs import KEYS, read_prefs, write_prefs
 
 
 def home(request):
+    request.layout_override = "public"
     municipalities = Municipality.objects.filter(is_active=True).select_related("region")
     personas = []
     if settings.EIRA_DEMO_TOOLS:
@@ -42,6 +43,7 @@ def _safe_next(request, fallback="/"):
 
 @require_http_methods(["GET", "POST"])
 def preferences(request):
+    request.layout_override = "public"
     if request.method == "POST":
         response = HttpResponse(status=303)
         response["Location"] = _safe_next(request)

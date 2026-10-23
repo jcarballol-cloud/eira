@@ -2,7 +2,7 @@
 {% block title %}{% translate "Mantemento preventivo" %}{% endblock %}
 {% block content %}
 <div class="page-head"><div><h1>{% translate "Mantemento preventivo" %}</h1><p>{% translate "As tarefas periódicas xeran ordes de traballo no calendario compartido." %}</p></div>
-  <div class="row"><a class="btn btn-secondary" href="{% turl 'maintenance:calendar' %}">{% icon 'calendar' %} {% translate "Calendario" %}</a>
+  <div class="row"><a class="btn btn-secondary" href="{% turl 'manage:maintenance_calendar' %}">{% icon 'calendar' %} {% translate "Calendario" %}</a>
   <form method="post">{% csrf_token %}<input type="hidden" name="action" value="generate"><input type="hidden" name="days" value="14"><button class="btn" type="submit">{% translate "Xerar ordes (14 días)" %}</button></form></div></div>
 <div class="grid grid-2">
   {% for p in plans %}

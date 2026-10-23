@@ -54,7 +54,7 @@ def _groups_for(request):
 
 
 @module_required("monitor")
-@role_required("monitor", "admin", "region_admin")
+@role_required("monitor")
 def today(request):
     try:
         day = dt.date.fromisoformat(request.GET.get("dia", ""))
@@ -84,7 +84,7 @@ def _session(request, pk):
 
 
 @module_required("monitor")
-@role_required("monitor", "admin", "region_admin")
+@role_required("monitor")
 def attendance(request, pk):
     session = _session(request, pk)
     enrollments = list(session.group.enrolled().select_related("dependent", "user"))
@@ -106,7 +106,7 @@ def attendance(request, pk):
 
 
 @module_required("monitor")
-@role_required("monitor", "admin", "region_admin")
+@role_required("monitor")
 def effort(request, pk):
     session = _session(request, pk)
     present = list(
@@ -141,7 +141,7 @@ def effort(request, pk):
 
 
 @module_required("monitor")
-@role_required("monitor", "admin", "region_admin")
+@role_required("monitor")
 def fitness(request, pk):
     group = get_object_or_404(_groups_for(request), pk=pk)
     batteries = FitnessBattery.objects.for_tenant(request.tenant).prefetch_related("tests")

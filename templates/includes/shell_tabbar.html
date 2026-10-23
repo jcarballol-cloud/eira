@@ -1,0 +1,13 @@
+{% load i18n eira %}{% if app_tenant %}<nav class="tabbar" aria-label="{% translate 'Navegación da app' %}">
+  {% if kind == 'operator' %}
+    <a href="{% url 'maintenance:my_orders' app_tenant.slug %}" {% if nav == 'operator' %}aria-current="page"{% endif %}>{% icon 'wrench' %}<span>{% translate "Ordes" %}</span></a>
+    <a href="{% url 'maintenance:calendar' app_tenant.slug %}" {% if nav == 'operator_calendar' %}aria-current="page"{% endif %}>{% icon 'calendar' %}<span>{% translate "Calendario" %}</span></a>
+    <a href="{% url 'notifications:list' app_tenant.slug %}" {% if nav == 'notifications' %}aria-current="page"{% endif %}>{% icon 'bell' %}<span>{% translate "Avisos" %}</span></a>
+  {% else %}
+    <a href="{% url 'app:home' app_tenant.slug %}" {% if nav == 'app_home' %}aria-current="page"{% endif %}>{% icon 'home' %}<span>{% translate "Inicio" %}</span></a>
+    <a href="{% url 'tenant_home' app_tenant.slug %}" {% if nav == 'facilities' %}aria-current="page"{% endif %}>{% icon 'search' %}<span>{% translate "Reservar" %}</span></a>
+    <a href="{% url 'bookings:mine' app_tenant.slug %}" {% if nav == 'bookings' %}aria-current="page"{% endif %}>{% icon 'calendar' %}<span>{% translate "Reservas" %}</span></a>
+    <a href="{% url 'account:household' %}" {% if nav == 'family' %}aria-current="page"{% endif %}>{% icon 'users' %}<span>{% translate "Familia" %}</span></a>
+    <a href="{% url 'health' %}" {% if nav == 'health' %}aria-current="page"{% endif %}>{% icon 'heart' %}<span>{% translate "Saúde" %}</span></a>
+  {% endif %}
+</nav>{% endif %}

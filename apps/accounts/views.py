@@ -37,6 +37,7 @@ from .models import (
     User,
     audit,
 )
+from .profiles import home_url
 
 
 def _next(request):
@@ -73,6 +74,7 @@ def _rate_limited(email, ip):
 
 
 def login_email(request):
+    request.layout_override = "public"
     request.session["login_next"] = _next(request)
     form = EmailForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
@@ -99,6 +101,7 @@ def login_email(request):
 
 
 def login_code(request):
+    request.layout_override = "public"
     email = request.session.get("login_email")
     if not email:
         return redirect("accounts:login")
@@ -112,7 +115,8 @@ def login_code(request):
             login(request, user, backend="django.contrib.auth.backends.ModelBackend")
             audit("auth.login", user, method="email_code")
             request.session.pop("login_email", None)
-            return redirect(_next(request))
+            nxt = _next(request)
+            return redirect(home_url(user) if nxt == "/" else nxt)
         form.add_error("code", _("Código incorrecto ou caducado."))
     return render(request, "accounts/code.html", {"form": form, "email": email})
 
@@ -139,6 +143,8 @@ def identity_callback(request):
     login(request, user, backend="django.contrib.auth.backends.ModelBackend")
     audit("auth.login", user, method=identity.provider)
     nxt = request.session.pop("identity_next", None) or _next(request)
+    if nxt == "/":
+        nxt = home_url(user)
     return redirect(
         nxt if url_has_allowed_host_and_scheme(nxt, allowed_hosts={request.get_host()}) else "/"
     )
@@ -339,7 +345,24 @@ def delete_account(request):
     return render(request, "accounts/delete.html", {"form": form, "nav": "account"})
 
 
-@login_required
+def neighbour_global(view):
+    """Unidade familiar: só para a veciñanza (o persoal do concello usa outra conta)."""
+    from functools import wraps
+
+    from django.core.exceptions import PermissionDenied
+
+    from .profiles import kind_global
+
+    @wraps(view)
+    def wrapper(request, *args, **kwargs):
+        if kind_global(request.user) != "neighbour":
+            raise PermissionDenied
+        return view(request, *args, **kwargs)
+
+    return login_required(wrapper)
+
+
+@neighbour_global
 def household(request):
     hh, _created = Household.objects.get_or_create(responsible=request.user)
     form = DependentForm(request.POST or None)
@@ -373,7 +396,7 @@ def household(request):
     )
 
 
-@login_required
+@neighbour_global
 @require_POST
 def consent_toggle(request, dependent_id, kind):
     dep = get_object_or_404(Dependent, pk=dependent_id, household__responsible=request.user)

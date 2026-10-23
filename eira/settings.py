@@ -94,6 +94,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "apps.tenants.middleware.TenantMiddleware",
+    "apps.tenants.middleware.DemoFrameMiddleware",
 ]
 
 ROOT_URLCONF = "eira.urls"

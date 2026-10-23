@@ -139,7 +139,7 @@ def _attendance_for(group, n, k_age):
         start_time=dt.time(17),
     )
     for i in range(n):
-        d = child(parent, f"N{i}", age=k_age)
+        d = child(parent, f"Proba{i:02d}xyz", age=k_age)
         e = Enrollment.objects.create(
             municipality=group.municipality,
             group=group,
@@ -181,7 +181,7 @@ def test_observatory_page_never_shows_names(client, kids_group, settings):
     settings.EIRA_MIN_AGGREGATION = 2
     _attendance_for(kids_group, 3, 9)
     html = client.get("/c/concello-a/actividades/observatorio/").content.decode()
-    assert "N0" not in html and "N1" not in html
+    assert "Proba00xyz" not in html and "Proba01xyz" not in html
 
 
 def test_microdata_is_pseudonymised_and_admin_only(client, kids_group, admin_a, citizen, settings):
@@ -191,4 +191,4 @@ def test_microdata_is_pseudonymised_and_admin_only(client, kids_group, admin_a, 
     assert client.get("/c/concello-a/actividades/observatorio/?csv=micro").status_code == 403
     client.force_login(admin_a)
     body = client.get("/c/concello-a/actividades/observatorio/?csv=micro").content.decode()
-    assert "N0" not in body and "6–11" in body and len(body.splitlines()) == 4
+    assert "Proba00xyz" not in body and "6–11" in body and len(body.splitlines()) == 4

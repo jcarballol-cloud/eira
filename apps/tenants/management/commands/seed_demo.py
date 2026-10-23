@@ -347,8 +347,6 @@ class Command(BaseCommand):
                 continue
             user = self.users[email]
             Membership.objects.get_or_create(user=user, municipality=m, role=role)
-            if role != Role.CITIZEN:
-                Membership.objects.get_or_create(user=user, municipality=m, role=Role.CITIZEN)
             if resident:
                 Residency.objects.create(user=user, municipality=m, method=Residency.Method.COUNTER)
         local = (

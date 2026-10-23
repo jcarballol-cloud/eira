@@ -4,7 +4,6 @@
 import csv
 
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
@@ -12,7 +11,7 @@ from django.views.decorators.http import require_POST
 
 from apps.analytics import observatory
 from apps.integrations.registry import get_adapter
-from apps.tenants.urlutils import module_required, role_required, treverse
+from apps.tenants.urlutils import module_required, neighbour_required, role_required, treverse
 
 from . import services
 from .models import Activity, Enrollment, Group
@@ -29,7 +28,7 @@ def activity_list(request):
 
 
 @module_required("activities")
-@login_required
+@neighbour_required
 def enroll(request, pk):
     group = get_object_or_404(
         Group.objects.select_related("activity", "facility"), municipality=request.tenant, pk=pk
@@ -75,7 +74,7 @@ def enroll(request, pk):
     )
 
 
-@login_required
+@neighbour_required
 def payment_return(request, pk):
     e = get_object_or_404(Enrollment, municipality=request.tenant, pk=pk, user=request.user)
     status = get_adapter("payment").status(e.payment_reference) if e.payment_reference else None
@@ -88,7 +87,7 @@ def payment_return(request, pk):
 
 
 @module_required("activities")
-@login_required
+@neighbour_required
 def mine(request):
     enrollments = (
         Enrollment.objects.for_tenant(request.tenant)
@@ -101,7 +100,7 @@ def mine(request):
     )
 
 
-@login_required
+@neighbour_required
 @require_POST
 def cancel(request, pk):
     e = get_object_or_404(Enrollment, municipality=request.tenant, pk=pk, user=request.user)

@@ -63,4 +63,7 @@ def test_offline_sync_replay_is_idempotent(client, operator_a, padel_a):
 def test_shared_calendar(client, admin_a, padel_a):
     generate_orders(days=7)
     client.force_login(admin_a)
-    assert client.get("/c/concello-a/operario/calendario/").status_code == 200
+    assert client.get("/c/concello-a/xestion/mantemento/calendario/").status_code == 200
+    assert (
+        client.get("/c/concello-a/operario/calendario/").status_code == 403
+    )  # a app do operario é só súa

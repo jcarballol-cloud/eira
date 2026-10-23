@@ -89,3 +89,18 @@ Formato: data · decisión · motivo · alternativas descartadas.
 ## 2026-10-23 · Demo pública
 - **Decisión:** compose de produción con Caddy (HTTPS automático, Let's Encrypt gratuíto), servizo `reseed` cun bucle de shell en vez de cron, e bloqueo consultivo de PostgreSQL en `seed_demo` para que nunca se executen dúas cargas á vez.
 - **Descartado:** cron/supercronic nun contedor aparte (dependencia extra); Traefik (máis configuración).
+
+## 2026-10-23 · v2 F1 · Cada perfil, a súa ferramenta
+- **Decisión:** o perfil efectivo no concello é o rol de máis responsabilidade (admin > deputación > mantemento > monitora > veciñanza). **O persoal non usa a app da veciñanza coa mesma conta:** se tamén é veciño, usa outra conta. As vistas da app (`neighbour_required`) dan 403 a calquera rol de persoal.
+- **Motivo:** permisos simples e verificables; evita que a administración «reserve como veciña» por erro (petición explícita).
+- **Descartado:** un selector de modo dentro da mesma conta (máis complexo e fácil de saltar).
+
+- **Decisión:** o operario ve só as ordes **asignadas a el e as pendentes sen asignar** (para poder collelas); calquera outra orde dá 404. A administración xestiona as ordes desde `/xestion/ordes/` e xa non entra na app do operario.
+- **Decisión:** a tableta é só da monitora (`role_required("monitor")`); a administración ve as escolas na xestión.
+
+- **Decisión:** a deputación entra nos concellos en **modo consulta**: lectura permitida; calquera POST dá 403 agás as vistas marcadas con `@support_action`. Na interface hai un banner «Estás vendo X como Deputación · só lectura · Volver á rede» e ocúltanse os botóns de escritura (a garantía está no backend).
+- **Accións de soporte permitidas:** exportar os datos do concello (lectura) e reenviar a invitación á administración do concello (fase 7).
+
+- **Decisión:** catro disposicións: pública (sen sesión), app móbil (veciñanza e operario, con barra de lapelas inferior), tableta (monitora) e escritorio con barra lateral (concello e deputación). Unha única `base.html` escolle a disposición segundo o perfil.
+- **Decisión:** marco de dispositivo para a demo con `?marco=0/1` (cookie); por defecto activo cando `EIRA_DEMO_TOOLS=1`. Por CSS só aparece en pantallas grandes (≥ 700 px para o móbil e ≥ 1100 px para a tableta); nun móbil real a app ocupa a pantalla.
+- **Decisión:** o logo leva sempre á pantalla principal do perfil (`profiles.home_url`); «Saír» está sempre na cabeceira e «Cambiar de perfil» na barra de demo.

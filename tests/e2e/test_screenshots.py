@@ -94,7 +94,7 @@ def shots():
         (
             "15-calendario-mantemento",
             "admin@vilardeiras.demo.eira.example",
-            f"{c}/operario/calendario/",
+            f"{c}/xestion/mantemento/calendario/",
         ),
         ("16-operario-ordes", "brais@demo.eira.example", f"{c}/operario/"),
         ("17-operario-orde", "brais@demo.eira.example", f"{c}/operario/orde/{order.pk}/"),

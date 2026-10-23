@@ -1,0 +1,11 @@
+{% load i18n eira %}<div class="desk-top">
+  <div class="desk-top__title">{% if tenant %}<span class="crest" aria-hidden="true">{% if tenant.coat_of_arms %}<img src="{{ tenant.coat_of_arms.url }}" alt="">{% else %}{{ tenant.initials }}{% endif %}</span> {{ tenant.name }}{% elif nav_region %}{{ nav_region.name }}{% endif %}</div>
+  <div class="desk-top__actions">
+    {% include "includes/lang_form.html" %}
+    <a class="icon-btn" href="{% url 'account:profile' %}" title="{% translate 'A miña conta' %}">{% icon 'user' %}<span class="visually-hidden">{% translate "A miña conta" %}</span></a>
+    {% include "includes/logout_button.html" with with_label=True %}
+  </div>
+</div>
+{% if region_consult %}
+<div class="consult-banner" role="note">{% icon 'chart' %} <span>{% blocktranslate with t=tenant.name %}Estás vendo <strong>{{ t }}</strong> como Deputación · só lectura{% endblocktranslate %}</span> <a href="{% url 'region:dashboard' tenant.region.slug %}">{% translate "Volver á rede" %}</a></div>
+{% endif %}

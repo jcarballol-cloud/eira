@@ -7,7 +7,6 @@ import datetime as dt
 from django.contrib.auth import login
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 from django.utils.http import url_has_allowed_host_and_scheme
@@ -100,9 +99,7 @@ def login_as(request):
     if user is None:
         raise Http404("Executa `make seed` primeiro")
     login(request, user, backend="django.contrib.auth.backends.ModelBackend")
-    if persona.get("tenant"):
-        target = reverse("tenant_home", args=[persona["tenant"]])
-    else:
-        target = reverse("region:dashboard", args=[persona["region"]])
-    response = redirect(target)
+    from apps.accounts.profiles import home_url
+
+    response = redirect(home_url(user))
     return write_prefs(response, {persona.get("prefs"): True} if persona.get("prefs") else {})

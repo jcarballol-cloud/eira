@@ -54,7 +54,9 @@ def dashboard(request):
                 "per_1000": round(1000 * s["booked"] / m.population, 1) if m.population else None,
             }
         )
-    return render(request, "region/dashboard.html", {"region": request.region, "rows": rows})
+    return render(
+        request, "region/dashboard.html", {"region": request.region, "rows": rows, "nav": "region"}
+    )
 
 
 class StepBasics(forms.Form):
@@ -165,5 +167,5 @@ def new_municipality(request):
     return render(
         request,
         "region/new_municipality.html",
-        {"region": request.region, "form": form, "step": step, "data": data},
+        {"region": request.region, "form": form, "step": step, "data": data, "nav": "region_new"},
     )

@@ -1,18 +1,1 @@
-{% extends "base.html" %}{% load i18n eira %}
-{% block subnav %}
-<nav class="subnav" aria-label="{% translate 'Xestión do concello' %}">
-  <div class="wrap">
-    <a href="{% turl 'manage:dashboard' %}" {% if sub == 'dashboard' %}aria-current="page"{% endif %}>{% translate "Panel do día" %}</a>
-    <a href="{% turl 'manage:agenda' %}" {% if sub == 'agenda' %}aria-current="page"{% endif %}>{% translate "Axenda" %}</a>
-    <a href="{% turl 'manage:on_behalf' %}" {% if sub == 'on_behalf' %}aria-current="page"{% endif %}>{% translate "Reservar por alguén" %}</a>
-    <a href="{% turl 'manage:facilities' %}" {% if sub == 'facilities' %}aria-current="page"{% endif %}>{% translate "Instalacións" %}</a>
-    <a href="{% turl 'manage:closures' %}" {% if sub == 'closures' %}aria-current="page"{% endif %}>{% translate "Peches" %}</a>
-    <a href="{% turl 'manage:incidents' %}" {% if sub == 'incidents' %}aria-current="page"{% endif %}>{% translate "Incidencias" %}</a>
-    <a href="{% turl 'manage:maintenance_plans' %}" {% if sub == 'maintenance' %}aria-current="page"{% endif %}>{% translate "Mantemento" %}</a>
-    <a href="{% turl 'manage:activities' %}" {% if sub == 'activities' %}aria-current="page"{% endif %}>{% translate "Actividades" %}</a>
-    <a href="{% turl 'manage:indicators' %}" {% if sub == 'indicators' %}aria-current="page"{% endif %}>{% translate "Indicadores" %}</a>
-    <a href="{% turl 'manage:staff' %}" {% if sub == 'staff' %}aria-current="page"{% endif %}>{% translate "Persoal" %}</a>
-    <a href="{% turl 'manage:settings' %}" {% if sub == 'settings' %}aria-current="page"{% endif %}>{% translate "Configuración" %}</a>
-  </div>
-</nav>
-{% endblock %}
+{% extends "base.html" %}

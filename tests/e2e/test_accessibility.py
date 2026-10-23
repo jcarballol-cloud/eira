@@ -55,6 +55,7 @@ def page_sets():
             "/offline/",
         ],
         "uxia@demo.eira.example": [
+            f"{c}/app/",
             f"{c}/reservas/",
             f"{c}/reservas/{upcoming.pk}/",
             f"{c}/reservas/{uxia_booking.pk}/peche/",
@@ -87,17 +88,27 @@ def page_sets():
             f"{c}/xestion/configuracion/",
             f"{c}/xestion/persoal/",
             f"{c}/xestion/portabilidade/",
-            f"{c}/operario/calendario/",
+            f"{c}/xestion/mantemento/calendario/",
+            f"{c}/xestion/ordes/",
             f"{c}/xestion/actividades/",
         ],
-        "brais@demo.eira.example": [f"{c}/operario/", f"{c}/operario/orde/{order.pk}/"],
+        "brais@demo.eira.example": [
+            f"{c}/operario/",
+            f"{c}/operario/orde/{order.pk}/",
+            f"{c}/operario/calendario/",
+        ],
         "antia@demo.eira.example": [
             f"{c}/monitor/",
             f"{c}/monitor/sesion/{session.pk}/asistencia/",
             f"{c}/monitor/sesion/{session.pk}/esforzo/",
             f"{c}/monitor/grupo/{group.pk}/probas/",
         ],
-        "deputacion@demo.eira.example": ["/rexion/marismas/", "/rexion/marismas/novo-concello/"],
+        "deputacion@demo.eira.example": [
+            "/rexion/marismas/",
+            "/rexion/marismas/novo-concello/",
+            "/c/pontedouro/xestion/",
+            "/c/pontedouro/xestion/indicadores/",
+        ],
     }
 
 

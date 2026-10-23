@@ -6,6 +6,7 @@ import datetime as dt
 
 from django import forms
 from django.contrib import messages
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -18,17 +19,20 @@ from apps.tenants.urlutils import role_required, treverse
 from . import services
 from .models import Frequency, MaintenancePlan, MaintenanceTask, WorkOrder, WorkOrderPhoto
 
-STAFF = ("admin", "region_admin", "maintenance")
+OPERATOR = ("maintenance",)
 
 
-@role_required(*STAFF)
+def operator_orders(request):
+    """Ordes que ve o operario: as asignadas a el e as pendentes sen asignar (para collelas)."""
+    return WorkOrder.objects.for_tenant(request.tenant).filter(
+        Q(assigned_to=request.user) | Q(assigned_to__isnull=True)
+    )
+
+
+@role_required(*OPERATOR)
 def my_orders(request):
     today = timezone.localdate()
-    qs = WorkOrder.objects.for_tenant(request.tenant).select_related("facility", "incident")
-    if "maintenance" in request.roles and request.GET.get("todas") != "1":
-        from django.db.models import Q
-
-        qs = qs.filter(Q(assigned_to=request.user) | Q(assigned_to__isnull=True))
+    qs = operator_orders(request).select_related("facility", "incident")
     pending = (
         qs.exclude(status=WorkOrder.Status.DONE)
         .filter(due_date__lte=today + dt.timedelta(days=1))
@@ -64,10 +68,10 @@ class CloseForm(forms.Form):
         return clean_image(photo) if photo else None
 
 
-@role_required(*STAFF)
+@role_required(*OPERATOR)
 def order_detail(request, pk):
     order = get_object_or_404(
-        WorkOrder.objects.select_related("facility", "incident"), municipality=request.tenant, pk=pk
+        operator_orders(request).select_related("facility", "incident"), pk=pk
     )
     synced = request.headers.get("X-Eira-Sync") == "1"
     if request.method == "POST":
@@ -103,8 +107,7 @@ def order_detail(request, pk):
     )
 
 
-@role_required(*STAFF)
-def shared_calendar(request):
+def _calendar(request, orders_qs, template, extra):
     today = timezone.localdate()
     try:
         month = (
@@ -114,31 +117,121 @@ def shared_calendar(request):
         )
     except ValueError:
         month = today.replace(day=1)
-    cal = calendar.Calendar(firstweekday=0)
-    weeks = cal.monthdatescalendar(month.year, month.month)
+    weeks = calendar.Calendar(firstweekday=0).monthdatescalendar(month.year, month.month)
     first, last = weeks[0][0], weeks[-1][-1]
-    orders = (
-        WorkOrder.objects.for_tenant(request.tenant)
-        .filter(due_date__range=(first, last))
-        .select_related("facility")
-    )
     by_day = {}
-    for o in orders:
+    for o in orders_qs.filter(due_date__range=(first, last)).select_related("facility"):
         by_day.setdefault(o.due_date, []).append(o)
-    prev_month = (month - dt.timedelta(days=1)).replace(day=1)
-    next_month = (month + dt.timedelta(days=32)).replace(day=1)
     return render(
         request,
-        "maintenance/calendar.html",
+        template,
         {
             "weeks": [[(d, by_day.get(d, [])) for d in w] for w in weeks],
             "month": month,
             "today": today,
-            "prev_month": prev_month,
-            "next_month": next_month,
-            "nav": "manage" if request.roles & {"admin", "region_admin"} else "operator",
-            "sub": "maintenance",
+            "prev_month": (month - dt.timedelta(days=1)).replace(day=1),
+            "next_month": (month + dt.timedelta(days=32)).replace(day=1),
+            **extra,
         },
+    )
+
+
+@role_required(*OPERATOR)
+def operator_calendar(request):
+    """Calendario do operario: só as súas ordes e as pendentes sen asignar."""
+    return _calendar(
+        request,
+        operator_orders(request),
+        "maintenance/calendar.html",
+        {"nav": "operator_calendar", "order_url": "maintenance:order"},
+    )
+
+
+@role_required("admin", "region_admin")
+def manage_calendar(request):
+    """Calendario compartido de mantemento para a administración (todas as ordes)."""
+    return _calendar(
+        request,
+        WorkOrder.objects.for_tenant(request.tenant),
+        "manage/maintenance_calendar.html",
+        {"nav": "manage", "sub": "maintenance", "order_url": "manage:work_order"},
+    )
+
+
+class AssignForm(forms.Form):
+    assigned_to = forms.ModelChoiceField(
+        label=gettext_lazy("Asignar a"), queryset=None, required=False
+    )
+    due_date = forms.DateField(
+        label=gettext_lazy("Data prevista"), widget=forms.DateInput(attrs={"type": "date"})
+    )
+
+    def __init__(self, *args, tenant=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        from apps.accounts.models import Membership, Role, User
+
+        ids = Membership.objects.filter(municipality=tenant, role=Role.MAINTENANCE).values_list(
+            "user_id", flat=True
+        )
+        self.fields["assigned_to"].queryset = User.objects.filter(pk__in=ids)
+        self.fields["assigned_to"].empty_label = gettext_lazy("Sen asignar")
+
+
+@role_required("admin", "region_admin")
+def manage_orders(request):
+    status = request.GET.get("estado", "pendentes")
+    qs = WorkOrder.objects.for_tenant(request.tenant).select_related(
+        "facility", "assigned_to", "incident"
+    )
+    if status == "pendentes":
+        qs = qs.exclude(status=WorkOrder.Status.DONE)
+    elif status in WorkOrder.Status.values:
+        qs = qs.filter(status=status)
+    return render(
+        request,
+        "manage/work_orders.html",
+        {
+            "orders": qs.order_by("due_date")[:300],
+            "status": status,
+            "statuses": WorkOrder.Status.choices,
+            "nav": "manage",
+            "sub": "work_orders",
+        },
+    )
+
+
+@role_required("admin", "region_admin")
+def manage_order(request, pk):
+    order = get_object_or_404(
+        WorkOrder.objects.select_related("facility", "incident", "assigned_to"),
+        municipality=request.tenant,
+        pk=pk,
+    )
+    form = AssignForm(
+        request.POST or None,
+        tenant=request.tenant,
+        initial={"assigned_to": order.assigned_to_id, "due_date": order.due_date},
+    )
+    if request.method == "POST" and form.is_valid():
+        order.assigned_to = form.cleaned_data["assigned_to"]
+        order.due_date = form.cleaned_data["due_date"]
+        order.save(update_fields=["assigned_to", "due_date"])
+        if order.assigned_to:
+            from apps.notifications.services import notify
+
+            notify(
+                order.assigned_to,
+                _("Nova orde de traballo: %(t)s") % {"t": order.title},
+                order.facility.name,
+                url=treverse(request.tenant, "maintenance:order", order.pk),
+                municipality=request.tenant,
+            )
+        messages.success(request, _("Orde actualizada."))
+        return redirect(treverse(request.tenant, "manage:work_order", order.pk))
+    return render(
+        request,
+        "manage/work_order.html",
+        {"order": order, "form": form, "nav": "manage", "sub": "work_orders"},
     )
 
 

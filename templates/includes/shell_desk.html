@@ -1,0 +1,38 @@
+{% load i18n eira %}<aside class="sidebar" aria-label="{% translate 'Navegación' %}">
+  <div class="sidebar__head">
+    {% include "includes/brand.html" %}
+    <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="primary-nav">{% translate "Menú" %}</button>
+  </div>
+  <div class="nav-wrap" id="primary-nav" data-collapsed="true">
+  {% if kind == 'admin' and tenant %}
+  <nav class="sidenav" aria-label="{% translate 'Xestión do concello' %}">
+    <p class="sidenav__group">{% translate "Día a día" %}</p>
+    <a href="{% turl 'manage:dashboard' %}" {% if sub == 'dashboard' %}aria-current="page"{% endif %}>{% icon 'home' %} {% translate "Panel do día" %}</a>
+    <a href="{% turl 'manage:agenda' %}" {% if sub == 'agenda' %}aria-current="page"{% endif %}>{% icon 'calendar' %} {% translate "Axenda" %}</a>
+    <a href="{% turl 'manage:on_behalf' %}" {% if sub == 'on_behalf' %}aria-current="page"{% endif %}>{% icon 'user' %} {% translate "Reservar por alguén" %}</a>
+    <a href="{% turl 'manage:incidents' %}" {% if sub == 'incidents' %}aria-current="page"{% endif %}>{% icon 'alert' %} {% translate "Incidencias" %}</a>
+    <a href="{% turl 'manage:work_orders' %}" {% if sub == 'work_orders' %}aria-current="page"{% endif %}>{% icon 'wrench' %} {% translate "Ordes de traballo" %}</a>
+    <p class="sidenav__group">{% translate "Servizo" %}</p>
+    <a href="{% turl 'manage:facilities' %}" {% if sub == 'facilities' %}aria-current="page"{% endif %}>{% icon 'map' %} {% translate "Instalacións" %}</a>
+    <a href="{% turl 'manage:closures' %}" {% if sub == 'closures' %}aria-current="page"{% endif %}>{% icon 'lock' %} {% translate "Peches" %}</a>
+    <a href="{% turl 'manage:maintenance_plans' %}" {% if sub == 'maintenance' %}aria-current="page"{% endif %}>{% icon 'check' %} {% translate "Mantemento" %}</a>
+    <a href="{% turl 'manage:activities' %}" {% if sub == 'activities' %}aria-current="page"{% endif %}>{% icon 'users' %} {% translate "Escolas" %}</a>
+    <p class="sidenav__group">{% translate "Datos" %}</p>
+    <a href="{% turl 'manage:indicators' %}" {% if sub == 'indicators' %}aria-current="page"{% endif %}>{% icon 'chart' %} {% translate "Indicadores" %}</a>
+    <a href="{% turl 'activities:observatory' %}" {% if sub == 'observatory' %}aria-current="page"{% endif %}>{% icon 'heart' %} {% translate "Observatorio" %}</a>
+    <p class="sidenav__group">{% translate "Concello" %}</p>
+    <a href="{% turl 'manage:staff' %}" {% if sub == 'staff' %}aria-current="page"{% endif %}>{% icon 'users' %} {% translate "Persoal e altas" %}</a>
+    <a href="{% turl 'manage:settings' %}" {% if sub == 'settings' %}aria-current="page"{% endif %}>{% icon 'star' %} {% translate "Configuración" %}</a>
+  </nav>
+  {% elif kind == 'region' %}
+  <nav class="sidenav" aria-label="{% translate 'Rede de concellos' %}">
+    {% if nav_region %}
+    <a href="{% url 'region:dashboard' nav_region.slug %}" {% if nav == 'region' %}aria-current="page"{% endif %}>{% icon 'chart' %} {% translate "Rede" %}</a>
+    <a href="{% url 'region:new_municipality' nav_region.slug %}" {% if nav == 'region_new' %}aria-current="page"{% endif %}>{% icon 'star' %} {% translate "Novo concello" %}</a>
+    <p class="sidenav__group">{% translate "Concellos" %}</p>
+    {% for m in nav_region.municipalities.all %}<a href="{% url 'manage:dashboard' m.slug %}" {% if tenant == m %}aria-current="page"{% endif %}>{% icon 'map' %} {{ m.name }}</a>{% endfor %}
+    {% endif %}
+  </nav>
+  {% endif %}
+  </div>
+</aside>

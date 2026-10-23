@@ -1,0 +1,17 @@
+{% load i18n eira %}<footer class="site-footer">
+  <div class="wrap footer-row">
+    <div>
+      <strong>Eira</strong> · {% translate "software libre baixo licenza" %} <a href="https://interoperable-europe.ec.europa.eu/collection/eupl/eupl-text-eupl-12" hreflang="en">EUPL-1.2</a>
+      {% if tenant %}<br>{{ tenant.name }}{% if tenant.contact_phone %} · {% translate "Tel." %} {{ tenant.contact_phone }}{% endif %}{% if tenant.contact_email %} · {{ tenant.contact_email }}{% endif %}{% endif %}
+    </div>
+    <ul>
+      {% if tenant %}
+        <li><a href="{% turl 'privacy' %}">{% translate "Privacidade" %}</a></li>
+        <li><a href="{% turl 'accessibility' %}">{% translate "Accesibilidade" %}</a></li>
+        <li><a href="{% turl 'open_data:index' %}">{% translate "Datos abertos" %}</a></li>
+      {% endif %}
+      <li><a href="{% url 'preferences' %}?next={{ request.get_full_path|urlencode }}">{% translate "Preferencias de lectura" %}</a></li>
+      <li><a href="{% url 'schema' %}">API (OpenAPI 3.1)</a></li>
+    </ul>
+  </div>
+</footer>

@@ -475,3 +475,167 @@ html.pref-reduced-motion *, html.pref-reduced-motion *::before, html.pref-reduce
 .hbar-fill { display: block; height: 100%; background: var(--musgo); border-radius: 6px; min-width: 2px; }
 .hbar-fill.warn { background: var(--arxila); }
 .hbar-value { font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* =====================================================================
+   v2 · Disposicións por perfil (app móbil, tableta, escritorio, pública)
+   ===================================================================== */
+:root {
+  --stage: #E3E8E5;
+  --surface-2: #F1EFE8;
+  --hair: rgb(22 37 43 / 9%);
+  --shadow-1: 0 1px 2px rgb(22 37 43 / 6%), 0 2px 10px rgb(22 37 43 / 5%);
+  --tabbar-h: 64px;
+}
+.demo-bar {
+  display: flex; flex-wrap: wrap; gap: .25rem 1rem; align-items: center; justify-content: center;
+  background: var(--granito); color: #DDE5E1; font-size: .82rem; padding: .35rem 1rem;
+}
+.demo-bar a { color: var(--branco); text-decoration: none; display: inline-flex; gap: .3rem; align-items: center; padding: .2rem .4rem; border-radius: 6px; }
+.demo-bar a:hover { background: rgb(255 255 255 / 12%); color: var(--branco); }
+.demo-bar__label { color: var(--millo); font-weight: 700; }
+.demo-bar .icon { width: 1em; height: 1em; }
+
+.stage { flex: 1; display: flex; flex-direction: column; }
+.shell { flex: 1; display: flex; flex-direction: column; background: var(--bg); min-height: 0; }
+.shell-body { flex: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.shell-main { flex: 1; padding: 1.5rem 0 2.5rem; }
+.header-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; padding-top: .6rem; padding-bottom: .6rem; }
+.brand { display: flex; align-items: center; gap: .6rem; text-decoration: none; font-weight: 800; margin-right: auto; min-height: 44px; }
+.brand-mark img { display: block; width: 34px; height: 34px; border-radius: 10px; }
+.brand-text { display: flex; flex-direction: column; line-height: 1.15; font-size: 1.02rem; }
+.brand-text small { font-weight: 500; font-size: .76rem; opacity: .8; }
+.site-header .brand, .sidebar .brand { color: var(--branco); }
+.icon-btn {
+  position: relative; display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+  min-width: 44px; min-height: 44px; padding: 0 .6rem; border-radius: 12px; border: 0; background: transparent;
+  color: inherit; font: inherit; font-weight: 600; cursor: pointer; text-decoration: none;
+}
+.icon-btn:hover { background: rgb(22 37 43 / 7%); }
+.icon-btn .icon { width: 22px; height: 22px; }
+.icon-btn .dot {
+  position: absolute; top: 4px; right: 2px; min-width: 18px; height: 18px; border-radius: 999px; padding: 0 4px;
+  background: var(--arxila); color: var(--branco); font-size: .7rem; font-weight: 800; display: grid; place-items: center;
+}
+.logout-form { margin: 0; }
+
+/* ---- App móbil (veciñanza e operario) e tableta (monitora) ---- */
+.layout-app .stage, .layout-tablet .stage { min-height: 0; }
+.layout-app .shell, .layout-tablet .shell { height: 100dvh; overflow: hidden; }
+.layout-app .shell-main, .layout-tablet .shell-main { overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 1rem 0 1.5rem; }
+.layout-app .wrap { padding: 0 1rem; max-width: 40rem; }
+.layout-tablet .wrap { max-width: 64rem; padding: 0 1.5rem; }
+.app-header {
+  display: flex; align-items: center; gap: .5rem; padding: .5rem .75rem .5rem 1rem; min-height: 60px;
+  background: var(--surface); border-bottom: 1px solid var(--hair); position: relative; z-index: 2;
+}
+.app-header .brand { color: var(--granito); }
+.app-header__actions { display: flex; align-items: center; gap: .15rem; color: var(--granito); }
+.tabbar {
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; background: var(--surface);
+  border-top: 1px solid var(--hair); padding-bottom: env(safe-area-inset-bottom); min-height: var(--tabbar-h);
+}
+.tabbar a {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  text-decoration: none; color: var(--text-muted); font-size: .74rem; font-weight: 600; min-height: var(--tabbar-h);
+}
+.tabbar a .icon { width: 24px; height: 24px; }
+.tabbar a[aria-current="page"] { color: var(--musgo); }
+.tabbar a[aria-current="page"] .icon { stroke-width: 2.4; }
+.tabbar a:hover { color: var(--granito); }
+
+/* ---- Marco de dispositivo (só demo e pantallas grandes) ---- */
+@media (min-width: 700px) {
+  .framed-app .stage { background: var(--stage); align-items: center; justify-content: center; padding: 24px 16px; }
+  .framed-app .shell {
+    width: 390px; height: min(844px, calc(100dvh - 90px)); flex: none; border-radius: 44px;
+    border: 11px solid #1B2226; box-shadow: 0 30px 70px rgb(22 37 43 / 28%); overflow: hidden;
+  }
+}
+@media (min-width: 1100px) {
+  .framed-tablet .stage { background: var(--stage); align-items: center; justify-content: center; padding: 24px 16px; }
+  .framed-tablet .shell {
+    width: 1024px; height: min(768px, calc(100dvh - 90px)); flex: none; border-radius: 32px;
+    border: 14px solid #1B2226; box-shadow: 0 30px 70px rgb(22 37 43 / 28%); overflow: hidden;
+  }
+}
+.framed .site-footer { display: none; }
+
+/* ---- Escritorio (concello e deputación) ---- */
+.layout-desk .shell { flex-direction: row; }
+.sidebar {
+  width: 252px; flex: none; background: var(--granito); color: #DDE5E1; padding: 1rem .75rem;
+  position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem;
+}
+.sidebar__head { display: flex; align-items: center; gap: .5rem; }
+.sidebar .menu-toggle { margin-left: auto; }
+.sidenav { display: flex; flex-direction: column; gap: 2px; }
+.sidenav__group { margin: .9rem .6rem .25rem; font-size: .7rem; text-transform: uppercase; letter-spacing: .09em; color: #9FB0A8; font-weight: 700; }
+.sidenav a {
+  display: flex; align-items: center; gap: .6rem; padding: .5rem .65rem; border-radius: 10px; min-height: 40px;
+  color: #E8EEEB; text-decoration: none; font-weight: 600; font-size: .93rem;
+}
+.sidenav a:hover { background: rgb(255 255 255 / 8%); color: var(--branco); }
+.sidenav a[aria-current="page"] { background: rgb(78 143 110 / 35%); color: var(--branco); box-shadow: inset 3px 0 0 var(--millo); }
+.sidenav .icon { width: 18px; height: 18px; opacity: .9; }
+.desk-top {
+  display: flex; align-items: center; gap: 1rem; padding: .6rem 1.5rem; min-height: 60px;
+  background: var(--surface); border-bottom: 1px solid var(--hair);
+}
+.desk-top__title { display: flex; align-items: center; gap: .6rem; font-weight: 800; font-size: 1.05rem; margin-right: auto; }
+.desk-top__actions { display: flex; align-items: center; gap: .35rem; }
+.desk-top .lang-form button { color: var(--granito); border-color: var(--liña); }
+.desk-top .lang-form button[aria-current="true"] { background: var(--granito); color: var(--branco); }
+.layout-desk .shell-main { padding: 1.5rem 0 0; }
+.layout-desk .wrap { max-width: 82rem; padding: 0 1.5rem; }
+.layout-desk .site-footer { margin-top: 2.5rem; }
+.consult-banner {
+  display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; padding: .6rem 1.5rem;
+  background: var(--millo-claro); color: #5B3D05; border-bottom: 1px solid #E9C47E; font-size: .95rem;
+}
+.consult-banner a { font-weight: 700; color: #5B3D05; }
+@media (max-width: 900px) {
+  .layout-desk .shell { flex-direction: column; }
+  .sidebar { width: auto; height: auto; position: static; }
+  .js .sidebar .menu-toggle { display: inline-flex; }
+  .js .sidebar .nav-wrap[data-collapsed="true"] { display: none; }
+}
+@media (min-width: 901px) { .sidebar .menu-toggle { display: none !important; } }
+.footer-row { display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: space-between; }
+
+/* ---- Compoñentes da app ---- */
+.app-hello { margin-bottom: 1rem; }
+.app-hello h1 { margin: 0; font-size: 1.7rem; }
+.app-card { background: var(--surface); border-radius: 18px; padding: 1.15rem; box-shadow: var(--shadow-1); margin-bottom: 1rem; }
+.app-card > :last-child { margin-bottom: 0; }
+.app-card--hero { background: var(--granito); color: var(--branco); }
+.app-card--hero .eyebrow { color: var(--millo); }
+.app-card--hero .muted { color: #C9D3CE; }
+.app-card--hero .btn { background: var(--millo); color: var(--granito); }
+.access-code--sm { font-size: 2.1rem; padding: .6rem; margin: .6rem 0 .3rem; background: rgb(0 0 0 / 25%); }
+.app-empty { text-align: center; padding: 1.75rem 1.15rem; }
+.empty-illus { width: 64px; height: 64px; color: var(--musgo-claro); margin-bottom: .5rem; stroke-width: 1.4; }
+.app-alert {
+  display: flex; align-items: center; gap: .75rem; padding: .9rem 1rem; border-radius: 16px; margin-bottom: 1rem;
+  background: var(--millo-claro); color: #4A3104; text-decoration: none;
+}
+.app-alert .icon { width: 26px; height: 26px; flex: none; }
+.app-alert span { flex: 1; }
+.quick-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: 1rem 0; }
+.quick-grid a {
+  display: flex; flex-direction: column; gap: .5rem; padding: 1rem; border-radius: 16px; background: var(--surface);
+  box-shadow: var(--shadow-1); text-decoration: none; color: var(--granito); font-weight: 700; min-height: 96px;
+}
+.quick-grid a .icon { width: 28px; height: 28px; color: var(--musgo); }
+.quick-grid a:hover { background: var(--neboa); }
+.app-list { list-style: none; margin: 0; padding: 0; background: var(--surface); border-radius: 16px; box-shadow: var(--shadow-1); overflow: hidden; }
+.app-list li + li { border-top: 1px solid var(--hair); }
+.app-list a { display: flex; align-items: center; gap: .75rem; padding: .85rem 1rem; text-decoration: none; color: var(--granito); min-height: 56px; }
+.app-list a > span { flex: 1; }
+.app-list a:hover { background: var(--neboa); }
+.app-list .icon { color: var(--text-muted); }
+.h3 { font-size: 1.12rem; }
+.app-header .brand small { color: var(--text-muted); opacity: 1; }
+/* Deputación en modo consulta: o backend rexeita as escrituras; aquí só se ocultan os botóns */
+.region-consult .shell-main form[method="post"]:not(.support-form),
+.region-consult .shell-main .write-link { display: none !important; }
+.sidebar .brand small, .site-header .brand small { color: #C9D3CE; opacity: 1; }

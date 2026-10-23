@@ -3,7 +3,6 @@ import datetime as dt
 
 from django import forms
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -16,7 +15,7 @@ from apps.access.services import booking_access_info, remote_open
 from apps.facilities.models import Facility
 from apps.integrations.registry import get_adapter
 from apps.integrations.weather import advice
-from apps.tenants.urlutils import treverse
+from apps.tenants.urlutils import neighbour_required, treverse
 
 from . import ics, services
 from .models import Booking
@@ -47,7 +46,7 @@ class ConfirmForm(forms.Form):
     )
 
 
-@login_required
+@neighbour_required
 def book(request, pk):
     tenant = request.tenant
     facility = get_object_or_404(Facility, municipality=tenant, pk=pk, is_published=True)
@@ -95,7 +94,7 @@ def book(request, pk):
     )
 
 
-@login_required
+@neighbour_required
 def payment_return(request, pk):
     booking = get_object_or_404(Booking, municipality=request.tenant, pk=pk, user=request.user)
     status = (
@@ -113,7 +112,7 @@ def payment_return(request, pk):
     return redirect(treverse(request.tenant, "bookings:detail", booking.pk))
 
 
-@login_required
+@neighbour_required
 def retry_payment(request, pk):
     booking = get_object_or_404(
         Booking,
@@ -131,7 +130,7 @@ def retry_payment(request, pk):
     return redirect(url)
 
 
-@login_required
+@neighbour_required
 def mine(request):
     qs = (
         Booking.objects.for_tenant(request.tenant)
@@ -174,7 +173,7 @@ def _own_booking(request, pk):
     )
 
 
-@login_required
+@neighbour_required
 def detail(request, pk):
     booking = _own_booking(request, pk)
     url = request.build_absolute_uri(treverse(request.tenant, "bookings:detail", booking.pk))
@@ -196,7 +195,7 @@ def detail(request, pk):
     )
 
 
-@login_required
+@neighbour_required
 def cancel(request, pk):
     booking = _own_booking(request, pk)
     if not booking.can_cancel():
@@ -228,7 +227,7 @@ def cancel(request, pk):
     )
 
 
-@login_required
+@neighbour_required
 def modify(request, pk):
     booking = _own_booking(request, pk)
     if not booking.can_modify():
@@ -269,7 +268,7 @@ def modify(request, pk):
     )
 
 
-@login_required
+@neighbour_required
 def receipt(request, pk):
     booking = _own_booking(request, pk)
     if booking.paid_cents == 0 and booking.price_cents > 0:
@@ -277,7 +276,7 @@ def receipt(request, pk):
     return render(request, "bookings/receipt.html", {"booking": booking, "nav": "bookings"})
 
 
-@login_required
+@neighbour_required
 def ics_one(request, pk):
     booking = _own_booking(request, pk)
     url = request.build_absolute_uri(treverse(request.tenant, "bookings:detail", booking.pk))
@@ -287,7 +286,7 @@ def ics_one(request, pk):
     return response
 
 
-@login_required
+@neighbour_required
 def ics_all(request):
     qs = (
         Booking.objects.for_tenant(request.tenant)
@@ -340,7 +339,7 @@ class ChecklistForm(forms.Form):
             del self.fields["key_ok"]
 
 
-@login_required
+@neighbour_required
 def checklist(request, pk):
     booking = _own_booking(request, pk)
     if booking.closed_at:
@@ -372,7 +371,7 @@ def checklist(request, pk):
     )
 
 
-@login_required
+@neighbour_required
 @require_POST
 def open_lock(request, pk):
     booking = _own_booking(request, pk)

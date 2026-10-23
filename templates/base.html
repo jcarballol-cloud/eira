@@ -3,7 +3,7 @@
 <html lang="{{ LANG }}" class="{{ prefs.classes }}">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>{% block title %}{% endblock %}{% if tenant %} · {{ tenant.name }}{% endif %} · Eira</title>
   <meta name="description" content="{% block description %}{% translate "Eira: reserva e acceso ás instalacións deportivas municipais." %}{% endblock %}">
   <meta name="theme-color" content="#16252B">
@@ -17,89 +17,45 @@
   <script src="{% static 'vendor/htmx/htmx.min.js' %}" defer></script>
   <script src="{% static 'js/eira.js' %}" defer></script>
 </head>
-<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' {% block body_attrs %}{% endblock %}>
+<body class="layout-{{ layout }} kind-{{ kind }}{% if region_consult %} region-consult{% endif %}{% if framed %} framed framed-{{ layout }}{% endif %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' {% block body_attrs %}{% endblock %}>
   <a class="skip-link" href="#main">{% translate "Saltar ao contido" %}</a>
-  {% if demo_tools %}<div class="dev-ribbon" role="note">{% translate "Prototipo de demostración: datos ficticios e servizos simulados." %} <a href="{% url 'home' %}#demo">{% translate "Cambiar de perfil" %}</a> · <a href="{% url 'dev:mailbox' %}">{% translate "Bandexa de correo" %}</a> · <a href="{% url 'dev:lock_simulator' %}">{% translate "Simulador de pechadura" %}</a></div>{% endif %}
+  {% if demo_tools %}
+  <div class="demo-bar" role="note">
+    <span class="demo-bar__label">{% translate "Demo · datos ficticios" %}</span>
+    <a href="{% url 'home' %}#demo">{% icon 'users' %} {% translate "Cambiar de perfil" %}</a>
+    <a href="{% url 'dev:mailbox' %}">{% translate "Correo simulado" %}</a>
+    <a href="{% url 'dev:lock_simulator' %}">{% translate "Pechadura" %}</a>
+    {% if layout == 'app' or layout == 'tablet' %}<a href="?marco={% if framed %}0{% else %}1{% endif %}">{% if framed %}{% translate "Sen marco" %}{% else %}{% translate "Ver en marco" %}{% endif %}</a>{% endif %}
+  </div>
+  {% endif %}
   <div class="offline-banner" id="offline-banner" role="status" hidden>{% translate "Sen conexión. Estás a ver datos gardados; os cambios enviaranse ao recuperar a rede." %}</div>
-  <header class="site-header">
-    <div class="wrap">
-      {% if tenant %}
-        <a class="brand" href="{% turl 'tenant_home' %}">
-          <span class="crest" aria-hidden="true">{% if tenant.coat_of_arms %}<img src="{{ tenant.coat_of_arms.url }}" alt="">{% else %}{{ tenant.initials }}{% endif %}</span>
-          <span>{{ tenant.name }}<small>{% translate "Deportes · Eira" %}</small></span>
-        </a>
-      {% else %}
-        <a class="brand" href="{% url 'home' %}">
-          <span class="crest" aria-hidden="true"><img src="{% static 'img/eira.svg' %}" alt=""></span>
-          <span>Eira<small>{% translate "Instalacións deportivas municipais" %}</small></span>
-        </a>
-      {% endif %}
-      <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="primary-nav">{% translate "Menú" %}</button>
-      <div class="nav-wrap" id="primary-nav" data-collapsed="true">
-        <nav class="nav" aria-label="{% translate 'Principal' %}">
-          {% if tenant %}
-            <a href="{% turl 'tenant_home' %}" {% if nav == 'facilities' %}aria-current="page"{% endif %}>{% translate "Instalacións" %}</a>
-            {% if modules.activities %}<a href="{% turl 'activities:list' %}" {% if nav == 'activities' %}aria-current="page"{% endif %}>{% translate "Actividades" %}</a>{% endif %}
-            {% if user.is_authenticated %}
-              <a href="{% turl 'bookings:mine' %}" {% if nav == 'bookings' %}aria-current="page"{% endif %}>{% translate "As miñas reservas" %}</a>
-              <a href="{% turl 'notifications:list' %}" {% if nav == 'notifications' %}aria-current="page"{% endif %}>{% translate "Avisos" %}{% if unread_notifications %} <span class="count">{{ unread_notifications }}<span class="visually-hidden"> {% translate "sen ler" %}</span></span>{% endif %}</a>
-            {% endif %}
-            <a href="{% turl 'incidents:new' %}" {% if nav == 'incident' %}aria-current="page"{% endif %}>{% translate "Avisar dunha avaría" %}</a>
-            {% if is_tenant_admin %}<a href="{% turl 'manage:dashboard' %}" {% if nav == 'manage' %}aria-current="page"{% endif %}>{% translate "Xestión" %}</a>{% endif %}
-            {% if 'maintenance' in roles or is_tenant_admin %}<a href="{% turl 'maintenance:my_orders' %}" {% if nav == 'operator' %}aria-current="page"{% endif %}>{% translate "Operario" %}</a>{% endif %}
-            {% if 'monitor' in roles %}<a href="{% turl 'monitor:today' %}" {% if nav == 'monitor' %}aria-current="page"{% endif %}>{% translate "Monitor" %}</a>{% endif %}
-          {% endif %}
-          {% if user.is_authenticated %}
-            <a href="{% url 'account:profile' %}" {% if nav == 'account' %}aria-current="page"{% endif %}>{% icon 'user' %} {% translate "A miña conta" %}</a>
-          {% else %}
-            <a href="{% url 'accounts:login' %}?next={{ request.get_full_path|urlencode }}">{% icon 'user' %} {% translate "Acceder" %}</a>
-          {% endif %}
-        </nav>
-      </div>
-      <form class="lang-form" action="{% url 'set_language' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ request.get_full_path }}">
-        {% get_available_languages as LANGS %}
-        {% for code, name in LANGS %}
-          <button type="submit" name="language" value="{{ code }}" lang="{{ code }}" {% if code == LANG %}aria-current="true"{% endif %} aria-label="{{ name }}">{{ code|upper }}</button>
-        {% endfor %}
-      </form>
-    </div>
-  </header>
-  {% block subnav %}{% endblock %}
-  <div id="live" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
-  <main id="main" tabindex="-1">
-    <div class="wrap">
-      {% if messages %}
-        <div role="status">
-          <ul class="messages">
-            {% for message in messages %}<li class="alert {% if message.tags == 'error' %}alert-error{% elif message.tags == 'warning' %}alert-warn{% elif message.tags == 'success' %}alert-success{% endif %}">{{ message }}</li>{% endfor %}
-          </ul>
-        </div>
-      {% endif %}
-    </div>
-    {% block hero %}{% endblock %}
-    <div class="wrap">
-      {% block content %}{% endblock %}
-    </div>
-  </main>
-  <footer class="site-footer">
-    <div class="wrap">
-      <div>
-        <strong>Eira</strong> · {% translate "software libre baixo licenza" %} <a href="https://interoperable-europe.ec.europa.eu/collection/eupl/eupl-text-eupl-12" hreflang="en">EUPL-1.2</a>
-        {% if tenant %}<br>{{ tenant.name }}{% if tenant.contact_phone %} · {% translate "Tel." %} {{ tenant.contact_phone }}{% endif %}{% if tenant.contact_email %} · {{ tenant.contact_email }}{% endif %}{% endif %}
-      </div>
-      <ul>
-        {% if tenant %}
-          <li><a href="{% turl 'privacy' %}">{% translate "Privacidade" %}</a></li>
-          <li><a href="{% turl 'accessibility' %}">{% translate "Accesibilidade" %}</a></li>
-          <li><a href="{% turl 'open_data:index' %}">{% translate "Datos abertos" %}</a></li>
+
+  <div class="stage">
+  <div class="shell shell-{{ layout }}">
+    {% if layout == 'desk' %}{% include "includes/shell_desk.html" %}
+    {% elif layout == 'app' or layout == 'tablet' %}{% include "includes/shell_app_header.html" %}
+    {% else %}{% include "includes/shell_public.html" %}{% endif %}
+
+    <div class="shell-body">
+      {% if layout == 'desk' %}{% include "includes/shell_desk_top.html" %}{% endif %}
+      <div id="live" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+      <main id="main" tabindex="-1" class="shell-main">
+        {% if messages %}
+          <div class="wrap" role="status">
+            <ul class="messages">
+              {% for message in messages %}<li class="alert {% if message.tags == 'error' %}alert-error{% elif message.tags == 'warning' %}alert-warn{% elif message.tags == 'success' %}alert-success{% endif %}">{{ message }}</li>{% endfor %}
+            </ul>
+          </div>
         {% endif %}
-        <li><a href="{% url 'preferences' %}?next={{ request.get_full_path|urlencode }}">{% translate "Preferencias de lectura" %}</a></li>
-        <li><a href="{% url 'health' %}">{% translate "A miña saúde (só no dispositivo)" %}</a></li>
-        <li><a href="{% url 'schema' %}">API (OpenAPI 3.1)</a></li>
-      </ul>
+        {% block hero %}{% endblock %}
+        <div class="wrap">
+          {% block content %}{% endblock %}
+        </div>
+        {% if layout == 'public' or layout == 'desk' %}{% include "includes/shell_footer.html" %}{% endif %}
+      </main>
+      {% if layout == 'app' %}{% include "includes/shell_tabbar.html" %}{% endif %}
     </div>
-  </footer>
+  </div>
+  </div>
 </body>
 </html>

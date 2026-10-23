@@ -7,5 +7,5 @@ app_name = "maintenance"
 urlpatterns = [
     path("", views.my_orders, name="my_orders"),
     path("orde/<int:pk>/", views.order_detail, name="order"),
-    path("calendario/", views.shared_calendar, name="calendar"),
+    path("calendario/", views.operator_calendar, name="calendar"),
 ]

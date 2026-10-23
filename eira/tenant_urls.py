@@ -11,6 +11,7 @@ urlpatterns = [
     path("tema.css", core.theme_css, name="theme_css"),
     path("privacidade/", core.privacy, name="privacy"),
     path("accesibilidade/", core.accessibility, name="accessibility"),
+    path("app/", include("eira.app_urls")),
     path("instalacions/", include("apps.facilities.urls")),
     path("reservas/", include("apps.bookings.urls")),
     path("acceso/", include("apps.access.urls")),

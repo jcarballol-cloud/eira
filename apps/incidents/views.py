@@ -1,14 +1,13 @@
 # SPDX-License-Identifier: EUPL-1.2
 from django import forms
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
 from apps.facilities.models import Facility
 from apps.tenants.uploads import clean_image
-from apps.tenants.urlutils import treverse
+from apps.tenants.urlutils import neighbour_required, treverse
 
 from .models import Incident
 from .services import notify_staff_new_incident
@@ -48,7 +47,7 @@ class IncidentForm(forms.ModelForm):
         return photo
 
 
-@login_required
+@neighbour_required
 def new(request):
     initial = {}
     if request.GET.get("instalacion"):
@@ -76,7 +75,7 @@ def new(request):
     return render(request, "incidents/new.html", {"form": form, "mine": mine, "nav": "incident"})
 
 
-@login_required
+@neighbour_required
 def detail(request, pk):
     incident = get_object_or_404(
         Incident, municipality=request.tenant, pk=pk, reporter=request.user

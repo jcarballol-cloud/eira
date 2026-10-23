@@ -1,0 +1,20 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{{ order.title }}{% endblock %}
+{% block content %}
+<nav class="mb-1" aria-label="{% translate 'Migas' %}"><a href="{% turl 'manage:work_orders' %}">{% translate "Ordes de traballo" %}</a> / <span aria-current="page">#{{ order.pk }}</span></nav>
+<div class="page-head"><div><p class="eyebrow">{{ order.facility.name }}</p><h1>{{ order.title }}</h1>{% if order.description %}<p>{{ order.description }}</p>{% endif %}</div><span class="badge big">{{ order.get_status_display }}</span></div>
+<div class="layout-aside">
+  <section class="card stack-sm">
+    <h2>{% translate "Checklist" %}</h2>
+    <ul class="list">{% for item in order.checklist_state %}<li>{% if item.done %}{% icon 'check' %}{% else %}○{% endif %} {{ item.label }}</li>{% empty %}<li class="muted">{% translate "Sen checklist." %}</li>{% endfor %}</ul>
+    {% if order.closing_notes %}<p><strong>{% translate "Notas de peche" %}:</strong> {{ order.closing_notes }}</p>{% endif %}
+    {% for p in order.photos.all %}<img src="{{ p.image.url }}" alt="{% translate 'Foto do traballo' %}" class="card" loading="lazy">{% endfor %}
+    {% if order.incident %}<p><a href="{% turl 'manage:incident_detail' order.incident.pk %}">{% translate "Ver a incidencia de orixe" %} #{{ order.incident.pk }}</a></p>{% endif %}
+  </section>
+  <aside>
+    {% if order.status != 'done' %}
+    <form method="post" class="card" novalidate>{% csrf_token %}<h2>{% translate "Asignación" %}</h2>{% include "includes/form.html" %}<button class="btn" type="submit">{% translate "Gardar" %}</button></form>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}

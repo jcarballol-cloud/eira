@@ -972,3 +972,67 @@ html.pref-large-text .daychip__dow { font-size: .62rem; letter-spacing: 0; }
 html.pref-high-contrast .pill { border: 2px solid #000; }
 /* A app da veciñanza é sempre dunha columna (como no teléfono), tamén sen marco no escritorio */
 .layout-app .layout-aside { grid-template-columns: minmax(0, 1fr); }
+
+/* ==== v3: densidade compacta por defecto ====
+   Escala de app moderna: base de 15 px, menos recheo e botóns máis baixos.
+   «Texto grande» (html.pref-large-text) non entra aquí: conserva as alturas cómodas e escala ao 125 %.
+   A tableta da monitora (body.layout-tablet) tampouco: botóns grandes para dedos de nenos e maiores. */
+html:not(.pref-large-text):not(:has(> body.layout-tablet)) { font-size: 93.75%; }
+html:not(.pref-large-text) body:not(.layout-tablet) { line-height: 1.45; --radius: 12px; --tabbar-h: 56px; }
+html:not(.pref-large-text) body:not(.layout-tablet) h1 { font-size: clamp(1.35rem, 1.1rem + 1vw, 1.85rem); }
+html:not(.pref-large-text) body:not(.layout-tablet) h2 { font-size: clamp(1.1rem, 1rem + .4vw, 1.3rem); }
+html:not(.pref-large-text) body:not(.layout-tablet) h3 { font-size: 1rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) .btn { min-height: 38px; padding: .42rem .95rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) .btn-lg { min-height: 44px; font-size: 1rem; padding: .55rem 1.2rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) .btn-sm { min-height: 30px; padding: .22rem .65rem; font-size: .84rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) :is(input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], input[type="time"], input[type="datetime-local"], input[type="search"], input[type="url"], input[type="password"], select, textarea) { min-height: 38px; padding: .4rem .6rem; border-width: 1.5px; }
+html:not(.pref-large-text) body:not(.layout-tablet) textarea { min-height: 5rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) .field { margin-bottom: .8rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) .card { padding: 1rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) .card-flat { padding: .85rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) .page-head { margin-bottom: .9rem; gap: .6rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) .list > li { padding: .55rem 0; }
+html:not(.pref-large-text) body:not(.layout-tablet) .list > li.card { padding: 1rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) table.data { font-size: .9rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) table.data th, html:not(.pref-large-text) body:not(.layout-tablet) table.data td { padding: .42rem .6rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) table.data thead th { font-size: .74rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) .stat { padding: .7rem .85rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) .stat .value { font-size: 1.55rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) .stack > * + * { margin-top: .75rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) .layout-aside { gap: 1rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) .grid { gap: .75rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) .shell-main { padding: 1rem 0 1.75rem; }
+html:not(.pref-large-text) body.layout-app .shell-main { padding: .75rem 0 1.25rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) .badge { font-size: .76rem; padding: .08rem .5rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) .alert { padding: .65rem .85rem; }
+/* App da veciñanza e do operario */
+html:not(.pref-large-text) body.layout-app .app-header { min-height: 52px; padding: .35rem .6rem .35rem .85rem; }
+html:not(.pref-large-text) body.layout-app .app-hello { margin-bottom: .6rem; }
+html:not(.pref-large-text) body.layout-app .app-hello h1 { font-size: 1.4rem; }
+html:not(.pref-large-text) body.layout-app .app-card { padding: .9rem; border-radius: 14px; margin-bottom: .7rem; }
+html:not(.pref-large-text) body.layout-app .app-alert { padding: .6rem .8rem; border-radius: 12px; margin-bottom: .6rem; gap: .6rem; }
+html:not(.pref-large-text) body.layout-app .app-alert .icon { width: 22px; height: 22px; }
+html:not(.pref-large-text) body.layout-app .access-code--sm { font-size: 1.7rem; padding: .45rem; margin: .45rem 0 .25rem; }
+html:not(.pref-large-text) body.layout-app .quick-grid { gap: .55rem; margin: .75rem 0; }
+html:not(.pref-large-text) body.layout-app .quick-grid a { padding: .75rem; min-height: 76px; border-radius: 12px; gap: .35rem; }
+html:not(.pref-large-text) body.layout-app .quick-grid a .icon { width: 22px; height: 22px; }
+html:not(.pref-large-text) body.layout-app .tabbar a .icon { width: 22px; height: 22px; }
+html:not(.pref-large-text) body:not(.layout-tablet) .facility-card .body { padding: .75rem .9rem .85rem; gap: .35rem; }
+html:not(.pref-large-text) body:not(.layout-tablet) .facility-card h3 { font-size: 1rem; }
+/* Escritorio do concello */
+html:not(.pref-large-text) body.layout-desk .sidebar { width: 228px; padding: .75rem .6rem; gap: .6rem; }
+html:not(.pref-large-text) body.layout-desk .sidenav a { min-height: 34px; padding: .35rem .6rem; font-size: .88rem; }
+html:not(.pref-large-text) body.layout-desk .sidenav__group { margin: .65rem .6rem .15rem; }
+html:not(.pref-large-text) body.layout-desk .desk-top { min-height: 50px; padding: .4rem 1.25rem; }
+/* App e tableta sen marco: o body ocupa a pantalla e o shell o que queda despois da barra de demo
+   (antes o shell medía 100dvh e a barra de pestanas quedaba fóra da pantalla). */
+body.layout-app:not(.framed), body.layout-tablet:not(.framed) { height: 100dvh; min-height: 0; }
+body.layout-app:not(.framed) .shell, body.layout-tablet:not(.framed) .shell { height: auto; }
+@media (max-width: 699px) {
+  body.layout-app.framed { height: 100dvh; min-height: 0; }
+  body.layout-app.framed .shell { height: auto; }
+}
+@media (max-width: 1099px) {
+  body.layout-tablet.framed { height: 100dvh; min-height: 0; }
+  body.layout-tablet.framed .shell { height: auto; }
+}

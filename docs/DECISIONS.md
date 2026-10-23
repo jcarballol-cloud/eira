@@ -240,3 +240,15 @@ Formato: data · decisión · motivo · alternativas descartadas.
 - **Prezo por franxa.** `week_grid` calcula a tarifa máis favorable da persoa unha vez e aplícalle o desconto de cada franxa. No modo concello non se amosan prezos.
 - **Texto grande:** pastillas máis altas e en dúas columnas; nunha columna en pantallas moi estreitas.
 - **Igual en toda a app.** É o mesmo compoñente para a veciñanza, «Reservar por alguén» e «Cambiar hora». A app da veciñanza sempre é dunha columna, tamén no escritorio sen marco.
+
+## v3 · 1 — Densidade
+- **Escala compacta por defecto** (capa final do CSS, `html:not(.pref-large-text) body:not(.layout-tablet)`):
+  - base de 15 px (93,75 %) e liña de 1,45;
+  - títulos máis pequenos;
+  - botóns de 38 px (30 px os pequenos e 44 px os grandes) e campos de 38 px;
+  - menos recheo en tarxetas, listas, táboas, cabeceiras, barra de pestanas (56 px) e menú lateral (228 px).
+  - Os botóns seguen por riba do mínimo de WCAG 2.2 AA (24 × 24 px).
+- **«Texto grande»** non pasa por esa capa: escala ao 125 % e recupera as alturas cómodas (botóns de ~52 px).
+- **A tableta da monitora** queda fóra (16 px e botóns grandes).
+- **Fallo previo atopado ao facer as capturas.** Na app sen marco, o shell medía `100dvh` e a barra de demo empuxaba a barra de pestanas fóra da pantalla. Agora o `body` mide 100dvh e o shell ocupa o que queda, tamén en pantallas estreitas cando a cookie do marco está activa.
+- Capturas antes e despois en móbil, tableta e escritorio: `docs/capturas/v3/densidade/`.

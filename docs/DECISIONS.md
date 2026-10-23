@@ -218,3 +218,25 @@ Formato: data · decisión · motivo · alternativas descartadas.
   3. Engadín o botón «Restablecer a pechadura (só demo)».
   4. En escritorio, teclado e «Como funciona» van en dúas columnas; en móbil, unha debaixo da outra.
 - **Cl@ve.** Con outra sesión aberta, `login()` baleira a sesión ao cambiar de persoa, perdíase o destino e a persoa acababa en Pontedouro, que é o primeiro concello alfabeticamente. Agora o destino e o último concello visitado (`last_tenant`, gardado só se xa hai sesión) lense antes de `login()`. Se a identificación caduca ou se reutiliza, explícase e mantense o destino. O mesmo arranxo aplícase ao acceso por código.
+
+## v3 · 2 — Selector de franxas
+- **Problema reproducido** (`docs/capturas/v3/franxas-antes-movil.png`): no móbil, un acordeón por día cunha liña por franxa (moito scroll) e a palabra «Recomendada» dentro do botón.
+- **Deseño novo:**
+  - **Tira de 7 días** (lapelas WAI-ARIA, frechas, Inicio e Fin), con puntos que indican franxas tranquilas (ámbar) e reserva propia (verde).
+  - Debaixo, unha **grella de pastillas** de ~5 rem coa hora e o prezo:
+    - tranquila: ★ e prezo con desconto, co prezo base tachado;
+    - ocupada ou pechada: atenuada, con borde descontinuo, hora riscada e texto «Ocupada»;
+    - propia: ✓.
+  - **Lenda** unha soa vez e **resumo fixo** («Sáb 24 · 09:00–10:30 · 3,20 € ~~4,00 €~~ · Reservar»).
+- **Melloras sobre a proposta, e por que:**
+  - Tocar unha pastilla **escolle**, non navega: así pódese comparar e corrixir antes de reservar. O botón do resumo leva á confirmación.
+  - Sen JavaScript, a pastilla é unha ligazón directa e amósanse todos os días seguidos.
+  - As franxas **pasadas non se amosan** (menos ruído); un día sen franxas di «Non quedan franxas este día».
+  - A navegación entre semanas queda como frechas ‹ › co mes.
+- **Accesibilidade.**
+  - Cada pastilla ten `aria-label` completo («sábado 24, 15:00, libre, recomendada, 3,20 € en vez de 4,00 €»).
+  - O estado non depende só da cor: hai ★, ✓, texto e liña de borde.
+  - A escollida leva `aria-current`.
+- **Prezo por franxa.** `week_grid` calcula a tarifa máis favorable da persoa unha vez e aplícalle o desconto de cada franxa. No modo concello non se amosan prezos.
+- **Texto grande:** pastillas máis altas e en dúas columnas; nunha columna en pantallas moi estreitas.
+- **Igual en toda a app.** É o mesmo compoñente para a veciñanza, «Reservar por alguén» e «Cambiar hora». A app da veciñanza sempre é dunha columna, tamén no escritorio sen marco.

@@ -158,11 +158,35 @@
     root.querySelector('[role="tablist"]').hidden = false;
     root.classList.add("is-ready");
     var withErrors = root.querySelector("[data-has-errors]");
-    var first = withErrors ? document.getElementById(withErrors.getAttribute("aria-labelledby")) : tabs[0];
+    var first = withErrors ? document.getElementById(withErrors.getAttribute("aria-labelledby"))
+      : (root.querySelector('[role="tab"][data-initial]') || tabs[0]);
     select(first, false);
   }
   document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll("[data-tabs]").forEach(setupTabs);
+  });
+  // Contido novo por HTMX (p. ex. cambio de semana no selector de franxas)
+  document.addEventListener("htmx:afterSwap", function (e) {
+    var root = e.detail.target;
+    if (root && root.querySelectorAll) root.querySelectorAll("[data-tabs]").forEach(setupTabs);
+  });
+
+  // Selector de franxas: tocar unha pastilla escóllea e amosa o resumo fixo con «Reservar».
+  // Sen JS, a pastilla é unha ligazón normal á confirmación.
+  document.addEventListener("click", function (e) {
+    var pill = e.target.closest && e.target.closest("a.pill[data-pick]");
+    if (!pill) return;
+    var picker = pill.closest("[data-picker]");
+    var sum = picker && picker.querySelector("[data-picksum]");
+    if (!sum) return;
+    e.preventDefault();
+    picker.querySelectorAll("a.pill[aria-current]").forEach(function (p) { p.removeAttribute("aria-current"); });
+    pill.setAttribute("aria-current", "true");
+    sum.querySelector("[data-picksum-when]").textContent = pill.getAttribute("data-pick");
+    sum.querySelector("[data-picksum-price]").textContent = pill.getAttribute("data-price") || "";
+    sum.querySelector("[data-picksum-base]").textContent = pill.getAttribute("data-base") || "";
+    sum.querySelector("[data-picksum-go]").setAttribute("href", pill.getAttribute("href"));
+    sum.hidden = false;
   });
 
   // Instalación da app (Chrome/Android); en iPhone móstranse as instrucións

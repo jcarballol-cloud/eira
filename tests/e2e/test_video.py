@@ -116,10 +116,15 @@ def run_script(page, base, d):
     d.go(c + "/")
     page.click("main a:has-text('Pista de pádel da Pereira')")
     page.wait_for_load_state("networkidle")
-    slot = page.locator("a.slot-recommended:visible")
+    rec_day = page.locator(".daychip:has(.daychip__dot.is-rec)").first
+    if rec_day.count():
+        rec_day.click()
+    slot = page.locator(".daypanel:not([hidden]) a.pill-recommended")
+    slot = slot if slot.count() else page.locator(".daypanel:not([hidden]) a.pill[data-pick]")
     slot.first.scroll_into_view_if_needed()
-    d.say("★ Franxas tranquilas: máis baratas, para repartir mellor o uso.", 3)
     slot.first.click()
+    d.say("★ Franxas tranquilas: máis baratas, para repartir mellor o uso.", 3)
+    page.click("[data-picksum-go]")
     page.wait_for_load_state("networkidle")
     d.say("Prezo de veciñanza co desconto á vista. Normas versionadas e tempo previsto.", 3.2)
     page.check("#id_accept_rules")

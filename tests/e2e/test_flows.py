@@ -41,7 +41,8 @@ def test_email_login_and_booking_with_offline_code(new_page, base):
     padel = Facility.objects.get(municipality__slug="vilardeiras", kind="padel")
     page.goto(f"{base}/c/vilardeiras/instalacions/{padel.pk}/")
     # Primeira franxa libre na vista móbil (lista por días)
-    page.locator(".day-list details[open] a.slot").first.click()
+    page.locator(".daypanel:not([hidden]) a.pill[data-pick]").first.click()
+    page.click("[data-picksum-go]")
     page.check("#id_accept_rules")
     page.click("button.btn-lg")
     assert "/dev/tpv/" in page.url
@@ -98,10 +99,13 @@ def test_htmx_week_navigation_announces(new_page, base):
     padel = Facility.objects.get(municipality__slug="vilardeiras", kind="padel")
     page = new_page(bypass_csp=True)  # wait_for_function avalía JS
     page.goto(f"{base}/c/vilardeiras/instalacions/{padel.pk}/")
-    page.click("text=Semana seguinte")
+    page.click("a[aria-label='Semana seguinte']")
     page.wait_for_function("document.getElementById('live').textContent.length > 0")
     assert "Semana" in page.locator("#live").text_content()
     assert "semana=" in page.url
+    # despois do intercambio HTMX, a tira de días volve funcionar
+    page.wait_for_selector(".daystrip:not([hidden])")
+    assert page.locator(".daypanel:not([hidden])").count() == 1
 
 
 def test_operator_offline_queue_syncs(new_page, base):

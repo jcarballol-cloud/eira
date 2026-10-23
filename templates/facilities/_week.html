@@ -1,40 +1,70 @@
 {% load i18n eira %}
-<div data-announce="{% blocktranslate with d=monday|date:'j \d\e F' %}Semana do {{ d }}{% endblocktranslate %}">
-<div class="week-nav">
-  {% if prev_week %}<a class="btn btn-secondary btn-sm" href="?semana={{ prev_week|date:'Y-m-d' }}{% if facility_param %}{{ facility_param }}{% endif %}" {% if not staff_mode and not modify_mode %}hx-get="?semana={{ prev_week|date:'Y-m-d' }}" hx-target="#week" hx-push-url="true"{% endif %}>← {% translate "Semana anterior" %}</a>{% else %}<span></span>{% endif %}
-  <strong>{% blocktranslate with a=monday|date:'j/n' %}Semana do {{ a }}{% endblocktranslate %}</strong>
-  {% if next_week %}<a class="btn btn-secondary btn-sm" href="?semana={{ next_week|date:'Y-m-d' }}{% if facility_param %}{{ facility_param }}{% endif %}" {% if not staff_mode and not modify_mode %}hx-get="?semana={{ next_week|date:'Y-m-d' }}" hx-target="#week" hx-push-url="true"{% endif %}>{% translate "Semana seguinte" %} →</a>{% else %}<span></span>{% endif %}
-</div>
-<ul class="legend" aria-label="{% translate 'Lenda' %}">
-  <li><span class="swatch slot-free" aria-hidden="true"></span>○ {% translate "Libre" %}</li>
-  <li><span class="swatch slot-recommended" aria-hidden="true"></span>★ {% translate "Recomendada (pouca demanda)" %}{% if tenant.low_demand_discount_pct %} · −{{ tenant.low_demand_discount_pct }} %{% endif %}</li>
-  {% if facility.is_shared %}<li><span class="swatch slot-few" aria-hidden="true"></span>◔ {% translate "Pouca xente" %}</li>{% endif %}
-  <li><span class="swatch slot-busy" aria-hidden="true"></span>● {% translate "Ocupada" %}</li>
-  <li><span class="swatch slot-closed" aria-hidden="true"></span>✕ {% translate "Pechada" %}</li>
-  <li><span class="swatch slot-mine" aria-hidden="true"></span>✓ {% translate "A túa reserva" %}</li>
-</ul>
-<div class="week-scroll has-daylist" tabindex="0">
-<table class="week">
-  <caption class="visually-hidden">{% blocktranslate with f=facility.name %}Dispoñibilidade semanal de {{ f }}. Filas: horas; columnas: días.{% endblocktranslate %}</caption>
-  <thead><tr><th scope="col"><span class="visually-hidden">{% translate "Hora" %}</span></th>{% for d in grid.days %}<th scope="col">{{ d|date:"D" }}<br><small>{{ d|date:"j/n" }}</small></th>{% endfor %}</tr></thead>
-  <tbody>
-  {% for row in grid.rows %}
-    <tr><th scope="row">{{ row.time|time:"H:i" }}</th>
-    {% for s in row.cells %}
-      <td>{% include "facilities/_slot.html" %}</td>
-    {% endfor %}</tr>
-  {% empty %}
-    <tr><td colspan="8">{% translate "A instalación non abre esta semana." %}</td></tr>
-  {% endfor %}
-  </tbody>
-</table>
-</div>
-<div class="day-list">
-  {% for day, slots in grid.by_day %}
-    <details {% if day == grid.open_day %}open{% endif %}>
-      <summary>{{ day|date:"l j \d\e F" }} · {% blocktranslate count n=slots|length %}{{ n }} franxa{% plural %}{{ n }} franxas{% endblocktranslate %}</summary>
-      <ul>{% for s in slots %}<li>{% include "facilities/_slot.html" with mobile=True %}</li>{% empty %}<li>{% translate "Pechado" %}</li>{% endfor %}</ul>
-    </details>
-  {% endfor %}
-</div>
+{# Selector de franxas: tira de días (lapelas) + grella de pastillas + resumo fixo. Sen JS: todos os días seguidos e cada pastilla leva directamente á confirmación. #}
+<div class="picker" data-picker data-announce="{% blocktranslate with d=monday|date:'j \d\e F' %}Semana do {{ d }}{% endblocktranslate %}">
+  <div class="picker__week">
+    {% if prev_week %}<a class="icon-btn" href="?semana={{ prev_week|date:'Y-m-d' }}{% if facility_param %}{{ facility_param }}{% endif %}" {% if not staff_mode and not modify_mode %}hx-get="?semana={{ prev_week|date:'Y-m-d' }}" hx-target="#week" hx-push-url="true"{% endif %} aria-label="{% translate 'Semana anterior' %}">‹</a>{% else %}<span class="icon-btn is-disabled" aria-hidden="true">‹</span>{% endif %}
+    <strong>{{ monday|date:"F" }}</strong>
+    {% if next_week %}<a class="icon-btn" href="?semana={{ next_week|date:'Y-m-d' }}{% if facility_param %}{{ facility_param }}{% endif %}" {% if not staff_mode and not modify_mode %}hx-get="?semana={{ next_week|date:'Y-m-d' }}" hx-target="#week" hx-push-url="true"{% endif %} aria-label="{% translate 'Semana seguinte' %}">›</a>{% else %}<span class="icon-btn is-disabled" aria-hidden="true">›</span>{% endif %}
+  </div>
+
+  <div data-tabs>
+    <div class="daystrip" role="tablist" aria-label="{% translate 'Día' %}" hidden>
+      {% for d in grid.picker %}
+      <button type="button" role="tab" class="daychip{% if not d.bookable and not d.mine %} is-empty{% endif %}" id="dtab-{{ d.day|date:'Ymd' }}" aria-controls="dpanel-{{ d.day|date:'Ymd' }}" aria-selected="false" tabindex="-1" {% if d.selected %}data-initial{% endif %}>
+        <span class="daychip__dow">{{ d.day|date:"D" }}</span>
+        <span class="daychip__num">{{ d.day|date:"j" }}</span>
+        <span class="daychip__dots" aria-hidden="true">{% if d.recommended %}<span class="daychip__dot is-rec"></span>{% endif %}{% if d.mine %}<span class="daychip__dot is-mine"></span>{% endif %}</span>
+        <span class="visually-hidden">{{ d.day|date:"l j" }}{% if d.bookable %}, {% blocktranslate count n=d.bookable %}{{ n }} franxa libre{% plural %}{{ n }} franxas libres{% endblocktranslate %}{% else %}, {% translate "sen franxas libres" %}{% endif %}{% if d.recommended %}, {% translate "con franxas recomendadas" %}{% endif %}{% if d.mine %}, {% translate "tes unha reserva" %}{% endif %}</span>
+      </button>
+      {% endfor %}
+    </div>
+
+    <ul class="picker__legend" aria-label="{% translate 'Lenda' %}">
+      <li><span class="lg lg-free" aria-hidden="true"></span>{% translate "Libre" %}</li>
+      <li><span class="lg lg-rec" aria-hidden="true">★</span>{% translate "Tranquila" %}{% if tenant.low_demand_discount_pct %} −{{ tenant.low_demand_discount_pct }} %{% endif %}</li>
+      <li><span class="lg lg-busy" aria-hidden="true"></span>{% translate "Ocupada" %}</li>
+      <li><span class="lg lg-mine" aria-hidden="true">✓</span>{% translate "A túa" %}</li>
+    </ul>
+
+    {% for d in grid.picker %}
+    <section class="tab-panel daypanel" role="tabpanel" id="dpanel-{{ d.day|date:'Ymd' }}" aria-labelledby="dtab-{{ d.day|date:'Ymd' }}">
+      <h3 class="tab-panel__title daypanel__title">{{ d.day|date:"l j \d\e F" }}</h3>
+      {% if d.slots %}
+      <ul class="pills" role="list">
+        {% for s in d.slots %}
+        {% with day_label=s.start|date:"l j" when=s.start|hhmm until=s.end|hhmm %}
+        <li>
+          {% if s.bookable and is_neighbour or s.bookable and staff_mode %}
+          <a class="pill pill-{{ s.status }}"
+             href="{% if staff_mode %}?instalacion={{ facility.pk }}&amp;inicio={{ s.start|date:'c'|urlencode }}{% elif modify_mode %}?inicio={{ s.start|date:'c'|urlencode }}{% else %}{% turl 'facilities:book' facility.pk %}?inicio={{ s.start|date:'c'|urlencode }}{% endif %}"
+             data-pick="{{ s.start|date:'D j' }} · {{ when }}–{{ until }}"
+             {% if s.price_cents is not None and not staff_mode %}data-price="{% if s.price_cents %}{{ s.price_cents|euros }}{% else %}{% translate 'Gratuíta' %}{% endif %}"{% if s.discount_pct %} data-base="{{ s.base_cents|euros }}"{% endif %}{% endif %}
+             aria-label="{{ day_label }}, {{ when }}, {% if s.status == 'recommended' %}{% translate 'libre, recomendada' %}{% elif s.status == 'few' %}{% translate 'libre, pouca xente' %}{% else %}{% translate 'libre' %}{% endif %}{% if s.price_cents is not None and not staff_mode %}, {% if s.price_cents %}{{ s.price_cents|euros }}{% if s.discount_pct %} {% blocktranslate with b=s.base_cents|euros %}en vez de {{ b }}{% endblocktranslate %}{% endif %}{% else %}{% translate 'gratuíta' %}{% endif %}{% endif %}{% if s.capacity > 1 %}, {% blocktranslate with b=s.booked c=s.capacity %}{{ b }} de {{ c }} prazas ocupadas{% endblocktranslate %}{% endif %}">
+            {% if s.status == 'recommended' %}<span class="pill__star" aria-hidden="true">★</span>{% endif %}
+            <span class="pill__time" aria-hidden="true">{{ when }}</span>
+            {% if s.price_cents is not None and not staff_mode %}<span class="pill__price" aria-hidden="true">{% if s.price_cents %}{{ s.price_cents|euros }}{% if s.discount_pct %} <s>{{ s.base_cents|euros }}</s>{% endif %}{% else %}{% translate "Gratuíta" %}{% endif %}</span>{% elif s.status == 'few' %}<span class="pill__price" aria-hidden="true">{% translate "pouca xente" %}</span>{% endif %}
+          </a>
+          {% elif s.status == 'mine' and s.mine and is_neighbour %}
+          <a class="pill pill-mine" href="{% turl 'bookings:detail' s.mine.pk %}" aria-label="{{ day_label }}, {{ when }}, {% translate 'a túa reserva' %}">
+            <span class="pill__star" aria-hidden="true">✓</span><span class="pill__time" aria-hidden="true">{{ when }}</span><span class="pill__price" aria-hidden="true">{% translate "A túa" %}</span>
+          </a>
+          {% else %}
+          <span class="pill pill-{{ s.status }}" aria-label="{{ day_label }}, {{ when }}, {{ s.label|lower }}{% if s.closure_reason %} ({{ s.closure_reason }}){% endif %}" {% if s.closure_reason %}title="{{ s.closure_reason }}"{% endif %}>
+            {% if s.status == 'mine' %}<span class="pill__star" aria-hidden="true">✓</span>{% endif %}
+            <span class="pill__time" aria-hidden="true">{{ when }}</span><span class="pill__price" aria-hidden="true">{{ s.label }}</span>
+          </span>
+          {% endif %}
+        </li>
+        {% endwith %}
+        {% endfor %}
+      </ul>
+      {% else %}<p class="muted daypanel__empty">{% translate "Non quedan franxas este día." %}</p>{% endif %}
+    </section>
+    {% empty %}<p class="muted">{% translate "A instalación non abre esta semana." %}</p>{% endfor %}
+  </div>
+
+  <div class="picksum" data-picksum hidden role="region" aria-label="{% translate 'Franxa escollida' %}" aria-live="polite">
+    <div class="picksum__text"><strong data-picksum-when></strong> <span data-picksum-price></span> <s data-picksum-base></s></div>
+    <a class="btn" data-picksum-go href="#">{% if staff_mode %}{% translate "Escoller" %}{% elif modify_mode %}{% translate "Cambiar a esta hora" %}{% else %}{% translate "Reservar" %}{% endif %}</a>
+  </div>
 </div>

@@ -907,3 +907,68 @@ del { color: var(--text-muted); }
 .lock-form__label { display: block; font-weight: 700; color: #E5E7EB; margin-bottom: .3rem; }
 .lock-code { width: 100%; font-family: var(--mono); font-size: 1.6rem; letter-spacing: .3em; text-align: center; }
 .devtool--external { background: #EEF1F5; }
+
+/* ---- v3: selector de franxas (tira de días + pastillas + resumo fixo) ---- */
+.picker { position: relative; }
+.picker__week { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-bottom: .4rem; }
+.picker__week strong { text-transform: capitalize; font-size: .95rem; }
+.picker .icon-btn { display: inline-grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 50%; border: 1px solid var(--liña); background: var(--branco); color: var(--granito); font-size: 1.25rem; text-decoration: none; line-height: 1; }
+.picker .icon-btn.is-disabled { opacity: .35; }
+.daystrip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: .3rem; margin: 0 0 .6rem; border: 0; }
+.daychip { appearance: none; display: flex; flex-direction: column; align-items: center; gap: .05rem; padding: .35rem 0 .3rem; border: 1px solid var(--liña); border-radius: 12px; background: var(--branco); color: var(--granito); font: inherit; cursor: pointer; min-height: 3.6rem; }
+.daychip__dow { font-size: .72rem; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted); }
+.daychip__num { font-size: 1.05rem; font-weight: 800; line-height: 1.1; }
+.daychip__dots { display: flex; gap: .2rem; min-height: .38rem; }
+.daychip__dot { width: .38rem; height: .38rem; border-radius: 50%; background: transparent; }
+.daychip__dot.is-rec { background: var(--millo, #E2A53A); }
+.daychip__dot.is-mine { background: var(--musgo); }
+.daychip.is-empty .daychip__num { color: var(--text-muted); font-weight: 600; }
+.daychip[aria-selected="true"] { background: var(--granito); border-color: var(--granito); color: #fff; }
+.daychip[aria-selected="true"] .daychip__dow { color: #D7DEE0; }
+.daychip:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.picker__legend { list-style: none; display: flex; flex-wrap: wrap; gap: .2rem .85rem; padding: 0; margin: 0 0 .6rem; font-size: .78rem; color: var(--text-muted); }
+.picker__legend li { display: inline-flex; align-items: center; gap: .3rem; }
+.lg { display: inline-grid; place-items: center; width: .95rem; height: .95rem; border-radius: 4px; font-size: .62rem; line-height: 1; }
+.lg-free { background: var(--branco); border: 1px solid #9DB8A9; }
+.lg-rec { background: #FFF4DC; border: 1px solid #D49A1F; color: #8A5A00; }
+.lg-busy { background: #ECEEED; border: 1px dashed #A6AEAB; }
+.lg-mine { background: var(--musgo); color: #fff; }
+.js [data-tabs].is-ready .daypanel__title { display: none; }
+.daypanel__title { font-size: .95rem; margin: 1rem 0 .4rem; text-transform: capitalize; }
+.daypanel__empty { margin: .5rem 0; }
+.pills { list-style: none; padding: 0; margin: 0; display: grid; gap: .4rem; grid-template-columns: repeat(auto-fill, minmax(4.9rem, 1fr)); }
+.pill { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .05rem; min-height: 2.9rem; padding: .3rem .2rem; border-radius: 10px; border: 1px solid #9DB8A9; background: var(--branco); color: var(--granito); text-decoration: none; text-align: center; line-height: 1.15; }
+.pill__time { font-weight: 800; font-size: .95rem; font-variant-numeric: tabular-nums; }
+.pill__price { font-size: .7rem; color: var(--text-muted); white-space: nowrap; }
+.pill__price s { opacity: .8; }
+.pill__star { position: absolute; top: .1rem; right: .3rem; font-size: .7rem; color: #8A5A00; }
+a.pill:hover { border-color: var(--musgo); background: var(--neboa); }
+a.pill:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.pill-recommended { background: #FFF8E6; border-color: #D49A1F; }
+.pill-recommended .pill__price { color: #6B4A00; font-weight: 700; }
+.pill-few { border-style: dashed; }
+.pill-busy, .pill-closed { background: #F1F2F1; border: 1px dashed #C3C9C6; color: #5E6766; }
+.pill-busy .pill__time, .pill-closed .pill__time { font-weight: 600; text-decoration: line-through; text-decoration-thickness: 1px; }
+.pill-closed { background: #FBEDEA; border-color: #E2B4A9; }
+.pill-mine { background: var(--musgo); border-color: var(--musgo); color: #fff; }
+.pill-mine .pill__price, .pill-mine .pill__star { color: #E4F1EA; }
+a.pill-mine:hover { background: var(--musgo-escuro); }
+a.pill[aria-current="true"] { background: var(--granito); border-color: var(--granito); color: #fff; box-shadow: 0 0 0 3px rgb(46 106 79 / 25%); }
+a.pill[aria-current="true"] .pill__price, a.pill[aria-current="true"] .pill__star { color: #E8EDEE; }
+.picksum { position: sticky; bottom: .5rem; z-index: 5; margin-top: .8rem; display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .55rem .6rem .55rem .9rem; border-radius: 14px; background: var(--granito); color: #fff; box-shadow: 0 10px 30px rgb(22 37 43 / 30%); }
+.picksum__text { font-size: .92rem; }
+.picksum__text strong { text-transform: capitalize; }
+.picksum__text s { opacity: .75; font-size: .82rem; }
+.picksum .btn { background: var(--millo, #E2A53A); color: #16252B; border-color: transparent; min-height: 2.5rem; }
+/* Texto grande: pastillas máis grandes en dúas columnas */
+html.pref-large-text .pills { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; }
+html.pref-large-text .pill { min-height: 4.4rem; padding: .55rem .5rem; }
+html.pref-large-text .pill__time { font-size: 1.25rem; }
+html.pref-large-text .pill__price { font-size: .95rem; }
+html.pref-large-text .daychip { min-height: 4.2rem; }
+html.pref-large-text .daystrip { gap: .2rem; }
+html.pref-large-text .daychip__dow { font-size: .62rem; letter-spacing: 0; }
+@container pane (max-width: 380px) { html.pref-large-text .pills { grid-template-columns: 1fr; } }
+html.pref-high-contrast .pill { border: 2px solid #000; }
+/* A app da veciñanza é sempre dunha columna (como no teléfono), tamén sen marco no escritorio */
+.layout-app .layout-aside { grid-template-columns: minmax(0, 1fr); }

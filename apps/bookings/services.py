@@ -66,6 +66,8 @@ class Slot:
     mine: object = None
     labels: dict = field(default_factory=dict)
     discount_pct: int = 0
+    price_cents: int | None = None  # prezo final para a persoa (con desconto)
+    base_cents: int = 0  # prezo sen desconto
 
     @property
     def bookable(self):
@@ -183,16 +185,35 @@ def week_grid(facility, monday, user=None, now=None):
         }
         for t in times
     ]
-    # Día despregado por defecto na vista móbil: o primeiro con franxas reservables
+    # Día seleccionado por defecto: o primeiro con franxas reservables
     open_day = next(
         (d for d in days if any(s.bookable for s in by_day[d])),
         next((d for d in days if any(s.status == "mine" for s in by_day[d])), days[0]),
     )
+    # Prezo de cada franxa para esta persoa (tarifa máis favorable e desconto das tranquilas)
+    if facility.tariffs.exists():
+        base = price_for(facility, user if getattr(user, "is_authenticated", False) else None).base
+        for slots in by_day.values():
+            for s in slots:
+                s.base_cents = base
+                s.price_cents = base * (100 - s.discount_pct) // 100 if s.discount_pct else base
+    picker = [
+        {
+            "day": d,
+            "slots": [s for s in by_day[d] if s.status != "past"],
+            "bookable": sum(1 for s in by_day[d] if s.bookable),
+            "recommended": any(s.status == "recommended" for s in by_day[d]),
+            "mine": any(s.status == "mine" for s in by_day[d]),
+            "selected": d == open_day,
+        }
+        for d in days
+    ]
     return {
         "days": days,
         "rows": rows,
         "by_day": [(d, by_day[d]) for d in days],
         "open_day": open_day,
+        "picker": picker,
     }
 
 

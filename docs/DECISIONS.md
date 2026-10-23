@@ -283,5 +283,5 @@ Formato: data · decisión · motivo · alternativas descartadas.
 
 ## v3 · 8 — Navegación e deseño
 - **Sticky footer:** `body` con `min-height: 100dvh`, e `.shell-main` como columna flex co pé en `margin-top: auto`. Comprobado en `/preferencias/` e `/acceso/codigo/`: antes o pé remataba nos px 543 e 424 dunha xanela de 900; agora remata no 900.
-- **Menú lateral:** un test percorre as 18 entradas do menú do concello e esixe `aria-current="page"` na súa páxina. Só fallaba o Observatorio (a vista non pasaba `sub`).
+- **Menú lateral:** un test percorre as 16 entradas do menú do concello e esixe `aria-current="page"` na súa páxina. Só fallaba o Observatorio (a vista non pasaba `sub`).
 - **«Devolto»:** causa e corrección en `docs/PROGRESS.md` (v3).

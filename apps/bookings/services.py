@@ -167,7 +167,8 @@ def week_grid(facility, monday, user=None, now=None):
                 next((s for s in by_day[day] if timezone.localtime(s.start).time() == t), None)
             )
         rows.append({"time": t, "cells": cells})
-    return {"days": days, "rows": rows, "by_day": [(d, by_day[d]) for d in days]}
+    open_day = next((d for d in days if any(s.bookable or s.status == "mine" for s in by_day[d])), days[0])
+    return {"days": days, "rows": rows, "by_day": [(d, by_day[d]) for d in days], "open_day": open_day}
 
 
 # ---------------------------------------------------------------- tarifas

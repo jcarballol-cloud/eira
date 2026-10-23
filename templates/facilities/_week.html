@@ -31,7 +31,7 @@
 </div>
 <div class="day-list">
   {% for day, slots in grid.by_day %}
-    <details {% if forloop.first %}open{% endif %}>
+    <details {% if day == grid.open_day %}open{% endif %}>
       <summary>{{ day|date:"l j \d\e F" }} · {% blocktranslate count n=slots|length %}{{ n }} franxa{% plural %}{{ n }} franxas{% endblocktranslate %}</summary>
       <ul>{% for s in slots %}<li>{% include "facilities/_slot.html" with mobile=True %}</li>{% empty %}<li>{% translate "Pechado" %}</li>{% endfor %}</ul>
     </details>

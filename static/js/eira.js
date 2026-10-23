@@ -82,7 +82,8 @@
     var fd;
     try { fd = submitter ? new FormData(form, submitter) : new FormData(form); } catch (err) { fd = new FormData(form); }
     fd.forEach(function (value, key) { entries.push([key, value]); });
-    return { url: form.action, entries: entries, label: form.getAttribute("data-offline-label") || "", at: new Date().toISOString() };
+    // OLLO: un campo name="action" tapa form.action; úsase o atributo ou a URL actual.
+    return { url: form.getAttribute("action") || window.location.href, entries: entries, label: form.getAttribute("data-offline-label") || "", at: new Date().toISOString() };
   }
   function queueCount() {
     if (!("indexedDB" in window)) return Promise.resolve(0);

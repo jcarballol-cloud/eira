@@ -32,8 +32,8 @@
           <span class="row">
             {% with h=b.key_handover %}
             {% if not h.handed_at %}<form method="post" action="{% turl 'manage:key_action' b.pk 'out' %}">{% csrf_token %}<button class="btn btn-sm" type="submit">{% translate "Entregada" %}<span class="visually-hidden"> {{ b.holder_label }}</span></button></form>
-            {% elif not h.returned_at %}<form method="post" action="{% turl 'manage:key_action' b.pk 'in' %}">{% csrf_token %}<button class="btn btn-sm btn-secondary" type="submit">{% translate "Devolta" %}<span class="visually-hidden"> {{ b.holder_label }}</span></button></form>
-            {% else %}<span class="badge badge-ok">{% translate "Devolta" %}</span>{% endif %}
+            {% elif not h.returned_at %}<form method="post" action="{% turl 'manage:key_action' b.pk 'in' %}">{% csrf_token %}<button class="btn btn-sm btn-secondary" type="submit">{% translate "Marcar chave devolta" %}<span class="visually-hidden"> {{ b.holder_label }}</span></button></form>
+            {% else %}<span class="badge badge-ok">{% icon 'key' %} {% translate "Chave devolta" %}</span>{% endif %}
             {% endwith %}
           </span></li>
       {% endfor %}</ul>

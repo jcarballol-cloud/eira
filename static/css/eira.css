@@ -1133,3 +1133,10 @@ body.layout-app:not(.framed) .shell, body.layout-tablet:not(.framed) .shell { he
 .demo-bar__who { display: inline-flex; align-items: center; gap: .3rem; color: #fff; }
 .demo-bar__who small { color: #C9D3CE; }
 .demo-bar__change { font-weight: 700; }
+/* v3: pé de páxina sempre abaixo (sticky footer) nas páxinas curtas */
+body { min-height: 100dvh; }
+.shell-main { display: flex; flex-direction: column; }
+.shell-main > .wrap { flex: 0 0 auto; }
+.shell-main > .site-footer { margin-top: auto; }
+.shell-main:has(> .site-footer) { padding-bottom: 0 !important; }
+.shell-main > .site-footer { margin-bottom: 0; }

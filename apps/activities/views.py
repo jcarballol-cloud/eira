@@ -175,6 +175,7 @@ def observatory_view(request):
             "line": observatory.line_chart(data["rows"]),
             "query": f"semanas={weeks}" + (f"&actividade={activity.pk}" if activity else ""),
             "nav": "activities",
+            "sub": "observatory",
         },
     )
 

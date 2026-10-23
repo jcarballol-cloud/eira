@@ -68,3 +68,13 @@ guión de 3 min verificado cun test E2E, 44 capturas automáticas en `docs/captu
 - ✅ F6 saúde: recomendacións persoais en cada reserva, no dispositivo (na conta só con consentimento art. 9).
 - ✅ F9 guión e vídeos novos, 99 capturas en 3 viewports, axe en 68 páxinas × 3 viewports, rendemento, castelán completo, servidor da LAN.
 - ✅ F2 alta: solicitar a app con padrón simulado, correo con ligazón e código, instalación Android/iPhone, primeira apertura, mostrador con folla QR, persoas apuntadas polo monitor e validadas polo concello (16 tests + E2E).
+
+## v3 (23–24/10)
+- **«Devolto/Devolta»: por que aparecía.**
+  - Na axenda e no panel do día, a insignia «Devolta» saía en **todas as reservas canceladas** (o 9 % da demo: 768 de 8.409). A seed cancelaba ao chou e devolvía sempre o importe íntegro, sen motivo.
+  - No panel do día, «Devolta» tamén era o botón e o estado da **chave** custodiada: dous significados para a mesma palabra.
+  - Non había ningunha reserva confirmada ou usada con devolución: a lóxica de cobros era correcta.
+  - **Corrección:**
+    - Seed: ~4 % de cancelacións, todas con motivo, e o 20 % delas fóra de prazo e sen devolución.
+    - Etiquetas: «Cancelada · importe devolto», «Cancelada · devolto en parte», «Cancelada · sen devolución» e, para a chave, «Chave devolta».
+    - Tests: as etiquetas e a coherencia da seed (devolucións só en canceladas, con motivo, < 5 % e nunca maiores ca o pagado).

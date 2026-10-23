@@ -6,6 +6,7 @@ import io
 import zipfile
 
 import pytest
+from django.db.models import F
 from django.utils import timezone
 
 from apps.accounts.models import Eligibility
@@ -276,3 +277,42 @@ def test_enrollment_rejected_payment_frees_place(client, muni_a, citizen):
     r = client.post(f"{C}/actividades/grupo/{g.pk}/inscribirse/", {"participant": d.pk})
     client.post(r["Location"], {"result": "ko"})
     assert Enrollment.objects.get().status == Enrollment.Status.CANCELLED
+
+
+def test_refund_labels_are_explicit(citizen, padel_a):
+    """v3: «Devolto» só aparece cando hai devolución, e cunha etiqueta que se entende."""
+    import datetime as dt
+
+    from django.template.loader import render_to_string
+    from django.utils import timezone
+
+    start = timezone.now() + dt.timedelta(days=2)
+    base = dict(
+        municipality=padel_a.municipality,
+        facility=padel_a,
+        user=citizen,
+        start=start,
+        end=start + dt.timedelta(hours=1),
+        price_cents=400,
+        paid_cents=400,
+    )
+    cases = [
+        (Booking(status="cancelled", refunded_cents=400, **base), "Cancelada · importe devolto"),
+        (Booking(status="cancelled", refunded_cents=0, **base), "Cancelada · sen devolución"),
+        (Booking(status="confirmed", refunded_cents=0, **base), "Pagada"),
+    ]
+    for b, expected in cases:
+        html = render_to_string("includes/booking_status.html", {"b": b})
+        assert expected in html and "Devolta" not in html
+
+
+def test_demo_refunds_are_coherent(db):
+    from django.core.management import call_command
+
+    call_command("seed_demo", verbosity=0)
+    total = Booking.objects.count()
+    refunded = Booking.objects.filter(refunded_cents__gt=0)
+    assert set(refunded.values_list("status", flat=True)) <= {"cancelled"}
+    assert refunded.count() < total * 0.05
+    assert not refunded.filter(cancel_reason="").exists()
+    assert not Booking.objects.filter(refunded_cents__gt=F("paid_cents")).exists()

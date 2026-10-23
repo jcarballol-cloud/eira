@@ -172,7 +172,9 @@ def test_demo_home_two_steps_and_demo_bar(client, settings, people, muni_a):
     from apps.integrations import demo
 
     settings.EIRA_DEMO_TOOLS = True
-    demo.DEMO_TENANTS.append({"slug": "concello-a", "kind": "Proba", "summary": "Concello de proba"})
+    demo.DEMO_TENANTS.append(
+        {"slug": "concello-a", "kind": "Proba", "summary": "Concello de proba"}
+    )
     try:
         html = client.get("/").content.decode()
         assert "Paso 1 de 2" in html and "?concello=concello-a" in html
@@ -187,3 +189,25 @@ def test_lema_antigo_retirado(client, muni_a):
     html = client.get("/").content.decode()
     assert "O difícil é abrir a porta" not in html
     assert "Software libre para a xestión deportiva municipal" in html
+
+
+def test_every_sidebar_entry_marks_itself_active(client, people, muni_a, objects):
+    """v3: cada entrada do menú lateral do concello márcase con aria-current na súa páxina."""
+    import re
+
+    client.force_login(people["admin"])
+    html = client.get(f"{C}/xestion/").content.decode()
+    nav = html[html.index('class="sidenav"') : html.index("</nav>", html.index('class="sidenav"'))]
+    links = re.findall(r'<a href="([^"]+)"', nav)
+    assert len(links) >= 15
+    failures = []
+    for href in links:
+        page = client.get(href)
+        assert page.status_code == 200, href
+        body = page.content.decode()
+        side = body[
+            body.index('class="sidenav"') : body.index("</nav>", body.index('class="sidenav"'))
+        ]
+        if not re.search(rf'<a href="{re.escape(href)}"[^>]*aria-current="page"', side):
+            failures.append(href)
+    assert not failures, failures

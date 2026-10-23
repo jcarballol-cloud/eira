@@ -280,3 +280,8 @@ Formato: data · decisión · motivo · alternativas descartadas.
 - **Pontedouro** ten agora perfís propios ficticios (Rosa, veciña; Tino, mantemento) e unha reserva próxima para Rosa. A función de reservas da seed usa o concello da instalación.
 - **Barra de demo:** amosa sempre o concello e o perfil activos («Vilardeiras · Brais (operario de mantemento)») e un botón «Cambiar» que volve ao paso 2 dese concello.
 - **Lema:** «Reservar é o fácil…» retirado da portada, o README, o guión, o vídeo, a meta descrición, o `publiccode.yml` e o `CLAUDE.md`. Substitúeo «Eira · Software libre para a xestión deportiva municipal» e o subtítulo «Reservas, acceso ás instalacións, mantemento e actividades deportivas do concello, nunha soa plataforma.»
+
+## v3 · 8 — Navegación e deseño
+- **Sticky footer:** `body` con `min-height: 100dvh`, e `.shell-main` como columna flex co pé en `margin-top: auto`. Comprobado en `/preferencias/` e `/acceso/codigo/`: antes o pé remataba nos px 543 e 424 dunha xanela de 900; agora remata no 900.
+- **Menú lateral:** un test percorre as 18 entradas do menú do concello e esixe `aria-current="page"` na súa páxina. Só fallaba o Observatorio (a vista non pasaba `sub`).
+- **«Devolto»:** causa e corrección en `docs/PROGRESS.md` (v3).

@@ -207,6 +207,14 @@ PERSONAS = [
 ]
 
 
+CANCEL_REASONS_ON_TIME = [
+    "Cancelada pola persoa con antelación",
+    "Cambio de plans (cancelada a tempo)",
+    "Cancelada polo concello: actividade municipal",
+]
+CANCEL_REASONS_LATE = ["Cancelada fóra de prazo (sen devolución)"]
+
+
 def hour_weight(hour, weekday):
     if weekday >= 5:
         return {10: 0.55, 11: 0.65, 12: 0.55, 13: 0.3, 17: 0.4, 18: 0.45, 19: 0.4}.get(hour, 0.15)
@@ -501,20 +509,28 @@ class Command(BaseCommand):
                         if end <= now:
                             r = self.rng.random()
                             status = (
-                                "used" if r < 0.82 else ("no_show" if r < 0.91 else "cancelled")
+                                "used" if r < 0.86 else ("no_show" if r < 0.96 else "cancelled")
                             )
                             if status == "no_show" and f.access_level == 0:
                                 status = (
                                     "used"  # nivel 0: o QR é voluntario, non hai «non presentadas»
                                 )
                         else:
-                            status = "confirmed" if self.rng.random() < 0.93 else "cancelled"
+                            status = "confirmed" if self.rng.random() < 0.97 else "cancelled"
                         checked = (
                             start + dt.timedelta(minutes=self.rng.randint(-5, 10))
                             if status == "used"
                             else None
                         )
                         channel = self.rng.choices(["online", "phone", "counter"], [85, 10, 5])[0]
+                        # Cancelacións: a maioría a tempo (devolución íntegra); algunhas tarde, sen devolución
+                        refund, reason = 0, ""
+                        if status == "cancelled":
+                            on_time = self.rng.random() < 0.8
+                            refund = price if on_time else 0
+                            reason = self.rng.choice(
+                                CANCEL_REASONS_ON_TIME if on_time else CANCEL_REASONS_LATE
+                            )
                         bookings.append(
                             Booking(
                                 municipality=m,
@@ -527,7 +543,8 @@ class Command(BaseCommand):
                                 tariff_audience=audience,
                                 price_cents=price,
                                 paid_cents=price if status != "pending_payment" else 0,
-                                refunded_cents=price if status == "cancelled" else 0,
+                                refunded_cents=refund,
+                                cancel_reason=reason,
                                 payment_reference=f"FRDEMO{self.rng.randint(10**7, 10**8)}"
                                 if price
                                 else "",

@@ -14,7 +14,7 @@
 
 | Criterio WCAG 2.1 | Implementación |
 |---|---|
-| 1.1.1 Contido non textual | Iconas decorativas con `aria-hidden`; fotos de instalacións con texto alternativo obrigatorio no alta; gráficos SVG con `role="img"`, `<title>` e `<desc>` |
+| 1.1.1 Contido non textual | Iconas decorativas con `aria-hidden`; fotos de instalacións con texto alternativo obrigatorio no alta; gráficos de barras en HTML con etiqueta e valor sempre visibles, máis táboa alternativa e CSV |
 | 1.3.1 Información e relacións | Táboas con `caption` e `scope`; formularios con `label`, `fieldset/legend` para grupos; estrutura de encabezados |
 | 1.3.5 Propósito dos campos | `autocomplete="email"`, `one-time-code`, `tel` |
 | 1.4.1 Uso da cor | Símbolos e texto nos estados; badges con texto |

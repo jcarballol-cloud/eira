@@ -1,11 +1,12 @@
-{% load i18n l10n %}{% localize off %}<figure class="mb-0">
-  <svg class="chart" viewBox="0 0 {{ chart.width }} {{ chart.height }}" role="img" aria-labelledby="{{ cid }}-t {{ cid }}-d">
-    <title id="{{ cid }}-t">{{ title }}</title>
-    <desc id="{{ cid }}-d">{% translate "Os mesmos datos están na táboa que segue ao gráfico." %}</desc>
+{% load i18n eira %}<figure class="mb-0 hbars" aria-labelledby="{{ cid }}-t">
+  <figcaption id="{{ cid }}-t" class="visually-hidden">{{ title }}</figcaption>
+  <ul class="list">
     {% for b in chart.bars %}
-      <text x="{{ chart.x0|add:'-10' }}" y="{{ b.text_y }}" text-anchor="end">{{ b.label|truncatechars:22 }}</text>
-      <rect class="bar{% if warn %} bar-warn{% endif %}" x="{{ chart.x0 }}" y="{{ b.y }}" width="{{ b.w }}" height="24" rx="4"></rect>
-      <text class="val" x="{{ b.val_x }}" y="{{ b.text_y }}">{{ b.display }}</text>
-    {% endfor %}
-  </svg>
-</figure>{% endlocalize %}
+    <li class="hbar-row">
+      <span class="hbar-label">{{ b.label }}</span>
+      <span class="hbar-track" aria-hidden="true"><span class="hbar-fill{% if warn %} warn{% endif %} w-{{ b.pct|bucket5 }}"></span></span>
+      <span class="hbar-value">{{ b.display }}</span>
+    </li>
+    {% empty %}<li class="muted">{% translate "Sen datos no período." %}</li>{% endfor %}
+  </ul>
+</figure>

@@ -179,4 +179,4 @@ def test_pitch_script(new_page, base):
     ).exists()
 
     admin.goto(base + "/c/vilardeiras/xestion/indicadores/")
-    assert admin.locator("svg.chart rect.bar").count() > 0
+    assert admin.locator(".hbar-fill").count() > 0

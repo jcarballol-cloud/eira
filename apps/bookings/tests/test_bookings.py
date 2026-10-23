@@ -196,6 +196,15 @@ def test_no_shows(padel_a, citizen):
     assert services.mark_no_shows() == 1
 
 
+def test_open_facilities_never_marked_no_show(court_b, outsider):
+    b = book(court_b, outsider)
+    services.mark_paid(b, "FR8", b.price_cents)
+    Booking.objects.filter(pk=b.pk).update(
+        start=timezone.now() - dt.timedelta(hours=3), end=timezone.now() - dt.timedelta(hours=2)
+    )
+    assert services.mark_no_shows() == 0
+
+
 def test_week_grid_statuses(padel_a, citizen, outsider):
     start = next_slot(padel_a, days=1)
     b = book(padel_a, citizen, start)

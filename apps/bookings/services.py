@@ -442,9 +442,15 @@ def expire_holds(now=None):
 
 
 def mark_no_shows(now=None):
-    """Reservas confirmadas que remataron sen rexistro de uso (QR, código, chave ou apertura)."""
+    """Reservas confirmadas que remataron sen rexistro de uso (chave, código ou apertura).
+
+    Nas instalacións abertas (nivel 0) o QR é voluntario, así que non se marcan como non presentadas.
+    """
     now = now or timezone.now()
     qs = Booking.objects.filter(
-        status=Booking.Status.CONFIRMED, end__lte=now, checked_in_at__isnull=True
+        status=Booking.Status.CONFIRMED,
+        end__lte=now,
+        checked_in_at__isnull=True,
+        facility__access_level__gte=1,
     )
     return qs.update(status=Booking.Status.NO_SHOW)

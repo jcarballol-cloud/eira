@@ -23,6 +23,7 @@ Comando: `python tools/tasks.py e2e` (ou `make e2e`).
 2. Contraste do nivel 3 do mapa de calor (branco sobre #4E8F6E, 3,5:1) → #3A7458.
 3. Días doutro mes no calendario con `opacity` (baixaba o contraste) → fondo gris sen opacidade.
 4. Táboas con desprazamento horizontal non accesibles por teclado → `tabindex="0"` nos contedores.
+5. Gráficos SVG ilexibles en móbil (o texto escalaba a ~7 px) e rotos en galego (decimais con coma nos atributos) → barras HTML que escalan co texto.
 
 ## Probas funcionais automáticas (E2E)
 
@@ -35,5 +36,4 @@ Comando: `python tools/tasks.py e2e` (ou `make e2e`).
 - Lectores de pantalla reais (NVDA + Firefox, VoiceOver iOS, TalkBack).
 - Zoom ao 200 % e 400 % en todas as páxinas (o deseño é fluído, pero non se revisou unha a unha).
 - O mapa Leaflet con teclado (a lista equivalente si é accesible).
-- Gráficos SVG en móbil: o texto escala e pode quedar pequeno; a táboa alternativa está dispoñible.
 - Proba con persoas usuarias (maiores, baixa visión) antes da entrega.

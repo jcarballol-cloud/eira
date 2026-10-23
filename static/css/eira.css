@@ -467,3 +467,11 @@ html.pref-reduced-motion *, html.pref-reduced-motion *::before, html.pref-reduce
 .list > li.card { padding: 1.25rem; border: 1px solid rgb(22 37 43 / 6%); }
 .list > li.card.facility-card { padding: 0; }
 .list > li.alert { padding: .9rem 1rem; border-bottom: 0; }
+
+/* Gráficos de barras en HTML */
+.hbars .list > li.hbar-row { display: grid; grid-template-columns: minmax(7rem, 38%) 1fr auto; gap: .6rem; align-items: center; padding: .35rem 0; border-bottom: 0; }
+.hbar-label { font-size: .92rem; overflow-wrap: anywhere; }
+.hbar-track { height: 1.1rem; background: var(--neboa); border-radius: 6px; overflow: hidden; }
+.hbar-fill { display: block; height: 100%; background: var(--musgo); border-radius: 6px; min-width: 2px; }
+.hbar-fill.warn { background: var(--arxila); }
+.hbar-value { font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }

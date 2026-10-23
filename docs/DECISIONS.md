@@ -52,9 +52,10 @@ Formato: data · decisión · motivo · alternativas descartadas.
 - **Motivo:** o prompt pide aviso automático; reubicar automaticamente sería opaco para a persoa.
 - **Alternativa futura:** ofrecer franxas alternativas no aviso.
 
-## 2026-10-23 · Gráficos SVG no servidor
-- **Decisión:** gráficos de barras SVG xerados no servidor, sempre con táboa alternativa e CSV.
-- **Motivo:** sen dependencias JS, compatibles coa CSP e accesibles.
+## 2026-10-23 · Gráficos de barras en HTML
+- **Decisión:** barras horizontais en HTML/CSS (ancho por clases `.w-N`), sempre con táboa alternativa e CSV.
+- **Motivo:** sen dependencias JS, compatibles coa CSP, escalan co texto grande e en móbil.
+- **Descartado:** SVG no servidor (primeira versión): o texto quedaba diminuto en móbil e a localización de números en galego rompía os atributos.
 
 ## 2026-10-23 · CSP estrita
 - **Decisión:** sen `unsafe-inline` (agás no `/admin/` de Django). Cor do concello servida como CSS dinámico (`/c/<slug>/tema.css`); anchos de barras con clases `.w-N`.

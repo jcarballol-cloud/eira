@@ -167,30 +167,19 @@ def summary(tenant, weeks=4):
     }
 
 
-def hbar(items, value_key, label_key, width=560, row=36, label_w=200, suffix=""):
-    """Xeometría dun gráfico de barras horizontal SVG (renderizado no servidor, sen JS)."""
+def hbar(items, value_key, label_key, suffix=""):
+    """Datos dun gráfico de barras horizontal en HTML (escala co texto; sen JS nin estilos en liña)."""
     peak = max((i[value_key] for i in items), default=0) or 1
-    bars = []
-    for n, item in enumerate(items):
-        w = round((width - label_w - 70) * max(item[value_key], 0) / peak, 1)
-        bars.append(
-            {
-                "label": item[label_key],
-                "value": item[value_key],
-                "y": n * row + 6,
-                "w": w,
-                "text_y": n * row + 24,
-                "val_x": round(label_w + w + 8, 1),
-                "display": f"{item[value_key]}{suffix}",
-            }
-        )
-    return {
-        "bars": bars,
-        "width": width,
-        "height": max(row, len(items) * row + 10),
-        "label_w": label_w,
-        "x0": label_w,
-    }
+    bars = [
+        {
+            "label": item[label_key],
+            "value": item[value_key],
+            "pct": 100 * max(item[value_key], 0) / peak,
+            "display": f"{item[value_key]}{suffix}",
+        }
+        for item in items
+    ]
+    return {"bars": bars}
 
 
 def ai_aggregates(tenant):

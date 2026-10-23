@@ -49,7 +49,7 @@ def test_dashboard_has_accessible_tables_and_csv(client, admin_a, padel_a, citiz
     past_booking(padel_a, citizen, 2)
     client.force_login(admin_a)
     html = client.get("/c/concello-a/xestion/indicadores/").content.decode()
-    assert 'role="img"' in html and "<table" in html and "Ver datos en táboa" in html
+    assert "hbar-row" in html and "<table" in html and "Ver datos en táboa" in html
     r = client.get("/c/concello-a/xestion/indicadores/?csv=ocupacion")
     rows = list(csv.reader(io.StringIO(r.content.decode("utf-8-sig"))))
     assert rows[0][0] == "instalacion" and rows[1][0] == padel_a.name
@@ -84,13 +84,10 @@ def test_ai_summary_uses_only_aggregates(padel_a):
         FakeAIAdapter().weekly_summary({"email": "x@example.org"})
 
 
-def test_svg_numbers_are_not_localised(client, admin_a, padel_a, citizen):
-    """Regresión: en galego Django formatea 12.5 como «12,5», que rompe os atributos SVG."""
-    import re
-
+def test_bar_widths_use_css_classes(client, admin_a, padel_a, citizen):
+    """As barras usan clases .w-N (CSP sen estilos en liña) e a maior ocupa o 100 %."""
     for d in range(1, 4):
         past_booking(padel_a, citizen, d)
     client.force_login(admin_a)
     html = client.get("/c/concello-a/xestion/indicadores/").content.decode()
-    assert not re.search(r'(width|x|y)="[\d.]*,\d', html)
-    assert re.search(r'<rect class="bar" x="200" y="6" width="[\d.]+"', html)
+    assert 'class="hbar-fill w-100"' in html

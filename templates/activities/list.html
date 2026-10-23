@@ -1,6 +1,29 @@
 {% extends "base.html" %}{% load i18n eira %}
-{% block title %}{% translate "Actividades" %}{% endblock %}
+{% block title %}{% translate "Escolas e actividades" %}{% endblock %}
 {% block content %}
-<h1>{% translate "Escolas e actividades" %}</h1>
-<ul class="grid grid-2 list">{% for a in activities %}<li class="card"><h2>{{ a.name }}</h2><p>{{ a.description }}</p></li>{% empty %}<li class="muted">{% translate "Non hai actividades publicadas." %}</li>{% endfor %}</ul>
+<div class="page-head"><div><h1>{% translate "Escolas e actividades" %}</h1><p>{% translate "Inscribe a persoas adultas ou aos menores da túa unidade familiar." %}</p></div>
+  <div class="row">{% if user.is_authenticated %}<a class="btn btn-secondary" href="{% turl 'activities:mine' %}">{% translate "As miñas inscricións" %}</a>{% endif %}
+  {% if modules.observatory %}<a class="btn btn-secondary" href="{% turl 'activities:observatory' %}">{% icon 'chart' %} {% translate "Observatorio" %}</a>{% endif %}</div></div>
+{% for a in activities %}
+<section class="mb-2" aria-labelledby="act-{{ a.pk }}">
+  <h2 id="act-{{ a.pk }}">{{ a.name }} <small class="muted">{{ a.season }}</small></h2>
+  {% if a.description %}<p>{{ a.description }}</p>{% endif %}
+  <ul class="grid grid-3 list" role="list">
+    {% for g in a.groups.all %}
+    <li class="card stack-sm">
+      <h3 class="mb-0">{{ g.name }}</h3>
+      <p class="mb-0">{% blocktranslate with a=g.min_age b=g.max_age %}{{ a }}–{{ b }} anos{% endblocktranslate %} · {{ g.start_time|time:"H:i" }} · {% blocktranslate with m=g.duration_minutes %}{{ m }} min{% endblocktranslate %}</p>
+      {% if g.facility %}<small>{% icon 'map' %} {{ g.facility.name }}</small>{% endif %}
+      <ul class="pill-list">
+        <li class="badge">{% if g.fee_cents %}{{ g.fee_cents|euros }}{% else %}{% translate "Gratuíta" %}{% endif %}</li>
+        <li class="badge {% if g.free_places %}badge-ok{% else %}badge-warn{% endif %}">{% if g.free_places %}{% blocktranslate count n=g.free_places %}{{ n }} praza libre{% plural %}{{ n }} prazas libres{% endblocktranslate %}{% else %}{% translate "Completo: lista de espera" %}{% endif %}</li>
+      </ul>
+      <a class="btn btn-secondary" href="{% turl 'activities:enroll' g.pk %}">{% translate "Inscribirse" %}<span class="visually-hidden"> {{ a.name }} {{ g.name }}</span></a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% empty %}
+<p class="muted">{% translate "Non hai actividades publicadas." %}</p>
+{% endfor %}
 {% endblock %}

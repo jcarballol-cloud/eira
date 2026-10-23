@@ -18,4 +18,6 @@ def test_catalog_complete(lang):
     assert not po.fuzzy_entries()
     for entry in po.translated_entries():
         if not entry.msgid_plural:
-            assert sorted(PLACEHOLDER.findall(entry.msgid)) == sorted(PLACEHOLDER.findall(entry.msgstr)), entry.msgid
+            assert sorted(PLACEHOLDER.findall(entry.msgid)) == sorted(
+                PLACEHOLDER.findall(entry.msgstr)
+            ), entry.msgid

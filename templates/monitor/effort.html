@@ -1,0 +1,30 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Esforzo percibido" %}{% endblock %}
+{% block content %}
+<div class="tablet">
+<p class="eyebrow">{{ session.group.get_rpe_scale_display }}</p>
+<h1>{% translate "Como de duro foi?" %}</h1>
+<p>{% translate "Cada persoa sinala a cara que mellor describe o seu cansazo. Calcúlase a carga da sesión (esforzo × minutos)." %}</p>
+<form method="post">
+  {% csrf_token %}
+  {% for row in rows %}
+  <fieldset class="card mb-2">
+    <legend class="big">{{ row.att.enrollment.participant_name }}</legend>
+    {% if row.allowed %}
+    <div class="rpe-scale">
+      {% for p in points %}
+      <div class="rpe-cell">
+        <input type="radio" name="rpe{{ row.att.enrollment_id }}" id="r{{ row.att.enrollment_id }}-{{ p.value }}" value="{{ p.value }}" {% if row.att.rpe == p.value %}checked{% endif %}>
+        <label for="r{{ row.att.enrollment_id }}-{{ p.value }}">{% icon 'face-'|add:p.face %}<span class="num">{{ p.value }}</span><span>{{ p.label }}</span></label>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+      <p class="muted">{% translate "Sen consentimento para rexistrar o esforzo deste menor." %}</p>
+    {% endif %}
+  </fieldset>
+  {% empty %}<p class="muted">{% translate "Ninguén marcado como presente." %}</p>{% endfor %}
+  <div class="form-actions"><button class="btn btn-lg" type="submit">{% translate "Pechar sesión" %}</button></div>
+</form>
+</div>
+{% endblock %}

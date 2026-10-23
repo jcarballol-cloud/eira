@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Inscrición" %}{% endblock %}
+{% block content %}
+<section class="card prose">
+  <p class="eyebrow">{{ group.activity.name }}</p>
+  <h1>{{ group.name }}</h1>
+  <dl class="kv"><dt>{% translate "Idades" %}</dt><dd>{{ group.min_age }}–{{ group.max_age }}</dd><dt>{% translate "Horario" %}</dt><dd>{{ group.start_time|time:"H:i" }} ({{ group.duration_minutes }} min)</dd>
+    <dt>{% translate "Cota" %}</dt><dd>{% if group.fee_cents %}{{ group.fee_cents|euros }}{% else %}{% translate "Gratuíta" %}{% endif %}</dd>
+    <dt>{% translate "Prazas libres" %}</dt><dd>{{ group.free_places }} / {{ group.places }}</dd></dl>
+  <form method="post" class="mt-2">
+    {% csrf_token %}
+    <fieldset><legend>{% translate "Quen se inscribe?" %}</legend>
+      <div class="check"><input type="radio" name="participant" id="p-self" value="self" checked><label for="p-self">{% translate "Eu" %}</label></div>
+      {% for d in dependents %}<div class="check"><input type="radio" name="participant" id="p-{{ d.pk }}" value="{{ d.pk }}"><label for="p-{{ d.pk }}">{{ d.first_name }} ({% blocktranslate with a=d.age %}{{ a }} anos{% endblocktranslate %}){% if not d.consents.all %} — <em>{% translate "sen consentimento" %}</em>{% endif %}</label></div>{% endfor %}
+    </fieldset>
+    <p class="help"><a href="{% url 'account:household' %}">{% translate "Engadir menores ou xestionar os consentimentos" %}</a></p>
+    <div class="form-actions"><button class="btn btn-lg" type="submit">{% if group.free_places %}{% if group.fee_cents %}{% translate "Inscribirse e pagar" %}{% else %}{% translate "Inscribirse" %}{% endif %}{% else %}{% translate "Apuntarse á lista de espera" %}{% endif %}</button></div>
+  </form>
+</section>
+{% endblock %}

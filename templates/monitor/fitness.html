@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Probas físicas" %}{% endblock %}
+{% block content %}
+<div class="tablet">
+<div class="page-head"><div><p class="eyebrow">{{ group }}</p><h1>{% translate "Probas físicas" %}</h1></div>
+  <form method="get" class="row" data-autosubmit><label for="bateria">{% translate "Batería" %}</label><select id="bateria" name="bateria">{% for b in batteries %}<option value="{{ b.pk }}" {% if b.pk == battery.pk %}selected{% endif %}>{{ b.name }}</option>{% endfor %}</select><button class="btn btn-secondary btn-sm" type="submit">{% translate "Cambiar" %}</button></form></div>
+{% if battery %}
+<p class="help">{{ battery.reference }} · {% translate "Só se rexistran os valores; Eira non aplica baremos." %}</p>
+<form method="post">
+  {% csrf_token %}
+  <input type="hidden" name="bateria" value="{{ battery.pk }}">
+  <div class="table-wrap" tabindex="0"><table class="data">
+    <caption class="visually-hidden">{{ battery.name }}</caption>
+    <thead><tr><th scope="col">{% translate "Persoa" %}</th>{% for t in battery.tests.all %}<th scope="col">{{ t.name }} <small>({{ t.unit }})</small></th>{% endfor %}</tr></thead>
+    <tbody>{% for e in enrollments %}<tr><th scope="row">{{ e.participant_name }}</th>
+      {% for t in battery.tests.all %}<td><label class="visually-hidden" for="v{{ e.pk }}_{{ t.pk }}">{{ t.name }} · {{ e.participant_name }}</label><input id="v{{ e.pk }}_{{ t.pk }}" name="v{{ e.pk }}_{{ t.pk }}" inputmode="decimal" autocomplete="off"></td>{% endfor %}</tr>
+    {% empty %}<tr><td colspan="{{ battery.tests.count|add:1 }}">{% translate "Ninguén con consentimento para probas." %}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  <div class="form-actions"><button class="btn btn-lg" type="submit">{% translate "Gardar resultados" %}</button></div>
+</form>
+{% else %}<p>{% translate "Non hai baterías configuradas." %}</p>{% endif %}
+</div>
+{% endblock %}

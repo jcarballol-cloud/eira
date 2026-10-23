@@ -225,11 +225,14 @@ def _alert_bruteforce(device):
     from apps.accounts.models import Membership, Role
     from apps.notifications.services import notify
 
-    for m in Membership.objects.filter(municipality=device.municipality, role=Role.ADMIN).select_related("user"):
+    for m in Membership.objects.filter(
+        municipality=device.municipality, role=Role.ADMIN
+    ).select_related("user"):
         notify(
             m.user,
             _("Posible intento de forzar o teclado: %(f)s") % {"f": device.facility.name},
-            _("O teclado bloqueouse %(n)s veces seguidas por códigos incorrectos.") % {"n": device.lockout_count},
+            _("O teclado bloqueouse %(n)s veces seguidas por códigos incorrectos.")
+            % {"n": device.lockout_count},
             municipality=device.municipality,
             level="warning",
         )

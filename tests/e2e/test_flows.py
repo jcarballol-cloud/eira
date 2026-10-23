@@ -57,7 +57,9 @@ def test_email_login_and_booking_with_offline_code(new_page, base):
     page.click("text=Probar código")
     assert "ABERTO" in page.locator(".lock-screen").inner_text()
     # Fóra da xanela: denegado
-    late = timezone.localtime(booking.end + timezone.timedelta(minutes=20)).strftime("%Y-%m-%dT%H:%M")
+    late = timezone.localtime(booking.end + timezone.timedelta(minutes=20)).strftime(
+        "%Y-%m-%dT%H:%M"
+    )
     page.fill("#at", late)
     page.click("text=Aplicar")
     page.fill("#code", access_code)
@@ -78,7 +80,10 @@ def test_health_data_never_leaves_device(new_page, base):
     page.wait_for_timeout(300)
     stored = json.loads(page.evaluate("localStorage.getItem('eira-health-v1')"))
     assert stored["weight"] == "83.5"
-    assert "415–585" in page.locator("#h-advice").inner_text() or "400" in page.locator("#h-advice").inner_text()
+    assert (
+        "415–585" in page.locator("#h-advice").inner_text()
+        or "400" in page.locator("#h-advice").inner_text()
+    )
     page.reload()
     page.wait_for_load_state("networkidle")
     assert page.input_value("#h-age") == "71"
@@ -98,8 +103,13 @@ def test_htmx_week_navigation_announces(new_page, base):
 
 
 def test_operator_offline_queue_syncs(new_page, base):
-    order = WorkOrder.objects.filter(municipality__slug="vilardeiras", assigned_to__email="brais@demo.eira.example") \
-        .exclude(status="done").first()
+    order = (
+        WorkOrder.objects.filter(
+            municipality__slug="vilardeiras", assigned_to__email="brais@demo.eira.example"
+        )
+        .exclude(status="done")
+        .first()
+    )
     page = new_page(viewport=MOBILE, persona="brais@demo.eira.example", bypass_csp=True)
     logs = []
     page.on("console", lambda m: logs.append(m.text))
@@ -116,7 +126,9 @@ def test_operator_offline_queue_syncs(new_page, base):
     assert order.status != "done"
     page.context.set_offline(False)
     page.evaluate("window.dispatchEvent(new Event('online'))")
-    page.wait_for_function("document.querySelector('[data-queue-count]').hidden === true", timeout=10000)
+    page.wait_for_function(
+        "document.querySelector('[data-queue-count]').hidden === true", timeout=10000
+    )
     order.refresh_from_db()
     assert order.status == "done" and order.closing_notes == "Feito sen cobertura"
 

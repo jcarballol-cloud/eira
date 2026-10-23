@@ -1,0 +1,24 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Asistencia" %}{% endblock %}
+{% block content %}
+<div class="tablet">
+<p class="eyebrow">{{ session.date|date:"l j" }} · {{ session.start_time|time:"H:i" }}</p>
+<h1>{{ session.group.activity.name }} · {{ session.group.name }}</h1>
+<p>{% translate "Toca o nome de cada persoa presente." %} <span role="status"><strong data-present-count>{{ marked|length }}</strong> {% translate "presentes" %}</span></p>
+<form method="post">
+  {% csrf_token %}
+  <ul class="names" role="list">
+    {% for e in enrollments %}
+    <li>
+      <input type="hidden" id="p{{ e.pk }}" name="p{{ e.pk }}" value="{% if e.pk in marked %}1{% else %}0{% endif %}">
+      <button type="button" class="name-toggle" data-toggle-input="p{{ e.pk }}" aria-pressed="{% if e.pk in marked %}true{% else %}false{% endif %}">
+        <span>{{ e.participant_name }}</span><span class="mark" aria-hidden="true">{% if e.pk in marked %}✓{% endif %}</span>
+      </button>
+    </li>
+    {% empty %}<li class="muted">{% translate "Non hai persoas inscritas." %}</li>{% endfor %}
+  </ul>
+  <noscript><p class="alert">{% translate "Este modo de tableta necesita JavaScript activado." %}</p></noscript>
+  <div class="form-actions"><button class="btn btn-lg" type="submit">{% translate "Gardar e pasar ao esforzo" %} →</button></div>
+</form>
+</div>
+{% endblock %}

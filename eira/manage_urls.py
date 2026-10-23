@@ -4,6 +4,7 @@
 from django.urls import path
 
 from apps.access import views as access
+from apps.activities import views as activities
 from apps.analytics import views as analytics
 from apps.bookings import manage as bookings
 from apps.facilities import manage as facilities
@@ -33,6 +34,7 @@ urlpatterns = [
     path("incidencias/", incidents.incident_list, name="incidents"),
     path("incidencias/<int:pk>/", incidents.incident_detail, name="incident_detail"),
     path("mantemento/", maintenance.plans, name="maintenance_plans"),
+    path("actividades/", activities.manage_groups, name="activities"),
     path("indicadores/", analytics.dashboard, name="indicators"),
     path("configuracion/", tenant.settings_view, name="settings"),
     path("persoal/", tenant.staff, name="staff"),

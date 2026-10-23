@@ -6,4 +6,7 @@ from . import monitor
 app_name = "monitor"
 urlpatterns = [
     path("", monitor.today, name="today"),
+    path("sesion/<int:pk>/asistencia/", monitor.attendance, name="attendance"),
+    path("sesion/<int:pk>/esforzo/", monitor.effort, name="effort"),
+    path("grupo/<int:pk>/probas/", monitor.fitness, name="fitness"),
 ]

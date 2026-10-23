@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "As miñas inscricións" %}{% endblock %}
+{% block content %}
+<h1>{% translate "As miñas inscricións" %}</h1>
+<ul class="grid grid-2 list" role="list">
+  {% for e in enrollments %}
+  <li class="card">
+    <div class="row-between"><h2 class="h3 mb-0">{{ e.group.activity.name }} · {{ e.group.name }}</h2><span class="badge {% if e.status == 'active' %}badge-ok{% else %}badge-warn{% endif %}">{{ e.get_status_display }}</span></div>
+    <p class="mb-1">{{ e.participant_name }}</p>
+    <form method="post" action="{% turl 'activities:cancel' e.pk %}">{% csrf_token %}<button class="btn btn-sm btn-secondary" type="submit">{% translate "Dar de baixa" %}<span class="visually-hidden"> {{ e.participant_name }} {{ e.group.name }}</span></button></form>
+  </li>
+  {% empty %}<li class="muted">{% translate "Aínda non tes inscricións." %} <a href="{% turl 'activities:list' %}">{% translate "Ver actividades" %}</a></li>{% endfor %}
+</ul>
+{% endblock %}

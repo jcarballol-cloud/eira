@@ -1,0 +1,28 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Observatorio da actividade física" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% translate "Datos anónimos e agregados" %}</p><h1>{% translate "Observatorio da actividade física" %}</h1>
+  <p>{% blocktranslate trimmed with w=data.weeks k=data.k %}Escolas deportivas municipais, últimas {{ w }} semanas. Só se mostran grupos de polo menos {{ k }} persoas.{% endblocktranslate %}</p></div>
+  {% if is_tenant_admin %}<a class="btn btn-secondary" href="?csv=micro">{% icon 'download' %} {% translate "Microdatos seudonimizados (CSV)" %}</a>{% endif %}</div>
+<div class="table-wrap" tabindex="0"><table class="data">
+  <caption>{% translate "Actividade por grupo de idade" %}</caption>
+  <thead><tr><th scope="col">{% translate "Idade" %}</th><th scope="col" class="num">{% translate "Persoas" %}</th><th scope="col" class="num">{% translate "Asistencia" %}</th><th scope="col" class="num">{% translate "Minutos/semana" %}</th><th scope="col" class="num">{% translate "Referencia OMS" %}</th><th scope="col">{% translate "Fronte á referencia" %}</th><th scope="col" class="num">{% translate "Esforzo medio (0–10)" %}</th></tr></thead>
+  <tbody>{% for r in data.rows %}<tr>
+    <th scope="row">{{ r.band }}</th>
+    {% if r.suppressed %}
+      <td class="num">&lt; {{ data.k }}</td><td colspan="5"><span class="muted">{% translate "Datos ocultos: grupo demasiado pequeno para garantir o anonimato." %}</span></td>
+    {% else %}
+      <td class="num">{{ r.n }}</td><td class="num">{{ r.attendance_pct }} %</td><td class="num">{{ r.weekly_minutes }}</td><td class="num">{{ r.who_reference }}</td>
+      <td><div class="row"><div class="bar-inline" aria-hidden="true"><span class="w-{{ r.who_pct|bucket5 }}"></span></div> {{ r.who_pct }} %</div></td>
+      <td class="num">{{ r.avg_rpe|default:"—" }}</td>
+    {% endif %}
+  </tr>{% endfor %}</tbody>
+</table></div>
+<section class="card mt-2" aria-labelledby="trend-title">
+  <h2 id="trend-title">{% translate "Evolución semanal (minutos por persoa)" %}</h2>
+  <div class="grid grid-2">{% for r in data.rows %}{% if r.trend %}
+    <div><h3>{{ r.band }}</h3><table class="data"><caption class="visually-hidden">{% blocktranslate with b=r.band %}Evolución {{ b }}{% endblocktranslate %}</caption><tbody>{% for t in r.trend %}<tr><th scope="row">{{ t.week|date:"d/m" }}</th><td class="num">{{ t.minutes }}</td></tr>{% endfor %}</tbody></table></div>
+  {% endif %}{% endfor %}</div>
+</section>
+<p class="help mt-2">{% translate "Os minutos contan só as sesións das escolas municipais. Referencia: OMS 2020, 150 min/semana para persoas adultas e unha media de 60 min/día para menores (configurable)." %}</p>
+{% endblock %}

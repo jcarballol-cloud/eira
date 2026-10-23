@@ -82,3 +82,15 @@ def test_ai_summary_uses_only_aggregates(padel_a):
     assert "Resumo" in FakeAIAdapter().weekly_summary(agg)
     with pytest.raises(ValueError):
         FakeAIAdapter().weekly_summary({"email": "x@example.org"})
+
+
+def test_svg_numbers_are_not_localised(client, admin_a, padel_a, citizen):
+    """Regresión: en galego Django formatea 12.5 como «12,5», que rompe os atributos SVG."""
+    import re
+
+    for d in range(1, 4):
+        past_booking(padel_a, citizen, d)
+    client.force_login(admin_a)
+    html = client.get("/c/concello-a/xestion/indicadores/").content.decode()
+    assert not re.search(r'(width|x|y)="[\d.]*,\d', html)
+    assert re.search(r'<rect class="bar" x="200" y="6" width="[\d.]+"', html)

@@ -167,29 +167,17 @@ def summary(tenant, weeks=4):
     }
 
 
-def hbar(items, value_key, label_key, width=640, row=30, label_w=200, suffix=""):
+def hbar(items, value_key, label_key, width=560, row=36, label_w=200, suffix=""):
     """Xeometría dun gráfico de barras horizontal SVG (renderizado no servidor, sen JS)."""
     peak = max((i[value_key] for i in items), default=0) or 1
     bars = []
     for n, item in enumerate(items):
-        w = (width - label_w - 60) * item[value_key] / peak
-        bars.append(
-            {
-                "label": item[label_key],
-                "value": item[value_key],
-                "y": n * row + 6,
-                "w": round(w, 1),
-                "text_y": n * row + 21,
-                "display": f"{item[value_key]}{suffix}",
-            }
-        )
-    return {
-        "bars": bars,
-        "width": width,
-        "height": max(row, len(items) * row + 10),
-        "label_w": label_w,
-        "x0": label_w,
-    }
+        w = round((width - label_w - 70) * max(item[value_key], 0) / peak, 1)
+        bars.append({
+            "label": item[label_key], "value": item[value_key], "y": n * row + 6, "w": w,
+            "text_y": n * row + 24, "val_x": round(label_w + w + 8, 1), "display": f"{item[value_key]}{suffix}",
+        })
+    return {"bars": bars, "width": width, "height": max(row, len(items) * row + 10), "label_w": label_w, "x0": label_w}
 
 
 def ai_aggregates(tenant):

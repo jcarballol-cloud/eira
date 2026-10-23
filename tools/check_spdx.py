@@ -18,7 +18,7 @@ PATTERNS = [
     "Makefile",
     "static/img/*.svg",
 ]
-SKIP = {".venv", "migrations", "node_modules", "staticfiles", "vendor"}
+SKIP = {".venv", "node_modules", "staticfiles", "vendor"}
 
 missing = []
 for pattern in PATTERNS:

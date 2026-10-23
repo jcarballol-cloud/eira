@@ -153,6 +153,7 @@ main:focus { outline: none; }
 .row-between { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; justify-content: space-between; }
 .layout-aside { display: grid; gap: 1.5rem; grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 960px) { .layout-aside { grid-template-columns: minmax(0, 1fr) 21rem; } }
+.layout-aside > * { align-self: start; }
 
 /* ---------- Botóns ---------- */
 .btn {
@@ -316,7 +317,8 @@ a.slot-recommended:hover { background: var(--millo); color: var(--granito); }
 .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-top: 1rem; }
 .keypad button { min-height: 3.4rem; border-radius: 14px; border: 0; background: #2F4851; color: var(--branco); font: inherit; font-size: 1.35rem; font-weight: 700; cursor: pointer; }
 .keypad button:hover { background: #3B5965; }
-.lock-sim input { background: #0E1A1F; color: var(--millo); border-color: #3B5560; font-family: var(--mono); font-size: 1.5rem; letter-spacing: .3em; text-align: center; }
+.lock-sim input, .lock-sim select { background: #0E1A1F; color: #F7F4EC; border-color: #3B5560; color-scheme: dark; }
+.lock-sim #code { color: var(--millo); font-family: var(--mono); font-size: 1.5rem; letter-spacing: .3em; text-align: center; }
 .lock-sim .help { color: #C2CEC9; }
 
 /* ---------- Táboas ---------- */
@@ -339,8 +341,8 @@ table.data tbody tr:hover { background: #FAFBF9; }
 .chart .bar-warn { fill: var(--arxila); }
 .chart .axis { stroke: #9AA39F; stroke-width: 1; }
 .chart .grid-line { stroke: #E3E7E4; stroke-width: 1; }
-.chart text { fill: var(--granito); font-size: 12px; font-family: var(--font); }
-.chart .val { font-weight: 700; font-size: 11px; }
+.chart text { fill: var(--granito); font-size: 17px; font-family: var(--font); }
+.chart .val { font-weight: 700; font-size: 16px; }
 .heat td.h { text-align: center; font-variant-numeric: tabular-nums; font-size: .82rem; font-weight: 700; }
 .heat .h0 { background: #F4F6F5; color: #5A6266; }
 .heat .h1 { background: #DCEFE4; }

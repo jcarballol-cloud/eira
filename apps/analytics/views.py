@@ -70,7 +70,7 @@ def dashboard(request):
         {"label": r["week"].strftime("%d/%m"), "value": round(r["net"] / 100)}
         for r in s["revenue_weeks"]
     ]
-    rev_chart = indicators.hbar(rev_items, "value", "label", label_w=80, suffix=" €")
+    rev_chart = indicators.hbar(rev_items, "value", "label", label_w=90, suffix=" €")
     ai_summary = None
     if request.tenant.module_enabled("ai_summary") and settings.EIRA_AI_ENABLED:
         from apps.integrations.registry import get_adapter

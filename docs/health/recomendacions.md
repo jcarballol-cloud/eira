@@ -49,3 +49,17 @@ O motor (`static/js/health-engine.js`) execútase **no navegador**. Usa o perfil
 - Por defecto o peso e a idade nunca saen do navegador. Hai un E2E que comproba que ningunha petición leva o peso.
 - Gardar na conta é opcional e esixe un consentimento explícito e versionado (`HealthProfile.CONSENT_VERSION`); queda no rexistro de auditoría. Bórrase cun botón.
 - O persoal non o ve; non aparece no admin técnico nin na exportación do concello nin no observatorio. Si vai na exportación persoal (dereito de acceso). Probas en `apps/accounts/tests/test_health.py`.
+
+## v3: formato breve co tempo real da franxa
+
+En cada reserva, e na tarxeta da próxima reserva da app, amósanse **de 2 a 4 consellos dunha liña**, con cifra e acción. «Ver máis» desprega o detalle e a fonte. O cálculo segue no dispositivo (`recommendBrief` en `static/js/health-engine.js`).
+
+| Orde | Consello breve | Datos | Fonte |
+|---|---|---|---|
+| 1 | «26 °C · UV 7 → crema e gorra» / «Sensación 30 °C → auga extra e sombra» / «6 °C → capas e 10 min de quecemento» | Temperatura, **sensación térmica** (índice de calor NOAA/Rothfusz con calor e humidade; sensación por vento NWS 2001 con frío), humidade, UV, vento e chuvia **da instalación para o día e a hora da reserva** (`WeatherAdapter`) | Limiares de `apps/integrations/weather.py`; OMS (índice UV) |
+| 2 | «Bebe 300–450 ml entre as 15:00 e as 17:00» (5–7 ml/kg entre 4 e 2 h antes). Se iso cae antes das 7:00: «Ao espertar: bebe 200–300 ml» (3–5 ml/kg, 2 h antes) | Peso (só persoas adultas) e hora | ACSM 2007 |
+| 3 | «Durante: 100–250 ml cada 15–20 min» (0,4–0,8 l/h), só se a sesión pasa de 60 min ou hai calor | Duración e sensación | ACSM 2007 |
+| 4 | «90 min: hidratos e non beber de máis», ou a semana OMS, ou 65+ | Duración, minutos semanais e idade | Thomas, Erdman e Burke 2016; ACSM 2007; OMS 2020 |
+
+- **Previsión:** `FakeWeatherAdapter` (desenvolvemento) é coherente co mes e a hora (medias mensuais de Galicia, ciclo diario, UV nulo de noite). `MeteoSixAdapter.parse` le temperatura, humidade, vento, precipitación e estado do ceo de MeteoSIX v5. O UV non vén nesa consulta e estímase. *Non verificado contra a API real (precisa clave).*
+- **Privacidade:** o peso segue sen saír do teléfono (E2E `test_booking_shows_personal_recommendations_computed_on_device`).

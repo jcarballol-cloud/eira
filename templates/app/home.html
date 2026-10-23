@@ -27,6 +27,7 @@
   {% else %}
     <p class="mb-0">{% icon 'qr' %} {% translate "Escanea o QR da entrada ao chegar." %}</p>
   {% endif %}
+  {% include "bookings/_health.html" with booking=next_booking compact=True %}
   <a class="btn btn-block mt-2" href="{% turl 'bookings:detail' next_booking.pk %}">{% translate "Ver a reserva" %}</a>
 </section>
 {% else %}

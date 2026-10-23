@@ -241,11 +241,19 @@ def test_booking_shows_personal_recommendations_computed_on_device(new_page, bas
         """localStorage.setItem('eira-health-v1', JSON.stringify({age: '27', weight: '61.5', minutes: '60'}))"""
     )
     page.goto(f"{base}/c/vilardeiras/reservas/{upcoming.pk}/")
-    box = page.locator("[data-health-booking]")
-    box.locator(".rec").first.wait_for()
-    text = box.inner_text()
-    assert "Auga antes" in text and "300–450 ml" in text and "Bebe arredor das" in text
-    assert "A túa semana" in text and "Fonte: ACSM 2007" in text
+    box = page.locator("main [data-health-booking]").first
+    box.locator(".tip").first.wait_for()
+    tips = box.locator(".tip")
+    assert 2 <= tips.count() <= 4
+    text = box.locator(".tips").inner_text()
+    assert "ml" in text and "bebe" in text.lower()
+    # cada consello nunha liña no móbil
+    for t in box.locator(".tip__text").all():
+        lh = float(t.evaluate("e => parseFloat(getComputedStyle(e).lineHeight)"))
+        assert t.bounding_box()["height"] <= lh * 1.5, t.inner_text()
+    box.locator(".tips__more summary").click()
+    assert "Fonte:" in box.locator(".tips__more").inner_text()
+    assert box.get_attribute("data-feels") is not None  # usa a previsión da instalación
     assert box.locator("[data-health-cta]").is_hidden()
     for url, body in sent:
         assert "61.5" not in url and "61.5" not in body

@@ -24,6 +24,31 @@ class Forecast:
     uv_index: int
     sky: str  # "clear" | "cloudy" | "rain"
     source: str = "simulado"
+    humidity_pct: int = 70
+
+    @property
+    def feels_like_c(self):
+        """Sensación térmica: índice de calor (NOAA, Rothfusz) con calor e humidade; sensación
+        por vento (Environment Canada / NWS 2001) con frío e vento; se non, a temperatura."""
+        t, rh, v = self.temperature_c, self.humidity_pct, self.wind_kmh
+        if t >= 27 and rh >= 40:
+            f = t * 9 / 5 + 32
+            hi = (
+                -42.379
+                + 2.04901523 * f
+                + 10.14333127 * rh
+                - 0.22475541 * f * rh
+                - 6.83783e-3 * f * f
+                - 5.481717e-2 * rh * rh
+                + 1.22874e-3 * f * f * rh
+                + 8.5282e-4 * f * rh * rh
+                - 1.99e-6 * f * f * rh * rh
+            )
+            return round((hi - 32) * 5 / 9)
+        if t <= 10 and v > 4.8:
+            wc = 13.12 + 0.6215 * t - 11.37 * v**0.16 + 0.3965 * t * v**0.16
+            return round(wc)
+        return round(t)
 
     @property
     def sky_label(self):
@@ -56,7 +81,11 @@ class FakeWeatherAdapter(WeatherAdapter):
         uv_peak = MONTHLY_UV_MAX[month] * (0.5 if sky != "clear" else 1)
         uv = int(round(max(0.0, uv_peak * (1 - abs(hour - 14) / 6)))) if 8 <= hour <= 20 else 0
         wind = 8 + seed[2] % 30
-        return Forecast(temp, rain, wind, uv, sky)
+        # Humidade relativa: alta en Galicia, máis de noite e con chuvia; máis baixa á tarde no verán
+        humidity = int(
+            max(35, min(98, 78 + (rain - 50) * 0.25 - diurnal * 3 + (seed[3] / 255 - 0.5) * 12))
+        )
+        return Forecast(temp, rain, wind, uv, sky, humidity_pct=humidity)
 
 
 class MeteoSixAdapter(WeatherAdapter):
@@ -67,6 +96,7 @@ class MeteoSixAdapter(WeatherAdapter):
     """
 
     BASE = "https://servizos.meteogalicia.gal/apiv5/getNumericForecastInfo"
+    VARIABLES = "temperature,relative_humidity,precipitation_amount,wind,sky_state"
 
     def forecast(self, latitude, longitude, at):
         if not settings.EIRA_METEOSIX_API_KEY:
@@ -74,14 +104,60 @@ class MeteoSixAdapter(WeatherAdapter):
         query = urllib.parse.urlencode(
             {
                 "coords": f"{longitude},{latitude}",
-                "variables": "temperature,precipitation_amount,wind,sky_state",
+                "variables": self.VARIABLES,
                 "API_KEY": settings.EIRA_METEOSIX_API_KEY,
                 "format": "application/json",
             }
         )
         with urllib.request.urlopen(f"{self.BASE}?{query}", timeout=5) as resp:  # noqa: S310
-            data = json.load(resp)
-        raise NotImplementedError(f"Interpretar resposta MeteoSIX ({len(data)} claves)")
+            return self.parse(json.load(resp), at)
+
+    @staticmethod
+    def parse(data, at):
+        """Converte a resposta GeoJSON de MeteoSIX v5 nun Forecast para o instante `at`.
+
+        Estrutura: features[0].properties.days[].variables[] con `name`, `units` e `values`
+        (cada un con `timeInstant` e `value`, ou `moduleValue` no vento). O UV non vén en
+        getNumericForecastInfo: estímase co mes e o estado do ceo, como no simulado."""
+        from django.utils.dateparse import parse_datetime
+
+        target = localtime(at)
+        series = {}
+        for day in data["features"][0]["properties"]["days"]:
+            for var in day["variables"]:
+                for item in var.get("values", []):
+                    when = parse_datetime(item["timeInstant"])
+                    value = item.get("value", item.get("moduleValue"))
+                    if when is not None and value is not None:
+                        series.setdefault(var["name"], []).append(
+                            (abs((when - target).total_seconds()), value, var.get("units", ""))
+                        )
+
+        def nearest(name, default=None):
+            rows = sorted(series.get(name, []), key=lambda r: r[0])
+            return rows[0][1:] if rows else (default, "")
+
+        temp, _u = nearest("temperature", 15)
+        rh, _u = nearest("relative_humidity", 70)
+        rain_mm, _u = nearest("precipitation_amount", 0)
+        wind, wunits = nearest("wind", 0)
+        sky, _u = nearest("sky_state", "CLOUDY")
+        wind_kmh = float(wind) * 3.6 if wunits in ("ms", "m/s") else float(wind)
+        sky_key = (
+            "rain" if float(rain_mm or 0) >= 0.5 else ("clear" if sky == "SUNNY" else "cloudy")
+        )
+        uv_peak = MONTHLY_UV_MAX[target.month - 1] * (1 if sky_key == "clear" else 0.5)
+        hour = target.hour + target.minute / 60
+        uv = int(round(max(0.0, uv_peak * (1 - abs(hour - 14) / 6)))) if 8 <= hour <= 20 else 0
+        return Forecast(
+            temperature_c=round(float(temp), 1),
+            precipitation_prob=min(100, int(float(rain_mm or 0) * 40)),
+            wind_kmh=int(round(wind_kmh)),
+            uv_index=uv,
+            sky=sky_key,
+            source="MeteoSIX",
+            humidity_pct=int(float(rh)),
+        )
 
 
 def advice(forecast, indoor=False):

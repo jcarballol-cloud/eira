@@ -285,3 +285,11 @@ Formato: data · decisión · motivo · alternativas descartadas.
 - **Sticky footer:** `body` con `min-height: 100dvh`, e `.shell-main` como columna flex co pé en `margin-top: auto`. Comprobado en `/preferencias/` e `/acceso/codigo/`: antes o pé remataba nos px 543 e 424 dunha xanela de 900; agora remata no 900.
 - **Menú lateral:** un test percorre as 16 entradas do menú do concello e esixe `aria-current="page"` na súa páxina. Só fallaba o Observatorio (a vista non pasaba `sub`).
 - **«Devolto»:** causa e corrección en `docs/PROGRESS.md` (v3).
+
+## v3 · 3 — Consellos de saúde breves co tempo real
+- **Antes:** ata 8 consellos longos por reserva (`docs/capturas/v2/saude-reserva.png`), sen sensación térmica, humidade nin vento. Ademais, a tarxeta da próxima reserva non os amosaba.
+- **Agora:** de 2 a 4 consellos dunha liña e un único «Ver máis» co detalle e as fontes. Van na reserva, na tarxeta da próxima reserva da app e na páxina de Saúde.
+  - Usan a previsión da instalación para o día e a hora: temperatura, sensación, humidade, UV, vento e chuvia.
+  - A sensación térmica calcúlase no servidor (`Forecast.feels_like_c`); o resto do cálculo, no dispositivo.
+- **Primeira hora.** Para sesións temperás non se di «bebe ás 5:00»: aplícase a variante de 2 h do ACSM.
+- **MeteoSIX** queda listo para produción (`EIRA_ADAPTERS["weather"]` e `EIRA_METEOSIX_API_KEY`). O seu parser está probado cunha resposta de mostra, non coa API real.

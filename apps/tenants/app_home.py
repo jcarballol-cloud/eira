@@ -40,11 +40,18 @@ def home(request):
         if b.needs_closing_checklist
     ]
     household = getattr(request.user, "household", None)
+    from apps.bookings.views import weather_for
+
+    forecast = weather_for(nxt.facility, nxt.start)[0] if nxt else None
+    health = getattr(request.user, "health_profile", None)
     return render(
         request,
         "app/home.html",
         {
             "next_booking": nxt,
+            "forecast": forecast,
+            "now": now,
+            "account_health": health.as_dict() if health else None,
             "access": booking_access_info(nxt) if nxt else None,
             "upcoming": upcoming[1:],
             "pending_checklist": pending_checklist,

@@ -12,8 +12,8 @@
     var H = window.EiraHealth, T = H.strings(), out = $("h-advice");
     function show(d) {
       var session = parseFloat(d.session) > 0 ? { start: null, duration: d.session, indoor: true } : null;
-      var items = H.recommend(d, session, T);
-      if (items.length) H.render(out, items, T, out.dataset.sprite);
+      var items = H.recommendBrief(d, session, T);
+      if (items.length) H.renderBrief(out, items, T, out.dataset.sprite);
     }
     var d = H.profile();
     ["age", "weight", "minutes", "session"].forEach(function (k) { if (d[k] !== undefined && d[k] !== null) $("h-" + k).value = d[k]; });

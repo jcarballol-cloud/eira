@@ -63,3 +63,17 @@ asignarlle unha persoa con `RegionMembership`.
 ```bash
 git pull && docker compose up -d --build   # as migracións aplícanse ao arrancar
 ```
+
+## Mapas: teselas e soberanía
+
+- O mapa usa Leaflet (BSD-2) e un **servidor de teselas configurable**:
+  - por instancia: `EIRA_TILE_URL`, `EIRA_TILE_ATTRIBUTION` e `EIRA_TILE_ATTRIBUTION_URL`;
+  - **por concello**: «Configuración → servidor de teselas do mapa».
+- A orixe do servidor engádese soa á CSP (`img-src`). As URL con `{s}.` admiten subdominios.
+- A política global de Referer é `same-origin`: non se envía a URL das páxinas a terceiros. Na capa de teselas envíase só a **orixe** (`referrerPolicy: strict-origin-when-cross-origin`), que é o que esixen os servidores de OpenStreetMap.
+- **Importante:** a [política de uso das teselas de OpenStreetMap](https://operations.osmfoundation.org/policies/tiles/) non permite o uso intensivo de `tile.openstreetmap.org` por aplicacións en produción. Serve para a demo e para pouco tráfico, sempre coa atribución «© colaboradores de OpenStreetMap». Para produción:
+  1. **Servidor de teselas propio ou da deputación** (recomendado, coherente coa soberanía):
+     - teselas vectoriais con [OpenMapTiles](https://openmaptiles.org/) e un ficheiro PMTiles servido como estático;
+     - ou teselas raster con `tileserver-gl` ou `mod_tile` + `renderd` a partir dos datos OSM de Galicia (Geofabrik).
+  2. **Provedores con datos abertos** que permitan o volume previsto (revisar as condicións de cada un).
+  3. **Sen mapa:** a lista accesible de instalacións contén a mesma información. O mapa é un complemento.

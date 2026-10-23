@@ -2,13 +2,13 @@
 import datetime as dt
 
 from django import forms
-from django.conf import settings
 from django.shortcuts import get_object_or_404, render
 from django.templatetags.static import static
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from apps.bookings.services import week_grid
+from apps.tenants.models import tile_settings
 from apps.tenants.urlutils import treverse
 
 from .models import Facility, FacilityKind, Parish
@@ -54,9 +54,12 @@ def home(request):
         if d["indoor"]:
             qs = qs.filter(indoor=True)
     facilities = list(qs)
+    tiles = tile_settings(tenant)
     geo = {
         "type": "FeatureCollection",
-        "tiles": settings.EIRA_TILE_URL,
+        "tiles": tiles["url"],
+        "attribution": tiles["attribution"],
+        "attribution_url": tiles["attribution_url"],
         "icon": static("vendor/leaflet/images/marker-icon.png"),
         "icon2x": static("vendor/leaflet/images/marker-icon-2x.png"),
         "shadow": static("vendor/leaflet/images/marker-shadow.png"),

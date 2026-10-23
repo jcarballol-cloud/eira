@@ -141,6 +141,7 @@ LOCALE_PATHS = [BASE_DIR / "locale"]
 TIME_ZONE = "Europe/Madrid"
 USE_I18N = True
 USE_TZ = True
+FORMS_URLFIELD_ASSUME_HTTPS = True  # comportamento de Django 6
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -179,7 +180,11 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 14
 
 # Teselas do mapa: por defecto OpenStreetMap; un concello pode apuntar ao seu propio servidor.
 EIRA_TILE_URL = env("EIRA_TILE_URL", "https://tile.openstreetmap.org/{z}/{x}/{y}.png")
-EIRA_TILE_ORIGIN = env("EIRA_TILE_ORIGIN", "https://tile.openstreetmap.org")
+EIRA_TILE_ORIGIN = env("EIRA_TILE_ORIGIN", "")  # obsoleto: a orixe dedúcese da URL
+EIRA_TILE_ATTRIBUTION = env("EIRA_TILE_ATTRIBUTION", "Colaboradores de OpenStreetMap")
+EIRA_TILE_ATTRIBUTION_URL = env(
+    "EIRA_TILE_ATTRIBUTION_URL", "https://www.openstreetmap.org/copyright"
+)
 
 CACHES = {
     "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache", "LOCATION": "eira"}

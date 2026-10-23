@@ -9,9 +9,16 @@
     var data = JSON.parse(document.getElementById(el.getAttribute("data-map")).textContent);
     if (!data.features.length) { el.hidden = true; return; }
     var map = L.map(el, { scrollWheelZoom: false, keyboard: true });
+    // A política global é «same-origin» (non se filtra a URL a terceiros), pero os servidores de teselas
+    // de OSM esixen o Referer: envíase só a orixe e só nas teselas.
+    var attribution = document.createElement("span");
+    var link = document.createElement("a");
+    link.href = data.attribution_url; link.textContent = data.attribution; link.rel = "noopener";
+    attribution.appendChild(document.createTextNode("© ")); attribution.appendChild(link);
     L.tileLayer(data.tiles, {
       maxZoom: 18,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      referrerPolicy: "strict-origin-when-cross-origin",
+      attribution: attribution.outerHTML
     }).addTo(map);
     var icon = L.icon({ iconUrl: data.icon, iconRetinaUrl: data.icon2x, shadowUrl: data.shadow, iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41] });
     var layer = L.geoJSON(data, {

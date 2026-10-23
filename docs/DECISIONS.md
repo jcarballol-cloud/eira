@@ -117,3 +117,8 @@ Formato: data · decisión · motivo · alternativas descartadas.
 - **Tarifas:** aplícase a **máis favorable** entre as que lle corresponden á persoa (empadroamento, idade, colectivo validado). A tarifa reducida valídaa o persoal (`Eligibility`), que só garda o colectivo e a data, nunca a documentación.
 - **Desconto en franxas tranquilas:** é o das franxas «recomendadas» (como moito 2 por día e por instalación). Configurable por concello (por defecto −20 %; 0 desactívao) e gárdase na reserva (prezo base e %).
 - **Recibo PDF:** xerador mínimo propio (Helvetica e WinAnsi, unha páxina), sen dependencias.
+
+## v2 F5 — Teselas do mapa
+- O 403 das teselas de OSM debíase á política global `Referrer-Policy: same-origin`. Non se relaxa: a capa de Leaflet envía só a orixe (`referrerPolicy`). Así a URL das páxinas non sae a terceiros.
+- O servidor de teselas é configurable por concello (URL, atribución e ligazón). A orixe da CSP dedúcese da URL, polo que xa non hai que manter `EIRA_TILE_ORIGIN` a man.
+- `tile.openstreetmap.org` só para a demo. Recoméndase un servidor propio ou da deputación (`docs/despregamento.md`).

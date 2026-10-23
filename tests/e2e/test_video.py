@@ -65,15 +65,14 @@ def run_script(page, base, d):
     d.say("Eira · Reservar é o fácil. O difícil é abrir a porta.", 3.2)
     # 2. Veciña: buscar e reservar
     d.login(base, "uxia@demo.eira.example")
-    d.say("Uxía, veciña de Vilardeiras, busca unha instalación. Lista accesible ou mapa.")
-    page.click("text=Pista de pádel da Pereira")
+    d.say("Uxía, veciña de Vilardeiras, abre a app: próxima reserva e accesos rápidos.", 2.6)
+    d.go(base + "/c/vilardeiras/")
+    d.say("Busca unha instalación. Lista accesible ou mapa.")
+    page.click("main a:has-text('Pista de pádel da Pereira')")
     page.wait_for_load_state("networkidle")
     d.say("Grella semanal: libre, ocupada ou ★ recomendada (pouca demanda).", 3)
-    slot = (
-        page.locator(".day-list details[open] a.slot")
-        if page.viewport_size["width"] < 700
-        else page.locator("table.week a.slot")
-    )
+    # No escritorio a app da veciñanza vai dentro do marco de teléfono: vale a franxa visible.
+    slot = page.locator("a.slot:visible")
     slot.first.scroll_into_view_if_needed()
     slot.first.click()
     page.wait_for_load_state("networkidle")

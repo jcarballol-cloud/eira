@@ -79,6 +79,16 @@ class Municipality(models.Model):
     accessibility_statement = models.TextField(_("declaración de accesibilidade"), blank=True)
     legal_notice = models.TextField(_("aviso legal"), blank=True)
     modules = models.JSONField(_("módulos activos"), default=default_modules)
+    tile_url = models.CharField(
+        _("servidor de teselas do mapa"),
+        max_length=300,
+        blank=True,
+        help_text=_(
+            "Baleiro = o da instalación (EIRA_TILE_URL). P. ex. o servidor propio da deputación."
+        ),
+    )
+    tile_attribution = models.CharField(_("atribución do mapa"), max_length=200, blank=True)
+    tile_attribution_url = models.URLField(_("ligazón da atribución"), blank=True)
 
     # Regras de reserva configurables por concello
     cancellation_hours = models.PositiveIntegerField(
@@ -139,3 +149,28 @@ class TenantModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+def tile_settings(tenant=None):
+    """Provedor de teselas efectivo (concello → instancia) e a súa orixe para a CSP."""
+    from urllib.parse import urlparse
+
+    from django.conf import settings
+
+    url = tenant.tile_url if tenant and tenant.tile_url else settings.EIRA_TILE_URL
+    parsed = urlparse(url.replace("{s}.", "a."))
+    host = parsed.netloc.replace("a.", "*.", 1) if "{s}." in url else parsed.netloc
+    return {
+        "url": url,
+        "origin": f"{parsed.scheme}://{host}",
+        "attribution": (
+            tenant.tile_attribution
+            if tenant and tenant.tile_attribution
+            else settings.EIRA_TILE_ATTRIBUTION
+        ),
+        "attribution_url": (
+            tenant.tile_attribution_url
+            if tenant and tenant.tile_attribution_url
+            else settings.EIRA_TILE_ATTRIBUTION_URL
+        ),
+    }

@@ -72,3 +72,18 @@ def test_audit_log_on_sensitive_actions(client, admin_a, padel_a):
         f"/c/concello-a/xestion/instalacions/{padel_a.pk}/normas/", {"text": "- Nova norma"}
     )
     assert AuditLog.objects.filter(action="facility.rules", actor=admin_a).exists()
+
+
+def test_tile_provider_per_municipality_goes_to_csp(client, padel_a):
+    from apps.tenants.models import tile_settings
+
+    assert tile_settings(None)["origin"] == "https://tile.openstreetmap.org"
+    muni = padel_a.municipality
+    muni.tile_url = "https://{s}.teselas.deputacion.example/{z}/{x}/{y}.png"
+    muni.tile_attribution = "Deputación de proba · OSM"
+    muni.save()
+    assert tile_settings(muni)["origin"] == "https://*.teselas.deputacion.example"
+    r = client.get("/c/concello-a/?vista=mapa")
+    assert "https://*.teselas.deputacion.example" in r["Content-Security-Policy"]
+    assert "de proba" in r.content.decode()  # o JSON do mapa escapa os non ASCII
+    assert r["Referrer-Policy"] == "same-origin"  # a política global non se relaxa

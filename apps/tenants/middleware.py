@@ -113,7 +113,9 @@ class SecurityHeadersMiddleware:
 
     def __call__(self, request):
         response = self.get_response(request)
-        tile = settings.EIRA_TILE_ORIGIN
+        from .models import tile_settings
+
+        tile = tile_settings(getattr(request, "tenant", None))["origin"]
         if request.path.startswith("/admin/"):
             # O admin de Django usa algúns estilos en liña; só se relaxa nesa área interna.
             csp = "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-ancestors 'none'"

@@ -23,8 +23,17 @@ from apps.tenants.models import Municipality
 class MunicipalitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Municipality
-        fields = ["slug", "name", "ine_code", "accent_color", "languages", "contact_email", "contact_phone",
-                  "cancellation_hours", "max_advance_days"]
+        fields = [
+            "slug",
+            "name",
+            "ine_code",
+            "accent_color",
+            "languages",
+            "contact_email",
+            "contact_phone",
+            "cancellation_hours",
+            "max_advance_days",
+        ]
 
 
 class OpeningHoursSerializer(serializers.ModelSerializer):
@@ -47,9 +56,28 @@ class FacilitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Facility
-        fields = ["id", "name", "kind", "parish", "description", "address", "latitude", "longitude", "indoor",
-                  "lighting", "step_free", "adapted_toilet", "adapted_changing", "accessible_parking", "capacity",
-                  "slot_minutes", "access_level", "opening_hours", "tariffs", "rules_version"]
+        fields = [
+            "id",
+            "name",
+            "kind",
+            "parish",
+            "description",
+            "address",
+            "latitude",
+            "longitude",
+            "indoor",
+            "lighting",
+            "step_free",
+            "adapted_toilet",
+            "adapted_changing",
+            "accessible_parking",
+            "capacity",
+            "slot_minutes",
+            "access_level",
+            "opening_hours",
+            "tariffs",
+            "rules_version",
+        ]
 
     def get_rules_version(self, obj) -> int | None:
         r = obj.current_rules()
@@ -69,15 +97,34 @@ class BookingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Booking
-        fields = ["id", "reference", "facility", "facility_name", "start", "end", "status", "price_cents",
-                  "paid_cents", "rules_accepted_at"]
-        read_only_fields = ["reference", "end", "status", "price_cents", "paid_cents", "rules_accepted_at"]
+        fields = [
+            "id",
+            "reference",
+            "facility",
+            "facility_name",
+            "start",
+            "end",
+            "status",
+            "price_cents",
+            "paid_cents",
+            "rules_accepted_at",
+        ]
+        read_only_fields = [
+            "reference",
+            "end",
+            "status",
+            "price_cents",
+            "paid_cents",
+            "rules_accepted_at",
+        ]
 
 
 class BookingCreateSerializer(serializers.Serializer):
     facility = serializers.IntegerField()
     start = serializers.DateTimeField()
-    accept_rules_version = serializers.IntegerField(help_text="Versión das normas que a persoa acepta expresamente")
+    accept_rules_version = serializers.IntegerField(
+        help_text="Versión das normas que a persoa acepta expresamente"
+    )
 
 
 class IncidentSerializer(serializers.ModelSerializer):
@@ -106,11 +153,19 @@ class FacilityViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         if getattr(self, "swagger_fake_view", False):
             return Facility.objects.none()
-        return Facility.objects.for_tenant(_tenant(self.kwargs)).filter(is_published=True).select_related(
-            "parish").prefetch_related("opening_hours", "tariffs")
+        return (
+            Facility.objects.for_tenant(_tenant(self.kwargs))
+            .filter(is_published=True)
+            .select_related("parish")
+            .prefetch_related("opening_hours", "tariffs")
+        )
 
     @extend_schema(
-        parameters=[OpenApiParameter("week", OpenApiTypes.DATE, description="Calquera día da semana (ISO 8601)")],
+        parameters=[
+            OpenApiParameter(
+                "week", OpenApiTypes.DATE, description="Calquera día da semana (ISO 8601)"
+            )
+        ],
         responses=SlotSerializer(many=True),
     )
     @action(detail=True)
@@ -123,9 +178,21 @@ class FacilityViewSet(viewsets.ReadOnlyModelViewSet):
         monday = day - dt.timedelta(days=day.weekday())
         grid = booking_services.week_grid(facility, monday, request.user)
         slots = [s for _d, day_slots in grid["by_day"] for s in day_slots]
-        return Response(SlotSerializer(
-            [{"start": s.start, "end": s.end, "status": s.status, "booked": s.booked, "capacity": s.capacity}
-             for s in slots], many=True).data)
+        return Response(
+            SlotSerializer(
+                [
+                    {
+                        "start": s.start,
+                        "end": s.end,
+                        "status": s.status,
+                        "booked": s.booked,
+                        "capacity": s.capacity,
+                    }
+                    for s in slots
+                ],
+                many=True,
+            ).data
+        )
 
 
 class BookingViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
@@ -136,26 +203,44 @@ class BookingViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.
     def get_queryset(self):
         if getattr(self, "swagger_fake_view", False):
             return Booking.objects.none()
-        return Booking.objects.for_tenant(_tenant(self.kwargs)).filter(user=self.request.user).select_related("facility")
+        return (
+            Booking.objects.for_tenant(_tenant(self.kwargs))
+            .filter(user=self.request.user)
+            .select_related("facility")
+        )
 
     @extend_schema(request=BookingCreateSerializer, responses={201: BookingSerializer})
     def create(self, request, *args, **kwargs):
         tenant = _tenant(self.kwargs)
         data = BookingCreateSerializer(data=request.data)
         data.is_valid(raise_exception=True)
-        facility = get_object_or_404(Facility, municipality=tenant, pk=data.validated_data["facility"], is_published=True)
+        facility = get_object_or_404(
+            Facility, municipality=tenant, pk=data.validated_data["facility"], is_published=True
+        )
         rules = facility.current_rules()
         if not rules or rules.version != data.validated_data["accept_rules_version"]:
-            return Response({"detail": "Debes aceptar a versión vixente das normas."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Debes aceptar a versión vixente das normas."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         try:
-            booking = booking_services.create_booking(facility, data.validated_data["start"], request.user,
-                                                      rules_version=rules)
+            booking = booking_services.create_booking(
+                facility, data.validated_data["start"], request.user, rules_version=rules
+            )
         except booking_services.BookingError as exc:
             return Response({"detail": str(exc)}, status=status.HTTP_409_CONFLICT)
         return Response(BookingSerializer(booking).data, status=status.HTTP_201_CREATED)
 
-    @extend_schema(request=None, responses=inline_serializer("CancelResult", {
-        "refunded_cents": serializers.IntegerField(), "penalty_cents": serializers.IntegerField()}))
+    @extend_schema(
+        request=None,
+        responses=inline_serializer(
+            "CancelResult",
+            {
+                "refunded_cents": serializers.IntegerField(),
+                "penalty_cents": serializers.IntegerField(),
+            },
+        ),
+    )
     @action(detail=True, methods=["post"])
     def cancel(self, request, *args, **kwargs):
         booking = self.get_object()

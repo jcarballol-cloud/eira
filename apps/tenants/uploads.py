@@ -18,7 +18,8 @@ def clean_image(upload):
     """Valida a imaxe e devolve un ContentFile JPEG novo, reescalado e sen metadatos."""
     if upload.size > settings.EIRA_MAX_UPLOAD_BYTES:
         raise forms.ValidationError(
-            _("A foto é demasiado grande (máximo %(mb)s MB).") % {"mb": settings.EIRA_MAX_UPLOAD_BYTES // (1024 * 1024)}
+            _("A foto é demasiado grande (máximo %(mb)s MB).")
+            % {"mb": settings.EIRA_MAX_UPLOAD_BYTES // (1024 * 1024)}
         )
     try:
         upload.seek(0)

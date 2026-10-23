@@ -2,9 +2,9 @@
 from django import template
 from django.templatetags.static import static
 from django.urls import reverse
+from django.utils.formats import date_format
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
-from django.utils.formats import date_format
 from django.utils.timezone import localtime
 
 register = template.Library()
@@ -22,7 +22,9 @@ def turl(context, name, *args):
 def icon(name, css="icon"):
     """Icona decorativa do sprite propio (oculta aos lectores de pantalla)."""
     href = static("img/icons.svg") + "#" + escape(name)
-    return mark_safe(f'<svg class="{escape(css)}" aria-hidden="true" focusable="false"><use href="{href}"></use></svg>')
+    return mark_safe(
+        f'<svg class="{escape(css)}" aria-hidden="true" focusable="false"><use href="{href}"></use></svg>'
+    )
 
 
 @register.filter

@@ -29,17 +29,35 @@ def my_orders(request):
         from django.db.models import Q
 
         qs = qs.filter(Q(assigned_to=request.user) | Q(assigned_to__isnull=True))
-    pending = qs.exclude(status=WorkOrder.Status.DONE).filter(due_date__lte=today + dt.timedelta(days=1)).order_by("due_date")
+    pending = (
+        qs.exclude(status=WorkOrder.Status.DONE)
+        .filter(due_date__lte=today + dt.timedelta(days=1))
+        .order_by("due_date")
+    )
     done_today = qs.filter(status=WorkOrder.Status.DONE, closed_at__date=today)
-    return render(request, "maintenance/my_orders.html", {
-        "pending": pending, "done_today": done_today, "today": today, "nav": "operator",
-    })
+    return render(
+        request,
+        "maintenance/my_orders.html",
+        {
+            "pending": pending,
+            "done_today": done_today,
+            "today": today,
+            "nav": "operator",
+        },
+    )
 
 
 class CloseForm(forms.Form):
-    closing_notes = forms.CharField(label=gettext_lazy("Notas de peche"), required=False, widget=forms.Textarea(attrs={"rows": 3}))
-    photo = forms.ImageField(label=gettext_lazy("Foto do traballo feito"), required=False,
-                             widget=forms.ClearableFileInput(attrs={"accept": "image/*", "capture": "environment"}))
+    closing_notes = forms.CharField(
+        label=gettext_lazy("Notas de peche"),
+        required=False,
+        widget=forms.Textarea(attrs={"rows": 3}),
+    )
+    photo = forms.ImageField(
+        label=gettext_lazy("Foto do traballo feito"),
+        required=False,
+        widget=forms.ClearableFileInput(attrs={"accept": "image/*", "capture": "environment"}),
+    )
 
     def clean_photo(self):
         photo = self.cleaned_data.get("photo")
@@ -48,7 +66,9 @@ class CloseForm(forms.Form):
 
 @role_required(*STAFF)
 def order_detail(request, pk):
-    order = get_object_or_404(WorkOrder.objects.select_related("facility", "incident"), municipality=request.tenant, pk=pk)
+    order = get_object_or_404(
+        WorkOrder.objects.select_related("facility", "incident"), municipality=request.tenant, pk=pk
+    )
     synced = request.headers.get("X-Eira-Sync") == "1"
     if request.method == "POST":
         action = request.POST.get("action")
@@ -78,46 +98,73 @@ def order_detail(request, pk):
                 return redirect(treverse(request.tenant, "maintenance:my_orders"))
             messages.error(request, " ".join(e for errs in form.errors.values() for e in errs))
         return redirect(treverse(request.tenant, "maintenance:order", order.pk))
-    return render(request, "maintenance/order.html", {"order": order, "form": CloseForm(), "nav": "operator"})
+    return render(
+        request, "maintenance/order.html", {"order": order, "form": CloseForm(), "nav": "operator"}
+    )
 
 
 @role_required(*STAFF)
 def shared_calendar(request):
     today = timezone.localdate()
     try:
-        month = dt.date.fromisoformat(request.GET.get("mes", "") + "-01") if request.GET.get("mes") else today.replace(day=1)
+        month = (
+            dt.date.fromisoformat(request.GET.get("mes", "") + "-01")
+            if request.GET.get("mes")
+            else today.replace(day=1)
+        )
     except ValueError:
         month = today.replace(day=1)
     cal = calendar.Calendar(firstweekday=0)
     weeks = cal.monthdatescalendar(month.year, month.month)
     first, last = weeks[0][0], weeks[-1][-1]
-    orders = WorkOrder.objects.for_tenant(request.tenant).filter(due_date__range=(first, last)).select_related("facility")
+    orders = (
+        WorkOrder.objects.for_tenant(request.tenant)
+        .filter(due_date__range=(first, last))
+        .select_related("facility")
+    )
     by_day = {}
     for o in orders:
         by_day.setdefault(o.due_date, []).append(o)
     prev_month = (month - dt.timedelta(days=1)).replace(day=1)
     next_month = (month + dt.timedelta(days=32)).replace(day=1)
-    return render(request, "maintenance/calendar.html", {
-        "weeks": [[(d, by_day.get(d, [])) for d in w] for w in weeks], "month": month, "today": today,
-        "prev_month": prev_month, "next_month": next_month, "nav": "manage" if request.roles & {"admin", "region_admin"} else "operator",
-        "sub": "maintenance",
-    })
+    return render(
+        request,
+        "maintenance/calendar.html",
+        {
+            "weeks": [[(d, by_day.get(d, [])) for d in w] for w in weeks],
+            "month": month,
+            "today": today,
+            "prev_month": prev_month,
+            "next_month": next_month,
+            "nav": "manage" if request.roles & {"admin", "region_admin"} else "operator",
+            "sub": "maintenance",
+        },
+    )
 
 
 class TaskForm(forms.ModelForm):
     class Meta:
         model = MaintenanceTask
         fields = ["title", "frequency", "checklist", "start_date"]
-        widgets = {"start_date": forms.DateInput(attrs={"type": "date"}), "checklist": forms.Textarea(attrs={"rows": 3})}
+        widgets = {
+            "start_date": forms.DateInput(attrs={"type": "date"}),
+            "checklist": forms.Textarea(attrs={"rows": 3}),
+        }
 
 
 @role_required("admin", "region_admin")
 def plans(request):
-    plans_qs = MaintenancePlan.objects.for_tenant(request.tenant).select_related("facility").prefetch_related("tasks")
+    plans_qs = (
+        MaintenancePlan.objects.for_tenant(request.tenant)
+        .select_related("facility")
+        .prefetch_related("tasks")
+    )
     form = TaskForm(request.POST or None)
     plan_id = request.POST.get("plan")
     if request.method == "POST" and request.POST.get("action") == "generate":
-        n = services.generate_orders(days=int(request.POST.get("days", 14)), municipality=request.tenant)
+        n = services.generate_orders(
+            days=int(request.POST.get("days", 14)), municipality=request.tenant
+        )
         messages.success(request, _("Xeradas %(n)s ordes novas.") % {"n": n})
         return redirect(treverse(request.tenant, "manage:maintenance_plans"))
     if request.method == "POST" and plan_id and form.is_valid():
@@ -127,6 +174,14 @@ def plans(request):
         task.save()
         messages.success(request, _("Tarefa engadida."))
         return redirect(treverse(request.tenant, "manage:maintenance_plans"))
-    return render(request, "manage/maintenance_plans.html", {
-        "plans": plans_qs, "form": form, "frequencies": Frequency.choices, "nav": "manage", "sub": "maintenance",
-    })
+    return render(
+        request,
+        "manage/maintenance_plans.html",
+        {
+            "plans": plans_qs,
+            "form": form,
+            "frequencies": Frequency.choices,
+            "nav": "manage",
+            "sub": "maintenance",
+        },
+    )

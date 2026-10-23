@@ -18,12 +18,34 @@ from django.views.decorators.http import require_POST
 
 from apps.integrations.registry import get_adapter
 
-from .forms import CONSENT_FIELDS, CodeForm, DeleteAccountForm, DependentForm, EmailForm, ProfileForm, ResidencyCodeForm
-from .models import Consent, Dependent, Household, LoginCode, Residency, ResidencyInvitation, User, audit
+from .forms import (
+    CONSENT_FIELDS,
+    CodeForm,
+    DeleteAccountForm,
+    DependentForm,
+    EmailForm,
+    ProfileForm,
+    ResidencyCodeForm,
+)
+from .models import (
+    Consent,
+    Dependent,
+    Household,
+    LoginCode,
+    Residency,
+    ResidencyInvitation,
+    User,
+    audit,
+)
 
 
 def _next(request):
-    nxt = request.POST.get("next") or request.GET.get("next") or request.session.get("login_next") or "/"
+    nxt = (
+        request.POST.get("next")
+        or request.GET.get("next")
+        or request.session.get("login_next")
+        or "/"
+    )
     return nxt if url_has_allowed_host_and_scheme(nxt, allowed_hosts={request.get_host()}) else "/"
 
 
@@ -34,8 +56,14 @@ def _client_ip(request):
 def _rate_limited(email, ip):
     """Limita envíos por correo e por IP nunha xanela dunha hora."""
     keys = [
-        (f"eira:rl:mail:{hashlib.sha256(email.encode()).hexdigest()[:16]}", settings.EIRA_LOGIN_RATE_LIMIT),
-        (f"eira:rl:ip:{hashlib.sha256(ip.encode()).hexdigest()[:16]}", settings.EIRA_LOGIN_RATE_LIMIT_IP),
+        (
+            f"eira:rl:mail:{hashlib.sha256(email.encode()).hexdigest()[:16]}",
+            settings.EIRA_LOGIN_RATE_LIMIT,
+        ),
+        (
+            f"eira:rl:ip:{hashlib.sha256(ip.encode()).hexdigest()[:16]}",
+            settings.EIRA_LOGIN_RATE_LIMIT_IP,
+        ),
     ]
     for key, limit in keys:
         cache.add(key, 0, 3600)
@@ -50,17 +78,24 @@ def login_email(request):
     if request.method == "POST" and form.is_valid():
         email = form.cleaned_data["email"].lower()
         if _rate_limited(email, _client_ip(request)):
-            form.add_error(None, _("Demasiados intentos. Agarda un pouco antes de pedir outro código."))
+            form.add_error(
+                None, _("Demasiados intentos. Agarda un pouco antes de pedir outro código.")
+            )
         else:
             _obj, code = LoginCode.issue(email)
             get_adapter("mail").send(
-                email, _("O teu código de acceso a Eira: %(c)s") % {"c": code},
-                _("Introduce este código para entrar: %(c)s\n\nCaduca en 10 minutos. Se non o pediches, ignora esta mensaxe.")
+                email,
+                _("O teu código de acceso a Eira: %(c)s") % {"c": code},
+                _(
+                    "Introduce este código para entrar: %(c)s\n\nCaduca en 10 minutos. Se non o pediches, ignora esta mensaxe."
+                )
                 % {"c": code},
             )
             request.session["login_email"] = email
             return redirect("accounts:code")
-    return render(request, "accounts/login.html", {"form": form, "next": request.session["login_next"]})
+    return render(
+        request, "accounts/login.html", {"form": form, "next": request.session["login_next"]}
+    )
 
 
 def login_code(request):
@@ -104,7 +139,9 @@ def identity_callback(request):
     login(request, user, backend="django.contrib.auth.backends.ModelBackend")
     audit("auth.login", user, method=identity.provider)
     nxt = request.session.pop("identity_next", None) or _next(request)
-    return redirect(nxt if url_has_allowed_host_and_scheme(nxt, allowed_hosts={request.get_host()}) else "/")
+    return redirect(
+        nxt if url_has_allowed_host_and_scheme(nxt, allowed_hosts={request.get_host()}) else "/"
+    )
 
 
 @require_POST
@@ -116,6 +153,7 @@ def logout_view(request):
 
 # ---------------------------------------------------------------- conta
 
+
 @login_required
 def profile(request):
     form = ProfileForm(request.POST or None, instance=request.user)
@@ -124,11 +162,20 @@ def profile(request):
         messages.success(request, _("Datos gardados."))
         return redirect("account:profile")
     memberships = request.user.memberships.select_related("municipality")
-    residencies = request.user.residencies.filter(revoked_at__isnull=True).select_related("municipality")
-    return render(request, "accounts/profile.html", {
-        "form": form, "memberships": memberships, "residencies": residencies, "nav": "account",
-        "residency_form": ResidencyCodeForm(),
-    })
+    residencies = request.user.residencies.filter(revoked_at__isnull=True).select_related(
+        "municipality"
+    )
+    return render(
+        request,
+        "accounts/profile.html",
+        {
+            "form": form,
+            "memberships": memberships,
+            "residencies": residencies,
+            "nav": "account",
+            "residency_form": ResidencyCodeForm(),
+        },
+    )
 
 
 @login_required
@@ -139,12 +186,18 @@ def redeem_residency(request):
         code = form.cleaned_data["code"].strip().upper()
         inv = ResidencyInvitation.objects.filter(code=code).select_related("municipality").first()
         if inv and inv.is_valid:
-            Residency.objects.get_or_create(user=request.user, municipality=inv.municipality, revoked_at=None,
-                                            defaults={"method": Residency.Method.INVITATION})
+            Residency.objects.get_or_create(
+                user=request.user,
+                municipality=inv.municipality,
+                revoked_at=None,
+                defaults={"method": Residency.Method.INVITATION},
+            )
             inv.used_by, inv.used_at = request.user, timezone.now()
             inv.save(update_fields=["used_by", "used_at"])
             audit("residency.redeem", request.user, inv.municipality, inv)
-            messages.success(request, _("Empadroamento validado en %(m)s.") % {"m": inv.municipality.name})
+            messages.success(
+                request, _("Empadroamento validado en %(m)s.") % {"m": inv.municipality.name}
+            )
         else:
             messages.error(request, _("O código non é válido ou xa se usou."))
     return redirect("account:profile")
@@ -165,40 +218,90 @@ def export_user_data(user):
         "format": "eira-user-export/1",
         "exported_at": timezone.now().isoformat(),
         "user": {
-            "email": user.email, "display_name": user.display_name, "phone": user.phone,
-            "birth_year": user.birth_year, "preferred_language": user.preferred_language,
-            "date_joined": dt(user.date_joined), "notify_email": user.notify_email,
-            "notify_telegram": user.notify_telegram, "linked_public_identity": bool(user.identity_subject),
+            "email": user.email,
+            "display_name": user.display_name,
+            "phone": user.phone,
+            "birth_year": user.birth_year,
+            "preferred_language": user.preferred_language,
+            "date_joined": dt(user.date_joined),
+            "notify_email": user.notify_email,
+            "notify_telegram": user.notify_telegram,
+            "linked_public_identity": bool(user.identity_subject),
         },
-        "roles": [{"municipality": m.municipality.slug, "role": m.role} for m in user.memberships.select_related("municipality")],
-        "residencies": [{"municipality": r.municipality.slug, "method": r.method, "validated_at": dt(r.validated_at)}
-                        for r in user.residencies.select_related("municipality")],
+        "roles": [
+            {"municipality": m.municipality.slug, "role": m.role}
+            for m in user.memberships.select_related("municipality")
+        ],
+        "residencies": [
+            {
+                "municipality": r.municipality.slug,
+                "method": r.method,
+                "validated_at": dt(r.validated_at),
+            }
+            for r in user.residencies.select_related("municipality")
+        ],
         "bookings": [
-            {"reference": b.reference, "municipality": b.municipality.slug, "facility": b.facility.name,
-             "start": dt(b.start), "end": dt(b.end), "status": b.status, "price_cents": b.price_cents,
-             "paid_cents": b.paid_cents, "refunded_cents": b.refunded_cents,
-             "rules_version": b.rules_version.version if b.rules_version else None,
-             "rules_accepted_at": dt(b.rules_accepted_at), "checked_in_at": dt(b.checked_in_at)}
-            for b in Booking.objects.filter(user=user).select_related("facility", "municipality", "rules_version")
+            {
+                "reference": b.reference,
+                "municipality": b.municipality.slug,
+                "facility": b.facility.name,
+                "start": dt(b.start),
+                "end": dt(b.end),
+                "status": b.status,
+                "price_cents": b.price_cents,
+                "paid_cents": b.paid_cents,
+                "refunded_cents": b.refunded_cents,
+                "rules_version": b.rules_version.version if b.rules_version else None,
+                "rules_accepted_at": dt(b.rules_accepted_at),
+                "checked_in_at": dt(b.checked_in_at),
+            }
+            for b in Booking.objects.filter(user=user).select_related(
+                "facility", "municipality", "rules_version"
+            )
         ],
         "incidents": [
-            {"id": i.pk, "facility": i.facility.name, "description": i.description, "status": i.status,
-             "created_at": dt(i.created_at)} for i in Incident.objects.filter(reporter=user).select_related("facility")
+            {
+                "id": i.pk,
+                "facility": i.facility.name,
+                "description": i.description,
+                "status": i.status,
+                "created_at": dt(i.created_at),
+            }
+            for i in Incident.objects.filter(reporter=user).select_related("facility")
         ],
         "household": {
             "dependents": [
-                {"first_name": d.first_name, "birth_year": d.birth_year,
-                 "consents": [{"kind": c.kind, "granted_at": dt(c.granted_at), "revoked_at": dt(c.revoked_at),
-                               "text_version": c.text_version} for c in d.consents.all()]}
+                {
+                    "first_name": d.first_name,
+                    "birth_year": d.birth_year,
+                    "consents": [
+                        {
+                            "kind": c.kind,
+                            "granted_at": dt(c.granted_at),
+                            "revoked_at": dt(c.revoked_at),
+                            "text_version": c.text_version,
+                        }
+                        for c in d.consents.all()
+                    ],
+                }
                 for d in household.dependents.all()
-            ] if household else [],
+            ]
+            if household
+            else [],
         },
         "enrollments": [
             {"group": str(e.group), "participant": e.participant_name, "status": e.status}
-            for e in Enrollment.objects.filter(user=user).select_related("group", "group__activity", "dependent")
+            for e in Enrollment.objects.filter(user=user).select_related(
+                "group", "group__activity", "dependent"
+            )
         ],
         "notifications": [
-            {"title": n.title, "body": n.body, "created_at": dt(n.created_at), "read_at": dt(n.read_at)}
+            {
+                "title": n.title,
+                "body": n.body,
+                "created_at": dt(n.created_at),
+                "read_at": dt(n.read_at),
+            }
             for n in Notification.objects.filter(user=user)
         ],
     }
@@ -208,7 +311,9 @@ def export_user_data(user):
 def export_data(request):
     data = export_user_data(request.user)
     audit("account.export", request.user)
-    response = HttpResponse(json.dumps(data, ensure_ascii=False, indent=2), content_type="application/json")
+    response = HttpResponse(
+        json.dumps(data, ensure_ascii=False, indent=2), content_type="application/json"
+    )
     response["Content-Disposition"] = 'attachment; filename="eira-os-meus-datos.json"'
     return response
 
@@ -246,15 +351,26 @@ def household(request):
             if form.cleaned_data.get(field):
                 Consent.objects.create(dependent=dep, kind=kind, granted_by=request.user)
         audit("household.add_dependent", request.user, obj=dep)
-        messages.success(request, _("Engadiuse a %(n)s á túa unidade familiar.") % {"n": dep.first_name})
+        messages.success(
+            request, _("Engadiuse a %(n)s á túa unidade familiar.") % {"n": dep.first_name}
+        )
         return redirect("account:household")
     dependents = []
     for dep in hh.dependents.prefetch_related("consents"):
         active = {c.kind: c for c in dep.consents.all() if c.revoked_at is None}
-        dependents.append((dep, [(value, label, active.get(value)) for value, label in Consent.Kind.choices]))
-    return render(request, "accounts/household.html", {
-        "household": hh, "dependents": dependents, "form": form, "nav": "account",
-    })
+        dependents.append(
+            (dep, [(value, label, active.get(value)) for value, label in Consent.Kind.choices])
+        )
+    return render(
+        request,
+        "accounts/household.html",
+        {
+            "household": hh,
+            "dependents": dependents,
+            "form": form,
+            "nav": "account",
+        },
+    )
 
 
 @login_required

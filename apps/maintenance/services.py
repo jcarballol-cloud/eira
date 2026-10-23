@@ -12,7 +12,9 @@ from .models import MaintenanceTask, WorkOrder
 def generate_orders(days=14, today=None, municipality=None):
     """Xera (de forma idempotente) as ordes das tarefas periódicas nos próximos `days` días."""
     today = today or timezone.localdate()
-    tasks = MaintenanceTask.objects.filter(plan__active=True).select_related("plan", "plan__facility")
+    tasks = MaintenanceTask.objects.filter(plan__active=True).select_related(
+        "plan", "plan__facility"
+    )
     if municipality is not None:
         tasks = tasks.filter(plan__municipality=municipality)
     created = 0
@@ -26,8 +28,14 @@ def generate_orders(days=14, today=None, municipality=None):
             try:
                 with transaction.atomic():
                     WorkOrder.objects.create(
-                        municipality=task.plan.municipality, facility=task.plan.facility, task=task, title=task.title,
-                        due_date=day, checklist_state=[{"label": item, "done": False} for item in task.checklist_items()],
+                        municipality=task.plan.municipality,
+                        facility=task.plan.facility,
+                        task=task,
+                        title=task.title,
+                        due_date=day,
+                        checklist_state=[
+                            {"label": item, "done": False} for item in task.checklist_items()
+                        ],
                     )
                     created += 1
             except IntegrityError:

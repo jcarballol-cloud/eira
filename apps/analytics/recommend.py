@@ -24,7 +24,9 @@ def expected_occupancy(facility, weeks=HISTORY_WEEKS):
     since = timezone.now() - dt.timedelta(weeks=weeks)
     counts = Counter()
     for start in Booking.objects.filter(
-        facility=facility, start__gte=since, start__lt=timezone.now(),
+        facility=facility,
+        start__gte=since,
+        start__lt=timezone.now(),
         status__in=[Booking.Status.CONFIRMED, Booking.Status.USED, Booking.Status.NO_SHOW],
     ).values_list("start", flat=True):
         local = timezone.localtime(start)

@@ -19,7 +19,9 @@ class Frequency(models.TextChoices):
 
 
 class MaintenancePlan(TenantModel):
-    facility = models.ForeignKey(Facility, on_delete=models.CASCADE, related_name="maintenance_plans")
+    facility = models.ForeignKey(
+        Facility, on_delete=models.CASCADE, related_name="maintenance_plans"
+    )
     name = models.CharField(_("nome"), max_length=120)
     active = models.BooleanField(default=True)
 
@@ -67,16 +69,35 @@ class WorkOrder(TenantModel):
         IN_PROGRESS = "in_progress", _("En curso")
         DONE = "done", _("Pechada")
 
-    facility = models.ForeignKey(Facility, verbose_name=_("instalación"), on_delete=models.CASCADE, related_name="work_orders")
-    task = models.ForeignKey(MaintenanceTask, null=True, blank=True, on_delete=models.SET_NULL, related_name="orders")
-    incident = models.ForeignKey("incidents.Incident", null=True, blank=True, on_delete=models.SET_NULL, related_name="work_orders")
+    facility = models.ForeignKey(
+        Facility,
+        verbose_name=_("instalación"),
+        on_delete=models.CASCADE,
+        related_name="work_orders",
+    )
+    task = models.ForeignKey(
+        MaintenanceTask, null=True, blank=True, on_delete=models.SET_NULL, related_name="orders"
+    )
+    incident = models.ForeignKey(
+        "incidents.Incident",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="work_orders",
+    )
     title = models.CharField(_("título"), max_length=160)
     description = models.TextField(_("descrición"), blank=True)
     due_date = models.DateField(_("data prevista"), db_index=True)
-    status = models.CharField(_("estado"), max_length=12, choices=Status.choices, default=Status.OPEN)
+    status = models.CharField(
+        _("estado"), max_length=12, choices=Status.choices, default=Status.OPEN
+    )
     assigned_to = models.ForeignKey(
-        settings.AUTH_USER_MODEL, verbose_name=_("asignada a"), null=True, blank=True,
-        on_delete=models.SET_NULL, related_name="work_orders",
+        settings.AUTH_USER_MODEL,
+        verbose_name=_("asignada a"),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="work_orders",
     )
     checklist_state = models.JSONField(default=list, blank=True)  # [{"label": str, "done": bool}]
     closing_notes = models.TextField(_("notas de peche"), blank=True)
@@ -88,8 +109,11 @@ class WorkOrder(TenantModel):
         verbose_name_plural = _("ordes de traballo")
         ordering = ["due_date", "pk"]
         constraints = [
-            models.UniqueConstraint(fields=["task", "due_date"], name="uniq_task_occurrence",
-                                    condition=models.Q(task__isnull=False)),
+            models.UniqueConstraint(
+                fields=["task", "due_date"],
+                name="uniq_task_occurrence",
+                condition=models.Q(task__isnull=False),
+            ),
         ]
 
     def __str__(self):

@@ -65,7 +65,10 @@ class FakeClaveAdapter(IdentityAdapter):
         if not data:
             return None
         return Identity(
-            subject=opaque_subject(self.name, key), email=data["email"], name=data["name"], provider=self.name
+            subject=opaque_subject(self.name, key),
+            email=data["email"],
+            name=data["name"],
+            provider=self.name,
         )
 
 

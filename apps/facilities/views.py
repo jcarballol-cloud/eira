@@ -34,7 +34,9 @@ def home(request):
     tenant = request.tenant
     form = FilterForm(request.GET or None, tenant=tenant)
     qs = (
-        Facility.objects.for_tenant(tenant).filter(is_published=True).select_related("parish")
+        Facility.objects.for_tenant(tenant)
+        .filter(is_published=True)
+        .select_related("parish")
         .prefetch_related("tariffs")
     )
     if form.is_valid():
@@ -61,19 +63,32 @@ def home(request):
         "features": [
             {
                 "type": "Feature",
-                "geometry": {"type": "Point", "coordinates": [float(f.longitude), float(f.latitude)]},
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [float(f.longitude), float(f.latitude)],
+                },
                 "properties": {
-                    "name": f.name, "kind": str(f.get_kind_display()), "parish": f.parish.name if f.parish else "",
+                    "name": f.name,
+                    "kind": str(f.get_kind_display()),
+                    "parish": f.parish.name if f.parish else "",
                     "url": treverse(tenant, "facilities:detail", f.pk),
                 },
             }
-            for f in facilities if f.latitude is not None and f.longitude is not None
+            for f in facilities
+            if f.latitude is not None and f.longitude is not None
         ],
     }
-    return render(request, "facilities/home.html", {
-        "form": form, "facilities": facilities, "geo": geo, "nav": "facilities",
-        "view": request.GET.get("vista", "lista"),
-    })
+    return render(
+        request,
+        "facilities/home.html",
+        {
+            "form": form,
+            "facilities": facilities,
+            "geo": geo,
+            "nav": "facilities",
+            "view": request.GET.get("vista", "lista"),
+        },
+    )
 
 
 def _monday(day):
@@ -84,7 +99,9 @@ def detail(request, pk):
     tenant = request.tenant
     facility = get_object_or_404(
         Facility.objects.select_related("parish").prefetch_related("opening_hours", "tariffs"),
-        municipality=tenant, pk=pk, is_published=True,
+        municipality=tenant,
+        pk=pk,
+        is_published=True,
     )
     today = timezone.localdate()
     try:
@@ -95,12 +112,17 @@ def detail(request, pk):
     grid = week_grid(facility, monday, request.user)
     max_monday = _monday(today + dt.timedelta(days=tenant.max_advance_days))
     ctx = {
-        "facility": facility, "grid": grid, "monday": monday, "nav": "facilities",
+        "facility": facility,
+        "grid": grid,
+        "monday": monday,
+        "nav": "facilities",
         "prev_week": monday - dt.timedelta(days=7) if monday > _monday(today) else None,
         "next_week": monday + dt.timedelta(days=7) if monday < max_monday else None,
         "rules": facility.current_rules(),
         "tariffs": facility.tariffs.all(),
         "hours": facility.opening_hours.all(),
     }
-    template = "facilities/_week.html" if request.headers.get("HX-Request") else "facilities/detail.html"
+    template = (
+        "facilities/_week.html" if request.headers.get("HX-Request") else "facilities/detail.html"
+    )
     return render(request, template, ctx)

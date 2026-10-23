@@ -19,13 +19,16 @@ CHECKIN_EARLY_MINUTES = 15
 
 def on_booking_confirmed(booking):
     if booking.facility.access_level == AccessLevel.CUSTODIAN:
-        handover, _created = KeyHandover.objects.get_or_create(booking=booking, defaults={"municipality": booking.municipality})
+        handover, _created = KeyHandover.objects.get_or_create(
+            booking=booking, defaults={"municipality": booking.municipality}
+        )
         f = booking.facility
         if f.key_holder_email:
             notify_email_only(
                 f.key_holder_email,
                 _("Eira · Entrega de chave: %(f)s") % {"f": f.name},
-                _("%(who)s recollerá a chave para %(d)s de %(s)s a %(e)s (ref. %(r)s).") % {
+                _("%(who)s recollerá a chave para %(d)s de %(s)s a %(e)s (ref. %(r)s).")
+                % {
                     "who": booking.holder_label or _("Unha persoa"),
                     "d": timezone.localtime(booking.start).strftime("%d/%m/%Y"),
                     "s": timezone.localtime(booking.start).strftime("%H:%M"),
@@ -53,7 +56,10 @@ def booking_access_info(booking):
         device = f.lock
         tol = dt.timedelta(minutes=device.tolerance_minutes)
         now = timezone.now()
-        info["can_open"] = booking.start - tol <= now <= booking.end and booking.status in ("confirmed", "used")
+        info["can_open"] = booking.start - tol <= now <= booking.end and booking.status in (
+            "confirmed",
+            "used",
+        )
         info["opens_from"] = booking.start - tol
         info["lights_on"] = device.lights_on()
         info["controls_lights"] = device.controls_lights
@@ -80,18 +86,29 @@ def validate_code(device, code, at=None, record=True):
             reason = "now_locked"
         device.save(update_fields=["failed_attempts", "locked_until"])
         if record:
-            AccessEvent.objects.create(municipality=device.municipality, facility=device.facility,
-                                       kind=AccessEvent.Kind.CODE_DENIED, at=at)
+            AccessEvent.objects.create(
+                municipality=device.municipality,
+                facility=device.facility,
+                kind=AccessEvent.Kind.CODE_DENIED,
+                at=at,
+            )
         return {"ok": False, "reason": reason}
     device.failed_attempts = 0
     device.save(update_fields=["failed_attempts"])
     step = dt.timedelta(minutes=device.step_minutes)
     start = dt.datetime.fromtimestamp(match.block * step.total_seconds(), tz=dt.UTC)
     end = start + match.duration_blocks * step
-    booking = Booking.objects.filter(facility=device.facility, start=start, end=end).holding().first()
+    booking = (
+        Booking.objects.filter(facility=device.facility, start=start, end=end).holding().first()
+    )
     if record:
-        AccessEvent.objects.create(municipality=device.municipality, facility=device.facility, booking=booking,
-                                   kind=AccessEvent.Kind.CODE_OK, at=at)
+        AccessEvent.objects.create(
+            municipality=device.municipality,
+            facility=device.facility,
+            booking=booking,
+            kind=AccessEvent.Kind.CODE_OK,
+            at=at,
+        )
         if booking:
             check_in(booking, at)
     return {"ok": True, "match": match, "booking": booking, "slot_start": start, "slot_end": end}
@@ -107,14 +124,24 @@ def remote_open(booking, user):
     adapter = get_adapter("lock")
     adapter.open(device, booking)
     now = timezone.now()
-    AccessEvent.objects.create(municipality=booking.municipality, facility=booking.facility, booking=booking,
-                               user=user, kind=AccessEvent.Kind.REMOTE_OPEN)
+    AccessEvent.objects.create(
+        municipality=booking.municipality,
+        facility=booking.facility,
+        booking=booking,
+        user=user,
+        kind=AccessEvent.Kind.REMOTE_OPEN,
+    )
     if device.controls_lights and booking.facility.lighting:
         adapter.set_lights(device, True, until=booking.end)
         device.lights_on_until = booking.end
         device.save(update_fields=["lights_on_until"])
-        AccessEvent.objects.create(municipality=booking.municipality, facility=booking.facility, booking=booking,
-                                   kind=AccessEvent.Kind.LIGHTS_ON, detail=f"ata {timezone.localtime(booking.end):%H:%M}")
+        AccessEvent.objects.create(
+            municipality=booking.municipality,
+            facility=booking.facility,
+            booking=booking,
+            kind=AccessEvent.Kind.LIGHTS_ON,
+            detail=f"ata {timezone.localtime(booking.end):%H:%M}",
+        )
     check_in(booking, now)
     audit("access.remote_open", user, booking.municipality, booking)
     return True
@@ -136,30 +163,54 @@ def qr_checkin(facility, user, at=None):
         )
     if booking:
         check_in(booking, at)
-        AccessEvent.objects.create(municipality=facility.municipality, facility=facility, booking=booking,
-                                   user=user, kind=AccessEvent.Kind.CHECKIN, at=at)
+        AccessEvent.objects.create(
+            municipality=facility.municipality,
+            facility=facility,
+            booking=booking,
+            user=user,
+            kind=AccessEvent.Kind.CHECKIN,
+            at=at,
+        )
     else:
-        AccessEvent.objects.create(municipality=facility.municipality, facility=facility,
-                                   kind=AccessEvent.Kind.ANONYMOUS_USE, at=at)
+        AccessEvent.objects.create(
+            municipality=facility.municipality,
+            facility=facility,
+            kind=AccessEvent.Kind.ANONYMOUS_USE,
+            at=at,
+        )
     return booking
 
 
 def key_out(booking, by):
     from apps.bookings.services import check_in
 
-    handover, _created = KeyHandover.objects.get_or_create(booking=booking, defaults={"municipality": booking.municipality})
+    handover, _created = KeyHandover.objects.get_or_create(
+        booking=booking, defaults={"municipality": booking.municipality}
+    )
     handover.handed_at, handover.handed_by = timezone.now(), by
     handover.save()
-    AccessEvent.objects.create(municipality=booking.municipality, facility=booking.facility, booking=booking,
-                               user=by, kind=AccessEvent.Kind.KEY_OUT)
+    AccessEvent.objects.create(
+        municipality=booking.municipality,
+        facility=booking.facility,
+        booking=booking,
+        user=by,
+        kind=AccessEvent.Kind.KEY_OUT,
+    )
     check_in(booking)
     return handover
 
 
 def key_in(booking, by):
-    handover, _created = KeyHandover.objects.get_or_create(booking=booking, defaults={"municipality": booking.municipality})
+    handover, _created = KeyHandover.objects.get_or_create(
+        booking=booking, defaults={"municipality": booking.municipality}
+    )
     handover.returned_at, handover.returned_to = timezone.now(), by
     handover.save()
-    AccessEvent.objects.create(municipality=booking.municipality, facility=booking.facility, booking=booking,
-                               user=by, kind=AccessEvent.Kind.KEY_IN)
+    AccessEvent.objects.create(
+        municipality=booking.municipality,
+        facility=booking.facility,
+        booking=booking,
+        user=by,
+        kind=AccessEvent.Kind.KEY_IN,
+    )
     return handover

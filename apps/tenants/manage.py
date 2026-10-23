@@ -37,9 +37,21 @@ MODULE_LABELS = {
 class SettingsForm(forms.ModelForm):
     class Meta:
         model = Municipality
-        fields = ["name", "accent_color", "contact_email", "contact_phone", "address", "cancellation_hours",
-                  "late_cancel_penalty_pct", "max_advance_days", "max_active_bookings", "no_show_grace_minutes",
-                  "privacy_text", "accessibility_statement", "legal_notice"]
+        fields = [
+            "name",
+            "accent_color",
+            "contact_email",
+            "contact_phone",
+            "address",
+            "cancellation_hours",
+            "late_cancel_penalty_pct",
+            "max_advance_days",
+            "max_active_bookings",
+            "no_show_grace_minutes",
+            "privacy_text",
+            "accessibility_statement",
+            "legal_notice",
+        ]
         widgets = {
             "accent_color": forms.TextInput(attrs={"type": "color"}),
             "privacy_text": forms.Textarea(attrs={"rows": 4}),
@@ -72,9 +84,17 @@ def settings_view(request):
         return redirect(treverse(request.tenant, "manage:settings"))
     module_fields = [form[f"module_{k}"] for k in MODULE_LABELS]
     base_fields = [form[f] for f in SettingsForm.Meta.fields]
-    return render(request, "manage/settings.html", {
-        "form": form, "module_fields": module_fields, "base_fields": base_fields, "nav": "manage", "sub": "settings",
-    })
+    return render(
+        request,
+        "manage/settings.html",
+        {
+            "form": form,
+            "module_fields": module_fields,
+            "base_fields": base_fields,
+            "nav": "manage",
+            "sub": "settings",
+        },
+    )
 
 
 class StaffForm(forms.Form):
@@ -87,20 +107,44 @@ def staff(request):
     form = StaffForm(request.POST or None)
     if request.method == "POST":
         if request.POST.get("remove"):
-            Membership.objects.filter(municipality=request.tenant, pk=request.POST["remove"]).exclude(user=request.user).delete()
+            Membership.objects.filter(
+                municipality=request.tenant, pk=request.POST["remove"]
+            ).exclude(user=request.user).delete()
             messages.success(request, _("Rol retirado."))
             return redirect(treverse(request.tenant, "manage:staff"))
         if form.is_valid():
             user, _c = User.objects.get_or_create(email=form.cleaned_data["email"].lower())
-            Membership.objects.get_or_create(user=user, municipality=request.tenant, role=form.cleaned_data["role"])
-            audit("tenant.staff_add", request.user, request.tenant, user, role=form.cleaned_data["role"])
+            Membership.objects.get_or_create(
+                user=user, municipality=request.tenant, role=form.cleaned_data["role"]
+            )
+            audit(
+                "tenant.staff_add",
+                request.user,
+                request.tenant,
+                user,
+                role=form.cleaned_data["role"],
+            )
             messages.success(request, _("Rol asignado."))
             return redirect(treverse(request.tenant, "manage:staff"))
-    members = Membership.objects.filter(municipality=request.tenant).exclude(role=Role.CITIZEN).select_related("user")
-    invitations = ResidencyInvitation.objects.filter(municipality=request.tenant).order_by("-created_at")[:20]
-    return render(request, "manage/staff.html", {
-        "form": form, "members": members, "invitations": invitations, "nav": "manage", "sub": "staff",
-    })
+    members = (
+        Membership.objects.filter(municipality=request.tenant)
+        .exclude(role=Role.CITIZEN)
+        .select_related("user")
+    )
+    invitations = ResidencyInvitation.objects.filter(municipality=request.tenant).order_by(
+        "-created_at"
+    )[:20]
+    return render(
+        request,
+        "manage/staff.html",
+        {
+            "form": form,
+            "members": members,
+            "invitations": invitations,
+            "nav": "manage",
+            "sub": "staff",
+        },
+    )
 
 
 @role_required(*ADMIN_ROLES)
@@ -119,12 +163,21 @@ def weather_alert(request):
         hours = int(request.POST.get("hours", 6))
         start = timezone.now().replace(minute=0, second=0, microsecond=0)
         affected = 0
-        for facility in Facility.objects.for_tenant(request.tenant).filter(indoor=False, is_published=True):
+        for facility in Facility.objects.for_tenant(request.tenant).filter(
+            indoor=False, is_published=True
+        ):
             closure = Closure.objects.create(
-                municipality=request.tenant, facility=facility, kind=Closure.Kind.WEATHER,
-                reason=_("Aviso laranxa por vento e chuvia (simulado)"), starts_at=start,
+                municipality=request.tenant,
+                facility=facility,
+                kind=Closure.Kind.WEATHER,
+                reason=_("Aviso laranxa por vento e chuvia (simulado)"),
+                starts_at=start,
                 ends_at=start + dt.timedelta(hours=hours),
             )
             affected += len(apply_closure(closure, by=request.user))
-        messages.warning(request, _("Alerta aplicada ás instalacións descubertas. %(n)s reservas canceladas e avisadas.") % {"n": affected})
+        messages.warning(
+            request,
+            _("Alerta aplicada ás instalacións descubertas. %(n)s reservas canceladas e avisadas.")
+            % {"n": affected},
+        )
     return redirect(treverse(request.tenant, "manage:closures"))

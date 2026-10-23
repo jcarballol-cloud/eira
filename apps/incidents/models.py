@@ -29,13 +29,27 @@ class Incident(TenantModel):
         SAFETY = "safety", _("Seguridade")
         OTHER = "other", _("Outra")
 
-    facility = models.ForeignKey(Facility, verbose_name=_("instalación"), on_delete=models.CASCADE, related_name="incidents")
-    reporter = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="incidents")
-    booking = models.ForeignKey("bookings.Booking", null=True, blank=True, on_delete=models.SET_NULL)
-    category = models.CharField(_("tipo"), max_length=20, choices=Category.choices, default=Category.OTHER)
+    facility = models.ForeignKey(
+        Facility, verbose_name=_("instalación"), on_delete=models.CASCADE, related_name="incidents"
+    )
+    reporter = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="incidents",
+    )
+    booking = models.ForeignKey(
+        "bookings.Booking", null=True, blank=True, on_delete=models.SET_NULL
+    )
+    category = models.CharField(
+        _("tipo"), max_length=20, choices=Category.choices, default=Category.OTHER
+    )
     description = models.TextField(_("que pasou?"))
     photo = models.ImageField(_("foto"), upload_to="incidents/%Y/%m/", blank=True)
-    status = models.CharField(_("estado"), max_length=20, choices=Status.choices, default=Status.RECEIVED)
+    status = models.CharField(
+        _("estado"), max_length=20, choices=Status.choices, default=Status.RECEIVED
+    )
     source = models.CharField(max_length=20, choices=Source.choices, default=Source.CITIZEN)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     validated_at = models.DateTimeField(null=True, blank=True)

@@ -47,11 +47,17 @@ def new_token():
 class Facility(TenantModel):
     name = models.CharField(_("nome"), max_length=120)
     kind = models.CharField(_("tipo"), max_length=20, choices=FacilityKind.choices)
-    parish = models.ForeignKey(Parish, verbose_name=_("parroquia"), null=True, blank=True, on_delete=models.SET_NULL)
+    parish = models.ForeignKey(
+        Parish, verbose_name=_("parroquia"), null=True, blank=True, on_delete=models.SET_NULL
+    )
     description = models.TextField(_("descrición"), blank=True)
     address = models.CharField(_("enderezo"), max_length=200, blank=True)
-    latitude = models.DecimalField(_("latitude"), max_digits=9, decimal_places=6, null=True, blank=True)
-    longitude = models.DecimalField(_("lonxitude"), max_digits=9, decimal_places=6, null=True, blank=True)
+    latitude = models.DecimalField(
+        _("latitude"), max_digits=9, decimal_places=6, null=True, blank=True
+    )
+    longitude = models.DecimalField(
+        _("lonxitude"), max_digits=9, decimal_places=6, null=True, blank=True
+    )
     photo = models.ImageField(_("foto"), upload_to="facilities/", blank=True)
     photo_alt = models.CharField(_("texto alternativo da foto"), max_length=200, blank=True)
     indoor = models.BooleanField(_("cuberta"), default=False)
@@ -63,11 +69,14 @@ class Facility(TenantModel):
     accessible_parking = models.BooleanField(_("aparcadoiro reservado"), default=False)
     accessibility_notes = models.TextField(_("notas de accesibilidade"), blank=True)
     capacity = models.PositiveIntegerField(
-        _("prazas simultáneas"), default=1,
+        _("prazas simultáneas"),
+        default=1,
         help_text=_("1 = uso exclusivo (pista). Máis de 1 = uso compartido (ximnasio, piscina)."),
     )
     slot_minutes = models.PositiveIntegerField(_("duración da franxa (min)"), default=60)
-    access_level = models.IntegerField(_("nivel de acceso"), choices=AccessLevel.choices, default=AccessLevel.OPEN)
+    access_level = models.IntegerField(
+        _("nivel de acceso"), choices=AccessLevel.choices, default=AccessLevel.OPEN
+    )
     # Nivel 1: chave custodiada
     key_holder_name = models.CharField(_("custodia da chave"), max_length=120, blank=True)
     key_holder_place = models.CharField(_("onde se recolle"), max_length=200, blank=True)
@@ -144,7 +153,11 @@ class Closure(TenantModel):
         OTHER = "other", _("Outro")
 
     facility = models.ForeignKey(
-        Facility, verbose_name=_("instalación"), null=True, blank=True, on_delete=models.CASCADE,
+        Facility,
+        verbose_name=_("instalación"),
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
         related_name="closures",
     )
     kind = models.CharField(_("motivo"), max_length=20, choices=Kind.choices, default=Kind.OTHER)
@@ -186,13 +199,17 @@ class RulesVersion(models.Model):
     version = models.PositiveIntegerField()
     text = models.TextField(_("normas"))
     created_at = models.DateTimeField(default=timezone.now)
-    created_by = models.ForeignKey("accounts.User", null=True, blank=True, on_delete=models.SET_NULL)
+    created_by = models.ForeignKey(
+        "accounts.User", null=True, blank=True, on_delete=models.SET_NULL
+    )
 
     class Meta:
         verbose_name = _("versión das normas")
         verbose_name_plural = _("versións das normas")
         ordering = ["-version"]
-        constraints = [models.UniqueConstraint(fields=["facility", "version"], name="uniq_rules_version")]
+        constraints = [
+            models.UniqueConstraint(fields=["facility", "version"], name="uniq_rules_version")
+        ]
 
     def __str__(self):
         return f"v{self.version}"

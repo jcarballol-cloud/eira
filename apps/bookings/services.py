@@ -26,12 +26,15 @@ class BookingError(Exception):
 
 # ---------------------------------------------------------------- dispoñibilidade
 
+
 def _aware(day, time):
     return timezone.make_aware(dt.datetime.combine(day, time))
 
 
 def opening_intervals(facility, day):
-    hours = [h for h in facility.opening_hours.all() if h.weekday == day.weekday() and h.applies_on(day)]
+    hours = [
+        h for h in facility.opening_hours.all() if h.weekday == day.weekday() and h.applies_on(day)
+    ]
     return [(_aware(day, h.opens), _aware(day, h.closes)) for h in hours]
 
 
@@ -81,9 +84,15 @@ class Slot:
 
     @property
     def symbol(self):
-        return {"free": "○", "recommended": "★", "few": "◔", "busy": "●", "mine": "✓", "closed": "✕", "past": "–"}[
-            self.status
-        ]
+        return {
+            "free": "○",
+            "recommended": "★",
+            "few": "◔",
+            "busy": "●",
+            "mine": "✓",
+            "closed": "✕",
+            "past": "–",
+        }[self.status]
 
 
 def week_grid(facility, monday, user=None, now=None):
@@ -94,7 +103,9 @@ def week_grid(facility, monday, user=None, now=None):
     days = [monday + dt.timedelta(days=i) for i in range(7)]
     week_start = _aware(monday, dt.time.min)
     week_end = week_start + dt.timedelta(days=7)
-    bookings = list(Booking.objects.filter(facility=facility).holding().overlapping(week_start, week_end))
+    bookings = list(
+        Booking.objects.filter(facility=facility).holding().overlapping(week_start, week_end)
+    )
     closures = list(closures_overlapping(facility, week_start, week_end))
     expected = expected_occupancy(facility)
     step = dt.timedelta(minutes=facility.slot_minutes)
@@ -107,7 +118,10 @@ def week_grid(facility, monday, user=None, now=None):
         for start in slot_starts(facility, day):
             end = start + step
             overlapping = [b for b in bookings if b.start < end and b.end > start]
-            mine = next((b for b in overlapping if user and user.is_authenticated and b.user_id == user.pk), None)
+            mine = next(
+                (b for b in overlapping if user and user.is_authenticated and b.user_id == user.pk),
+                None,
+            )
             closure = next((c for c in closures if c.starts_at < end and c.ends_at > start), None)
             n = len(overlapping)
             if mine:
@@ -122,12 +136,23 @@ def week_grid(facility, monday, user=None, now=None):
                 status = "few"
             else:
                 status = "free"
-            slots.append(Slot(start, end, status, n, facility.capacity, closure.reason if closure else "", mine))
+            slots.append(
+                Slot(
+                    start,
+                    end,
+                    status,
+                    n,
+                    facility.capacity,
+                    closure.reason if closure else "",
+                    mine,
+                )
+            )
             times.add(timezone.localtime(start).time())
         # Recomendadas: como moito as 2 franxas libres con menor demanda histórica do día
         candidates = sorted(
             (expected.get((s.start.weekday(), timezone.localtime(s.start).hour), 1), i)
-            for i, s in enumerate(slots) if s.status in ("free", "few")
+            for i, s in enumerate(slots)
+            if s.status in ("free", "few")
         )
         for value, i in candidates[:RECOMMENDED_PER_DAY]:
             if value < RECOMMEND_THRESHOLD:
@@ -138,12 +163,15 @@ def week_grid(facility, monday, user=None, now=None):
     for t in sorted(times):
         cells = []
         for day in days:
-            cells.append(next((s for s in by_day[day] if timezone.localtime(s.start).time() == t), None))
+            cells.append(
+                next((s for s in by_day[day] if timezone.localtime(s.start).time() == t), None)
+            )
         rows.append({"time": t, "cells": cells})
     return {"days": days, "rows": rows, "by_day": [(d, by_day[d]) for d in days]}
 
 
 # ---------------------------------------------------------------- tarifas
+
 
 def audience_for(facility, user):
     if user is None or not user.is_resident(facility.municipality):
@@ -168,11 +196,14 @@ def price_for(facility, user, audience=None):
 
 # ---------------------------------------------------------------- operacións
 
+
 def _validate_slot(facility, start, end, exclude=None, now=None):
     now = now or timezone.now()
     if start <= now:
         raise BookingError(_("Esa franxa xa pasou."))
-    if timezone.localdate(start) > timezone.localdate() + dt.timedelta(days=facility.municipality.max_advance_days):
+    if timezone.localdate(start) > timezone.localdate() + dt.timedelta(
+        days=facility.municipality.max_advance_days
+    ):
         raise BookingError(_("Aínda non se pode reservar con tanta antelación."))
     if start not in slot_starts(facility, timezone.localdate(start)) or end - start != dt.timedelta(
         minutes=facility.slot_minutes
@@ -187,8 +218,17 @@ def _validate_slot(facility, start, end, exclude=None, now=None):
         raise BookingError(_("Esa franxa acaba de quedar ocupada. Escolle outra."))
 
 
-def create_booking(facility, start, user=None, *, rules_version, channel=Booking.Channel.ONLINE, created_by=None,
-                   holder_name="", holder_phone=""):
+def create_booking(
+    facility,
+    start,
+    user=None,
+    *,
+    rules_version,
+    channel=Booking.Channel.ONLINE,
+    created_by=None,
+    holder_name="",
+    holder_phone="",
+):
     end = start + dt.timedelta(minutes=facility.slot_minutes)
     if rules_version is None or rules_version.facility_id != facility.pk:
         raise BookingError(_("Debes aceptar as normas de uso vixentes."))
@@ -196,19 +236,34 @@ def create_booking(facility, start, user=None, *, rules_version, channel=Booking
         Facility.objects.select_for_update().filter(pk=facility.pk).first()
         _validate_slot(facility, start, end)
         if user is not None:
-            active = Booking.objects.filter(
-                municipality=facility.municipality, user=user, end__gt=timezone.now()
-            ).holding().count()
+            active = (
+                Booking.objects.filter(
+                    municipality=facility.municipality, user=user, end__gt=timezone.now()
+                )
+                .holding()
+                .count()
+            )
             if active >= facility.municipality.max_active_bookings:
-                raise BookingError(_("Xa tes o máximo de reservas activas permitidas neste concello."))
+                raise BookingError(
+                    _("Xa tes o máximo de reservas activas permitidas neste concello.")
+                )
         audience, price = price_for(facility, user)
         booking = Booking.objects.create(
-            municipality=facility.municipality, facility=facility, user=user, start=start, end=end,
-            channel=channel, created_by=created_by or user, holder_name=holder_name, holder_phone=holder_phone,
-            tariff_audience=audience, price_cents=price,
+            municipality=facility.municipality,
+            facility=facility,
+            user=user,
+            start=start,
+            end=end,
+            channel=channel,
+            created_by=created_by or user,
+            holder_name=holder_name,
+            holder_phone=holder_phone,
+            tariff_audience=audience,
+            price_cents=price,
             status=Booking.Status.CONFIRMED if price == 0 else Booking.Status.PENDING_PAYMENT,
             hold_expires_at=timezone.now() + dt.timedelta(minutes=HOLD_MINUTES) if price else None,
-            rules_version=rules_version, rules_accepted_at=timezone.now(),
+            rules_version=rules_version,
+            rules_accepted_at=timezone.now(),
         )
     audit("booking.create", created_by or user, facility.municipality, booking, channel=channel)
     if booking.status == Booking.Status.CONFIRMED:
@@ -239,13 +294,16 @@ def _after_confirm(booking):
     notify(
         booking.user,
         _("Reserva confirmada: %(f)s") % {"f": booking.facility.name},
-        _("%(d)s de %(s)s a %(e)s. Referencia %(r)s.") % {
+        _("%(d)s de %(s)s a %(e)s. Referencia %(r)s.")
+        % {
             "d": timezone.localtime(booking.start).strftime("%d/%m/%Y"),
             "s": timezone.localtime(booking.start).strftime("%H:%M"),
             "e": timezone.localtime(booking.end).strftime("%H:%M"),
             "r": booking.reference,
         },
-        url=url, municipality=booking.municipality, level="success",
+        url=url,
+        municipality=booking.municipality,
+        level="success",
     )
     on_booking_confirmed(booking)
 
@@ -271,8 +329,10 @@ def cancel_booking(booking, by=None, reason="", force_full_refund=False):
         notify(
             booking.user,
             _("Reserva cancelada: %(f)s") % {"f": booking.facility.name},
-            (reason + "\n" if reason else "") + _("Devolución: %(r)s €.") % {"r": f"{refund / 100:.2f}"},
-            municipality=booking.municipality, level="warning",
+            (reason + "\n" if reason else "")
+            + _("Devolución: %(r)s €.") % {"r": f"{refund / 100:.2f}"},
+            municipality=booking.municipality,
+            level="warning",
         )
     return refund, penalty
 
@@ -288,7 +348,14 @@ def modify_booking(booking, new_start, by=None):
         old = booking.start
         booking.start, booking.end = new_start, new_end
         booking.save(update_fields=["start", "end"])
-    audit("booking.modify", by, booking.municipality, booking, old=old.isoformat(), new=new_start.isoformat())
+    audit(
+        "booking.modify",
+        by,
+        booking.municipality,
+        booking,
+        old=old.isoformat(),
+        new=new_start.isoformat(),
+    )
     from apps.access.services import on_booking_confirmed
 
     on_booking_confirmed(booking)
@@ -310,7 +377,9 @@ def submit_closing_checklist(booking, door_ok, key_ok, all_ok, notes="", by=None
     booking.closed_at = timezone.now()
     booking.close_door_ok, booking.close_key_ok, booking.close_all_ok = door_ok, key_ok, all_ok
     booking.close_notes = notes[:1000]
-    booking.save(update_fields=["closed_at", "close_door_ok", "close_key_ok", "close_all_ok", "close_notes"])
+    booking.save(
+        update_fields=["closed_at", "close_door_ok", "close_key_ok", "close_all_ok", "close_notes"]
+    )
     problems = []
     if door_ok is False:
         problems.append(_("A porta non quedou pechada."))
@@ -320,10 +389,18 @@ def submit_closing_checklist(booking, door_ok, key_ok, all_ok, notes="", by=None
         problems.append(_("Non todo quedou en orde."))
     incident = None
     if problems:
-        category = Incident.Category.ACCESS if (door_ok is False or key_ok is False) else Incident.Category.DAMAGE
+        category = (
+            Incident.Category.ACCESS
+            if (door_ok is False or key_ok is False)
+            else Incident.Category.DAMAGE
+        )
         incident = Incident.objects.create(
-            municipality=booking.municipality, facility=booking.facility, reporter=booking.user, booking=booking,
-            category=category, source=Incident.Source.CHECKLIST,
+            municipality=booking.municipality,
+            facility=booking.facility,
+            reporter=booking.user,
+            booking=booking,
+            category=category,
+            source=Incident.Source.CHECKLIST,
             description=" ".join(problems) + (f"\n{notes}" if notes else ""),
         )
         from apps.incidents.services import notify_staff_new_incident
@@ -334,8 +411,10 @@ def submit_closing_checklist(booking, door_ok, key_ok, all_ok, notes="", by=None
 
 def apply_closure(closure, by=None):
     """Ao crear un peche, cancela con devolución íntegra as reservas afectadas e avisa."""
-    qs = Booking.objects.filter(municipality=closure.municipality).holding().overlapping(
-        closure.starts_at, closure.ends_at
+    qs = (
+        Booking.objects.filter(municipality=closure.municipality)
+        .holding()
+        .overlapping(closure.starts_at, closure.ends_at)
     )
     if closure.facility_id:
         qs = qs.filter(facility_id=closure.facility_id)
@@ -349,13 +428,15 @@ def apply_closure(closure, by=None):
 
 def expire_holds(now=None):
     now = now or timezone.now()
-    return Booking.objects.filter(status=Booking.Status.PENDING_PAYMENT, hold_expires_at__lte=now).update(
-        status=Booking.Status.CANCELLED, cancelled_at=now, cancel_reason="hold expired"
-    )
+    return Booking.objects.filter(
+        status=Booking.Status.PENDING_PAYMENT, hold_expires_at__lte=now
+    ).update(status=Booking.Status.CANCELLED, cancelled_at=now, cancel_reason="hold expired")
 
 
 def mark_no_shows(now=None):
     """Reservas confirmadas que remataron sen rexistro de uso (QR, código, chave ou apertura)."""
     now = now or timezone.now()
-    qs = Booking.objects.filter(status=Booking.Status.CONFIRMED, end__lte=now, checked_in_at__isnull=True)
+    qs = Booking.objects.filter(
+        status=Booking.Status.CONFIRMED, end__lte=now, checked_in_at__isnull=True
+    )
     return qs.update(status=Booking.Status.NO_SHOW)

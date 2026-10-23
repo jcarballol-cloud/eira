@@ -45,8 +45,11 @@ class LockDevice(TenantModel):
     @property
     def params(self):
         return offline_codes.CodeParams(
-            secret=self.secret, step_minutes=self.step_minutes, tolerance_minutes=self.tolerance_minutes,
-            digits=self.digits, max_blocks=self.max_blocks,
+            secret=self.secret,
+            step_minutes=self.step_minutes,
+            tolerance_minutes=self.tolerance_minutes,
+            digits=self.digits,
+            max_blocks=self.max_blocks,
         )
 
     def code_for_booking(self, booking):
@@ -70,8 +73,12 @@ class AccessEvent(TenantModel):
         ANONYMOUS_USE = "anonymous_use", _("Uso sen reserva rexistrado")
 
     facility = models.ForeignKey(Facility, on_delete=models.CASCADE, related_name="access_events")
-    booking = models.ForeignKey("bookings.Booking", null=True, blank=True, on_delete=models.SET_NULL)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
+    booking = models.ForeignKey(
+        "bookings.Booking", null=True, blank=True, on_delete=models.SET_NULL
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL
+    )
     kind = models.CharField(max_length=20, choices=Kind.choices)
     at = models.DateTimeField(default=timezone.now, db_index=True)
     detail = models.CharField(max_length=200, blank=True)
@@ -83,9 +90,15 @@ class AccessEvent(TenantModel):
 
 
 class KeyHandover(TenantModel):
-    booking = models.OneToOneField("bookings.Booking", on_delete=models.CASCADE, related_name="key_handover")
+    booking = models.OneToOneField(
+        "bookings.Booking", on_delete=models.CASCADE, related_name="key_handover"
+    )
     handed_at = models.DateTimeField(null=True, blank=True)
-    handed_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    handed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
     returned_at = models.DateTimeField(null=True, blank=True)
-    returned_to = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    returned_to = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
     custodian_notified_at = models.DateTimeField(null=True, blank=True)

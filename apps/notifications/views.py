@@ -21,9 +21,9 @@ def list_view(request):
 @login_required
 @require_POST
 def mark_all_read(request):
-    Notification.objects.filter(user=request.user, municipality=request.tenant, read_at__isnull=True).update(
-        read_at=timezone.now()
-    )
+    Notification.objects.filter(
+        user=request.user, municipality=request.tenant, read_at__isnull=True
+    ).update(read_at=timezone.now())
     if request.headers.get("HX-Request"):
         return HttpResponse(status=204, headers={"HX-Refresh": "true"})
     return redirect(treverse(request.tenant, "notifications:list"))
@@ -36,7 +36,8 @@ def subscribe_push(request):
     try:
         data = json.loads(request.body)
         PushSubscription.objects.update_or_create(
-            endpoint=data["endpoint"][:500], defaults={"user": request.user, "keys": data.get("keys", {})}
+            endpoint=data["endpoint"][:500],
+            defaults={"user": request.user, "keys": data.get("keys", {})},
         )
     except (ValueError, KeyError):
         return JsonResponse({"ok": False}, status=400)

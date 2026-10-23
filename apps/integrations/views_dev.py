@@ -38,7 +38,11 @@ def outbox(request):
 def tpv(request, reference):
     payment = get_object_or_404(FakePayment, reference=reference)
     if request.method == "POST":
-        payment.status = FakePayment.Status.PAID if request.POST.get("result") == "ok" else FakePayment.Status.FAILED
+        payment.status = (
+            FakePayment.Status.PAID
+            if request.POST.get("result") == "ok"
+            else FakePayment.Status.FAILED
+        )
         payment.save(update_fields=["status"])
         target = payment.return_url
         if not url_has_allowed_host_and_scheme(target, allowed_hosts={request.get_host()}):
@@ -53,7 +57,9 @@ def clave(request):
 
 
 def lock_simulator(request):
-    devices = LockDevice.objects.filter(kind=LockDevice.Kind.OFFLINE).select_related("facility", "municipality")
+    devices = LockDevice.objects.filter(kind=LockDevice.Kind.OFFLINE).select_related(
+        "facility", "municipality"
+    )
     result = None
     now = timezone.now().replace(second=0, microsecond=0)
     device_id = request.POST.get("device") or request.GET.get("device")
@@ -70,11 +76,18 @@ def lock_simulator(request):
         result = validate_code(device, code, at=at, record=live)
         result["live"] = live
         device.refresh_from_db()
-    return render(request, "dev/lock_simulator.html", {
-        "devices": devices, "device": device, "at": at, "result": result,
-        "at_value": timezone.localtime(at).strftime("%Y-%m-%dT%H:%M"),
-        "locked": bool(device and device.locked_until and device.locked_until > at),
-    })
+    return render(
+        request,
+        "dev/lock_simulator.html",
+        {
+            "devices": devices,
+            "device": device,
+            "at": at,
+            "result": result,
+            "at_value": timezone.localtime(at).strftime("%Y-%m-%dT%H:%M"),
+            "locked": bool(device and device.locked_until and device.locked_until > at),
+        },
+    )
 
 
 @require_POST

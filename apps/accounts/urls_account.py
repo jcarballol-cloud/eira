@@ -10,5 +10,9 @@ urlpatterns = [
     path("os-meus-datos.json", views.export_data, name="export"),
     path("eliminar/", views.delete_account, name="delete"),
     path("familia/", views.household, name="household"),
-    path("familia/<int:dependent_id>/consentimento/<slug:kind>/", views.consent_toggle, name="consent_toggle"),
+    path(
+        "familia/<int:dependent_id>/consentimento/<slug:kind>/",
+        views.consent_toggle,
+        name="consent_toggle",
+    ),
 ]

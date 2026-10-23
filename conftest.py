@@ -9,14 +9,15 @@ from django.utils import timezone
 
 from apps.accounts.models import Membership, Residency, Role, User
 from apps.facilities.catalog import apply_template
-from apps.facilities.models import Facility, FacilityKind
+from apps.facilities.models import Facility
 from apps.integrations.registry import reset_adapters
 from apps.tenants.models import Municipality, Region
 
 
 @pytest.fixture(autouse=True)
-def _clean_state(settings):
+def _clean_state(settings, tmp_path):
     settings.EIRA_DEMO_TOOLS = True
+    settings.MEDIA_ROOT = tmp_path / "media"
     cache.clear()
     reset_adapters()
     yield
@@ -28,10 +29,19 @@ def make_facility(muni, key="padel", level=None, **extra):
 
     t = TEMPLATES[key]
     f = Facility.objects.create(
-        municipality=muni, name=extra.pop("name", f"{t['label']} {muni.slug}"), kind=t["kind"],
-        capacity=t["capacity"], slot_minutes=t["slot_minutes"], indoor=t["indoor"], lighting=t["lighting"],
-        access_level=t["access_level"] if level is None else level, latitude=42.5, longitude=-8.1,
-        key_holder_name="Bar de proba", key_holder_email="custodia@example.org", **extra,
+        municipality=muni,
+        name=extra.pop("name", f"{t['label']} {muni.slug}"),
+        kind=t["kind"],
+        capacity=t["capacity"],
+        slot_minutes=t["slot_minutes"],
+        indoor=t["indoor"],
+        lighting=t["lighting"],
+        access_level=t["access_level"] if level is None else level,
+        latitude=42.5,
+        longitude=-8.1,
+        key_holder_name="Bar de proba",
+        key_holder_email="custodia@example.org",
+        **extra,
     )
     apply_template(f, key)
     return f
@@ -44,12 +54,16 @@ def region(db):
 
 @pytest.fixture
 def muni_a(region):
-    return Municipality.objects.create(name="Concello A", slug="concello-a", region=region, max_advance_days=30)
+    return Municipality.objects.create(
+        name="Concello A", slug="concello-a", region=region, max_advance_days=30
+    )
 
 
 @pytest.fixture
 def muni_b(region):
-    return Municipality.objects.create(name="Concello B", slug="concello-b", region=region, max_advance_days=30)
+    return Municipality.objects.create(
+        name="Concello B", slug="concello-b", region=region, max_advance_days=30
+    )
 
 
 @pytest.fixture
@@ -87,7 +101,9 @@ def citizen(muni_a):
 
 @pytest.fixture
 def outsider(db):
-    return User.objects.create_user("forastera@example.org", display_name="Forastera", birth_year=1985)
+    return User.objects.create_user(
+        "forastera@example.org", display_name="Forastera", birth_year=1985
+    )
 
 
 @pytest.fixture

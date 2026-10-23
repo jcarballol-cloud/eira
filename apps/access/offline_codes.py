@@ -113,5 +113,7 @@ def candidate_count(params):
     for d in range(1, params.max_blocks + 1):
         b_min = math.ceil((t - tol) / step) - d
         b_max = math.floor((t + tol) / step)
-        total += sum(1 for b in range(b_min, b_max + 1) if b * step - tol <= t <= (b + d) * step + tol)
+        total += sum(
+            1 for b in range(b_min, b_max + 1) if b * step - tol <= t <= (b + d) * step + tol
+        )
     return total

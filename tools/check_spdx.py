@@ -7,8 +7,17 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 TAG = "SPDX-License-Identifier: EUPL-1.2"
-PATTERNS = ["**/*.py", "static/js/*.js", "static/css/*.css", "templates/**/*.js", "**/*.yml", "**/*.sh", "Dockerfile",
-            "Makefile", "static/img/*.svg"]
+PATTERNS = [
+    "**/*.py",
+    "static/js/*.js",
+    "static/css/*.css",
+    "templates/**/*.js",
+    "**/*.yml",
+    "**/*.sh",
+    "Dockerfile",
+    "Makefile",
+    "static/img/*.svg",
+]
 SKIP = {".venv", "migrations", "node_modules", "staticfiles", "vendor"}
 
 missing = []

@@ -32,7 +32,13 @@ class Group(TenantModel):
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name="groups")
     name = models.CharField(_("grupo"), max_length=120)
     facility = models.ForeignKey(Facility, null=True, blank=True, on_delete=models.SET_NULL)
-    monitor = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="groups_led")
+    monitor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="groups_led",
+    )
     min_age = models.PositiveIntegerField(_("idade mínima"), default=0)
     max_age = models.PositiveIntegerField(_("idade máxima"), default=120)
     places = models.PositiveIntegerField(_("prazas"), default=15)
@@ -69,8 +75,20 @@ class Enrollment(TenantModel):
         CANCELLED = "cancelled", _("Baixa")
 
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="enrollments")
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.CASCADE, related_name="enrollments")
-    dependent = models.ForeignKey("accounts.Dependent", null=True, blank=True, on_delete=models.CASCADE, related_name="enrollments")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="enrollments",
+    )
+    dependent = models.ForeignKey(
+        "accounts.Dependent",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="enrollments",
+    )
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING_PAYMENT)
     paid_cents = models.PositiveIntegerField(default=0)
     payment_reference = models.CharField(max_length=40, blank=True)
@@ -117,7 +135,9 @@ class Attendance(models.Model):
     minutes = models.PositiveIntegerField(null=True, blank=True)
 
     class Meta:
-        constraints = [models.UniqueConstraint(fields=["session", "enrollment"], name="uniq_attendance")]
+        constraints = [
+            models.UniqueConstraint(fields=["session", "enrollment"], name="uniq_attendance")
+        ]
 
     @property
     def session_load(self):
@@ -155,7 +175,9 @@ class FitnessTest(models.Model):
 
 
 class FitnessResult(models.Model):
-    enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE, related_name="fitness_results")
+    enrollment = models.ForeignKey(
+        Enrollment, on_delete=models.CASCADE, related_name="fitness_results"
+    )
     test = models.ForeignKey(FitnessTest, on_delete=models.CASCADE)
     date = models.DateField()
     value = models.DecimalField(max_digits=8, decimal_places=2)

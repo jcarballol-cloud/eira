@@ -9,18 +9,27 @@ from .models import Consent, Dependent, User
 class EmailForm(forms.Form):
     email = forms.EmailField(
         label=_("Correo electrónico"),
-        widget=forms.EmailInput(attrs={"autocomplete": "email", "inputmode": "email", "autofocus": True}),
+        widget=forms.EmailInput(
+            attrs={"autocomplete": "email", "inputmode": "email", "autofocus": True}
+        ),
         help_text=_("Enviarémosche un código de 6 díxitos. Non necesitas contrasinal."),
     )
 
 
 class CodeForm(forms.Form):
     code = forms.CharField(
-        label=_("Código de 6 díxitos"), min_length=6, max_length=6,
-        widget=forms.TextInput(attrs={
-            "autocomplete": "one-time-code", "inputmode": "numeric", "pattern": "[0-9]{6}", "class": "input-code",
-            "autofocus": True,
-        }),
+        label=_("Código de 6 díxitos"),
+        min_length=6,
+        max_length=6,
+        widget=forms.TextInput(
+            attrs={
+                "autocomplete": "one-time-code",
+                "inputmode": "numeric",
+                "pattern": "[0-9]{6}",
+                "class": "input-code",
+                "autofocus": True,
+            }
+        ),
     )
 
     def clean_code(self):
@@ -33,8 +42,15 @@ class CodeForm(forms.Form):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ["display_name", "phone", "birth_year", "preferred_language", "notify_email", "notify_telegram",
-                  "telegram_chat"]
+        fields = [
+            "display_name",
+            "phone",
+            "birth_year",
+            "preferred_language",
+            "notify_email",
+            "notify_telegram",
+            "telegram_chat",
+        ]
         widgets = {
             "phone": forms.TextInput(attrs={"autocomplete": "tel", "inputmode": "tel"}),
             "display_name": forms.TextInput(attrs={"autocomplete": "nickname"}),
@@ -54,11 +70,15 @@ class ProfileForm(forms.ModelForm):
 
 class DependentForm(forms.ModelForm):
     consent_data = forms.BooleanField(
-        label=_("Autorizo o tratamento dos datos necesarios para a súa inscrición en actividades."), required=True
+        label=_("Autorizo o tratamento dos datos necesarios para a súa inscrición en actividades."),
+        required=True,
     )
-    consent_image = forms.BooleanField(label=_("Autorizo o uso da súa imaxe en comunicacións municipais."), required=False)
+    consent_image = forms.BooleanField(
+        label=_("Autorizo o uso da súa imaxe en comunicacións municipais."), required=False
+    )
     consent_performance = forms.BooleanField(
-        label=_("Autorizo rexistrar o esforzo percibido e as probas físicas da actividade."), required=False
+        label=_("Autorizo rexistrar o esforzo percibido e as probas físicas da actividade."),
+        required=False,
     )
 
     class Meta:
@@ -82,9 +102,14 @@ CONSENT_FIELDS = {
 
 
 class ResidencyCodeForm(forms.Form):
-    code = forms.CharField(label=_("Código de empadroamento"), max_length=12,
-                           help_text=_("Facilítao o concello no mostrador ou por carta (p. ex. ABCD-2345)."))
+    code = forms.CharField(
+        label=_("Código de empadroamento"),
+        max_length=12,
+        help_text=_("Facilítao o concello no mostrador ou por carta (p. ex. ABCD-2345)."),
+    )
 
 
 class DeleteAccountForm(forms.Form):
-    confirm = forms.BooleanField(label=_("Entendo que se eliminarán os meus datos e non se pode desfacer."))
+    confirm = forms.BooleanField(
+        label=_("Entendo que se eliminarán os meus datos e non se pode desfacer.")
+    )

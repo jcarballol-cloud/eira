@@ -44,7 +44,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(_("teléfono"), max_length=20, blank=True)
     birth_year = models.PositiveIntegerField(_("ano de nacemento"), null=True, blank=True)
     preferred_language = models.CharField(_("idioma preferido"), max_length=5, default="gl")
-    identity_subject = models.CharField(max_length=128, unique=True, null=True, blank=True, editable=False)
+    identity_subject = models.CharField(
+        max_length=128, unique=True, null=True, blank=True, editable=False
+    )
     notify_email = models.BooleanField(_("avisos por correo"), default=True)
     notify_telegram = models.BooleanField(_("avisos por Telegram"), default=False)
     telegram_chat = models.CharField(_("chat de Telegram"), max_length=64, blank=True)
@@ -81,14 +83,18 @@ class Role(models.TextChoices):
 
 class Membership(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="memberships")
-    municipality = models.ForeignKey(Municipality, on_delete=models.CASCADE, related_name="memberships")
+    municipality = models.ForeignKey(
+        Municipality, on_delete=models.CASCADE, related_name="memberships"
+    )
     role = models.CharField(_("rol"), max_length=20, choices=Role.choices)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = _("rol no concello")
         verbose_name_plural = _("roles nos concellos")
-        constraints = [models.UniqueConstraint(fields=["user", "municipality", "role"], name="uniq_membership")]
+        constraints = [
+            models.UniqueConstraint(fields=["user", "municipality", "role"], name="uniq_membership")
+        ]
 
     def __str__(self):
         return f"{self.user} · {self.municipality} · {self.get_role_display()}"
@@ -101,13 +107,17 @@ class RegionMembership(models.Model):
     region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name="members")
 
     class Meta:
-        constraints = [models.UniqueConstraint(fields=["user", "region"], name="uniq_region_membership")]
+        constraints = [
+            models.UniqueConstraint(fields=["user", "region"], name="uniq_region_membership")
+        ]
 
 
 class ResidencyInvitation(models.Model):
     """Código que o concello entrega (no mostrador ou por carta) para validar o empadroamento."""
 
-    municipality = models.ForeignKey(Municipality, on_delete=models.CASCADE, related_name="residency_invitations")
+    municipality = models.ForeignKey(
+        Municipality, on_delete=models.CASCADE, related_name="residency_invitations"
+    )
     code = models.CharField(max_length=12, unique=True)
     note = models.CharField(_("nota interna"), max_length=120, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -120,7 +130,9 @@ class ResidencyInvitation(models.Model):
         alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
         code = "-".join("".join(secrets.choice(alphabet) for _ in range(4)) for _ in range(2))
         return cls.objects.create(
-            municipality=municipality, code=code, note=note,
+            municipality=municipality,
+            code=code,
+            note=note,
             expires_at=timezone.now() + timezone.timedelta(days=days),
         )
 
@@ -136,7 +148,9 @@ class Residency(models.Model):
         IDENTITY = "identity", _("Identidade pública + padrón")
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="residencies")
-    municipality = models.ForeignKey(Municipality, on_delete=models.CASCADE, related_name="residencies")
+    municipality = models.ForeignKey(
+        Municipality, on_delete=models.CASCADE, related_name="residencies"
+    )
     method = models.CharField(max_length=20, choices=Method.choices)
     validated_at = models.DateTimeField(default=timezone.now)
     revoked_at = models.DateTimeField(null=True, blank=True)
@@ -166,8 +180,10 @@ class LoginCode(models.Model):
         code = f"{secrets.randbelow(10**6):06d}"
         cls.objects.filter(email=email.lower(), used_at__isnull=True).update(used_at=timezone.now())
         obj = cls.objects.create(
-            email=email.lower(), code_hash=_hash_code(email, code),
-            expires_at=timezone.now() + timezone.timedelta(seconds=settings.EIRA_LOGIN_CODE_TTL_SECONDS),
+            email=email.lower(),
+            code_hash=_hash_code(email, code),
+            expires_at=timezone.now()
+            + timezone.timedelta(seconds=settings.EIRA_LOGIN_CODE_TTL_SECONDS),
         )
         return obj, code
 
@@ -175,9 +191,11 @@ class LoginCode(models.Model):
     def verify(cls, email, code):
         """Devolve True se o código é válido. Conta intentos e invalida tras o máximo."""
         email = email.lower()
-        obj = cls.objects.filter(email=email, used_at__isnull=True, expires_at__gt=timezone.now()).order_by(
-            "-created_at"
-        ).first()
+        obj = (
+            cls.objects.filter(email=email, used_at__isnull=True, expires_at__gt=timezone.now())
+            .order_by("-created_at")
+            .first()
+        )
         if obj is None:
             return False
         if obj.attempts >= settings.EIRA_LOGIN_CODE_MAX_ATTEMPTS:
@@ -244,7 +262,9 @@ class AuditLog(models.Model):
     """Rexistro de accións sensibles (ENS: trazabilidade)."""
 
     at = models.DateTimeField(auto_now_add=True, db_index=True)
-    actor = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    actor = models.ForeignKey(
+        User, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
     municipality = models.ForeignKey(Municipality, null=True, blank=True, on_delete=models.CASCADE)
     action = models.CharField(max_length=60)
     object_type = models.CharField(max_length=60, blank=True)

@@ -116,7 +116,9 @@ TEMPLATES = [
     }
 ]
 
-DATABASES = {"default": parse_database_url(env("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}"))}
+DATABASES = {
+    "default": parse_database_url(env("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}"))
+}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
 LOGIN_URL = "accounts:login"
@@ -125,7 +127,10 @@ AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
 
 # Só o persoal técnico do admin de Django usa contrasinal; a cidadanía accede sen contrasinal.
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", "OPTIONS": {"min_length": 12}},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {"min_length": 12},
+    },
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
 ]
 
@@ -164,7 +169,9 @@ CSRF_COOKIE_SECURE = SESSION_COOKIE_SECURE
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "same-origin"
 X_FRAME_OPTIONS = "DENY"
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https") if env_bool("EIRA_BEHIND_PROXY") else None
+SECURE_PROXY_SSL_HEADER = (
+    ("HTTP_X_FORWARDED_PROTO", "https") if env_bool("EIRA_BEHIND_PROXY") else None
+)
 SECURE_SSL_REDIRECT = env_bool("EIRA_SSL_REDIRECT", False)
 SECURE_HSTS_SECONDS = int(env("EIRA_HSTS_SECONDS", 0))
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 14
@@ -173,7 +180,9 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 14
 EIRA_TILE_URL = env("EIRA_TILE_URL", "https://tile.openstreetmap.org/{z}/{x}/{y}.png")
 EIRA_TILE_ORIGIN = env("EIRA_TILE_ORIGIN", "https://tile.openstreetmap.org")
 
-CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache", "LOCATION": "eira"}}
+CACHES = {
+    "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache", "LOCATION": "eira"}
+}
 if env("EIRA_CACHE_DIR"):
     CACHES["default"] = {
         "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
@@ -223,7 +232,10 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "API aberta de Eira: concellos, instalacións, dispoñibilidade, reservas e incidencias.",
     "VERSION": "0.1.0",
     "OAS_VERSION": "3.1.0",
-    "LICENSE": {"name": "EUPL-1.2", "url": "https://interoperable-europe.ec.europa.eu/collection/eupl"},
+    "LICENSE": {
+        "name": "EUPL-1.2",
+        "url": "https://interoperable-europe.ec.europa.eu/collection/eupl",
+    },
     "SERVE_INCLUDE_SCHEMA": False,
     "SCHEMA_PATH_PREFIX": r"/api/v1",
 }

@@ -29,13 +29,19 @@ def checkin(request, token):
     if request.method == "POST":
         booking = qr_checkin(facility, request.user)
         done = True
-    return render(request, "access/checkin.html", {"facility": facility, "booking": booking, "done": done})
+    return render(
+        request, "access/checkin.html", {"facility": facility, "booking": booking, "done": done}
+    )
 
 
 @role_required("admin", "region_admin", "maintenance")
 def facility_qr(request, pk):
     facility = get_object_or_404(Facility, municipality=request.tenant, pk=pk)
-    url = request.build_absolute_uri(treverse(request.tenant, "access:checkin", facility.checkin_token))
+    url = request.build_absolute_uri(
+        treverse(request.tenant, "access:checkin", facility.checkin_token)
+    )
     if request.GET.get("format") == "svg":
         return HttpResponse(qr_svg(url), content_type="image/svg+xml")
-    return render(request, "access/poster.html", {"facility": facility, "url": url, "svg": qr_svg(url)})
+    return render(
+        request, "access/poster.html", {"facility": facility, "url": url, "svg": qr_svg(url)}
+    )

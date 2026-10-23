@@ -50,15 +50,25 @@ class Municipality(models.Model):
     name = models.CharField(_("nome"), max_length=120)
     slug = models.SlugField(unique=True, help_text=_("Identificador na URL: /c/<slug>/"))
     region = models.ForeignKey(
-        Region, verbose_name=_("agrupación"), null=True, blank=True, on_delete=models.SET_NULL,
+        Region,
+        verbose_name=_("agrupación"),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
         related_name="municipalities",
     )
     ine_code = models.CharField(_("código INE"), max_length=5, blank=True)
-    accent_color = models.CharField(_("cor de acento"), max_length=7, default="#2E6A4F", validators=[hex_color])
+    accent_color = models.CharField(
+        _("cor de acento"), max_length=7, default="#2E6A4F", validators=[hex_color]
+    )
     coat_of_arms = models.ImageField(_("escudo"), upload_to="tenants/coats/", blank=True)
     languages = models.CharField(_("idiomas"), max_length=40, default="gl,es")
     domain = models.CharField(
-        _("dominio propio"), max_length=190, blank=True, null=True, unique=True,
+        _("dominio propio"),
+        max_length=190,
+        blank=True,
+        null=True,
+        unique=True,
         help_text=_("Opcional: p. ex. deportes.concello.example"),
     )
     contact_email = models.EmailField(_("correo de contacto"), blank=True)
@@ -74,10 +84,16 @@ class Municipality(models.Model):
     cancellation_hours = models.PositiveIntegerField(
         _("horas mínimas para cancelar sen penalización"), default=24
     )
-    late_cancel_penalty_pct = models.PositiveIntegerField(_("penalización por cancelación tardía (%)"), default=50)
+    late_cancel_penalty_pct = models.PositiveIntegerField(
+        _("penalización por cancelación tardía (%)"), default=50
+    )
     max_advance_days = models.PositiveIntegerField(_("días máximos de antelación"), default=14)
-    max_active_bookings = models.PositiveIntegerField(_("reservas activas máximas por persoa"), default=4)
-    no_show_grace_minutes = models.PositiveIntegerField(_("minutos de cortesía para non presentado"), default=15)
+    max_active_bookings = models.PositiveIntegerField(
+        _("reservas activas máximas por persoa"), default=4
+    )
+    no_show_grace_minutes = models.PositiveIntegerField(
+        _("minutos de cortesía para non presentado"), default=15
+    )
     is_active = models.BooleanField(_("activo"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -110,7 +126,9 @@ class TenantQuerySet(models.QuerySet):
 class TenantModel(models.Model):
     """Base para todo dato que pertence a un concello. Illamento: filtrar sempre por `municipality`."""
 
-    municipality = models.ForeignKey(Municipality, verbose_name=_("concello"), on_delete=models.CASCADE)
+    municipality = models.ForeignKey(
+        Municipality, verbose_name=_("concello"), on_delete=models.CASCADE
+    )
 
     objects = TenantQuerySet.as_manager()
 

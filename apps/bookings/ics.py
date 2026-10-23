@@ -10,7 +10,9 @@ def _fmt(value):
 
 
 def _escape(text):
-    return str(text).replace("\\", "\\\\").replace(";", "\\;").replace(",", "\\,").replace("\n", "\\n")
+    return (
+        str(text).replace("\\", "\\\\").replace(";", "\\;").replace(",", "\\,").replace("\n", "\\n")
+    )
 
 
 def _fold(line):
@@ -52,8 +54,14 @@ def event_lines(booking, url=""):
 
 
 def calendar(bookings, url_for=None, name="Eira"):
-    lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Equipo Eira//Eira//GL", "CALSCALE:GREGORIAN",
-             "METHOD:PUBLISH", f"X-WR-CALNAME:{_escape(name)}"]
+    lines = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "PRODID:-//Equipo Eira//Eira//GL",
+        "CALSCALE:GREGORIAN",
+        "METHOD:PUBLISH",
+        f"X-WR-CALNAME:{_escape(name)}",
+    ]
     for b in bookings:
         lines.extend(event_lines(b, url_for(b) if url_for else ""))
     lines.append("END:VCALENDAR")

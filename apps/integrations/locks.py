@@ -21,10 +21,14 @@ class MockConnectedLockAdapter(LockAdapter):
         return True
 
     def open(self, device, booking=None):
-        return self._publish(device, {"cmd": "open", "booking": getattr(booking, "reference", None)})
+        return self._publish(
+            device, {"cmd": "open", "booking": getattr(booking, "reference", None)}
+        )
 
     def set_lights(self, device, on, until=None):
-        return self._publish(device, {"cmd": "lights", "on": on, "until": until.isoformat() if until else None})
+        return self._publish(
+            device, {"cmd": "lights", "on": on, "until": until.isoformat() if until else None}
+        )
 
 
 class HttpLockAdapter(LockAdapter):

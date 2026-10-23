@@ -27,7 +27,9 @@ class Forecast:
 
     @property
     def sky_label(self):
-        return {"clear": _("Despexado"), "cloudy": _("Nubrado"), "rain": _("Chuvia")}.get(self.sky, self.sky)
+        return {"clear": _("Despexado"), "cloudy": _("Nubrado"), "rain": _("Chuvia")}.get(
+            self.sky, self.sky
+        )
 
 
 MONTHLY_MEAN_C = [9, 10, 12, 13, 15, 18, 20, 20, 19, 16, 12, 10]
@@ -69,12 +71,14 @@ class MeteoSixAdapter(WeatherAdapter):
     def forecast(self, latitude, longitude, at):
         if not settings.EIRA_METEOSIX_API_KEY:
             raise RuntimeError("Falta EIRA_METEOSIX_API_KEY")
-        query = urllib.parse.urlencode({
-            "coords": f"{longitude},{latitude}",
-            "variables": "temperature,precipitation_amount,wind,sky_state",
-            "API_KEY": settings.EIRA_METEOSIX_API_KEY,
-            "format": "application/json",
-        })
+        query = urllib.parse.urlencode(
+            {
+                "coords": f"{longitude},{latitude}",
+                "variables": "temperature,precipitation_amount,wind,sky_state",
+                "API_KEY": settings.EIRA_METEOSIX_API_KEY,
+                "format": "application/json",
+            }
+        )
         with urllib.request.urlopen(f"{self.BASE}?{query}", timeout=5) as resp:  # noqa: S310
             data = json.load(resp)
         raise NotImplementedError(f"Interpretar resposta MeteoSIX ({len(data)} claves)")
@@ -94,7 +98,9 @@ def advice(forecast, indoor=False):
     elif not indoor and forecast.uv_index >= 3:
         tips.append(_("Índice UV moderado: usa protección solar."))
     if not indoor and forecast.precipitation_prob >= 60:
-        tips.append(_("Probable chuvia: o pavimento pode esvarar. Considera unha instalación cuberta."))
+        tips.append(
+            _("Probable chuvia: o pavimento pode esvarar. Considera unha instalación cuberta.")
+        )
     if not indoor and forecast.wind_kmh >= 35:
         tips.append(_("Vento forte: coidado con redes, porterías e obxectos soltos."))
     if not tips:

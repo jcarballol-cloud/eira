@@ -12,7 +12,9 @@ class PushAdapter:
 class FakeWebPushAdapter(PushAdapter):
     def send(self, subscription, title, body, url=""):
         OutboundMessage.objects.create(
-            channel="push", target=subscription.endpoint[:200], payload={"title": title, "body": body, "url": url}
+            channel="push",
+            target=subscription.endpoint[:200],
+            payload={"title": title, "body": body, "url": url},
         )
         return True
 

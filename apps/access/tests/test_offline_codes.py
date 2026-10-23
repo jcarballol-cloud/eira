@@ -19,20 +19,23 @@ S = dt.timedelta(seconds=1)
 TOL = dt.timedelta(minutes=10)
 
 
-@pytest.mark.parametrize("at, ok", [
-    (START - TOL - S, False),          # 1 segundo antes da tolerancia
-    (START - TOL, True),               # bordo exacto da tolerancia inicial
-    (START - dt.timedelta(minutes=5), True),
-    (START, True),
-    (START + dt.timedelta(minutes=45), True),
-    (END, True),
-    (END + TOL, True),                 # bordo exacto da tolerancia final
-    (END + TOL + S, False),            # 1 segundo despois
-    (START - dt.timedelta(hours=1), False),
-    (END + dt.timedelta(hours=1), False),
-    (START + dt.timedelta(days=1), False),  # mesma hora ao día seguinte
-    (START - dt.timedelta(days=7), False),  # mesma hora a semana anterior
-])
+@pytest.mark.parametrize(
+    "at, ok",
+    [
+        (START - TOL - S, False),  # 1 segundo antes da tolerancia
+        (START - TOL, True),  # bordo exacto da tolerancia inicial
+        (START - dt.timedelta(minutes=5), True),
+        (START, True),
+        (START + dt.timedelta(minutes=45), True),
+        (END, True),
+        (END + TOL, True),  # bordo exacto da tolerancia final
+        (END + TOL + S, False),  # 1 segundo despois
+        (START - dt.timedelta(hours=1), False),
+        (END + dt.timedelta(hours=1), False),
+        (START + dt.timedelta(days=1), False),  # mesma hora ao día seguinte
+        (START - dt.timedelta(days=7), False),  # mesma hora a semana anterior
+    ],
+)
 def test_window_edges(at, ok):
     assert (oc.validate(CODE, at, P) is not None) is ok
 
@@ -53,7 +56,9 @@ def test_duration_is_part_of_the_code():
     """Un código de 30 min non serve para os 90 min seguintes."""
     short = oc.code_for(START, START + dt.timedelta(minutes=30), P)
     assert oc.validate(short, START + dt.timedelta(minutes=20), P)
-    assert oc.validate(short, START + dt.timedelta(minutes=41), P) is None  # 30 + 10 de tolerancia + 1
+    assert (
+        oc.validate(short, START + dt.timedelta(minutes=41), P) is None
+    )  # 30 + 10 de tolerancia + 1
 
 
 def test_other_secret_is_rejected():
@@ -116,7 +121,11 @@ def test_random_bookings_property():
         start = dt.datetime.fromtimestamp(block * 1800, tz=UTC)
         end = start + dt.timedelta(minutes=30 * dur)
         code = oc.code_for(start, end, P)
-        inside = start - TOL + dt.timedelta(seconds=rng.randint(0, int((end - start + 2 * TOL).total_seconds())))
+        inside = (
+            start
+            - TOL
+            + dt.timedelta(seconds=rng.randint(0, int((end - start + 2 * TOL).total_seconds())))
+        )
         assert oc.validate(code, inside, P), (start, end, inside)
         outside = end + TOL + dt.timedelta(seconds=rng.randint(1, 86_400))
         match = oc.validate(code, outside, P)

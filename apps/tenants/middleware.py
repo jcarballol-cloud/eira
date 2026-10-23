@@ -14,8 +14,21 @@ from django.http import Http404
 from .models import Municipality
 
 PASSTHROUGH_PREFIXES = (
-    "/c/", "/static/", "/media/", "/api/", "/dev/", "/admin/", "/i18n/", "/sw.js", "/manifest.webmanifest",
-    "/acceso/", "/conta/", "/preferencias/", "/rexion/", "/saude/", "/offline/",
+    "/c/",
+    "/static/",
+    "/media/",
+    "/api/",
+    "/dev/",
+    "/admin/",
+    "/i18n/",
+    "/sw.js",
+    "/manifest.webmanifest",
+    "/acceso/",
+    "/conta/",
+    "/preferencias/",
+    "/rexion/",
+    "/saude/",
+    "/offline/",
 )
 
 
@@ -26,7 +39,11 @@ def _slug_for_host(host):
     if slug is None:
         slug = ""
         base = settings.EIRA_BASE_DOMAIN.lower()
-        candidate = Municipality.objects.filter(domain=host, is_active=True).values_list("slug", flat=True).first()
+        candidate = (
+            Municipality.objects.filter(domain=host, is_active=True)
+            .values_list("slug", flat=True)
+            .first()
+        )
         if candidate:
             slug = candidate
         elif base and host.endswith("." + base):
@@ -73,11 +90,16 @@ class TenantMiddleware:
             from apps.accounts.models import Membership
 
             request.roles = set(
-                Membership.objects.filter(user=request.user, municipality=tenant).values_list("role", flat=True)
+                Membership.objects.filter(user=request.user, municipality=tenant).values_list(
+                    "role", flat=True
+                )
             )
             if request.user.is_superuser:
                 request.roles |= {"admin"}
-            if tenant.region_id and request.user.region_memberships.filter(region_id=tenant.region_id).exists():
+            if (
+                tenant.region_id
+                and request.user.region_memberships.filter(region_id=tenant.region_id).exists()
+            ):
                 request.roles |= {"region_admin"}
         return None
 
@@ -102,6 +124,8 @@ class SecurityHeadersMiddleware:
                 "form-action 'self'; object-src 'none'"
             )
         response.setdefault("Content-Security-Policy", csp)
-        response.setdefault("Permissions-Policy", "geolocation=(self), camera=(self), microphone=(), payment=()")
+        response.setdefault(
+            "Permissions-Policy", "geolocation=(self), camera=(self), microphone=(), payment=()"
+        )
         response.setdefault("Cross-Origin-Opener-Policy", "same-origin")
         return response

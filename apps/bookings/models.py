@@ -46,15 +46,25 @@ class Booking(TenantModel):
         PHONE = "phone", _("Teléfono")
         COUNTER = "counter", _("Mostrador")
 
-    reference = models.CharField(max_length=8, unique=True, default=booking_reference, editable=False)
+    reference = models.CharField(
+        max_length=8, unique=True, default=booking_reference, editable=False
+    )
     facility = models.ForeignKey(Facility, on_delete=models.PROTECT, related_name="bookings")
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="bookings"
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="bookings",
     )
     start = models.DateTimeField(_("inicio"), db_index=True)
     end = models.DateTimeField(_("fin"))
-    status = models.CharField(_("estado"), max_length=20, choices=Status.choices, default=Status.PENDING_PAYMENT)
-    channel = models.CharField(_("canle"), max_length=10, choices=Channel.choices, default=Channel.ONLINE)
+    status = models.CharField(
+        _("estado"), max_length=20, choices=Status.choices, default=Status.PENDING_PAYMENT
+    )
+    channel = models.CharField(
+        _("canle"), max_length=10, choices=Channel.choices, default=Channel.ONLINE
+    )
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
     )
@@ -86,7 +96,10 @@ class Booking(TenantModel):
         verbose_name = _("reserva")
         verbose_name_plural = _("reservas")
         ordering = ["-start"]
-        indexes = [models.Index(fields=["facility", "start"]), models.Index(fields=["municipality", "status"])]
+        indexes = [
+            models.Index(fields=["facility", "start"]),
+            models.Index(fields=["municipality", "status"]),
+        ]
 
     def __str__(self):
         return f"{self.reference} · {self.facility} · {self.start:%Y-%m-%d %H:%M}"
@@ -100,7 +113,10 @@ class Booking(TenantModel):
     @property
     def is_active_now(self):
         now = timezone.now()
-        return self.status in (self.Status.CONFIRMED, self.Status.USED) and self.start <= now < self.end
+        return (
+            self.status in (self.Status.CONFIRMED, self.Status.USED)
+            and self.start <= now < self.end
+        )
 
     @property
     def is_upcoming(self):
@@ -130,7 +146,10 @@ class Booking(TenantModel):
         return self.status == self.Status.CONFIRMED and timezone.now() < self.cancellation_cutoff()
 
     def can_cancel(self):
-        return self.status in (self.Status.CONFIRMED, self.Status.PENDING_PAYMENT) and timezone.now() < self.start
+        return (
+            self.status in (self.Status.CONFIRMED, self.Status.PENDING_PAYMENT)
+            and timezone.now() < self.start
+        )
 
     def penalty_if_cancelled_now(self):
         if self.status != self.Status.CONFIRMED or timezone.now() < self.cancellation_cutoff():

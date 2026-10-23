@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: EUPL-1.2
 """Tarefas do proxecto, equivalentes ao Makefile, para sistemas sen `make` (p. ex. Windows).
 
-    python tools/tasks.py dev | seed | test | e2e | lint | licenses | i18n | openapi | screenshots
+python tools/tasks.py dev | seed | test | e2e | lint | licenses | i18n | openapi | screenshots
 """
 
 import os

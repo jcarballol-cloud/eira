@@ -18,10 +18,20 @@ def booking_now(facility, user):
     """Reserva que inclúe o instante actual (creada directamente, sen validar o pasado)."""
     step = dt.timedelta(minutes=facility.slot_minutes)
     now = timezone.now().replace(second=0, microsecond=0)
-    start = now.replace(minute=0) if facility.slot_minutes == 60 else now.replace(minute=(now.minute // 30) * 30)
+    start = (
+        now.replace(minute=0)
+        if facility.slot_minutes == 60
+        else now.replace(minute=(now.minute // 30) * 30)
+    )
     return Booking.objects.create(
-        municipality=facility.municipality, facility=facility, user=user, start=start, end=start + step,
-        status=Booking.Status.CONFIRMED, rules_version=facility.current_rules(), rules_accepted_at=now,
+        municipality=facility.municipality,
+        facility=facility,
+        user=user,
+        start=start,
+        end=start + step,
+        status=Booking.Status.CONFIRMED,
+        rules_version=facility.current_rules(),
+        rules_accepted_at=now,
     )
 
 
@@ -57,7 +67,9 @@ def test_level2_access_info_shows_code_and_window(gym_a, citizen):
 
 
 def test_level3_open_only_within_window(pool_a, citizen):
-    future = create_booking(pool_a, next_slot(pool_a, hour=10), citizen, rules_version=pool_a.current_rules())
+    future = create_booking(
+        pool_a, next_slot(pool_a, hour=10), citizen, rules_version=pool_a.current_rules()
+    )
     future.status = Booking.Status.CONFIRMED
     future.save()
     assert not services.booking_access_info(future)["can_open"]
@@ -98,7 +110,9 @@ def test_checkin_view(client, court_b):
     url = f"/c/{court_b.municipality.slug}/acceso/entrada/{court_b.checkin_token}/"
     assert client.get(url).status_code == 200
     assert client.post(url).status_code == 200
-    assert client.get(f"/c/{court_b.municipality.slug}/acceso/entrada/token-falso/").status_code == 404
+    assert (
+        client.get(f"/c/{court_b.municipality.slug}/acceso/entrada/token-falso/").status_code == 404
+    )
 
 
 def test_lock_simulator_page(client, gym_a, citizen):

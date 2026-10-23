@@ -15,9 +15,28 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 ALLOWED = [
-    "MIT", "BSD", "Apache", "ISC", "PSF", "Python Software Foundation", "Unlicense", "0BSD", "Zero-Clause",
-    "MPL-2.0", "Mozilla Public License 2.0", "LGPL", "GPL", "GNU General Public", "GNU Lesser",
-    "EUPL", "Artistic", "Historical Permission", "HPND", "CC0", "Zope Public", "ZPL",
+    "MIT",
+    "BSD",
+    "Apache",
+    "ISC",
+    "PSF",
+    "Python Software Foundation",
+    "Unlicense",
+    "0BSD",
+    "Zero-Clause",
+    "MPL-2.0",
+    "Mozilla Public License 2.0",
+    "LGPL",
+    "GPL",
+    "GNU General Public",
+    "GNU Lesser",
+    "EUPL",
+    "Artistic",
+    "Historical Permission",
+    "HPND",
+    "CC0",
+    "Zope Public",
+    "ZPL",
 ]
 # Paquetes cuxa licenza non aparece nos metadatos pero está verificada manualmente.
 KNOWN = {
@@ -37,7 +56,9 @@ IGNORE = {"eira", "pip", "setuptools", "wheel"}
 def main():
     out = subprocess.run(
         [sys.executable, "-m", "piplicenses", "--format=json", "--with-system", "--from=mixed"],
-        capture_output=True, text=True, check=True,
+        capture_output=True,
+        text=True,
+        check=True,
     ).stdout
     bad = []
     for pkg in json.loads(out):

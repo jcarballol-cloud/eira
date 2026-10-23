@@ -22,9 +22,15 @@ def home(request):
         from apps.integrations.demo import DEMO_PERSONAS
 
         personas = DEMO_PERSONAS
-    return render(request, "core/home.html", {
-        "municipalities": municipalities, "regions": Region.objects.all(), "personas": personas,
-    })
+    return render(
+        request,
+        "core/home.html",
+        {
+            "municipalities": municipalities,
+            "regions": Region.objects.all(),
+            "personas": personas,
+        },
+    )
 
 
 def _safe_next(request, fallback="/"):
@@ -40,7 +46,11 @@ def preferences(request):
         response = HttpResponse(status=303)
         response["Location"] = _safe_next(request)
         return write_prefs(response, {k: request.POST.get(k) == "on" for k in KEYS})
-    return render(request, "core/preferences.html", {"next": _safe_next(request), "current": read_prefs(request)})
+    return render(
+        request,
+        "core/preferences.html",
+        {"next": _safe_next(request), "current": read_prefs(request)},
+    )
 
 
 def health(request):
@@ -53,7 +63,9 @@ def offline(request):
 
 @cache_control(no_cache=True)
 def service_worker(request):
-    response = render(request, "core/sw.js", {"version": "eira-v1"}, content_type="application/javascript")
+    response = render(
+        request, "core/sw.js", {"version": "eira-v1"}, content_type="application/javascript"
+    )
     response["Service-Worker-Allowed"] = "/"
     return response
 
@@ -71,14 +83,21 @@ def manifest(request):
         "theme_color": "#16252B",
         "icons": [
             {"src": static("img/eira-192.png"), "sizes": "192x192", "type": "image/png"},
-            {"src": static("img/eira-512.png"), "sizes": "512x512", "type": "image/png", "purpose": "any maskable"},
+            {
+                "src": static("img/eira-512.png"),
+                "sizes": "512x512",
+                "type": "image/png",
+                "purpose": "any maskable",
+            },
             {"src": static("img/eira.svg"), "sizes": "any", "type": "image/svg+xml"},
         ],
         "shortcuts": [
             {"name": _("A miña saúde"), "url": reverse("health")},
         ],
     }
-    return HttpResponse(json.dumps(data, ensure_ascii=False), content_type="application/manifest+json")
+    return HttpResponse(
+        json.dumps(data, ensure_ascii=False), content_type="application/manifest+json"
+    )
 
 
 def theme_css(request):
@@ -98,8 +117,18 @@ def accessibility(request):
 
 
 def not_found(request, exception=None):
-    return render(request, "core/error.html", {"code": 404, "title": _("Non atopamos esta páxina")}, status=404)
+    return render(
+        request,
+        "core/error.html",
+        {"code": 404, "title": _("Non atopamos esta páxina")},
+        status=404,
+    )
 
 
 def forbidden(request, exception=None):
-    return render(request, "core/error.html", {"code": 403, "title": _("Non tes permiso para ver isto")}, status=403)
+    return render(
+        request,
+        "core/error.html",
+        {"code": 403, "title": _("Non tes permiso para ver isto")},
+        status=403,
+    )

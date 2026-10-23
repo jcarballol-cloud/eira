@@ -12,7 +12,9 @@ class Notification(models.Model):
         SUCCESS = "success", _("Confirmación")
         WARNING = "warning", _("Aviso")
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="notifications")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="notifications"
+    )
     municipality = models.ForeignKey(Municipality, null=True, blank=True, on_delete=models.CASCADE)
     title = models.CharField(max_length=160)
     body = models.TextField(blank=True)
@@ -29,7 +31,9 @@ class Notification(models.Model):
 
 
 class PushSubscription(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="push_subscriptions")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="push_subscriptions"
+    )
     endpoint = models.URLField(max_length=500, unique=True)
     keys = models.JSONField(default=dict)
     created_at = models.DateTimeField(auto_now_add=True)

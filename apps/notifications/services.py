@@ -10,7 +10,9 @@ from .models import Notification
 log = logging.getLogger("eira.notify")
 
 
-def notify(user, title, body="", url="", municipality=None, level=Notification.Level.INFO, email=True):
+def notify(
+    user, title, body="", url="", municipality=None, level=Notification.Level.INFO, email=True
+):
     if user is None:
         return None
     channels = ["app"]
@@ -27,7 +29,12 @@ def notify(user, title, body="", url="", municipality=None, level=Notification.L
     except Exception:  # un fallo de canle nunca impide o aviso na aplicación
         log.exception("Fallo enviando aviso")
     return Notification.objects.create(
-        user=user, municipality=municipality, title=title[:160], body=body, url=url, level=level,
+        user=user,
+        municipality=municipality,
+        title=title[:160],
+        body=body,
+        url=url,
+        level=level,
         channels=",".join(dict.fromkeys(channels)),
     )
 

@@ -19,10 +19,17 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
-from apps.accounts.models import Consent, Dependent, Household, Membership, Residency, User, audit
 from apps.access.models import AccessEvent, KeyHandover, LockDevice
+from apps.accounts.models import Consent, Dependent, Household, Membership, Residency, User, audit
 from apps.activities.models import (
-    Activity, Attendance, Enrollment, FitnessBattery, FitnessResult, FitnessTest, Group, Session,
+    Activity,
+    Attendance,
+    Enrollment,
+    FitnessBattery,
+    FitnessResult,
+    FitnessTest,
+    Group,
+    Session,
 )
 from apps.bookings import ics
 from apps.bookings.models import Booking
@@ -40,9 +47,19 @@ USER_FIELDS = ["email", "display_name", "phone", "birth_year", "preferred_langua
 def _user_ids(t):
     ids = set(Membership.objects.filter(municipality=t).values_list("user_id", flat=True))
     ids |= set(Residency.objects.filter(municipality=t).values_list("user_id", flat=True))
-    ids |= set(Booking.objects.filter(municipality=t, user__isnull=False).values_list("user_id", flat=True))
-    ids |= set(Enrollment.objects.filter(municipality=t, user__isnull=False).values_list("user_id", flat=True))
-    ids |= set(Incident.objects.filter(municipality=t, reporter__isnull=False).values_list("reporter_id", flat=True))
+    ids |= set(
+        Booking.objects.filter(municipality=t, user__isnull=False).values_list("user_id", flat=True)
+    )
+    ids |= set(
+        Enrollment.objects.filter(municipality=t, user__isnull=False).values_list(
+            "user_id", flat=True
+        )
+    )
+    ids |= set(
+        Incident.objects.filter(municipality=t, reporter__isnull=False).values_list(
+            "reporter_id", flat=True
+        )
+    )
     return ids
 
 
@@ -52,7 +69,10 @@ SPEC = [
     (Residency, lambda t: Residency.objects.filter(municipality=t)),
     (Household, lambda t: Household.objects.filter(responsible_id__in=_user_ids(t))),
     (Dependent, lambda t: Dependent.objects.filter(household__responsible_id__in=_user_ids(t))),
-    (Consent, lambda t: Consent.objects.filter(dependent__household__responsible_id__in=_user_ids(t))),
+    (
+        Consent,
+        lambda t: Consent.objects.filter(dependent__household__responsible_id__in=_user_ids(t)),
+    ),
     (Parish, lambda t: Parish.objects.filter(municipality=t)),
     (Facility, lambda t: Facility.objects.filter(municipality=t)),
     (OpeningHours, lambda t: OpeningHours.objects.filter(facility__municipality=t)),
@@ -78,10 +98,26 @@ SPEC = [
     (FitnessResult, lambda t: FitnessResult.objects.filter(enrollment__municipality=t)),
 ]
 UNIQUE_REGEN = {"checkin_token", "reference"}
-TENANT_FIELDS = ["name", "slug", "ine_code", "accent_color", "languages", "contact_email", "contact_phone", "address",
-                 "population", "privacy_text", "accessibility_statement", "legal_notice", "modules",
-                 "cancellation_hours", "late_cancel_penalty_pct", "max_advance_days", "max_active_bookings",
-                 "no_show_grace_minutes"]
+TENANT_FIELDS = [
+    "name",
+    "slug",
+    "ine_code",
+    "accent_color",
+    "languages",
+    "contact_email",
+    "contact_phone",
+    "address",
+    "population",
+    "privacy_text",
+    "accessibility_statement",
+    "legal_notice",
+    "modules",
+    "cancellation_hours",
+    "late_cancel_penalty_pct",
+    "max_advance_days",
+    "max_active_bookings",
+    "no_show_grace_minutes",
+]
 
 
 def _value(obj, field):
@@ -124,7 +160,9 @@ def export_municipality(tenant):
         }
         for model, qs in SPEC:
             for obj in qs(tenant).order_by("pk"):
-                data["objects"].append({"model": model._meta.label, "pk": obj.pk, "fields": _dump(obj)})
+                data["objects"].append(
+                    {"model": model._meta.label, "pk": obj.pk, "fields": _dump(obj)}
+                )
                 for f in obj._meta.concrete_fields:
                     if isinstance(f, models.FileField) and getattr(obj, f.name):
                         files.append(getattr(obj, f.name))
@@ -133,23 +171,59 @@ def export_municipality(tenant):
         out = io.StringIO()
         w = csv.writer(out)
         w.writerow(["referencia", "instalacion", "inicio", "fin", "estado", "canle", "importe_eur"])
-        bookings = Booking.objects.filter(municipality=tenant).select_related("facility", "municipality")
+        bookings = Booking.objects.filter(municipality=tenant).select_related(
+            "facility", "municipality"
+        )
         for b in bookings:
-            w.writerow([b.reference, b.facility.name, b.start.isoformat(), b.end.isoformat(), b.status, b.channel,
-                        b.paid_cents / 100])
+            w.writerow(
+                [
+                    b.reference,
+                    b.facility.name,
+                    b.start.isoformat(),
+                    b.end.isoformat(),
+                    b.status,
+                    b.channel,
+                    b.paid_cents / 100,
+                ]
+            )
         zf.writestr("csv/reservas.csv", out.getvalue())
         out = io.StringIO()
         w = csv.writer(out)
-        w.writerow(["id", "nome", "tipo", "parroquia", "latitude", "lonxitude", "nivel_acceso", "prazas"])
+        w.writerow(
+            ["id", "nome", "tipo", "parroquia", "latitude", "lonxitude", "nivel_acceso", "prazas"]
+        )
         for f in Facility.objects.filter(municipality=tenant).select_related("parish"):
-            w.writerow([f.pk, f.name, f.kind, f.parish.name if f.parish else "", f.latitude, f.longitude,
-                        f.access_level, f.capacity])
+            w.writerow(
+                [
+                    f.pk,
+                    f.name,
+                    f.kind,
+                    f.parish.name if f.parish else "",
+                    f.latitude,
+                    f.longitude,
+                    f.access_level,
+                    f.capacity,
+                ]
+            )
         zf.writestr("csv/instalacions.csv", out.getvalue())
-        zf.writestr("ical/reservas.ics", ics.calendar(bookings.exclude(status="cancelled"), name=tenant.name))
-        geo = {"type": "FeatureCollection", "features": [
-            {"type": "Feature", "properties": {"name": f.name, "kind": f.kind},
-             "geometry": {"type": "Point", "coordinates": [float(f.longitude), float(f.latitude)]}}
-            for f in Facility.objects.filter(municipality=tenant, latitude__isnull=False)]}
+        zf.writestr(
+            "ical/reservas.ics",
+            ics.calendar(bookings.exclude(status="cancelled"), name=tenant.name),
+        )
+        geo = {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "properties": {"name": f.name, "kind": f.kind},
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [float(f.longitude), float(f.latitude)],
+                    },
+                }
+                for f in Facility.objects.filter(municipality=tenant, latitude__isnull=False)
+            ],
+        }
         zf.writestr("geo/instalacions.geojson", json.dumps(geo, ensure_ascii=False))
         for fieldfile in files:
             try:
@@ -157,9 +231,12 @@ def export_municipality(tenant):
                     zf.writestr(f"media/{fieldfile.name}", fh.read())
             except (FileNotFoundError, OSError):
                 pass
-        zf.writestr("LEME.txt", "Exportación íntegra dun concello de Eira (formato " + FORMAT + ").\n"
-                    "eira.json: todos os datos; csv/, ical/, geo/: formatos abertos; media/: ficheiros.\n"
-                    "AVISO: contén datos persoais e segredos das pechaduras. Custodia este ficheiro.\n")
+        zf.writestr(
+            "LEME.txt",
+            "Exportación íntegra dun concello de Eira (formato " + FORMAT + ").\n"
+            "eira.json: todos os datos; csv/, ical/, geo/: formatos abertos; media/: ficheiros.\n"
+            "AVISO: contén datos persoais e segredos das pechaduras. Custodia este ficheiro.\n",
+        )
     return buf.getvalue()
 
 
@@ -169,7 +246,11 @@ def import_municipality(raw, slug=None, name=None):
         data = json.loads(zf.read("eira.json"))
         if data.get("format") != FORMAT:
             raise ValueError("Formato descoñecido")
-        media = {n[len("media/"):]: zf.read(n) for n in zf.namelist() if n.startswith("media/") and not n.endswith("/")}
+        media = {
+            n[len("media/") :]: zf.read(n)
+            for n in zf.namelist()
+            if n.startswith("media/") and not n.endswith("/")
+        }
     m = dict(data["municipality"])
     if slug:
         m["slug"] = slug
@@ -178,7 +259,9 @@ def import_municipality(raw, slug=None, name=None):
     tenant = Municipality.objects.create(**m)
     users = {}
     for u in data["users"]:
-        user, _c = User.objects.get_or_create(email=u["email"], defaults={k: v for k, v in u.items() if k != "email"})
+        user, _c = User.objects.get_or_create(
+            email=u["email"], defaults={k: v for k, v in u.items() if k != "email"}
+        )
         users[u["email"]] = user
     models_by_label = {model._meta.label: model for model, _q in SPEC}
     pk_map = {}
@@ -195,7 +278,9 @@ def import_municipality(raw, slug=None, name=None):
                 kwargs[f.name] = tenant
             elif f.is_relation:
                 old = item["fields"].get(f.attname)
-                kwargs[f.attname] = pk_map.get((f.related_model._meta.label, old)) if old is not None else None
+                kwargs[f.attname] = (
+                    pk_map.get((f.related_model._meta.label, old)) if old is not None else None
+                )
             elif isinstance(f, models.FileField):
                 name_ = item["fields"].get(f.attname) or ""
                 if name_ and name_ in media:
@@ -208,7 +293,10 @@ def import_municipality(raw, slug=None, name=None):
                     value = dt.date.fromisoformat(value)
                 elif value is not None and isinstance(f, models.TimeField):
                     value = dt.time.fromisoformat(value)
-                if f.attname in UNIQUE_REGEN and model.objects.filter(**{f.attname: value}).exists():
+                if (
+                    f.attname in UNIQUE_REGEN
+                    and model.objects.filter(**{f.attname: value}).exists()
+                ):
                     continue  # rexenérase co valor por defecto
                 kwargs[f.attname] = value
         obj = model(**kwargs)
@@ -232,7 +320,11 @@ class ImportForm(forms.Form):
 
 @role_required("admin", "region_admin")
 def page(request):
-    return render(request, "manage/portability.html", {"form": ImportForm(), "nav": "manage", "sub": "settings"})
+    return render(
+        request,
+        "manage/portability.html",
+        {"form": ImportForm(), "nav": "manage", "sub": "settings"},
+    )
 
 
 @role_required("admin", "region_admin")
@@ -240,7 +332,9 @@ def export_view(request):
     audit("tenant.export", request.user, request.tenant)
     response = HttpResponse(export_municipality(request.tenant), content_type="application/zip")
     stamp = timezone.localdate().isoformat()
-    response["Content-Disposition"] = f'attachment; filename="eira-{request.tenant.slug}-{stamp}.zip"'
+    response["Content-Disposition"] = (
+        f'attachment; filename="eira-{request.tenant.slug}-{stamp}.zip"'
+    )
     return response
 
 
@@ -252,7 +346,9 @@ def import_view(request):
             form.add_error("slug", _("Xa existe un concello con ese identificador."))
         else:
             try:
-                tenant = import_municipality(form.cleaned_data["file"].read(), slug=form.cleaned_data["slug"])
+                tenant = import_municipality(
+                    form.cleaned_data["file"].read(), slug=form.cleaned_data["slug"]
+                )
             except (ValueError, KeyError, zipfile.BadZipFile) as exc:
                 form.add_error("file", _("Non se puido importar: %(e)s") % {"e": exc})
             else:
@@ -261,4 +357,6 @@ def import_view(request):
                 audit("tenant.import", request.user, tenant)
                 messages.success(request, _("Concello importado."))
                 return redirect(treverse(tenant, "tenant_home"))
-    return render(request, "manage/portability.html", {"form": form, "nav": "manage", "sub": "settings"})
+    return render(
+        request, "manage/portability.html", {"form": form, "nav": "manage", "sub": "settings"}
+    )

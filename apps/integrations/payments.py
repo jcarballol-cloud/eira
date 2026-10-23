@@ -33,7 +33,10 @@ class FakeRedsysAdapter(PaymentAdapter):
 
         reference = "FR" + secrets.token_hex(6).upper()
         FakePayment.objects.create(
-            reference=reference, amount_cents=amount_cents, description=description[:200], return_url=return_url
+            reference=reference,
+            amount_cents=amount_cents,
+            description=description[:200],
+            return_url=return_url,
         )
         return reference, reverse("dev:tpv", args=[reference])
 
@@ -43,7 +46,9 @@ class FakeRedsysAdapter(PaymentAdapter):
         p = FakePayment.objects.filter(reference=reference).first()
         if not p:
             return None
-        return PaymentStatus(reference, p.status in ("paid", "refunded"), p.amount_cents, p.refunded_cents)
+        return PaymentStatus(
+            reference, p.status in ("paid", "refunded"), p.amount_cents, p.refunded_cents
+        )
 
     def refund(self, reference, amount_cents):
         from .models import FakePayment

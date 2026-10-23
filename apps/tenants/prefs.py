@@ -19,5 +19,7 @@ def read_prefs(request):
 
 def write_prefs(response, values):
     active = [k for k in KEYS if values.get(k)]
-    response.set_cookie(COOKIE, ".".join(active), max_age=60 * 60 * 24 * 365, samesite="Lax", httponly=True)
+    response.set_cookie(
+        COOKIE, ".".join(active), max_age=60 * 60 * 24 * 365, samesite="Lax", httponly=True
+    )
     return response

@@ -33,6 +33,8 @@ dev = [
 DJANGO_SETTINGS_MODULE = "eira.settings"
 python_files = ["test_*.py"]
 testpaths = ["apps", "tests"]
+pythonpath = ["."]
+django_find_project = false
 addopts = "-q --strict-markers"
 markers = ["e2e: browser end-to-end tests (Playwright + axe)"]
 filterwarnings = ["ignore:No directory at:UserWarning"]
@@ -44,7 +46,7 @@ extend-exclude = ["**/migrations/*", ".venv", "static/vendor"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "DJ"]
-ignore = ["E501"]
+ignore = ["E501", "DJ008"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["eira", "apps"]

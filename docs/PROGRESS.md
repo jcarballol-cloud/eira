@@ -12,11 +12,11 @@ Lenda: ✅ feito e verificado (test ou comprobación) · 🟡 feito sen verifica
 
 ### P0 — Esqueleto
 - ✅ Repositorio, LICENSE (EUPL-1.2 oficial), README (gl), CLAUDE.md, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY
-- 🟡 publiccode.yml (YAML válido; non validado co validador oficial, que require Go/rede)
+- ✅ publiccode.yml validado con publiccode-parser 5.4.3 (sen rede)
 - ✅ 11 apps en `apps/`, configuración por variables de contorno, sen segredos
 - ✅ `docker compose up --build` (app + PostgreSQL 16 + demo) — comprobado con peticións HTTP 200
 - ✅ Makefile + `tools/tasks.py` (equivalente en Windows), `make licenses`, comprobación SPDX
-- 🟡 CI (`.github/workflows/ci.yml`): escrito, non executado en GitHub
+- ✅ Pipeline da CI executado en local con PostgreSQL (non executado en GitHub: sen push)
 - ✅ Sistema de deseño accesible (paleta, foco, texto grande, alto contraste, movemento reducido)
 
 ### P1 — Mínimos das bases — ✅ completo
@@ -50,8 +50,11 @@ declaración de accesibilidade e privacidade modelo, vista de deputación.
 Datos ficticios (Vilardeiras, Pontedouro, Deputación das Marismas), selector de 7 perfís,
 guión de 3 min verificado cun test E2E, 44 capturas automáticas en `docs/capturas/`.
 
+## Mañá do 23/10
+- ✅ Auditoría de publicación, demo pública preparada (Caddy) con RAM medida, vídeo do pitch, revisión de nomes.
+
 ## Números
-- 159 tests unitarios/integración + 11 E2E (axe en 53 páxinas × 2 viewports con 0 violacións).
+- 160 tests unitarios/integración + 11 E2E (axe en 53 páxinas × 2 viewports con 0 violacións).
 
 ## Bloqueos
 - Ningún bloqueo activo. Ver riscos en `INFORME_MANANA.md`.

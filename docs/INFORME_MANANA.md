@@ -2,6 +2,25 @@
 
 **Fecha:** 23/10/2026 · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
 
+
+## 0. Novedades de la sesión de mañana (23/10, tarde)
+
+| Qué | Estado | Cómo se verificó |
+|---|---|---|
+| Servidor de demo en la LAN (`0.0.0.0:8000`, proceso independiente, IA fake) | ✅ verificado | HTTP 200 en `/` (perfiles) y en `/c/vilardeiras/` por `localhost` y por la IP LAN; entrar como Uxía por la IP LAN |
+| Auditoría de publicación ([AUDITORIA_PUBLICACION.md](AUDITORIA_PUBLICACION.md)) | ✅ verificado | `git grep` + `git log --all -p -S` sin rutas, usuarios, IPs ni secretos; PNG sin metadatos; dominio de demo cambiado a `demo.eira.example`; cabeceras `.po` limpias. **No hace falta reescribir el historial** |
+| `publiccode.yml` con el validador oficial | ✅ verificado (sin red) | `publiccode-parser` 5.4.3 en Docker: 0 errores y 0 avisos tras corregir versión, categoría y `repoOwner` obsoleto. Con red se validará la URL al publicar |
+| Pipeline de la CI en local con PostgreSQL 16 | ✅ verificado | lint, licencias, SPDX, OpenAPI sin diferencias, 160 tests y 11 E2E con axe (0 violaciones) |
+| Fallos reales que encontró la CI local | ✅ corregidos | El OpenAPI cambiaba con PostgreSQL (la CI habría fallado); se podían reservar franjas ya empezadas; `role="status"` rompía la lista de mensajes (axe) |
+| Demo pública preparada (Caddy HTTPS, DEBUG off, regeneración nocturna) | ✅ verificado en local / ⬜ sin desplegar | [despregamento-demo.md](despregamento-demo.md): HTTPS con el certificado interno de Caddy, 308 de HTTP a HTTPS, HSTS, 33 páginas con 200, regeneración forzada a la hora actual y cargas simultáneas serializadas |
+| RAM sin IA | ✅ medido | app 139 MiB (2 workers), PostgreSQL 52–59 MiB, Caddy 12–15 MiB → **≈ 210 MiB en reposo, ≈ 300 MiB en el pico nocturno**. VPS de 1 GB recomendado |
+| Vídeo del guion del pitch | ✅ verificado | `docs/demo/eira-demo-movil.webm` y `eira-demo-escritorio.webm` (~88 s, subtítulos, pausas de 2,6–3,4 s), más capturas numeradas en `docs/demo/pasos-movil/` y `pasos-escritorio/` (22 cada una). Se revisaron fotogramas con ffmpeg. `python tools/tasks.py video` |
+| Nombres ficticios | ✅ revisado | Ninguna coincidencia real en Vilardeiras, Pontedouro ni Deputación das Marismas (búsquedas web); las parroquias son topónimos genéricos (ver DECISIONS). No se consultó el Nomenclátor del IGE |
+
+**Importante para el servidor de la fase 1:** arrancó con el código de antes de estos cambios y sin
+recarga automática. Si se reinicia, hay que ejecutar antes `python tools/tasks.py seed`, porque los
+perfiles de demo cambiaron de dominio. Para pararlo: `Stop-Process -Id 38220`.
+
 ## 1. Cómo arrancarlo
 
 **Con Docker (verificado):**
@@ -37,7 +56,7 @@ Guion del pitch: [`docs/demo/guion-demo.md`](demo/guion-demo.md).
 
 | Qué | Cómo se verificó |
 |---|---|
-| 159 tests unitarios/integración + 11 E2E | `python tools/tasks.py test` → todos pasan |
+| 160 tests unitarios/integración + 11 E2E | `python tools/tasks.py test` → todos pasan |
 | Aislamiento entre concellos (web, gestión, API, subdominio, dominio propio) | `apps/tenants/tests/test_isolation.py` |
 | Permisos por rol (ciudadanía, admin, mantenimiento, monitor, diputación) | tests de aislamiento y de cada app |
 | Reserva completa: grilla → normas versionadas → pago simulado → código → .ics → recibo → cancelación con reembolso | `test_full_booking_flow_through_views` + E2E `test_email_login_and_booking_with_offline_code` |
@@ -68,8 +87,8 @@ Guion del pitch: [`docs/demo/guion-demo.md`](demo/guion-demo.md).
 
 ## 3. Hecho pero NO verificado
 
-- **CI de GitHub** (`.github/workflows/ci.yml`): escrito, nunca ejecutado (sin push por norma).
-- **publiccode.yml**: YAML válido, pero no pasado por `publiccode-parser` (no disponible offline).
+- **CI de GitHub**: no se ha ejecutado en GitHub, pero su mismo pipeline pasa en local con PostgreSQL.
+- **publiccode.yml**: validado sin red; queda la validación de la URL cuando el repositorio sea público.
 - **Adaptadores reales** (Cl@ve SAML, Chave365 OIDC, Redsys, MeteoSIX, Telegram Bot API, Web Push VAPID, cerradura HTTP): solo esqueletos documentados; no funcionales.
 - **Lectores de pantalla reales**, zoom 200/400 % y mapa Leaflet con teclado: no probados manualmente.
 - **Service worker / caché de lectura** en móvil real (instalación de la PWA): no probado fuera de Chromium headless.
@@ -81,7 +100,7 @@ Guion del pitch: [`docs/demo/guion-demo.md`](demo/guion-demo.md).
 - **P2:** cola offline guarda formularios pero no hay vista para revisar/descartar lo pendiente; firma/resincronización de hora del teclado solo documentada.
 - **P3:** botón de activación de Web Push en la interfaz (solo existe el endpoint y el adaptador simulado); edición de baterías de pruebas desde la UI (hoy se crean en seed/admin).
 - **P4:** validación DCAT-AP con validador oficial; ODS también en datos abiertos y exportación (hoy solo en indicadores).
-- **P5:** vídeo/GIF del recorrido; ensayo cronometrado del pitch.
+- **P5:** ensayo cronometrado del pitch (el vídeo ya está hecho).
 
 ## 5. Decisiones que conviene revisar
 

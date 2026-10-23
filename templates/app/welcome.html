@@ -1,0 +1,38 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Benvida" %}{% endblock %}
+{% block content %}
+<div class="welcome">
+  <ol class="steps" aria-label="{% translate 'Pasos' %}">
+    <li {% if step == 'code' %}aria-current="step"{% else %}class="done"{% endif %}>{% translate "Empadroamento" %}</li>
+    <li {% if step == 'family' %}aria-current="step"{% endif %}>{% translate "Familia" %}</li>
+  </ol>
+  {% if step == 'code' %}
+  <section class="app-card" aria-labelledby="w-title">
+    <p class="eyebrow">{{ tenant.name }}</p>
+    <h1 id="w-title">{% translate "O teu código de empadroamento" %}</h1>
+    <p>{% translate "Vén no correo de benvida ou na folla que che deron no mostrador. Con el aplícase a tarifa de veciñanza." %}</p>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="field{% if error %} has-error{% endif %}">
+        <label for="code">{% translate "Código" %}</label>
+        <input id="code" name="code" type="text" class="input-code" value="{{ code }}" autocomplete="off" autocapitalize="characters" spellcheck="false" {% if error %}aria-invalid="true" aria-describedby="code-err"{% endif %}>
+        {% if error %}<p class="error" id="code-err">{{ error }}</p>{% endif %}
+      </div>
+      <div class="form-actions"><button class="btn btn-lg btn-block" type="submit">{% translate "Validar" %}</button></div>
+    </form>
+    <p class="center mt-1 mb-0"><a href="?paso=familia">{% translate "Non estou empadroado/a: seguir" %}</a></p>
+  </section>
+  {% else %}
+  <section class="app-card family-ask" aria-labelledby="f-title">
+    {% icon 'users' 'empty-illus' %}
+    <h1 id="f-title">{% translate "Tes fillos ou persoas ao teu cargo?" %}</h1>
+    <p class="big">{% translate "Engádeos agora e poderás inscribilos nas escolas deportivas e reservar por eles desde a túa conta." %}</p>
+    {% if dependents %}<p>{% blocktranslate count n=dependents|length %}Xa tes {{ n }} persoa engadida.{% plural %}Xa tes {{ n }} persoas engadidas.{% endblocktranslate %}</p>{% endif %}
+    <div class="stack-sm">
+      <a class="btn btn-lg btn-block" href="{% url 'account:household' %}">{% icon 'plus' %} {% translate "Si, engadir agora" %}</a>
+      <a class="btn btn-lg btn-block btn-secondary" href="{% turl 'app:home' %}">{% translate "Non, ir á app" %}</a>
+    </div>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

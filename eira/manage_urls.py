@@ -4,6 +4,7 @@
 from django.urls import path
 
 from apps.access import views as access
+from apps.accounts import signup
 from apps.activities import views as activities
 from apps.analytics import views as analytics
 from apps.bookings import manage as bookings
@@ -44,6 +45,10 @@ urlpatterns = [
     path("indicadores/", analytics.dashboard, name="indicators"),
     path("configuracion/", tenant.settings_view, name="settings"),
     path("persoal/", tenant.staff, name="staff"),
+    path("altas/", signup.signups, name="signups"),
+    path("altas/<int:pk>/resolver/", signup.signup_resolve, name="signup_resolve"),
+    path("altas/<int:pk>/folla/", signup.signup_sheet, name="signup_sheet"),
+    path("actividades/pendentes/<int:pk>/", activities.pending_resolve, name="pending_resolve"),
     path("persoal/empadroamento/", tenant.issue_invitation, name="issue_invitation"),
     path("portabilidade/", portability.page, name="portability"),
     path("portabilidade/exportar.zip", portability.export_view, name="export"),

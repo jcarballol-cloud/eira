@@ -211,6 +211,7 @@ EIRA_ADAPTERS = {
     "telegram": env("EIRA_TELEGRAM_ADAPTER", "apps.integrations.telegram.FakeTelegramAdapter"),
     "push": env("EIRA_PUSH_ADAPTER", "apps.integrations.push.FakeWebPushAdapter"),
     "ai": env("EIRA_AI_ADAPTER", "apps.integrations.ai.FakeAIAdapter"),
+    "padron": env("EIRA_PADRON_ADAPTER", "apps.integrations.padron.FakePadronAdapter"),
 }
 EIRA_AI_ENABLED = env_bool("EIRA_AI_ENABLED", True)
 EIRA_AI_BASE_URL = env("EIRA_AI_BASE_URL", "http://localhost:11434/v1")

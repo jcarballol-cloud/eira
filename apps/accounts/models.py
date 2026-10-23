@@ -120,25 +120,88 @@ class ResidencyInvitation(models.Model):
     )
     code = models.CharField(max_length=12, unique=True)
     note = models.CharField(_("nota interna"), max_length=120, blank=True)
+    # Se se envía a un correo concreto, só esa conta pode usalo
+    email = models.EmailField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     expires_at = models.DateTimeField()
     used_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     used_at = models.DateTimeField(null=True, blank=True)
 
     @classmethod
-    def issue(cls, municipality, note="", days=30):
+    def issue(cls, municipality, note="", days=30, email=""):
         alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
         code = "-".join("".join(secrets.choice(alphabet) for _ in range(4)) for _ in range(2))
         return cls.objects.create(
             municipality=municipality,
             code=code,
             note=note,
+            email=email.lower(),
             expires_at=timezone.now() + timezone.timedelta(days=days),
         )
 
     @property
     def is_valid(self):
         return self.used_at is None and self.expires_at > timezone.now()
+
+    @classmethod
+    def redeem(cls, user, code):
+        """Valida o empadroamento de `user` co código. Devolve o concello ou None."""
+        code = (code or "").strip().upper().replace(" ", "")
+        if len(code) == 8 and "-" not in code:
+            code = f"{code[:4]}-{code[4:]}"
+        inv = cls.objects.filter(code=code).select_related("municipality").first()
+        if not inv or not inv.is_valid or (inv.email and inv.email != user.email.lower()):
+            return None
+        Residency.objects.get_or_create(
+            user=user,
+            municipality=inv.municipality,
+            revoked_at=None,
+            defaults={"method": Residency.Method.INVITATION},
+        )
+        inv.used_by, inv.used_at = user, timezone.now()
+        inv.save(update_fields=["used_by", "used_at"])
+        audit("residency.redeem", user, inv.municipality, inv)
+        return inv.municipality
+
+
+class AppRequest(models.Model):
+    """Solicitude da app: en liña desde a web do concello ou no mostrador."""
+
+    class Status(models.TextChoices):
+        PENDING = "pending", _("Pendente de revisar")
+        SENT = "sent", _("Código enviado")
+        REJECTED = "rejected", _("Non figura no padrón")
+
+    class Channel(models.TextChoices):
+        ONLINE = "online", _("En liña")
+        COUNTER = "counter", _("Mostrador")
+
+    municipality = models.ForeignKey(
+        Municipality, on_delete=models.CASCADE, related_name="app_requests"
+    )
+    name = models.CharField(_("nome"), max_length=80)
+    email = models.EmailField(_("correo electrónico"), blank=True)
+    birth_year = models.PositiveIntegerField(_("ano de nacemento"), null=True, blank=True)
+    postcode = models.CharField(_("código postal"), max_length=5, blank=True)
+    channel = models.CharField(max_length=10, choices=Channel.choices, default=Channel.ONLINE)
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
+    padron_match = models.BooleanField(_("figura no padrón"), default=False)
+    invitation = models.ForeignKey(
+        ResidencyInvitation, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    resolved_at = models.DateTimeField(null=True, blank=True)
+    resolved_by = models.ForeignKey(
+        User, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+
+    class Meta:
+        verbose_name = _("solicitude da app")
+        verbose_name_plural = _("solicitudes da app")
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.name} ({self.get_status_display()})"
 
 
 class Residency(models.Model):

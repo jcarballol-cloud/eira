@@ -1,0 +1,40 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Solicitar a app" %}{% endblock %}
+{% block content %}
+<div class="layout-aside">
+  <section class="card" aria-labelledby="req-title">
+    <p class="eyebrow">{{ tenant.name }}</p>
+    <h1 id="req-title">{% translate "Solicitar a app de deportes" %}</h1>
+    <p>{% translate "Enviarémosche ao correo a ligazón para instalala e, se estás empadroado/a, o teu código para a tarifa de veciñanza." %}</p>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% include "includes/form.html" %}
+      <details class="privacy-layer mt-1">
+        <summary>{% icon 'shield' %} {% translate "Que facemos con estes datos" %}</summary>
+        <dl class="kv mt-1">
+          <dt>{% translate "Responsable" %}</dt><dd>{{ tenant.name }}</dd>
+          <dt>{% translate "Para que" %}</dt><dd>{% translate "Comprobar o empadroamento e enviarche a app. O padrón non se copia: só se garda se figuras ou non." %}</dd>
+          <dt>{% translate "Base" %}</dt><dd>{% translate "Misión de interese público (servizo municipal de deportes)." %}</dd>
+          <dt>{% translate "Canto tempo" %}</dt><dd>{% translate "A solicitude bórrase aos 12 meses." %}</dd>
+          <dt>{% translate "Dereitos" %}</dt><dd>{% translate "Acceso, rectificación, supresión e oposición desde a túa conta ou no concello." %} <a href="{% turl 'privacy' %}">{% translate "Máis información" %}</a></dd>
+        </dl>
+      </details>
+      <div class="form-actions"><button class="btn btn-lg" type="submit">{% icon 'mail' %} {% translate "Enviarme a app" %}</button></div>
+    </form>
+  </section>
+  <aside class="stack" aria-label="{% translate 'Como funciona' %}">
+    <section class="card-flat">
+      <h2 class="h3">{% translate "Como funciona" %}</h2>
+      <ol class="howto">
+        <li>{% translate "Recibes un correo coa ligazón e o teu código." %}</li>
+        <li>{% translate "Instalas a app no teléfono (Android ou iPhone)." %}</li>
+        <li>{% translate "Ao abrila, entras co correo e introduces o código." %}</li>
+      </ol>
+    </section>
+    <section class="card-flat">
+      <h2 class="h3">{% translate "Sen teléfono intelixente?" %}</h2>
+      <p class="mb-0">{% blocktranslate with p=tenant.contact_phone %}No mostrador de deportes dámosche de alta e reservamos por ti. Teléfono: {{ p }}.{% endblocktranslate %}</p>
+    </section>
+  </aside>
+</div>
+{% endblock %}

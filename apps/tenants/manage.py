@@ -48,6 +48,7 @@ class SettingsForm(forms.ModelForm):
             "max_advance_days",
             "max_active_bookings",
             "no_show_grace_minutes",
+            "postcodes",
             "tile_url",
             "tile_attribution",
             "tile_attribution_url",

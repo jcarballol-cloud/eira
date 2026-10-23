@@ -213,6 +213,18 @@ def seed(rng):
             municipality=m, group=groups[3], user=others[12], status="waitlist", pseudonym=""
         )
 
+    # Unha nena apareceu no adestramento sen estar inscrita: pendente de validar
+    from .models import PendingParticipant
+
+    PendingParticipant.objects.create(
+        municipality=m,
+        group=groups[0],
+        first_name="Noa",
+        birth_year=today.year - 9,
+        guardian_email="familia.noa@example.org",
+        added_by=monitor,
+    )
+
     # Seis semanas de sesións pasadas con asistencia e esforzo
     from .models import Session
 

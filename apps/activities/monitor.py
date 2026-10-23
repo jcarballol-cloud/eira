@@ -14,7 +14,7 @@ from django.utils.translation import gettext_lazy
 from apps.tenants.urlutils import module_required, role_required, treverse
 
 from . import services
-from .models import Attendance, FitnessBattery, FitnessResult, Group, Session
+from .models import Attendance, FitnessBattery, FitnessResult, Group, PendingParticipant, Session
 
 # Etiquetas das escalas (texto curto para acompañar as caras; sen baremos clínicos)
 OMNI = {
@@ -100,9 +100,36 @@ def attendance(request, pk):
             "session": session,
             "enrollments": enrollments,
             "marked": marked,
+            "pending": session.group.pending_participants.filter(
+                status=PendingParticipant.Status.PENDING
+            ),
             "nav": "monitor",
         },
     )
+
+
+@module_required("monitor")
+@role_required("monitor")
+def add_pending(request, pk):
+    """Alguén apareceu na pista e non está na lista: o monitor apúntao e o concello valídao."""
+    session = _session(request, pk)
+    if request.method == "POST":
+        name = request.POST.get("first_name", "").strip()[:60]
+        year = request.POST.get("birth_year", "").strip()
+        if name:
+            PendingParticipant.objects.create(
+                municipality=request.tenant,
+                group=session.group,
+                first_name=name,
+                birth_year=int(year) if year.isdigit() and 1900 < int(year) < 2100 else None,
+                guardian_email=request.POST.get("guardian_email", "").strip().lower()[:254],
+                added_by=request.user,
+            )
+            messages.success(
+                request,
+                _("%(n)s queda apuntado/a. O concello validará a inscrición.") % {"n": name},
+            )
+    return redirect(treverse(request.tenant, "monitor:attendance", session.pk))
 
 
 @module_required("monitor")

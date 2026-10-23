@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Solicitude enviada" %}{% endblock %}
+{% block content %}
+<section class="card prose center result-page" aria-labelledby="done-title">
+  {% icon 'mail' 'result-icon' %}
+  {% if info.outcome == 'review' %}
+    <h1 id="done-title">{% translate "Solicitude recibida" %}</h1>
+    <p class="big">{% translate "Non puidemos comprobar o empadroamento automaticamente. O concello revisará a túa solicitude e enviarache o código." %}</p>
+    <p>{% translate "Mentres, xa podes instalar a app e reservar coa tarifa xeral." %}</p>
+  {% else %}
+    <h1 id="done-title">{% translate "Mira o teu correo" %}</h1>
+    {% if info.outcome == 'sent' %}
+    <p class="big">{% blocktranslate with e=info.email %}Enviamos a {{ e }} a ligazón para instalar a app e o teu código de empadroamento.{% endblocktranslate %}</p>
+    {% else %}
+    <p class="big">{% blocktranslate with e=info.email %}Enviamos a {{ e }} a ligazón para instalar a app.{% endblocktranslate %}</p>
+    {% endif %}
+  {% endif %}
+  <div class="form-actions">
+    {% if demo_tools %}<a class="btn" href="{% url 'dev:mailbox' %}?para={{ info.email|urlencode }}">{% translate "Abrir o correo simulado" %}</a>{% endif %}
+    <a class="btn btn-secondary" href="{% turl 'app:install' %}">{% translate "Como instalar a app" %}</a>
+  </div>
+</section>
+{% endblock %}

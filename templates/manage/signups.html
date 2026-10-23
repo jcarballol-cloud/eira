@@ -1,0 +1,35 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Altas da app" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{% translate "Altas da app" %}</h1>
+<p>{% translate "Solicitudes en liña que o padrón non confirmou e altas no mostrador con folla imprimible." %}</p></div></div>
+<div class="layout-aside">
+  <div class="stack">
+    <section class="card" aria-labelledby="pend-title">
+      <h2 id="pend-title">{% translate "Pendentes de revisar" %} <span class="badge">{{ pending|length }}</span></h2>
+      {% if pending %}
+      <ul class="list">{% for r in pending %}<li class="pending-row">
+        <div><strong>{{ r.name }}</strong> · {{ r.email }}<br>
+          <small class="muted">{% blocktranslate with cp=r.postcode y=r.birth_year d=r.created_at|date:"d/m H:i" %}C. P. {{ cp }} · nada en {{ y }} · recibida o {{ d }}{% endblocktranslate %}</small></div>
+        <form method="post" action="{% turl 'manage:signup_resolve' r.pk %}" class="row">{% csrf_token %}
+          <button class="btn btn-sm" name="action" value="approve" type="submit">{% translate "Empadroada: enviar código" %}<span class="visually-hidden"> · {{ r.name }}</span></button>
+          <button class="btn btn-sm btn-secondary" name="action" value="reject" type="submit">{% translate "Non figura" %}<span class="visually-hidden"> · {{ r.name }}</span></button>
+        </form></li>{% endfor %}</ul>
+      {% else %}<p class="muted mb-0">{% translate "Non hai solicitudes pendentes." %}</p>{% endif %}
+    </section>
+    <section class="card" aria-labelledby="rec-title">
+      <h2 id="rec-title">{% translate "Últimas altas" %}</h2>
+      <ul class="list">{% for r in recent %}<li class="row-between"><span>{{ r.name }} <small class="muted">· {{ r.get_channel_display }} · {{ r.created_at|date:"d/m" }}</small></span>
+        <span><span class="badge {% if r.status == 'sent' %}badge-ok{% else %}badge-muted{% endif %}">{{ r.get_status_display }}</span>{% if r.invitation %} <a href="{% turl 'manage:signup_sheet' r.pk %}">{% translate "Folla" %}<span class="visually-hidden"> · {{ r.name }}</span></a>{% endif %}</span></li>
+      {% empty %}<li class="muted">{% translate "Aínda non hai altas." %}</li>{% endfor %}</ul>
+    </section>
+  </div>
+  <section class="card" aria-labelledby="counter-title">
+    <h2 id="counter-title">{% translate "Alta no mostrador" %}</h2>
+    <p>{% translate "Para quen vén en persoa: comproba o empadroamento, xera o código e imprime a folla co QR de instalación." %}</p>
+    <form method="post" novalidate>{% csrf_token %}{% include "includes/form.html" %}
+      <div class="form-actions"><button class="btn" type="submit">{% translate "Dar de alta e imprimir" %}</button></div>
+    </form>
+  </section>
+</div>
+{% endblock %}

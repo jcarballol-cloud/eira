@@ -122,3 +122,20 @@ Formato: data · decisión · motivo · alternativas descartadas.
 - O 403 das teselas de OSM debíase á política global `Referrer-Policy: same-origin`. Non se relaxa: a capa de Leaflet envía só a orixe (`referrerPolicy`). Así a URL das páxinas non sae a terceiros.
 - O servidor de teselas é configurable por concello (URL, atribución e ligazón). A orixe da CSP dedúcese da URL, polo que xa non hai que manter `EIRA_TILE_ORIGIN` a man.
 - `tile.openstreetmap.org` só para a demo. Recoméndase un servidor propio ou da deputación (`docs/despregamento.md`).
+
+## v2 F2 — Alta como na vida real
+- **Padrón detrás dun adaptador (`padron`).** Eira non copia o padrón: pregunta «figura?» e garda só o resultado.
+  - Simulado: recoñece os códigos postais do termo (`Municipality.postcodes`).
+  - Real: esqueleto `SvdrPadronAdapter`, para o Servizo de Verificación de Datos de Residencia da PID ou o servizo web do padrón municipal.
+- **Solicitar a app.**
+  - Se o padrón coincide: correo coa ligazón `/app/instalar/?codigo=…` e o código de empadroamento.
+  - Se non coincide: queda pendente para o concello.
+  - Quen non está empadroado recibe a app sen código (tarifa xeral).
+- **Os códigos enviados a un correo só valen para esa conta** (`ResidencyInvitation.email`). Así un correo reenviado non serve. O código admite minúsculas e sen guión.
+- **Primeira apertura.** A páxina de instalación garda o código na sesión. «Abrir a app» → acceso por correo → código xa cuberto → «Tes fillos ou persoas ao teu cargo?». O inicio da app repite esta pregunta mentres non haxa menores engadidos.
+- **PWA, non tendas de aplicacións.** Botón «Instalar agora» con `beforeinstallprompt` cando o navegador o ofrece; instrucións para Android e iPhone sempre visibles (iOS non ten API de instalación).
+- **Mostrador.** Alta asistida co empadroamento comprobado no momento e folla imprimible co QR, o código e os pasos. O correo é opcional, para quen non o ten.
+- **Monitor.** Pode apuntar a alguén que aparece na pista sen inscrición. Non conta para a asistencia nin para o esforzo ata que o concello o valida.
+  - Para validar un menor fai falta marcar a autorización en papel. Queda como consentimento `text_version="papel"`.
+  - O concello pode descartar a persoa.
+- **Contido que responde ao panel (container queries):** os marcos de teléfono e tableta da demo vense coma os dispositivos reais.

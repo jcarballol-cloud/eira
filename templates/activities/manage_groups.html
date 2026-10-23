@@ -2,6 +2,22 @@
 {% block title %}{% translate "Actividades" %}{% endblock %}
 {% block content %}
 <h1>{% translate "Escolas e grupos" %}</h1>
+{% if pending %}
+<section class="card mb-2" aria-labelledby="pp-title">
+  <h2 id="pp-title">{% translate "Apuntadas polo monitor, pendentes de validar" %} <span class="badge badge-warn">{{ pending|length }}</span></h2>
+  <ul class="list">{% for p in pending %}<li>
+    <form method="post" action="{% turl 'manage:pending_resolve' p.pk %}" class="row-between">{% csrf_token %}
+      <span><strong>{{ p.first_name }}</strong>{% if p.birth_year %} · {{ p.birth_year }}{% endif %}<br><small class="muted">{{ p.group.activity.name }} · {{ p.group.name }} · {% blocktranslate with d=p.created_at|date:"d/m" %}apuntada o {{ d }}{% endblocktranslate %}</small></span>
+      <span class="row">
+        <label class="visually-hidden" for="pp-mail-{{ p.pk }}">{% translate "Correo da familia" %} · {{ p.first_name }}</label>
+        <input id="pp-mail-{{ p.pk }}" name="guardian_email" type="email" value="{{ p.guardian_email }}" placeholder="{% translate 'correo da familia' %}">
+        <span class="check"><input id="pp-ok-{{ p.pk }}" name="paper_consent" type="checkbox" value="1"><label for="pp-ok-{{ p.pk }}">{% translate "Autorización en papel" %}</label></span>
+        <button class="btn btn-sm" name="action" value="validate" type="submit">{% translate "Validar" %}<span class="visually-hidden"> · {{ p.first_name }}</span></button>
+        <button class="btn btn-sm btn-secondary" name="action" value="reject" type="submit">{% translate "Descartar" %}<span class="visually-hidden"> · {{ p.first_name }}</span></button>
+      </span>
+    </form></li>{% endfor %}</ul>
+</section>
+{% endif %}
 <div class="table-wrap" tabindex="0"><table class="data">
   <caption class="visually-hidden">{% translate "Grupos" %}</caption>
   <thead><tr><th scope="col">{% translate "Actividade" %}</th><th scope="col">{% translate "Grupo" %}</th><th scope="col">{% translate "Monitor/a" %}</th><th scope="col" class="num">{% translate "Inscritas" %}</th><th scope="col" class="num">{% translate "Espera" %}</th></tr></thead>

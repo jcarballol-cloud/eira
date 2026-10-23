@@ -68,6 +68,8 @@ MATRIX = [
     (f"{C}/xestion/", {"admin", "region"}),
     (f"{C}/xestion/indicadores/", {"admin", "region"}),
     (f"{C}/xestion/ordes/", {"admin", "region"}),
+    (f"{C}/xestion/altas/", {"admin", "region"}),
+    (f"{C}/app/benvida/", {"neighbour"}),
     (f"{C}/operario/", {"operator"}),
     (f"{C}/operario/calendario/", {"operator"}),
     (f"{C}/monitor/", {"monitor"}),

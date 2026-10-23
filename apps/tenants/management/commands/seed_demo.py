@@ -15,6 +15,7 @@ from django.utils import timezone
 
 from apps.access.models import AccessEvent, KeyHandover
 from apps.accounts.models import (
+    AppRequest,
     Consent,
     Dependent,
     Household,
@@ -302,6 +303,8 @@ class Command(BaseCommand):
             contact_phone=spec["phone"],
             contact_email=spec["email"],
             address="Praza do Concello, 1",
+            # Códigos postais ficticios: o padrón simulado recoñece estes
+            postcodes={"vilardeiras": "15999,15998"}.get(spec["slug"], "27999"),
             modules={
                 "bookings": True,
                 "access": True,
@@ -360,9 +363,43 @@ class Command(BaseCommand):
                 Residency.objects.create(user=u, municipality=m, method=Residency.Method.COUNTER)
         for _ in range(3):
             ResidencyInvitation.issue(m, note="Carta de benvida")
+        self.app_requests(m)
         self.history(m, facilities, local)
         self.closures(m, facilities)
         self.incidents_and_orders(m, facilities)
+
+    def app_requests(self, m):
+        """Solicitudes da app: dúas pendentes de revisar e algunhas xa enviadas (nomes ficticios)."""
+        pending = [
+            ("Breixo Proba", "breixo.solicitude@example.org", 1987, "15990"),
+            ("Antía Exemplo", "antia.solicitude@example.org", 1992, "15997"),
+        ]
+        if m.slug != "vilardeiras":
+            pending = pending[:1]
+        for name, email, year, cp in pending:
+            AppRequest.objects.create(
+                municipality=m,
+                name=name,
+                email=email if m.slug == "vilardeiras" else f"{m.slug}.{email}",
+                birth_year=year,
+                postcode=cp,
+            )
+        for i, (name, channel) in enumerate(
+            [("Persoa de mostrador 1", "counter"), ("Persoa en liña 1", "online")]
+        ):
+            inv = ResidencyInvitation.issue(m, note=f"Solicitude da app · {name}")
+            AppRequest.objects.create(
+                municipality=m,
+                name=name,
+                email="" if channel == "counter" else f"enlinea{i}.{m.slug}@example.org",
+                birth_year=1970 + 10 * i,
+                postcode=m.postcodes.split(",")[0],
+                channel=channel,
+                status=AppRequest.Status.SENT,
+                padron_match=True,
+                invitation=inv,
+                resolved_at=timezone.now(),
+            )
 
     def history(self, m, facilities, people):
         today = timezone.localdate()

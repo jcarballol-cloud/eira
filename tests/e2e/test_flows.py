@@ -182,3 +182,37 @@ def test_pitch_script(new_page, base):
 
     admin.goto(base + "/c/vilardeiras/xestion/indicadores/")
     assert admin.locator(".hbar-fill").count() > 0
+
+
+def test_request_app_by_email_install_and_first_open(new_page, base):
+    """v2 F2: solicitar a app → correo con ligazón e código → instalar → entrar → código xa cuberto."""
+    email = "solicitude.e2e@example.org"
+    page = new_page(viewport=MOBILE)
+    page.goto(base + "/c/vilardeiras/")
+    page.click("text=Solicita a app de deportes")
+    page.fill("#id_name", "Persoa E2E")
+    page.fill("#id_email", email)
+    page.fill("#id_birth_year", "1991")
+    page.fill("#id_postcode", "15999")
+    page.check("#id_resident")
+    page.click("main button[type=submit]")
+    page.wait_for_selector("text=Mira o teu correo")
+    page.goto(base + f"/dev/mailbox/?para={email}")
+    body = page.locator("pre").first.inner_text()
+    link = re.search(r"(http\S+/app/instalar/\?codigo=(\S+))", body)
+    code = link.group(2)
+    page.goto(link.group(1))
+    assert code in page.locator("main").inner_text()
+    page.get_by_role("link", name="Abrir a app").click()
+    # Primeira apertura: entrar co correo
+    page.fill("#id_email", email)
+    page.click("main button[type=submit]")
+    page.goto(base + f"/dev/mailbox/?para={email}")
+    otp = re.search(r"\b(\d{6})\b", page.locator("pre").first.inner_text()).group(1)
+    page.goto(base + "/acceso/codigo/")
+    page.fill("#id_code", otp)
+    page.click("main button[type=submit]")
+    page.wait_for_url("**/app/benvida/**")
+    assert page.input_value("#code") == code
+    page.click("main button[type=submit]")
+    page.wait_for_selector("text=Tes fillos ou persoas ao teu cargo?")

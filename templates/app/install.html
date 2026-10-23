@@ -1,0 +1,43 @@
+{% extends "base.html" %}{% load i18n static eira %}
+{% block title %}{% translate "Instalar a app" %}{% endblock %}
+{% block content %}
+<div class="install">
+  <div class="install__head">
+    <img class="install__icon" src="{% static 'img/eira.svg' %}" alt="" width="64" height="64">
+    <div>
+      <p class="eyebrow">{{ tenant.name }}</p>
+      <h1 class="mb-0">{% translate "Instala a app de deportes" %}</h1>
+      <p class="muted mb-0">{% translate "Non precisa tenda de aplicacións: instálase desde o navegador e case non ocupa espazo." %}</p>
+    </div>
+  </div>
+
+  {% if code %}
+  <p class="alert alert-success mt-2">{% blocktranslate %}Gardamos o teu código <strong class="mono">{{ code }}</strong>: ao abrir a app aparecerá xa cuberto.{% endblocktranslate %}</p>
+  {% endif %}
+
+  <div class="form-actions">
+    <button type="button" class="btn btn-lg" data-install hidden>{% icon 'plus' %} {% translate "Instalar agora" %}</button>
+    <a class="btn btn-lg btn-secondary" href="{% turl 'app:welcome' %}">{% translate "Abrir a app" %} →</a>
+  </div>
+
+  <div class="grid grid-2 mt-2">
+    <details class="card-flat install-os" {% if platform != 'ios' %}open{% endif %}>
+      <summary class="h3">{% translate "Android" %}</summary>
+      <ol class="howto">
+        <li>{% translate "Abre a ligazón do correo en Chrome." %}</li>
+        <li>{% blocktranslate %}Toca <strong>«Instalar a app»</strong> ou, se non aparece, o menú <strong>⋮</strong> → <strong>«Engadir á pantalla de inicio»</strong>.{% endblocktranslate %}</li>
+        <li>{% translate "Confirma. A icona queda coas outras aplicacións." %}</li>
+      </ol>
+    </details>
+    <details class="card-flat install-os" {% if platform != 'android' %}open{% endif %}>
+      <summary class="h3">{% translate "iPhone e iPad" %}</summary>
+      <ol class="howto">
+        <li>{% translate "Abre a ligazón do correo en Safari." %}</li>
+        <li>{% blocktranslate %}Toca o botón <strong>Compartir</strong> (o cadrado coa frecha cara arriba).{% endblocktranslate %}</li>
+        <li>{% blocktranslate %}Escolle <strong>«Engadir á pantalla de inicio»</strong> e despois <strong>«Engadir»</strong>.{% endblocktranslate %}</li>
+      </ol>
+    </details>
+  </div>
+  <p class="help mt-2">{% translate "Tamén podes usala sen instalar, desde o navegador." %}</p>
+</div>
+{% endblock %}

@@ -4,6 +4,7 @@
 import pytest
 from axe_playwright_python.sync_playwright import Axe
 
+from apps.accounts.models import AppRequest
 from apps.activities.models import Group, Session
 from apps.bookings.models import Booking
 from apps.facilities.models import Facility
@@ -37,6 +38,9 @@ def page_sets():
     )
     group = Group.objects.filter(municipality__slug="vilardeiras").first()
     session = Session.objects.filter(group=group, closed_at__isnull=False).order_by("-date").first()
+    signup = AppRequest.objects.filter(
+        municipality__slug="vilardeiras", invitation__isnull=False
+    ).first()
     c = "/c/vilardeiras"
     return {
         None: [
@@ -53,9 +57,12 @@ def page_sets():
             "/dev/lock-simulator/",
             "/dev/mailbox/",
             "/offline/",
+            f"{c}/app/solicitar/",
+            f"{c}/app/instalar/?codigo=ABCD-2345",
         ],
         "uxia@demo.eira.example": [
             f"{c}/app/",
+            f"{c}/app/benvida/?paso=familia",
             f"{c}/reservas/",
             f"{c}/reservas/{upcoming.pk}/",
             f"{c}/reservas/{uxia_booking.pk}/peche/",
@@ -71,6 +78,8 @@ def page_sets():
         ],
         "admin@vilardeiras.demo.eira.example": [
             f"{c}/xestion/",
+            f"{c}/xestion/altas/",
+            f"{c}/xestion/altas/{signup.pk}/folla/",
             f"{c}/xestion/axenda/",
             f"{c}/xestion/reservar/?instalacion={f.pk}",
             f"{c}/xestion/instalacions/",

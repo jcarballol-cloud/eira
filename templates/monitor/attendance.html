@@ -17,8 +17,25 @@
     </li>
     {% empty %}<li class="muted">{% translate "Non hai persoas inscritas." %}</li>{% endfor %}
   </ul>
+  {% if pending %}
+  <h2 class="h3 mt-2">{% translate "Apuntadas hoxe, pendentes de validar" %}</h2>
+  <ul class="names names--pending" role="list">{% for p in pending %}<li><span class="name-toggle is-pending">{{ p.first_name }} <span class="badge badge-warn">{% translate "Pendente" %}</span></span></li>{% endfor %}</ul>
+  {% endif %}
   <noscript><p class="alert">{% translate "Este modo de tableta necesita JavaScript activado." %}</p></noscript>
   <div class="form-actions"><button class="btn btn-lg" type="submit">{% translate "Gardar e pasar ao esforzo" %} →</button></div>
 </form>
+<details class="card-flat mt-2 add-pending">
+  <summary>{% icon 'plus' %} {% translate "Hai alguén que non está na lista?" %}</summary>
+  <form method="post" action="{% turl 'monitor:add_pending' session.pk %}" class="mt-1">
+    {% csrf_token %}
+    <div class="filters">
+      <div class="field"><label for="pp-name">{% translate "Nome" %}</label><input id="pp-name" name="first_name" type="text" required maxlength="60" autocomplete="off"></div>
+      <div class="field"><label for="pp-year">{% translate "Ano de nacemento" %}</label><input id="pp-year" name="birth_year" type="number" inputmode="numeric" min="1900" max="2100"></div>
+      <div class="field"><label for="pp-mail">{% translate "Correo da familia (opcional)" %}</label><input id="pp-mail" name="guardian_email" type="email" inputmode="email" autocomplete="off"></div>
+    </div>
+    <p class="help">{% translate "Queda pendente ata que o concello valide a inscrición. Non se rexistra o seu esforzo mentres tanto." %}</p>
+    <button class="btn" type="submit">{% translate "Apuntar" %}</button>
+  </form>
+</details>
 </div>
 {% endblock %}

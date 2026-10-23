@@ -75,6 +75,12 @@ class Municipality(models.Model):
     contact_phone = models.CharField(_("teléfono de contacto"), max_length=20, blank=True)
     address = models.CharField(_("enderezo"), max_length=200, blank=True)
     population = models.PositiveIntegerField(_("poboación"), null=True, blank=True)
+    postcodes = models.CharField(
+        _("códigos postais do termo"),
+        max_length=120,
+        blank=True,
+        help_text=_("Separados por comas. Úsanse para contrastar as solicitudes co padrón."),
+    )
     privacy_text = models.TextField(_("texto de privacidade"), blank=True)
     accessibility_statement = models.TextField(_("declaración de accesibilidade"), blank=True)
     legal_notice = models.TextField(_("aviso legal"), blank=True)

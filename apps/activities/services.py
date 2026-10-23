@@ -10,10 +10,10 @@ from django.db import transaction
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
-from apps.accounts.models import Consent, audit
+from apps.accounts.models import Consent, Dependent, Household, Membership, Role, User, audit
 from apps.notifications.services import notify
 
-from .models import Attendance, Enrollment, Session
+from .models import Attendance, Enrollment, PendingParticipant, Session
 
 
 class EnrollmentError(Exception):
@@ -65,6 +65,51 @@ def enroll(group, user, dependent=None):
         e.save(update_fields=["pseudonym"])
     audit("enrollment.create", user, group.municipality, e, status=status)
     return e
+
+
+def validate_pending(pending, email, actor):
+    """Converte unha persoa apuntada polo monitor nunha inscrición real.
+
+    Menor de idade → menor ao cargo da conta do correo indicado (coa autorización en papel
+    rexistrada como consentimento). Adulta → inscrición na súa propia conta."""
+    with transaction.atomic():
+        user, created = User.objects.get_or_create(email=email)
+        if created:
+            user.set_unusable_password()
+            user.display_name = "" if _is_minor(pending) else pending.first_name
+            user.birth_year = None if _is_minor(pending) else pending.birth_year
+            user.save()
+        Membership.objects.get_or_create(
+            user=user, municipality=pending.municipality, role=Role.CITIZEN
+        )
+        dependent = None
+        if _is_minor(pending):
+            household, _c = Household.objects.get_or_create(responsible=user)
+            dependent = household.dependents.filter(first_name=pending.first_name).first()
+            if dependent is None:
+                dependent = Dependent.objects.create(
+                    household=household,
+                    first_name=pending.first_name,
+                    birth_year=pending.birth_year,
+                )
+            if not dependent.has_consent(Consent.Kind.DATA):
+                Consent.objects.create(
+                    dependent=dependent,
+                    kind=Consent.Kind.DATA,
+                    granted_by=user,
+                    text_version="papel",
+                )
+        e = enroll(pending.group, user, dependent)
+        pending.status = PendingParticipant.Status.VALIDATED
+        pending.resolved_at = timezone.now()
+        pending.enrollment = e
+        pending.save(update_fields=["status", "resolved_at", "enrollment"])
+        audit("enrollment.validate_pending", actor, pending.municipality, e)
+    return e
+
+
+def _is_minor(pending):
+    return bool(pending.birth_year) and timezone.localdate().year - pending.birth_year < 18
 
 
 def mark_enrollment_paid(enrollment, reference, amount):

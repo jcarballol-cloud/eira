@@ -114,6 +114,37 @@ class Enrollment(TenantModel):
         return self.user.age if self.user else None
 
 
+class PendingParticipant(TenantModel):
+    """Persoa que o monitor apunta na pista e que aínda non está inscrita: o concello valídaa."""
+
+    class Status(models.TextChoices):
+        PENDING = "pending", _("Pendente de validar")
+        VALIDATED = "validated", _("Validada")
+        REJECTED = "rejected", _("Descartada")
+
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="pending_participants")
+    first_name = models.CharField(_("nome"), max_length=60)
+    birth_year = models.PositiveIntegerField(_("ano de nacemento"), null=True, blank=True)
+    guardian_email = models.EmailField(_("correo da familia ou da persoa"), blank=True)
+    added_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
+    resolved_at = models.DateTimeField(null=True, blank=True)
+    enrollment = models.ForeignKey(
+        Enrollment, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+
+    class Meta:
+        verbose_name = _("persoa pendente de validar")
+        verbose_name_plural = _("persoas pendentes de validar")
+        ordering = ["created_at"]
+
+    def __str__(self):
+        return self.first_name
+
+
 class Session(TenantModel):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="sessions")
     date = models.DateField(db_index=True)

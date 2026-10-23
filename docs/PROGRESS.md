@@ -58,3 +58,8 @@ guión de 3 min verificado cun test E2E, 44 capturas automáticas en `docs/captu
 
 ## Bloqueos
 - Ningún bloqueo activo. Ver riscos en `INFORME_MANANA.md`.
+
+## v2 (tarde do 23/10)
+- ✅ F0 aprendizaxes e plan · F1 ferramenta por perfil e permisos reais (65 tests de matriz) · F3 cobros crible (17 tests).
+- ✅ F5 mapas: Referer de orixe, teselas por concello, política OSM documentada, E2E de teselas 200.
+- ✅ F2 alta: solicitar a app con padrón simulado, correo con ligazón e código, instalación Android/iPhone, primeira apertura, mostrador con folla QR, persoas apuntadas polo monitor e validadas polo concello (16 tests + E2E).

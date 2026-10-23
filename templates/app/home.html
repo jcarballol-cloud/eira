@@ -45,11 +45,15 @@
   <a href="{% url 'account:household' %}">{% icon 'heart' %}<span>{% translate "A miña familia" %}{% if dependents %} · {{ dependents|length }}{% endif %}</span></a>
 </nav>
 
+{% if not dependents %}
+<a class="app-alert app-alert--family" href="{% url 'account:household' %}">{% icon 'users' %}<span><strong>{% translate "Tes fillos ou persoas ao teu cargo?" %}</strong><br>{% translate "Engádeos para inscribilos nas escolas e reservar por eles." %}</span>{% icon 'chevron' %}</a>
+{% endif %}
+
 {% if not is_resident %}
 <section class="app-card" aria-labelledby="res-title">
   <h2 id="res-title" class="h3">{% translate "Estás empadroado/a aquí?" %}</h2>
   <p class="muted">{% translate "Co teu código de empadroamento aplícase a tarifa de veciñanza." %}</p>
-  <a class="btn btn-secondary" href="{% url 'account:profile' %}#p-res">{% translate "Introducir o código" %}</a>
+  <a class="btn btn-secondary" href="{% turl 'app:welcome' %}">{% translate "Introducir o código" %}</a>
 </section>
 {% endif %}
 

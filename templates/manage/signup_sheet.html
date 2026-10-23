@@ -1,0 +1,30 @@
+{% extends "manage/base.html" %}{% load i18n static eira %}
+{% block title %}{% translate "Folla de benvida" %}{% endblock %}
+{% block content %}
+<div class="row-between no-print mb-2"><a href="{% turl 'manage:signups' %}">← {% translate "Altas da app" %}</a><button class="btn" type="button" data-print>{% translate "Imprimir" %}</button></div>
+<article class="card sheet" aria-labelledby="sheet-title">
+  <header class="sheet__head">
+    <img class="install__icon" src="{% static 'img/eira.svg' %}" alt="" width="56" height="56">
+    <div><p class="eyebrow mb-0">{{ tenant.name }} · {% translate "Deportes municipais" %}</p>
+    <h1 id="sheet-title" class="mb-0">{% blocktranslate with n=r.name %}Benvida/o, {{ n }}{% endblocktranslate %}</h1></div>
+  </header>
+  <div class="sheet__body">
+    <div class="qr" role="img" aria-label="{% translate 'Código QR para instalar a app' %}">{{ svg|safe }}</div>
+    <div>
+      <h2 class="h3">{% translate "1. Escanea o QR coa cámara do teléfono" %}</h2>
+      <p>{% translate "Ábrese a páxina para instalar a app (Android: «Instalar a app»; iPhone: Compartir → «Engadir á pantalla de inicio»)." %}</p>
+      <h2 class="h3">{% translate "2. Entra co teu correo" %}</h2>
+      <p>{% translate "Recibirás un código de 6 díxitos. Non hai contrasinal que lembrar." %}</p>
+      {% if code %}
+      <h2 class="h3">{% translate "3. O teu código de empadroamento" %}</h2>
+      <p class="sheet__code mono">{{ code }}</p>
+      <p class="help">{% translate "Válido 30 días e un só uso." %}{% if r.email %} {% blocktranslate with e=r.email %}Só funciona coa conta {{ e }}.{% endblocktranslate %}{% endif %}</p>
+      {% endif %}
+    </div>
+  </div>
+  <footer class="sheet__foot">
+    <p class="mb-0"><small>{% blocktranslate with p=tenant.contact_phone e=tenant.contact_email %}Axuda: {{ p }} · {{ e }}. Os teus datos trátanse só para o servizo municipal de deportes; podes exercer os teus dereitos na conta ou no concello.{% endblocktranslate %}</small></p>
+    <p class="mono mb-0"><small>{{ url }}</small></p>
+  </footer>
+</article>
+{% endblock %}

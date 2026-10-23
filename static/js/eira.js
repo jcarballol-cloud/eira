@@ -52,6 +52,21 @@
   window.addEventListener("online", function () { updateOnline(); flushQueue(); });
   window.addEventListener("offline", updateOnline);
 
+  // Instalación da app (Chrome/Android); en iPhone móstranse as instrucións
+  var installEvent = null;
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault();
+    installEvent = e;
+    document.querySelectorAll("[data-install]").forEach(function (b) { b.hidden = false; });
+  });
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-install]");
+    if (!b || !installEvent) return;
+    installEvent.prompt();
+    installEvent = null;
+    b.hidden = true;
+  });
+
   // Service worker (PWA)
   if ("serviceWorker" in navigator && window.isSecureContext) {
     navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(function () {});

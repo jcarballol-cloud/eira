@@ -32,7 +32,6 @@ from .models import (
     Dependent,
     Household,
     LoginCode,
-    Residency,
     ResidencyInvitation,
     User,
     audit,
@@ -189,20 +188,10 @@ def profile(request):
 def redeem_residency(request):
     form = ResidencyCodeForm(request.POST)
     if form.is_valid():
-        code = form.cleaned_data["code"].strip().upper()
-        inv = ResidencyInvitation.objects.filter(code=code).select_related("municipality").first()
-        if inv and inv.is_valid:
-            Residency.objects.get_or_create(
-                user=request.user,
-                municipality=inv.municipality,
-                revoked_at=None,
-                defaults={"method": Residency.Method.INVITATION},
-            )
-            inv.used_by, inv.used_at = request.user, timezone.now()
-            inv.save(update_fields=["used_by", "used_at"])
-            audit("residency.redeem", request.user, inv.municipality, inv)
+        municipality = ResidencyInvitation.redeem(request.user, form.cleaned_data["code"])
+        if municipality:
             messages.success(
-                request, _("Empadroamento validado en %(m)s.") % {"m": inv.municipality.name}
+                request, _("Empadroamento validado en %(m)s.") % {"m": municipality.name}
             )
         else:
             messages.error(request, _("O código non é válido ou xa se usou."))

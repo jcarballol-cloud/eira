@@ -11,6 +11,9 @@
   </nav>
 </div>
 
+{% if kind == 'public' %}
+<a class="app-cta mb-2" href="{% turl 'app:request' %}">{% icon 'phone' %}<span><strong>{% translate "Solicita a app de deportes" %}</strong><br>{% translate "Reservas, código de acceso e escolas no teu teléfono. Se estás empadroado/a, coa tarifa de veciñanza." %}</span>{% icon 'chevron' %}</a>
+{% endif %}
 <form method="get" class="card mb-2" role="search" aria-label="{% translate 'Filtrar instalacións' %}">
   <input type="hidden" name="vista" value="{{ view }}">
   <div class="filters">

@@ -124,3 +124,19 @@ def test_lock_simulator_page(client, gym_a, citizen):
     late = timezone.localtime(b.end + dt.timedelta(minutes=11)).strftime("%Y-%m-%dT%H:%M")
     r = client.post("/dev/lock-simulator/", {"device": gym_a.lock.pk, "at": late, "code": code})
     assert "DENEGADO" in r.content.decode()
+
+
+def test_exponential_lockout_and_alert(gym_a, admin_a):
+    from apps.notifications.models import Notification
+
+    device = gym_a.lock
+    at = timezone.now()
+    durations = []
+    for _round in range(LockDevice.ALERT_AFTER_LOCKOUTS):
+        for _ in range(LockDevice.MAX_FAILED):
+            services.validate_code(device, "000000", at=at)
+        device.refresh_from_db()
+        durations.append(round((device.locked_until - at).total_seconds() / 60))
+        at = device.locked_until + dt.timedelta(seconds=1)
+    assert durations == [5, 10, 20]
+    assert Notification.objects.filter(user=admin_a, title__contains="forzar").exists()

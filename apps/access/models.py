@@ -30,10 +30,17 @@ class LockDevice(TenantModel):
     # Estado simulado do dispositivo
     failed_attempts = models.PositiveSmallIntegerField(default=0)
     locked_until = models.DateTimeField(null=True, blank=True)
+    lockout_count = models.PositiveSmallIntegerField(default=0)  # bloqueos seguidos (exponencial)
     lights_on_until = models.DateTimeField(null=True, blank=True)
 
     MAX_FAILED = 5
     LOCKOUT_MINUTES = 5
+    MAX_LOCKOUT_MINUTES = 24 * 60
+    ALERT_AFTER_LOCKOUTS = 3
+
+    def lockout_minutes(self):
+        """Bloqueo exponencial: 5, 10, 20, 40… minutos ata un máximo de 24 h."""
+        return min(self.LOCKOUT_MINUTES * 2**self.lockout_count, self.MAX_LOCKOUT_MINUTES)
 
     class Meta:
         verbose_name = _("dispositivo de acceso")

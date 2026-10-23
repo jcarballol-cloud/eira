@@ -81,10 +81,13 @@ def validate_code(device, code, at=None, record=True):
         device.failed_attempts += 1
         reason = "invalid"
         if device.failed_attempts >= LockDevice.MAX_FAILED:
-            device.locked_until = at + dt.timedelta(minutes=LockDevice.LOCKOUT_MINUTES)
+            device.locked_until = at + dt.timedelta(minutes=device.lockout_minutes())
+            device.lockout_count += 1
             device.failed_attempts = 0
             reason = "now_locked"
-        device.save(update_fields=["failed_attempts", "locked_until"])
+            if device.lockout_count == LockDevice.ALERT_AFTER_LOCKOUTS:
+                _alert_bruteforce(device)
+        device.save(update_fields=["failed_attempts", "locked_until", "lockout_count"])
         if record:
             AccessEvent.objects.create(
                 municipality=device.municipality,
@@ -94,7 +97,8 @@ def validate_code(device, code, at=None, record=True):
             )
         return {"ok": False, "reason": reason}
     device.failed_attempts = 0
-    device.save(update_fields=["failed_attempts"])
+    device.lockout_count = 0
+    device.save(update_fields=["failed_attempts", "lockout_count"])
     step = dt.timedelta(minutes=device.step_minutes)
     start = dt.datetime.fromtimestamp(match.block * step.total_seconds(), tz=dt.UTC)
     end = start + match.duration_blocks * step
@@ -214,3 +218,18 @@ def key_in(booking, by):
         kind=AccessEvent.Kind.KEY_IN,
     )
     return handover
+
+
+def _alert_bruteforce(device):
+    """Varios bloqueos seguidos: posible ataque. Avísase ao concello (a pechadura sincroniza ao ter rede)."""
+    from apps.accounts.models import Membership, Role
+    from apps.notifications.services import notify
+
+    for m in Membership.objects.filter(municipality=device.municipality, role=Role.ADMIN).select_related("user"):
+        notify(
+            m.user,
+            _("Posible intento de forzar o teclado: %(f)s") % {"f": device.facility.name},
+            _("O teclado bloqueouse %(n)s veces seguidas por códigos incorrectos.") % {"n": device.lockout_count},
+            municipality=device.municipality,
+            level="warning",
+        )

@@ -5,14 +5,18 @@
 <p class="eyebrow">{{ session.date|date:"l j" }} · {{ session.start_time|time:"H:i" }}</p>
 <h1>{{ session.group.activity.name }} · {{ session.group.name }}</h1>
 <p>{% translate "Toca o nome de cada persoa presente." %} <span role="status"><strong data-present-count>{{ marked|length }}</strong> {% translate "presentes" %}</span></p>
-<form method="post">
+<form method="post" class="attendance">
   {% csrf_token %}
+  <div class="photo-filter">
+    <input type="checkbox" id="only-nophoto">
+    <label for="only-nophoto">{% icon 'camera-off' %} {% translate "Só quen non pode saír en fotos" %} <span class="badge">{{ no_photo }}</span></label>
+  </div>
   <ul class="names" role="list">
     {% for e in enrollments %}
-    <li>
+    <li class="{% if e.can_appear_in_photos %}photo-ok{% else %}no-photo{% endif %}">
       <input type="hidden" id="p{{ e.pk }}" name="p{{ e.pk }}" value="{% if e.pk in marked %}1{% else %}0{% endif %}">
       <button type="button" class="name-toggle" data-toggle-input="p{{ e.pk }}" aria-pressed="{% if e.pk in marked %}true{% else %}false{% endif %}">
-        <span>{{ e.participant_name }}</span><span class="mark" aria-hidden="true">{% if e.pk in marked %}✓{% endif %}</span>
+        <span class="name-photo {% if e.can_appear_in_photos %}is-on{% else %}is-off{% endif %}">{% if e.can_appear_in_photos %}{% icon 'camera' %}<span class="visually-hidden">{% translate "pode saír en fotos" %}</span>{% else %}{% icon 'camera-off' %}<span class="visually-hidden">{% translate "non pode saír en fotos" %}</span>{% endif %}</span><span class="name-text">{{ e.participant_name }}</span><span class="mark" aria-hidden="true">{% if e.pk in marked %}✓{% endif %}</span>
       </button>
     </li>
     {% empty %}<li class="muted">{% translate "Non hai persoas inscritas." %}</li>{% endfor %}

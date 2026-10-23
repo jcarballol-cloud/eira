@@ -43,6 +43,7 @@ urlpatterns = [
     path("ordes/", maintenance.manage_orders, name="work_orders"),
     path("ordes/<int:pk>/", maintenance.manage_order, name="work_order"),
     path("actividades/", activities.manage_groups, name="activities"),
+    path("actividades/grupo/<int:pk>/", activities.manage_group, name="group"),
     path("indicadores/", analytics.dashboard, name="indicators"),
     path("configuracion/", tenant.settings_view, name="settings"),
     path("persoal/", tenant.staff, name="staff"),

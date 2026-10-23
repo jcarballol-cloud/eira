@@ -24,6 +24,7 @@ from .forms import (
     DeleteAccountForm,
     DependentForm,
     EmailForm,
+    PrivacyForm,
     ProfileForm,
     ResidencyCodeForm,
 )
@@ -401,3 +402,52 @@ def consent_toggle(request, dependent_id, kind):
         audit("consent.grant", request.user, obj=dep, kind=kind)
         messages.success(request, _("Consentimento outorgado."))
     return redirect("account:household")
+
+
+@login_required
+def privacy_centre(request):
+    """Centro de privacidade: que datos hai, interruptores, descarga, borrado e a quen dirixirse."""
+    from apps.bookings.models import Booking, Rating
+    from apps.incidents.models import Incident
+    from apps.tenants.models import Municipality
+
+    user = request.user
+    before = user.photo_consent
+    form = PrivacyForm(request.POST or None, instance=user)
+    if request.method == "POST" and form.is_valid():
+        u = form.save(commit=False)
+        if u.photo_consent != before:
+            u.photo_consent_at = timezone.now() if u.photo_consent else None
+            audit("consent.photo_" + ("grant" if u.photo_consent else "revoke"), user, obj=user)
+        u.save()
+        messages.success(request, _("Preferencias de privacidade gardadas."))
+        return redirect("account:privacy")
+    household = getattr(user, "household", None)
+    dependents = list(household.dependents.prefetch_related("consents")) if household else []
+    muni_ids = (
+        set(user.memberships.values_list("municipality", flat=True))
+        | set(user.residencies.values_list("municipality", flat=True))
+        | set(Booking.objects.filter(user=user).values_list("municipality", flat=True).distinct())
+    )
+    return render(
+        request,
+        "accounts/privacy.html",
+        {
+            "form": form,
+            "counts": [
+                (_("Reservas"), Booking.objects.filter(user=user).count()),
+                (_("Avisos de avaría"), Incident.objects.filter(reporter=user).count()),
+                (_("Valoracións"), Rating.objects.filter(booking__user=user).count()),
+                (_("Menores ao teu cargo"), len(dependents)),
+                (
+                    _("Empadroamentos validados"),
+                    user.residencies.filter(revoked_at__isnull=True).count(),
+                ),
+            ],
+            "dependents": [
+                (d, {c.kind for c in d.consents.all() if c.revoked_at is None}) for d in dependents
+            ],
+            "municipalities": Municipality.objects.filter(pk__in=muni_ids).order_by("name"),
+            "nav": "account",
+        },
+    )

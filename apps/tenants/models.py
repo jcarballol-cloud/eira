@@ -82,6 +82,14 @@ class Municipality(models.Model):
         help_text=_("Separados por comas. Úsanse para contrastar as solicitudes co padrón."),
     )
     privacy_text = models.TextField(_("texto de privacidade"), blank=True)
+    dpo_contact = models.CharField(
+        _("contacto da persoa delegada de protección de datos"),
+        max_length=200,
+        blank=True,
+        help_text=_(
+            "Correo ou enderezo do DPD do concello (ou da deputación que presta o servizo)."
+        ),
+    )
     accessibility_statement = models.TextField(_("declaración de accesibilidade"), blank=True)
     legal_notice = models.TextField(_("aviso legal"), blank=True)
     modules = models.JSONField(_("módulos activos"), default=default_modules)

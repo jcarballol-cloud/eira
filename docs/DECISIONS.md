@@ -174,3 +174,19 @@ Formato: data · decisión · motivo · alternativas descartadas.
   - Comparativa coa variación fronte ao período anterior, reservas por 1.000 habitantes, satisfacción, horas ata resolver incidencias e ingresos por habitante, máis CSV/ODS.
   - Acción de soporte «Reenviar invitación», só para concellos da propia rede.
 - **Alta dun concello en 6 pasos:** datos, responsable, módulos, imaxe (escudo limpo de metadatos e cor con contraste AA comprobado), primeira instalación con plantilla (sen publicar) e invitación con vista previa. Non se pode saltar pasos.
+
+## v2 F8 — RXPD visible
+- **Documentos.** Matriz de visibilidade por perfil (`docs/rxpd/matriz.md`, cuberta por probas), rexistro de actividades de tratamento (`docs/rxpd/rat.md`) e textos modelo (`docs/rxpd/textos-modelo.md`).
+- **Centro de privacidade (`/conta/privacidade/`).**
+  - Contadores de que datos hai.
+  - Interruptores: avisos e imaxe. O consentimento de imaxe garda a data e queda no rexistro de auditoría.
+  - Resumo dos consentimentos dos menores, descarga JSON e borrado da conta.
+  - DPD de cada concello co que se ten relación (campo novo `dpo_contact`) e a AEPD.
+  - As cookies, explicadas.
+- **Menores (art. 7 LOPDGDD).** Por debaixo dos 14 anos consente a familia. Con 14 ou máis faise o rexistro igual, pero hai que confirmar que o menor está de acordo.
+- **Imaxe.** Cámara verde ou cámara riscada en vermello, por persoa:
+  - Na asistencia da tableta, o filtro «Só quen non pode saír en fotos» é só visual (CSS `:has()`), porque un filtro no servidor marcaría como ausentes as persoas ocultas ao gardar.
+  - Na ficha do grupo do concello, o filtro vai na URL (`?sen_fotos=1`).
+- **Conservación.** `booking_maintenance` borra as solicitudes da app aos 12 meses (RAT n.º 10).
+- **Cookies.** Unha proba percorre páxinas públicas, da veciñanza e do concello e falla se aparece algunha cookie que non sexa técnica.
+- **Deputación.** A matriz recolle con honestidade que ve o mesmo ca o concello, en só lectura.

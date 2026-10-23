@@ -102,6 +102,7 @@ def attendance(request, pk):
             "session": session,
             "enrollments": enrollments,
             "marked": marked,
+            "no_photo": sum(1 for e in enrollments if not e.can_appear_in_photos),
             "pending": session.group.pending_participants.filter(
                 status=PendingParticipant.Status.PENDING
             ),

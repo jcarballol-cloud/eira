@@ -108,6 +108,12 @@ class Enrollment(TenantModel):
         return self.user.display_name or self.user.email.split("@")[0] if self.user else "—"
 
     @property
+    def can_appear_in_photos(self):
+        if self.dependent:
+            return self.dependent.can_appear_in_photos()
+        return bool(self.user and self.user.photo_consent)
+
+    @property
     def participant_age(self):
         if self.dependent:
             return self.dependent.age

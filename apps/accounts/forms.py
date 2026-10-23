@@ -47,8 +47,6 @@ class ProfileForm(forms.ModelForm):
             "phone",
             "birth_year",
             "preferred_language",
-            "notify_email",
-            "notify_telegram",
             "telegram_chat",
         ]
         widgets = {
@@ -81,6 +79,14 @@ class DependentForm(forms.ModelForm):
         required=False,
     )
 
+    minor_agrees = forms.BooleanField(
+        label=_("Ten 14 anos ou máis e está de acordo con estes consentimentos."),
+        required=False,
+        help_text=_(
+            "A partir dos 14 anos a lei permite que consinta por si mesmo/a (art. 7 LOPDGDD)."
+        ),
+    )
+
     class Meta:
         model = Dependent
         fields = ["first_name", "birth_year"]
@@ -92,6 +98,16 @@ class DependentForm(forms.ModelForm):
         if not (this_year - 17 <= year <= this_year):
             raise forms.ValidationError(_("Só se poden engadir menores de idade."))
         return year
+
+    def clean(self):
+        d = super().clean()
+        year = d.get("birth_year")
+        if year and timezone.localdate().year - year >= 14 and not d.get("minor_agrees"):
+            self.add_error(
+                "minor_agrees",
+                _("Con 14 anos ou máis, confirma que o/a menor está de acordo cos consentimentos."),
+            )
+        return d
 
 
 CONSENT_FIELDS = {
@@ -113,3 +129,23 @@ class DeleteAccountForm(forms.Form):
     confirm = forms.BooleanField(
         label=_("Entendo que se eliminarán os meus datos e non se pode desfacer.")
     )
+
+
+class PrivacyForm(forms.ModelForm):
+    """Interruptores do centro de privacidade (cada un, revogable en calquera momento)."""
+
+    class Meta:
+        model = User
+        fields = ["notify_email", "notify_telegram", "photo_consent"]
+        labels = {
+            "notify_email": _("Avisos por correo (reservas, cambios e peches)"),
+            "notify_telegram": _("Avisos por Telegram"),
+            "photo_consent": _(
+                "Poden saír fotos miñas nas actividades e nas comunicacións do concello"
+            ),
+        }
+        help_texts = {
+            "photo_consent": _(
+                "Se non o marcas, o monitor verá unha cámara riscada xunto ao teu nome."
+            ),
+        }

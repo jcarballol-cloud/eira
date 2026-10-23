@@ -32,6 +32,7 @@
     {% endif %}
     <section class="card" aria-labelledby="p-priv">
       <h2 id="p-priv">{% translate "Privacidade" %}</h2>
+      <p><a class="btn btn-secondary" href="{% url 'account:privacy' %}">{% icon 'shield' %} {% translate "Centro de privacidade" %}</a></p>
       <ul class="list">
         <li><a href="{% url 'account:household' %}">{% translate "Unidade familiar e consentimentos" %}</a></li>
         <li><a href="{% url 'account:export' %}">{% icon 'download' %} {% translate "Descargar todos os meus datos (JSON)" %}</a></li>

@@ -52,6 +52,7 @@ class SettingsForm(forms.ModelForm):
             "tile_url",
             "tile_attribution",
             "tile_attribution_url",
+            "dpo_contact",
             "privacy_text",
             "accessibility_statement",
             "legal_notice",

@@ -1,0 +1,70 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Centro de privacidade" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{{ user.email }}</p><h1>{% translate "Centro de privacidade" %}</h1>
+  <p>{% translate "Que datos temos de ti, para que, e como cambialo. Todo o que autorizas pódelo retirar cando queiras." %}</p></div></div>
+
+<div class="layout-aside">
+  <div class="stack">
+    <section class="card" aria-labelledby="pv-data">
+      <h2 id="pv-data">{% translate "Os teus datos en Eira" %}</h2>
+      <ul class="data-counts" role="list">{% for label, n in counts %}<li><strong>{{ n }}</strong><span>{{ label }}</span></li>{% endfor %}</ul>
+      <p class="help">{% translate "Non gardamos DNI, enderezo nin datos bancarios: o pago faise na pasarela da entidade financeira. Os datos de saúde quedan no teu dispositivo salvo que decidas gardalos na conta." %}</p>
+      <div class="row">
+        <a class="btn btn-secondary" href="{% url 'account:export' %}">{% icon 'download' %} {% translate "Descargar todos os meus datos (JSON)" %}</a>
+        <a class="btn btn-ghost" href="{% url 'account:delete' %}">{% translate "Eliminar a miña conta" %}</a>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="pv-toggles">
+      <h2 id="pv-toggles">{% translate "O que autorizas" %}</h2>
+      <form method="post" novalidate class="toggle-list">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="toggle">
+          {{ field }}
+          <label for="{{ field.auto_id }}"><span class="toggle__text"><strong>{{ field.label }}</strong>{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}</span><span class="toggle__switch" aria-hidden="true"></span></label>
+        </div>
+        {% endfor %}
+        {% if user.photo_consent and user.photo_consent_at %}<p class="help">{% blocktranslate with d=user.photo_consent_at|date:"d/m/Y" %}Imaxe autorizada o {{ d }}.{% endblocktranslate %}</p>{% endif %}
+        <div class="form-actions"><button class="btn" type="submit">{% translate "Gardar" %}</button></div>
+      </form>
+    </section>
+
+    {% if dependents %}
+    <section class="card" aria-labelledby="pv-minors">
+      <h2 id="pv-minors">{% translate "Menores ao teu cargo" %}</h2>
+      <ul class="list">{% for d, active in dependents %}<li class="row-between">
+        <span><strong>{{ d.first_name }}</strong> · {% blocktranslate with a=d.age %}{{ a }} anos{% endblocktranslate %}{% if d.under_14 %} <span class="badge">{% translate "menor de 14: consentes ti" %}</span>{% endif %}</span>
+        <span class="row">
+          <span class="consent-ico {% if 'image' in active %}is-on{% else %}is-off{% endif %}">{% if 'image' in active %}{% icon 'camera' %}<span class="visually-hidden">{% translate "Pode saír en fotos" %}</span>{% else %}{% icon 'camera-off' %}<span class="visually-hidden">{% translate "Non pode saír en fotos" %}</span>{% endif %}</span>
+          <span class="badge {% if 'performance' in active %}badge-ok{% else %}badge-muted{% endif %}">{% translate "Esforzo" %}</span>
+        </span></li>{% endfor %}</ul>
+      <a href="{% url 'account:household' %}">{% translate "Cambiar os consentimentos dos menores" %} →</a>
+    </section>
+    {% endif %}
+  </div>
+
+  <aside class="stack" aria-label="{% translate 'A quen dirixirte' %}">
+    <section class="card" aria-labelledby="pv-dpo">
+      <h2 id="pv-dpo">{% translate "A quen dirixirte" %}</h2>
+      <p>{% translate "O responsable do tratamento é cada concello. Para exercer os teus dereitos (acceso, rectificación, supresión, oposición, limitación e portabilidade):" %}</p>
+      <ul class="list">{% for m in municipalities %}<li><strong>{{ m.name }}</strong><br>
+        {% if m.dpo_contact %}{% translate "Delegado/a de protección de datos" %}: {{ m.dpo_contact }}{% else %}{{ m.contact_email|default:"—" }}{% endif %}
+        · <a href="{% url 'privacy' m.slug %}">{% translate "información completa" %}</a></li>
+      {% empty %}<li class="muted">{% translate "Aínda non usaches o servizo de ningún concello." %}</li>{% endfor %}</ul>
+      <p class="help mb-0">{% blocktranslate %}Se cres que non respectamos os teus dereitos, podes reclamar ante a <a href="https://www.aepd.es/" rel="noopener">Axencia Española de Protección de Datos</a>.{% endblocktranslate %}</p>
+    </section>
+    <section class="card" aria-labelledby="pv-cookies">
+      <h2 id="pv-cookies">{% translate "Cookies" %}</h2>
+      <p>{% translate "Só cookies técnicas, sen seguimento nin publicidade. Por iso non che pedimos aceptalas." %}</p>
+      <dl class="kv">
+        <dt class="mono">sessionid</dt><dd>{% translate "manter a sesión aberta (14 días)" %}</dd>
+        <dt class="mono">csrftoken</dt><dd>{% translate "protexer os formularios" %}</dd>
+        <dt class="mono">django_language</dt><dd>{% translate "lembrar o idioma" %}</dd>
+        <dt class="mono">eira_prefs</dt><dd>{% translate "preferencias de lectura" %}</dd>
+      </dl>
+    </section>
+  </aside>
+</div>
+{% endblock %}

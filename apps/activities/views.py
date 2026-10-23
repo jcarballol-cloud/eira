@@ -247,3 +247,39 @@ def pending_resolve(request, pk):
         % {"n": pending.first_name, "s": enrollment.get_status_display()},
     )
     return back
+
+
+@role_required("admin", "region_admin")
+def manage_group(request, pk):
+    """Ficha do grupo para o concello: participantes, consentimentos de imaxe e esforzo."""
+    group = get_object_or_404(
+        Group.objects.for_tenant(request.tenant).select_related("activity", "monitor", "facility"),
+        pk=pk,
+    )
+    rows = []
+    for e in group.enrollments.exclude(status=Enrollment.Status.CANCELLED).select_related(
+        "dependent__household__responsible", "user"
+    ):
+        rows.append(
+            {
+                "e": e,
+                "photo": e.can_appear_in_photos,
+                "performance": e.dependent.has_consent("performance") if e.dependent else True,
+                "minor": bool(e.dependent),
+            }
+        )
+    no_photo = sum(1 for r in rows if not r["photo"])
+    only = request.GET.get("sen_fotos") == "1"
+    return render(
+        request,
+        "activities/manage_group.html",
+        {
+            "group": group,
+            "rows": [r for r in rows if not r["photo"]] if only else rows,
+            "total": len(rows),
+            "no_photo": no_photo,
+            "only": only,
+            "nav": "manage",
+            "sub": "activities",
+        },
+    )

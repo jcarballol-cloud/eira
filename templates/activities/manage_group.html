@@ -1,0 +1,24 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{{ group.activity.name }} · {{ group.name }}{% endblock %}
+{% block content %}
+<p><a href="{% turl 'manage:activities' %}">← {% translate "Escolas e grupos" %}</a></p>
+<div class="page-head"><div><p class="eyebrow">{{ group.activity.name }}</p><h1>{{ group.name }}</h1>
+  <p>{% blocktranslate with m=group.monitor|default:"—" f=group.facility|default:"—" %}Monitor/a: {{ m }} · Instalación: {{ f }}{% endblocktranslate %}</p></div></div>
+
+<nav class="row mb-2" aria-label="{% translate 'Filtro de imaxe' %}">
+  <a class="btn btn-sm {% if only %}btn-secondary{% endif %}" href="?" {% if not only %}aria-current="page"{% endif %}>{% blocktranslate with n=total %}Todas ({{ n }}){% endblocktranslate %}</a>
+  <a class="btn btn-sm {% if not only %}btn-secondary{% endif %}" href="?sen_fotos=1" {% if only %}aria-current="page"{% endif %}>{% icon 'camera-off' %} {% blocktranslate with n=no_photo %}Só quen non pode saír en fotos ({{ n }}){% endblocktranslate %}</a>
+</nav>
+
+<div class="table-wrap" tabindex="0"><table class="data">
+  <caption class="visually-hidden">{% translate "Participantes e consentimentos" %}</caption>
+  <thead><tr><th scope="col">{% translate "Participante" %}</th><th scope="col">{% translate "Estado" %}</th><th scope="col">{% translate "Fotos" %}</th><th scope="col">{% translate "Rexistro do esforzo" %}</th></tr></thead>
+  <tbody>{% for r in rows %}<tr>
+    <th scope="row">{{ r.e.participant_name }}{% if r.minor %} <small class="muted">({% translate "menor" %})</small>{% endif %}</th>
+    <td>{{ r.e.get_status_display }}</td>
+    <td>{% if r.photo %}<span class="consent-ico is-on">{% icon 'camera' %}</span> {% translate "Pode saír" %}{% else %}<span class="consent-ico is-off">{% icon 'camera-off' %}</span> <strong>{% translate "Non pode saír" %}</strong>{% endif %}</td>
+    <td>{% if r.performance %}{% translate "Autorizado" %}{% else %}<span class="muted">{% translate "Sen autorización" %}</span>{% endif %}</td>
+  </tr>{% empty %}<tr><td colspan="4" class="muted">{% translate "Ninguén neste filtro." %}</td></tr>{% endfor %}</tbody>
+</table></div>
+<p class="help mt-1">{% translate "Os consentimentos dáos a propia persoa ou, nos menores de 14 anos, a súa familia desde a app. O concello non os pode cambiar." %}</p>
+{% endblock %}

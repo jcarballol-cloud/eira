@@ -6,6 +6,7 @@ from . import views
 app_name = "account"
 urlpatterns = [
     path("", views.profile, name="profile"),
+    path("privacidade/", views.privacy_centre, name="privacy"),
     path("empadroamento/", views.redeem_residency, name="residency"),
     path("os-meus-datos.json", views.export_data, name="export"),
     path("eliminar/", views.delete_account, name="delete"),

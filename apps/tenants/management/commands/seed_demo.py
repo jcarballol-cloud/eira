@@ -287,6 +287,7 @@ class Command(BaseCommand):
                 f"vecinanza{i:02d}@{DEMO_DOMAIN}",
                 display_name=name,
                 birth_year=self.rng.randint(1945, 2010),
+                photo_consent=i % 4 != 0,  # unha de cada catro non autoriza fotos
             )
             neighbours.append(u)
         users["neighbours"] = neighbours
@@ -303,6 +304,7 @@ class Command(BaseCommand):
             contact_phone=spec["phone"],
             contact_email=spec["email"],
             address="Praza do Concello, 1",
+            dpo_contact=f"dpd@{spec['slug']}.example · Praza do Concello, 1",
             # Códigos postais ficticios: o padrón simulado recoñece estes
             postcodes={"vilardeiras": "15999,15998"}.get(spec["slug"], "27999"),
             modules={

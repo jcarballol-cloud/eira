@@ -49,6 +49,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     notify_email = models.BooleanField(_("avisos por correo"), default=True)
     notify_telegram = models.BooleanField(_("avisos por Telegram"), default=False)
+    photo_consent = models.BooleanField(
+        _("o concello pode usar fotos onde apareza (actividades e comunicacións)"), default=False
+    )
+    photo_consent_at = models.DateTimeField(null=True, blank=True)
     telegram_chat = models.CharField(_("chat de Telegram"), max_length=64, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -69,6 +73,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def age(self):
         return timezone.localdate().year - self.birth_year if self.birth_year else None
+
+    def can_appear_in_photos(self):
+        return self.photo_consent
 
     def is_resident(self, municipality):
         return self.residencies.filter(municipality=municipality, revoked_at__isnull=True).exists()
@@ -327,6 +334,14 @@ class Dependent(models.Model):
 
     def has_consent(self, kind):
         return self.consents.filter(kind=kind, revoked_at__isnull=True).exists()
+
+    @property
+    def under_14(self):
+        """Art. 7 LOPDGDD: por debaixo dos 14 anos consente quen ten a patria potestade."""
+        return self.age < 14
+
+    def can_appear_in_photos(self):
+        return self.has_consent(Consent.Kind.IMAGE)
 
 
 class Consent(models.Model):

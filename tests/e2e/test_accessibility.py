@@ -66,6 +66,7 @@ def page_sets():
             f"{c}/reservas/",
             f"{c}/reservas/{upcoming.pk}/",
             f"{c}/reservas/{uxia_booking.pk}/peche/",
+            f"{c}/reservas/{uxia_booking.pk}/valorar/",
             f"{c}/incidencias/nova/",
             f"{c}/avisos/",
             "/conta/",
@@ -79,6 +80,8 @@ def page_sets():
         "admin@vilardeiras.demo.eira.example": [
             f"{c}/xestion/",
             f"{c}/xestion/altas/",
+            f"{c}/xestion/valoracions/",
+            f"{c}/actividades/observatorio/?semanas=12",
             f"{c}/xestion/altas/{signup.pk}/folla/",
             f"{c}/xestion/axenda/",
             f"{c}/xestion/reservar/?instalacion={f.pk}",

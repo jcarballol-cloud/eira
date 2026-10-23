@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Que tal foi?" %}{% endblock %}
+{% block content %}
+<section class="card prose">
+  <p class="eyebrow">{{ booking.facility.name }} · {{ booking.start|date:"j/n" }} · {{ booking.start|hhmm }}–{{ booking.end|hhmm }}</p>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% include "bookings/_rating.html" %}
+    <div class="form-actions"><button class="btn btn-lg" type="submit">{% translate "Enviar valoración" %}</button></div>
+  </form>
+</section>
+{% endblock %}

@@ -3,9 +3,72 @@
 {% block content %}
 <div class="page-head"><div><p class="eyebrow">{% translate "Datos anónimos e agregados" %}</p><h1>{% translate "Observatorio da actividade física" %}</h1>
   <p>{% blocktranslate trimmed with w=data.weeks k=data.k %}Escolas deportivas municipais, últimas {{ w }} semanas. Só se mostran grupos de polo menos {{ k }} persoas.{% endblocktranslate %}</p></div>
-  {% if is_tenant_admin %}<a class="btn btn-secondary" href="?csv=micro">{% icon 'download' %} {% translate "Microdatos seudonimizados (CSV)" %}</a>{% endif %}</div>
+  <span class="nowrap"><a href="?{{ query }}&amp;csv=agregados">{% icon 'download' %} CSV</a> · <a href="?{{ query }}&amp;ods=agregados">ODS</a>{% if is_tenant_admin %} · <a href="?{{ query }}&amp;csv=micro">{% translate "Microdatos seudonimizados" %}</a>{% endif %}</span></div>
+
+<form method="get" class="card mb-2 filters-inline" aria-label="{% translate 'Filtrar o observatorio' %}">
+  <div class="field"><label for="o-sem">{% translate "Período" %}</label>
+    <select id="o-sem" name="semanas">
+      <option value="6" {% if weeks == 6 %}selected{% endif %}>{% translate "6 semanas" %}</option>
+      <option value="12" {% if weeks == 12 %}selected{% endif %}>{% translate "12 semanas" %}</option>
+      <option value="26" {% if weeks == 26 %}selected{% endif %}>{% translate "6 meses" %}</option>
+    </select></div>
+  <div class="field"><label for="o-act">{% translate "Actividade" %}</label>
+    <select id="o-act" name="actividade"><option value="">{% translate "Todas" %}</option>{% for a in activities %}<option value="{{ a.pk }}" {% if activity == a %}selected{% endif %}>{{ a.name }}</option>{% endfor %}</select></div>
+  <div class="form-actions"><button class="btn" type="submit">{% translate "Aplicar" %}</button></div>
+</form>
+
+<div class="grid grid-4 mb-2">
+  <div class="stat"><div class="label">{% translate "Persoas nos datos" %}</div><div class="value">{{ data.people }}</div><div class="delta muted">{% translate "só grupos visibles" %}</div></div>
+  <div class="stat"><div class="label">{% translate "Asistencia media" %}</div><div class="value">{% if data.attendance_pct is not None %}{{ data.attendance_pct }} %{% else %}—{% endif %}</div></div>
+  <div class="stat"><div class="label">{% translate "Grupos de idade que chegan á referencia OMS" %}</div><div class="value">{{ data.bands_meeting_who }}<small>/{{ data.bands_shown }}</small></div></div>
+  <div class="stat"><div class="label">{% translate "Grupos ocultos por anonimato" %}</div><div class="value">{{ data.suppressed|length }}</div><div class="delta muted">{% if data.suppressed %}{{ data.suppressed|join:", " }}{% else %}{% translate "ningún" %}{% endif %}</div></div>
+</div>
+
+<div class="grid grid-2 mb-2">
+  <section class="card" aria-labelledby="who-title">
+    <h2 id="who-title">{% translate "Minutos semanais fronte á referencia OMS" %}</h2>
+    {% include "includes/hbar.html" with chart=who_chart cid="who" title=_("Porcentaxe da referencia OMS por grupo de idade") %}
+    <details class="mt-1"><summary>{% translate "Ver datos en táboa" %}</summary>
+      <div class="table-wrap mt-1" tabindex="0"><table class="data"><caption class="visually-hidden">{% translate "Minutos semanais e referencia OMS" %}</caption>
+        <thead><tr><th scope="col">{% translate "Idade" %}</th><th scope="col" class="num">{% translate "Minutos/semana" %}</th><th scope="col" class="num">{% translate "Referencia" %}</th><th scope="col" class="num">%</th></tr></thead>
+        <tbody>{% for r in data.rows %}{% if not r.suppressed %}<tr><th scope="row">{{ r.band }}</th><td class="num">{{ r.weekly_minutes }}</td><td class="num">{{ r.who_reference }}</td><td class="num">{{ r.who_pct }}</td></tr>{% endif %}{% endfor %}</tbody></table></div></details>
+  </section>
+  <section class="card" aria-labelledby="att-title">
+    <h2 id="att-title">{% translate "Asistencia por grupo de idade" %}</h2>
+    {% include "includes/hbar.html" with chart=att_chart cid="att" title=_("Porcentaxe de asistencia por grupo de idade") %}
+    <details class="mt-1"><summary>{% translate "Ver datos en táboa" %}</summary>
+      <div class="table-wrap mt-1" tabindex="0"><table class="data"><caption class="visually-hidden">{% translate "Asistencia" %}</caption>
+        <thead><tr><th scope="col">{% translate "Idade" %}</th><th scope="col" class="num">{% translate "Persoas" %}</th><th scope="col" class="num">{% translate "Asistencia" %}</th><th scope="col" class="num">{% translate "Esforzo medio (0–10)" %}</th></tr></thead>
+        <tbody>{% for r in data.rows %}{% if not r.suppressed %}<tr><th scope="row">{{ r.band }}</th><td class="num">{{ r.n }}</td><td class="num">{{ r.attendance_pct }} %</td><td class="num">{{ r.avg_rpe|default:"—" }}</td></tr>{% endif %}{% endfor %}</tbody></table></div></details>
+  </section>
+</div>
+
+<section class="card mb-2" aria-labelledby="trend-title">
+  <h2 id="trend-title">{% translate "Evolución semanal (minutos por persoa)" %}</h2>
+  {% if line %}
+  <figure class="line-chart mb-0" aria-labelledby="trend-cap">
+    <figcaption id="trend-cap" class="visually-hidden">{% translate "Minutos por persoa e semana, por grupo de idade. Os datos están na táboa seguinte." %}</figcaption>
+    <svg viewBox="0 0 {{ line.width }} {{ line.height }}" role="img" aria-hidden="true" focusable="false">
+      <line class="lc-axis" x1="{{ line.pad }}" y1="{{ line.base }}" x2="{{ line.width }}" y2="{{ line.base }}"/>
+      {% for t in line.ticks %}<text class="lc-tick" x="{{ t.x }}" y="{{ line.height|add:-6 }}" text-anchor="middle">{{ t.label }}</text>{% endfor %}
+      <text class="lc-tick" x="2" y="{{ line.label_y }}">{% blocktranslate with p=line.peak %}{{ p }} min{% endblocktranslate %}</text>
+      {% for s in line.series %}
+        {% if s.who_y is not None %}<line class="lc-ref lc-s{{ s.n }}" x1="{{ line.pad }}" y1="{{ s.who_y }}" x2="{{ line.width }}" y2="{{ s.who_y }}"/>{% endif %}
+        <polyline class="lc-line lc-s{{ s.n }}" points="{{ s.points }}"/>
+      {% endfor %}
+    </svg>
+    <ul class="lc-legend" role="list" aria-hidden="true">{% for s in line.series %}<li><span class="lc-key lc-key-{{ s.n }}"></span>{{ s.band }}</li>{% endfor %}</ul>
+  </figure>
+  <p class="help">{% translate "Liña descontinua: referencia OMS do grupo da mesma cor (cando entra na escala)." %}</p>
+  {% endif %}
+  <details class="mt-1" {% if not line %}open{% endif %}><summary>{% translate "Ver datos en táboa" %}</summary>
+  <div class="grid grid-2 mt-1">{% for r in data.rows %}{% if r.trend %}
+    <div class="table-wrap" tabindex="0"><table class="data"><caption>{{ r.band }}</caption><thead><tr><th scope="col">{% translate "Semana" %}</th><th scope="col" class="num">{% translate "Minutos" %}</th></tr></thead><tbody>{% for t in r.trend %}<tr><th scope="row">{{ t.week|date:"d/m" }}</th><td class="num">{{ t.minutes }}</td></tr>{% endfor %}</tbody></table></div>
+  {% endif %}{% endfor %}</div></details>
+</section>
+
 <div class="table-wrap" tabindex="0"><table class="data">
-  <caption>{% translate "Actividade por grupo de idade" %}</caption>
+  <caption>{% translate "Resumo por grupo de idade" %}</caption>
   <thead><tr><th scope="col">{% translate "Idade" %}</th><th scope="col" class="num">{% translate "Persoas" %}</th><th scope="col" class="num">{% translate "Asistencia" %}</th><th scope="col" class="num">{% translate "Minutos/semana" %}</th><th scope="col" class="num">{% translate "Referencia OMS" %}</th><th scope="col">{% translate "Fronte á referencia" %}</th><th scope="col" class="num">{% translate "Esforzo medio (0–10)" %}</th></tr></thead>
   <tbody>{% for r in data.rows %}<tr>
     <th scope="row">{{ r.band }}</th>
@@ -18,11 +81,5 @@
     {% endif %}
   </tr>{% endfor %}</tbody>
 </table></div>
-<section class="card mt-2" aria-labelledby="trend-title">
-  <h2 id="trend-title">{% translate "Evolución semanal (minutos por persoa)" %}</h2>
-  <div class="grid grid-2">{% for r in data.rows %}{% if r.trend %}
-    <div><h3>{{ r.band }}</h3><table class="data"><caption class="visually-hidden">{% blocktranslate with b=r.band %}Evolución {{ b }}{% endblocktranslate %}</caption><tbody>{% for t in r.trend %}<tr><th scope="row">{{ t.week|date:"d/m" }}</th><td class="num">{{ t.minutes }}</td></tr>{% endfor %}</tbody></table></div>
-  {% endif %}{% endfor %}</div>
-</section>
 <p class="help mt-2">{% translate "Os minutos contan só as sesións das escolas municipais. Referencia: OMS 2020, 150 min/semana para persoas adultas e unha media de 60 min/día para menores (configurable)." %}</p>
 {% endblock %}

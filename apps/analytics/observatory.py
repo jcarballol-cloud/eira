@@ -35,20 +35,22 @@ def who_reference(label):
     return refs["minor"] if label in ("6–11", "12–17") else refs["adult"]
 
 
-def _rows(municipality, weeks):
+def _rows(municipality, weeks, activity=None):
     since = timezone.localdate() - dt.timedelta(weeks=weeks)
     qs = Attendance.objects.filter(
         session__municipality=municipality,
         session__date__gte=since,
         session__date__lte=timezone.localdate(),
     ).select_related("enrollment__dependent", "enrollment__user", "session")
+    if activity:
+        qs = qs.filter(session__group__activity=activity)
     for a in qs:
         band = band_for(a.enrollment.participant_age)
         if band:
             yield a, band
 
 
-def summary(municipality, weeks=6, k=None):
+def summary(municipality, weeks=6, k=None, activity=None):
     k = k or settings.EIRA_MIN_AGGREGATION
     people = defaultdict(set)
     sessions = defaultdict(int)
@@ -57,7 +59,7 @@ def summary(municipality, weeks=6, k=None):
     weekly = defaultdict(lambda: defaultdict(int))
     weekly_people = defaultdict(lambda: defaultdict(set))
     rpe = defaultdict(list)
-    for a, band in _rows(municipality, weeks):
+    for a, band in _rows(municipality, weeks, activity):
         pid = a.enrollment.pseudonym or a.enrollment_id
         people[band].add(pid)
         sessions[band] += 1
@@ -98,7 +100,61 @@ def summary(municipality, weeks=6, k=None):
                 ],
             }
         )
-    return {"rows": rows, "k": k, "weeks": weeks}
+    shown = [r for r in rows if not r["suppressed"]]
+    total_n = sum(r["n"] for r in shown)
+    return {
+        "rows": rows,
+        "k": k,
+        "weeks": weeks,
+        "people": total_n,
+        "attendance_pct": round(sum(r["attendance_pct"] * r["n"] for r in shown) / total_n)
+        if total_n
+        else None,
+        "bands_meeting_who": sum(1 for r in shown if r["who_pct"] >= 100),
+        "bands_shown": len(shown),
+        "suppressed": [r["band"] for r in rows if r["suppressed"] and r["n"]],
+    }
+
+
+def line_chart(rows, width=640, height=220, pad=32):
+    """Puntos SVG da evolución semanal por banda (só bandas visibles). Sen JS nin estilos en liña."""
+    series = [r for r in rows if r["trend"]]
+    weeks = sorted({t["week"] for r in series for t in r["trend"]})
+    if len(weeks) < 2:
+        return None
+    peak = max(t["minutes"] for r in series for t in r["trend"]) or 1
+    x = {w: pad + i * (width - 2 * pad) / (len(weeks) - 1) for i, w in enumerate(weeks)}
+
+    def y(v):
+        return height - pad - v * (height - 2 * pad) / peak
+
+    def num(v):  # texto con punto decimal: os atributos SVG non admiten a coma do galego
+        return f"{v:.1f}"
+
+    out = []
+    for i, r in enumerate(series):
+        pts = [(x[t["week"]], y(t["minutes"])) for t in r["trend"]]
+        out.append(
+            {
+                "band": r["band"],
+                "n": i,
+                "points": " ".join(f"{num(a)},{num(b)}" for a, b in pts),
+                "last_x": num(pts[-1][0]),
+                "last_y": num(pts[-1][1]),
+                "who_y": num(y(r["who_reference"])) if r["who_reference"] <= peak else None,
+            }
+        )
+    ticks = [{"x": num(x[w]), "label": w.strftime("%d/%m")} for w in weeks]
+    return {
+        "width": width,
+        "height": height,
+        "series": out,
+        "ticks": ticks,
+        "peak": peak,
+        "base": num(height - pad),
+        "pad": num(pad),
+        "label_y": num(pad - 6),
+    }
 
 
 def microdata(municipality, weeks=6, k=None):

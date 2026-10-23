@@ -229,3 +229,29 @@ class Payment(TenantModel):
     @property
     def net_cents(self):
         return self.amount_cents - self.refunded_cents if self.status != self.Status.PENDING else 0
+
+
+class Rating(TenantModel):
+    """«Que tal foi?» despois de usar unha instalación. Unha por reserva."""
+
+    class Score(models.TextChoices):
+        GOOD = "good", _("Ben")
+        OK = "ok", _("Regular")
+        BAD = "bad", _("Mal")
+
+    booking = models.OneToOneField(Booking, on_delete=models.CASCADE, related_name="rating")
+    facility = models.ForeignKey(
+        "facilities.Facility", on_delete=models.CASCADE, related_name="ratings"
+    )
+    score = models.CharField(_("valoración"), max_length=4, choices=Score.choices)
+    tags = models.JSONField(_("etiquetas"), default=list, blank=True)
+    comment = models.CharField(_("comentario"), max_length=500, blank=True)
+    incident = models.ForeignKey(
+        "incidents.Incident", null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        verbose_name = _("valoración")
+        verbose_name_plural = _("valoracións")
+        ordering = ["-created_at"]

@@ -1,0 +1,56 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Valoracións" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{% translate "Valoracións da veciñanza" %}</h1>
+  <p>{% translate "«Que tal foi?» ao rematar cada reserva. Os comentarios amósanse sen o nome de quen os escribiu." %}</p></div>
+  <span class="nowrap"><a href="?dias={{ days }}{% if facility %}&amp;instalacion={{ facility.pk }}{% endif %}&amp;csv=1">{% icon 'download' %} CSV</a> · <a href="?dias={{ days }}{% if facility %}&amp;instalacion={{ facility.pk }}{% endif %}&amp;ods=1">ODS</a></span></div>
+
+<form method="get" class="card mb-2 filters-inline" aria-label="{% translate 'Filtrar valoracións' %}">
+  <div class="field"><label for="f-dias">{% translate "Período" %}</label>
+    <select id="f-dias" name="dias">
+      <option value="30" {% if days == 30 %}selected{% endif %}>{% translate "Últimos 30 días" %}</option>
+      <option value="90" {% if days == 90 %}selected{% endif %}>{% translate "Últimos 90 días" %}</option>
+      <option value="365" {% if days == 365 %}selected{% endif %}>{% translate "Último ano" %}</option>
+    </select></div>
+  <div class="field"><label for="f-inst">{% translate "Instalación" %}</label>
+    <select id="f-inst" name="instalacion"><option value="">{% translate "Todas" %}</option>{% for f in facilities %}<option value="{{ f.pk }}" {% if facility == f %}selected{% endif %}>{{ f.name }}</option>{% endfor %}</select></div>
+  <div class="form-actions"><button class="btn" type="submit">{% translate "Aplicar" %}</button></div>
+</form>
+
+<div class="grid grid-4 mb-2">
+  <div class="stat"><div class="label">{% translate "Índice de satisfacción" %}</div><div class="value">{% if s.index is not None %}{{ s.index }}<small>/100</small>{% else %}—{% endif %}</div><div class="delta muted">{% translate "Ben = 100 · Regular = 50 · Mal = 0" %}</div></div>
+  <div class="stat"><div class="label">{% translate "Valoracións" %}</div><div class="value">{{ s.total }}</div><div class="delta muted">{% blocktranslate with d=days %}últimos {{ d }} días{% endblocktranslate %}</div></div>
+  <div class="stat stat--wide"><div class="label">{% translate "O que máis se repite" %}</div>
+    <ul class="tag-cloud" role="list">{% for label, n, positive in s.tags %}<li class="tag {% if positive %}tag--pos{% else %}tag--neg{% endif %}">{% if positive %}{% icon 'smile' %}{% else %}{% icon 'frown' %}{% endif %} {{ label }} <strong>{{ n }}</strong></li>{% empty %}<li class="muted">—</li>{% endfor %}</ul></div>
+</div>
+
+<section class="card mb-2" aria-labelledby="rank-title">
+  <h2 id="rank-title">{% translate "Ranking de instalacións" %}</h2>
+  <p class="help">{% blocktranslate with n=s.min_n %}Só entran no ranking as instalacións con {{ n }} valoracións ou máis.{% endblocktranslate %}</p>
+  <div class="table-wrap" tabindex="0"><table class="data">
+    <caption class="visually-hidden">{% translate "Valoracións por instalación" %}</caption>
+    <thead><tr><th scope="col">#</th><th scope="col">{% translate "Instalación" %}</th><th scope="col" class="num">{% translate "Valoracións" %}</th><th scope="col">{% translate "Reparto (Ben · Regular · Mal)" %}</th><th scope="col" class="num">{% translate "Índice" %}</th><th scope="col">{% translate "Etiquetas" %}</th></tr></thead>
+    <tbody>{% for r in s.rows %}<tr>
+      <td>{% if r.enough %}{{ forloop.counter }}{% else %}—{% endif %}</td>
+      <th scope="row">{{ r.facility.name }}</th>
+      <td class="num">{{ r.n }}</td>
+      <td><div class="stack-bar" aria-hidden="true"><span class="sb-good w-{{ r.good_pct|bucket5 }}"></span><span class="sb-ok w-{{ r.ok_pct|bucket5 }}"></span><span class="sb-bad w-{{ r.bad_pct|bucket5 }}"></span></div>
+        <small>{{ r.good_pct }} % · {{ r.ok_pct }} % · {{ r.bad_pct }} %</small></td>
+      <td class="num">{% if r.enough %}<strong>{{ r.index }}</strong>{% else %}<span class="muted" title="{% translate 'Poucos datos' %}">({{ r.index }})</span>{% endif %}</td>
+      <td>{% for label, n, positive in r.top_tags %}<span class="tag tag--sm {% if positive %}tag--pos{% else %}tag--neg{% endif %}">{{ label }} · {{ n }}</span> {% endfor %}</td>
+    </tr>{% empty %}<tr><td colspan="6" class="muted">{% translate "Aínda non hai valoracións neste período." %}</td></tr>{% endfor %}</tbody>
+  </table></div>
+</section>
+
+<section class="card" aria-labelledby="com-title">
+  <h2 id="com-title">{% translate "Comentarios recentes" %}</h2>
+  <ul class="comment-list" role="list">{% for c in s.comments %}
+    <li class="comment comment--{{ c.score }}">
+      <div class="comment__head">{% if c.score == 'good' %}{% icon 'smile' %}{% elif c.score == 'ok' %}{% icon 'meh' %}{% else %}{% icon 'frown' %}{% endif %}
+        <strong>{{ c.get_score_display }}</strong> · {{ c.facility.name }} · <span class="muted">{{ c.created_at|date:"d/m/Y" }}</span>
+        {% if c.incident %} · <a href="{% turl 'manage:incident_detail' c.incident.pk %}">{% blocktranslate with n=c.incident.pk %}Incidencia #{{ n }}{% endblocktranslate %}</a>{% endif %}</div>
+      <p class="mb-0">«{{ c.comment }}»</p>
+    </li>
+  {% empty %}<li class="muted">{% translate "Sen comentarios neste período." %}</li>{% endfor %}</ul>
+</section>
+{% endblock %}

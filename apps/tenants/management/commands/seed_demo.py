@@ -406,6 +406,62 @@ class Command(BaseCommand):
                 resolved_at=timezone.now(),
             )
 
+    def ratings_for(self, m, facilities):
+        """Valoracións de exemplo: a maioría «Ben»; a pista exterior ten as luces mal."""
+        from apps.bookings.models import Rating
+
+        comments = {
+            "good": [
+                "Todo perfecto, moi limpa.",
+                "O código funcionou á primeira.",
+                "Grazas por ter a pista tan coidada.",
+            ],
+            "ok": ["Ben, pero faltaba unha rede.", "Vestiarios algo fríos."],
+            "bad": [
+                "Dúas lámpadas non acendían e xa era de noite.",
+                "A porta custaba de pechar.",
+                "Había auga no chan da pista.",
+            ],
+        }
+        trouble = next((f for f in facilities if f.kind == "outdoor_court"), facilities[-1])
+        since = timezone.now() - dt.timedelta(days=60)
+        rows = []
+        for b in Booking.objects.filter(municipality=m, status="used", start__gte=since):
+            if self.rng.random() > 0.3:
+                continue
+            bad_bias = 0.35 if b.facility_id == trouble.pk else 0.06
+            r = self.rng.random()
+            score = "bad" if r < bad_bias else ("ok" if r < bad_bias + 0.18 else "good")
+            if score == "good":
+                tags = self.rng.sample(
+                    ["clean", "light", "gear", "access", "quiet"], self.rng.randint(0, 2)
+                )
+            elif score == "ok":
+                tags = self.rng.sample(
+                    ["dirty", "gear_broken", "water", "clean"], self.rng.randint(0, 1)
+                )
+            else:
+                tags = (
+                    ["lights_broken"]
+                    if b.facility_id == trouble.pk
+                    else self.rng.sample(["dirty", "gear_broken", "access_problem"], 1)
+                )
+            comment = self.rng.choice(comments[score]) if self.rng.random() < 0.15 else ""
+            rows.append(
+                Rating(
+                    municipality=m,
+                    booking=b,
+                    facility_id=b.facility_id,
+                    score=score,
+                    tags=tags,
+                    comment=comment,
+                )
+            )
+        Rating.objects.bulk_create(rows, batch_size=1000)
+        Rating.objects.filter(municipality=m).update(
+            created_at=Subquery(Booking.objects.filter(pk=OuterRef("booking_id")).values("end")[:1])
+        )
+
     def history(self, m, facilities, people):
         today = timezone.localdate()
         now = timezone.now()
@@ -485,6 +541,7 @@ class Command(BaseCommand):
         Booking.objects.bulk_create(bookings, batch_size=1000)
         Booking.objects.filter(municipality=m).update(created_at=F("start") - dt.timedelta(days=2))
         self.payments_for(m)
+        self.ratings_for(m, facilities)
         # Eventos de acceso coherentes (mostra) e entregas de chave
         events = []
         for b in Booking.objects.filter(municipality=m, status="used").select_related("facility")[

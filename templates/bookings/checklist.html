@@ -4,10 +4,11 @@
 <section class="card prose">
   <p class="eyebrow">{{ booking.facility.name }} · {{ booking.start|hhmm }}–{{ booking.end|hhmm }}</p>
   <h1>{% translate "Antes de marchar" %}</h1>
-  <p>{% translate "Tres preguntas rápidas. Se algo non está ben, avisamos ao concello automaticamente." %}</p>
+  <p>{% translate "Tres preguntas rápidas e, se queres, a túa valoración. Se algo non está ben, avisamos ao concello." %}</p>
   <form method="post" novalidate>
     {% csrf_token %}
     {% include "includes/form.html" %}
+    {% include "bookings/_rating.html" %}
     <div class="form-actions"><button class="btn btn-lg" type="submit">{% translate "Enviar" %}</button></div>
   </form>
 </section>

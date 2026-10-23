@@ -1,15 +1,41 @@
 {% extends "base.html" %}{% load i18n eira %}
 {% block title %}{{ region.name }}{% endblock %}
 {% block content %}
-<div class="page-head"><div><p class="eyebrow">{{ region.get_kind_display }}</p><h1>{{ region.name }}</h1><p>{% translate "Comparativa dos concellos adheridos (últimas 4 semanas)." %}</p></div>
-  <a class="btn" href="{% url 'region:new_municipality' region.slug %}">{% translate "Dar de alta un concello" %}</a></div>
+<div class="page-head"><div><p class="eyebrow">{{ region.get_kind_display }}</p><h1>{{ region.name }}</h1><p>{% translate "Comparativa dos concellos adheridos: últimas 4 semanas fronte ás 4 anteriores." %}</p></div>
+  <div class="row"><span class="nowrap"><a href="?csv=1">{% icon 'download' %} CSV</a> · <a href="?ods=1">ODS</a></span>
+  <a class="btn" href="{% url 'region:new_municipality' region.slug %}">{% icon 'plus' %} {% translate "Dar de alta un concello" %}</a></div></div>
+
+<div class="grid grid-4 mb-2">
+  <div class="stat"><div class="label">{% translate "Reservas na rede" %}</div><div class="value">{{ network.bookings }}</div><div class="delta muted">{% if network.per_1000 %}{% blocktranslate with n=network.per_1000 %}{{ n }} por 1.000 hab.{% endblocktranslate %}{% endif %}</div></div>
+  <div class="stat"><div class="label">{% translate "Ocupación media" %}</div><div class="value">{{ network.occupancy }} %</div></div>
+  <div class="stat"><div class="label">{% translate "Satisfacción da veciñanza" %}</div><div class="value">{% if network.satisfaction is not None %}{{ network.satisfaction }}<small>/100</small>{% else %}—{% endif %}</div></div>
+  <div class="stat"><div class="label">{% translate "Incidencias abertas" %}</div><div class="value">{{ network.open_incidents }}</div><div class="delta muted">{% blocktranslate with e=network.revenue|euros %}Ingresos netos: {{ e }}{% endblocktranslate %}</div></div>
+</div>
+
+<div class="grid grid-3 mb-2">
+  <section class="card" aria-labelledby="c1"><h2 id="c1" class="h3">{% translate "Reservas por 1.000 habitantes" %}</h2>{% include "includes/hbar.html" with chart=per_chart cid="per" title=_("Reservas por 1.000 habitantes") %}</section>
+  <section class="card" aria-labelledby="c2"><h2 id="c2" class="h3">{% translate "Ocupación" %}</h2>{% include "includes/hbar.html" with chart=occ_chart cid="occ" title=_("Ocupación por concello") %}</section>
+  <section class="card" aria-labelledby="c3"><h2 id="c3" class="h3">{% translate "Satisfacción (0–100)" %}</h2>{% include "includes/hbar.html" with chart=sat_chart cid="sat" title=_("Satisfacción por concello") %}</section>
+</div>
+
 <div class="table-wrap" tabindex="0"><table class="data">
-  <caption>{% translate "Indicadores por concello" %}</caption>
-  <thead><tr><th scope="col">{% translate "Concello" %}</th><th scope="col" class="num">{% translate "Instalacións" %}</th><th scope="col" class="num">{% translate "Reservas" %}</th><th scope="col" class="num">{% translate "Por 1.000 hab." %}</th><th scope="col">{% translate "Ocupación" %}</th><th scope="col" class="num">{% translate "Non presentadas" %}</th><th scope="col" class="num">{% translate "Infrautilizadas" %}</th><th scope="col" class="num">{% translate "Incidencias abertas" %}</th><th scope="col" class="num">{% translate "Ingresos" %}</th></tr></thead>
+  <caption>{% translate "Indicadores por concello (a táboa contén todos os datos das gráficas)" %}</caption>
+  <thead><tr><th scope="col">{% translate "Concello" %}</th><th scope="col" class="num">{% translate "Reservas" %}</th><th scope="col" class="num">{% translate "Por 1.000 hab." %}</th><th scope="col">{% translate "Ocupación" %}</th><th scope="col" class="num">{% translate "Non presentadas" %}</th><th scope="col" class="num">{% translate "Satisfacción" %}</th><th scope="col" class="num">{% translate "Incidencias abertas" %}</th><th scope="col" class="num">{% translate "Horas ata resolver" %}</th><th scope="col" class="num">{% translate "Ingresos / hab." %}</th><th scope="col">{% translate "Accións" %}</th></tr></thead>
   <tbody>{% for r in rows %}<tr>
-    <th scope="row"><a href="{% url 'manage:dashboard' r.m.slug %}">{{ r.m.name }}</a></th><td class="num">{{ r.facilities }}</td><td class="num">{{ r.bookings }}</td><td class="num">{{ r.per_1000|default:"—" }}</td>
-    <td><div class="row"><div class="bar-inline" aria-hidden="true"><span class="w-{{ r.occupancy|bucket5 }}"></span></div> {{ r.occupancy }} %</div></td>
-    <td class="num">{{ r.no_show_pct }} %</td><td class="num">{{ r.underused }}</td><td class="num">{{ r.open_incidents }}</td><td class="num">{{ r.revenue|euros }}</td></tr>
-  {% empty %}<tr><td colspan="9">{% translate "Aínda non hai concellos." %}</td></tr>{% endfor %}</tbody>
+    <th scope="row">{{ r.m.name }}<br><small class="muted">{% blocktranslate count n=r.facilities %}{{ n }} instalación{% plural %}{{ n }} instalacións{% endblocktranslate %}{% if r.underused %} · {% blocktranslate with u=r.underused %}{{ u }} infrautilizadas{% endblocktranslate %}{% endif %}</small></th>
+    <td class="num">{{ r.bookings }} {% include "region/_delta.html" with d=r.bookings_delta %}</td>
+    <td class="num">{{ r.per_1000|default:"—" }} {% include "region/_delta.html" with d=r.per_1000_delta %}</td>
+    <td><div class="row"><div class="bar-inline" aria-hidden="true"><span class="w-{{ r.occupancy|bucket5 }}"></span></div> {{ r.occupancy }} % {% include "region/_delta.html" with d=r.occupancy_delta unit=" p.p." %}</div></td>
+    <td class="num">{{ r.no_show_pct }} %</td>
+    <td class="num">{% if r.satisfaction is not None %}{{ r.satisfaction }} <small class="muted">({{ r.ratings }})</small>{% else %}—{% endif %}</td>
+    <td class="num">{{ r.open_incidents }}</td>
+    <td class="num">{{ r.resolve_hours|default:"—" }}</td>
+    <td class="num">{% if r.revenue_per_inh is not None %}{{ r.revenue_per_inh }} €{% else %}—{% endif %}</td>
+    <td><div class="row">
+      <a class="btn btn-sm btn-secondary" href="{% url 'manage:dashboard' r.m.slug %}">{% translate "Consultar" %}<span class="visually-hidden"> {{ r.m.name }}</span></a>
+      {% if r.admin %}<form method="post" action="{% url 'region:resend_invitation' region.slug r.m.slug %}">{% csrf_token %}<button class="btn btn-sm btn-ghost" type="submit" title="{% if r.invited_at %}{% blocktranslate with d=r.invited_at|date:'d/m H:i' %}Última invitación: {{ d }}{% endblocktranslate %}{% endif %}">{% translate "Reenviar invitación" %}<span class="visually-hidden"> {{ r.m.name }}</span></button></form>{% endif %}
+    </div></td></tr>
+  {% empty %}<tr><td colspan="10">{% translate "Aínda non hai concellos." %}</td></tr>{% endfor %}</tbody>
 </table></div>
+<p class="help mt-1">{% translate "Frechas: variación fronte ás 4 semanas anteriores. A satisfacción calcúlase coas valoracións «Que tal foi?» (Ben = 100, Regular = 50, Mal = 0); entre parénteses, número de valoracións." %}</p>
 {% endblock %}

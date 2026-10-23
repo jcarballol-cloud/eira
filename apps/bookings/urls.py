@@ -15,5 +15,6 @@ urlpatterns = [
     path("<int:pk>/recibo/", views.receipt, name="receipt"),
     path("<int:pk>/reserva.ics", views.ics_one, name="ics"),
     path("<int:pk>/peche/", views.checklist, name="checklist"),
+    path("<int:pk>/valorar/", views.rate, name="rate"),
     path("<int:pk>/abrir/", views.open_lock, name="open"),
 ]

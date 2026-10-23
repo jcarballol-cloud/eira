@@ -20,6 +20,7 @@
     <a href="{% turl 'manage:activities' %}" {% if sub == 'activities' %}aria-current="page"{% endif %}>{% icon 'users' %} {% translate "Escolas" %}</a>
     <p class="sidenav__group">{% translate "Datos" %}</p>
     <a href="{% turl 'manage:indicators' %}" {% if sub == 'indicators' %}aria-current="page"{% endif %}>{% icon 'chart' %} {% translate "Indicadores" %}</a>
+    <a href="{% turl 'manage:ratings' %}" {% if sub == 'ratings' %}aria-current="page"{% endif %}>{% icon 'smile' %} {% translate "Valoracións" %}</a>
     <a href="{% turl 'activities:observatory' %}" {% if sub == 'observatory' %}aria-current="page"{% endif %}>{% icon 'heart' %} {% translate "Observatorio" %}</a>
     <p class="sidenav__group">{% translate "Concello" %}</p>
     <a href="{% turl 'manage:signups' %}" {% if sub == 'signups' %}aria-current="page"{% endif %}>{% icon 'plus' %} {% translate "Altas da app" %}</a>

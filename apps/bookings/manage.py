@@ -405,3 +405,41 @@ def payment_refund(request, pk):
             request, _("Devolución rexistrada: %(e)s €.") % {"e": f"{cents / 100:.2f}"}
         )
     return redirect(treverse(request.tenant, "manage:payments"))
+
+
+@role_required(*ADMIN_ROLES)
+def ratings_view(request):
+    """Valoracións da veciñanza: índice por instalación, etiquetas e comentarios sen nomes."""
+    from apps.analytics.views import _csv
+
+    from . import ratings
+
+    days = (
+        int(request.GET.get("dias", 90)) if request.GET.get("dias") in ("30", "90", "365") else 90
+    )
+    facilities = Facility.objects.for_tenant(request.tenant).order_by("name")
+    facility = facilities.filter(pk=request.GET.get("instalacion") or 0).first()
+    s = ratings.stats(request.tenant, days=days, facility=facility)
+    if request.GET.get("csv") or request.GET.get("ods"):
+        return _csv(
+            "valoracions.csv",
+            ["instalacion", "valoracions", "ben", "regular", "mal", "indice_0_100"],
+            [
+                [r["facility"].name, r["n"], r["good"], r["ok"], r["bad"], r["index"]]
+                for r in s["rows"]
+            ],
+            ods=bool(request.GET.get("ods")),
+        )
+    return render(
+        request,
+        "manage/ratings.html",
+        {
+            "s": s,
+            "days": days,
+            "facilities": facilities,
+            "facility": facility,
+            "tag_labels": ratings.TAGS,
+            "nav": "manage",
+            "sub": "ratings",
+        },
+    )

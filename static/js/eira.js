@@ -119,6 +119,20 @@
     document.querySelectorAll("[data-rpe-flow]").forEach(setupRpe);
   });
 
+  // Valoración: as etiquetas aparecen ao escoller; «Avisar ao concello» só con «Mal»
+  function setupRating(box) {
+    function sync() {
+      var c = box.querySelector('input[type="radio"]:checked');
+      box.classList.toggle("has-score", !!c);
+      box.classList.toggle("is-bad", !!c && c.value === "bad");
+    }
+    box.addEventListener("change", sync);
+    sync();
+  }
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("[data-rating]").forEach(setupRating);
+  });
+
   // Lapelas accesibles: [data-tabs] > [role=tablist] + [role=tabpanel]
   function setupTabs(root) {
     var tabs = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));

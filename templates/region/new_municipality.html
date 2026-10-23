@@ -1,19 +1,38 @@
-{% extends "base.html" %}{% load i18n %}
+{% extends "base.html" %}{% load i18n eira %}
 {% block title %}{% translate "Novo concello" %}{% endblock %}
 {% block content %}
 <ol class="steps" aria-label="{% translate 'Pasos da alta' %}">
-  <li class="{% if step > 1 %}done{% endif %}" {% if step == 1 %}aria-current="step"{% endif %}>{% translate "Datos básicos" %}</li>
-  <li class="{% if step > 2 %}done{% endif %}" {% if step == 2 %}aria-current="step"{% endif %}>{% translate "Módulos e regras" %}</li>
-  <li {% if step == 3 %}aria-current="step"{% endif %}>{% translate "Administración e instalacións" %}</li>
+  {% for t in titles %}<li class="{% if forloop.counter < step %}done{% endif %}" {% if forloop.counter == step %}aria-current="step"{% endif %}>{{ t }}</li>{% endfor %}
 </ol>
 <section class="card prose">
+  <p class="eyebrow">{% blocktranslate with n=step t=total %}Paso {{ n }} de {{ t }}{% endblocktranslate %}</p>
   <h1>{% translate "Dar de alta un concello" %}</h1>
-  <form method="post" novalidate>
+  {% if step == 2 %}<p>{% translate "A persoa responsable xestiona o servizo de deportes do concello. Recibirá unha invitación por correo; non hai contrasinais." %}</p>
+  {% elif step == 4 %}<p>{% translate "O escudo e a cor aparecen na cabeceira da xestión e nas follas impresas. Se non hai escudo, móstranse as iniciais." %}</p>
+  {% elif step == 5 %}<p>{% translate "Creamos a primeira instalación cunha plantilla (horario, tarifas, normas e mantemento). Queda sen publicar ata que o concello a revise." %}</p>
+  {% endif %}
+  {% if preview %}
+  <div class="card-flat mb-2">
+    <h2 class="h3">{% translate "Resumo" %}</h2>
+    <dl class="kv">
+      <dt>{% translate "Concello" %}</dt><dd>{{ preview.name }} · <span class="mono">/c/{{ preview.slug }}/</span></dd>
+      <dt>{% translate "Responsable" %}</dt><dd>{{ preview.admin }} · {{ preview.email }}</dd>
+      <dt>{% translate "Módulos" %}</dt><dd>{{ preview.modules }}</dd>
+      <dt>{% translate "Imaxe" %}</dt><dd><span class="mono">{{ preview.color }}</span>{% if preview.coat %} · {% translate "con escudo" %}{% endif %}</dd>
+      <dt>{% translate "Primeira instalación" %}</dt><dd>{{ preview.facility|default:"—" }}</dd>
+    </dl>
+  </div>
+  <div class="mail-preview mb-2" aria-label="{% translate 'Vista previa da invitación' %}">
+    <p class="mail-preview__subject"><strong>{% blocktranslate with m=preview.name %}Invitación para xestionar as instalacións deportivas de {{ m }}{% endblocktranslate %}</strong></p>
+    <p class="mb-0">{% blocktranslate with r=region.name m=preview.name %}{{ r }} deu de alta {{ m }} en Eira e figuras como persoa responsable. Entra co teu correo (recibirás un código, sen contrasinal), revisa a primeira instalación e publícaa cando estea lista.{% endblocktranslate %}</p>
+  </div>
+  {% endif %}
+  <form method="post" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
     <input type="hidden" name="step" value="{{ step }}">
     {% include "includes/form.html" %}
     <div class="form-actions">
-      <button class="btn" type="submit">{% if step < 3 %}{% translate "Continuar" %}{% else %}{% translate "Crear concello" %}{% endif %}</button>
+      <button class="btn" type="submit">{% if step < total %}{% translate "Continuar" %}{% else %}{% translate "Crear concello" %}{% endif %}</button>
       {% if step > 1 %}<a class="btn btn-ghost" href="?paso={{ step|add:'-1' }}">{% translate "Atrás" %}</a>{% endif %}
     </div>
   </form>

@@ -180,3 +180,21 @@ def tile_settings(tenant=None):
             else settings.EIRA_TILE_ATTRIBUTION_URL
         ),
     }
+
+
+def contrast_ratio(hex_a, hex_b):
+    """Razón de contraste WCAG 2.x entre dúas cores #RRGGBB."""
+
+    def luminance(hex_color):
+        h = hex_color.lstrip("#")
+        if len(h) != 6:
+            return 0.0
+        channels = []
+        for i in (0, 2, 4):
+            c = int(h[i : i + 2], 16) / 255
+            channels.append(c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4)
+        r, g, b = channels
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+    la, lb = sorted((luminance(hex_a), luminance(hex_b)), reverse=True)
+    return (la + 0.05) / (lb + 0.05)

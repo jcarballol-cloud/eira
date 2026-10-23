@@ -13,6 +13,10 @@
 {% if booking.status == 'pending_payment' %}
 <div class="alert alert-warn">{% translate "Falta completar o pagamento. Gardamos a franxa uns minutos." %} <a class="btn btn-sm" href="{% turl 'bookings:retry_payment' booking.pk %}">{% translate "Pagar agora" %}</a></div>
 {% endif %}
+{% if can_rate and not booking.needs_closing_checklist %}
+<a class="app-alert" href="{% turl 'bookings:rate' booking.pk %}">{% icon 'smile' %}<span><strong>{% translate "Que tal foi?" %}</strong><br>{% translate "Valora a instalación nun segundo." %}</span>{% icon 'chevron' %}</a>
+{% endif %}
+{% if booking.rating %}<p class="muted">{% icon 'check' %} {% blocktranslate with s=booking.rating.get_score_display %}Valoraches esta reserva: {{ s }}.{% endblocktranslate %}</p>{% endif %}
 {% if booking.needs_closing_checklist %}
 <div class="alert alert-warn"><strong>{% translate "Ao rematar:" %}</strong> {% translate "confirma que todo queda pechado e en orde." %} <a class="btn btn-sm" href="{% turl 'bookings:checklist' booking.pk %}">{% translate "Checklist de peche" %}</a></div>
 {% endif %}

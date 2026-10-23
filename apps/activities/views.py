@@ -114,7 +114,43 @@ def cancel(request, pk):
 
 @module_required("observatory")
 def observatory_view(request):
-    data = observatory.summary(request.tenant)
+    from apps.analytics.indicators import hbar
+    from apps.analytics.views import _csv
+
+    weeks = int(request.GET["semanas"]) if request.GET.get("semanas") in ("6", "12", "26") else 6
+    activities = Activity.objects.for_tenant(request.tenant).order_by("name")
+    activity = activities.filter(pk=request.GET.get("actividade") or 0).first()
+    data = observatory.summary(request.tenant, weeks=weeks, activity=activity)
+    fmt = request.GET.get("csv") or request.GET.get("ods")
+    if fmt == "agregados":
+        k = data["k"]
+        return _csv(
+            "observatorio-agregados.csv",
+            [
+                "banda_idade",
+                "persoas",
+                "asistencia_pct",
+                "minutos_semana",
+                "referencia_oms",
+                "pct_oms",
+                "rpe_medio",
+            ],
+            [
+                [r["band"], f"<{k}", "", "", r["who_reference"], "", ""]
+                if r["suppressed"]
+                else [
+                    r["band"],
+                    r["n"],
+                    r["attendance_pct"],
+                    r["weekly_minutes"],
+                    r["who_reference"],
+                    r["who_pct"],
+                    r["avg_rpe"] or "",
+                ]
+                for r in data["rows"]
+            ],
+            ods=bool(request.GET.get("ods")),
+        )
     if request.GET.get("csv") == "micro":
         if not request.user.is_authenticated or not (request.roles & {"admin", "region_admin"}):
             return HttpResponse(status=403)
@@ -125,7 +161,22 @@ def observatory_view(request):
         for r in observatory.microdata(request.tenant):
             w.writerow([r["pseudonym"], r["band"], r["week"], r["minutes"], r["avg_rpe"]])
         return response
-    return render(request, "activities/observatory.html", {"data": data, "nav": "activities"})
+    shown = [r for r in data["rows"] if not r["suppressed"]]
+    return render(
+        request,
+        "activities/observatory.html",
+        {
+            "data": data,
+            "weeks": weeks,
+            "activities": activities,
+            "activity": activity,
+            "who_chart": hbar(shown, "who_pct", "band", suffix=" %"),
+            "att_chart": hbar(shown, "attendance_pct", "band", suffix=" %"),
+            "line": observatory.line_chart(data["rows"]),
+            "query": f"semanas={weeks}" + (f"&actividade={activity.pk}" if activity else ""),
+            "nav": "activities",
+        },
+    )
 
 
 @role_required("admin", "region_admin")

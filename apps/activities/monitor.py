@@ -42,7 +42,9 @@ def scale_points(scale):
     points = []
     for v in range(0, 11):
         # Cinco caras para a escala OMNI infantil: 0–1, 2–3, 4–5, 6–7, 8–10
-        points.append({"value": v, "label": labels.get(v, ""), "face": f"omni-{min(5, v // 2 + 1)}"})
+        points.append(
+            {"value": v, "label": labels.get(v, ""), "face": f"omni-{min(5, v // 2 + 1)}"}
+        )
     return points
 
 

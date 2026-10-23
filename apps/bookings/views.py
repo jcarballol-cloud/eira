@@ -20,6 +20,7 @@ from apps.tenants.urlutils import neighbour_required, treverse
 
 from . import ics, payments, services
 from .models import Booking
+from .ratings import RatingForm, can_rate
 
 
 def _parse_start(value):
@@ -203,6 +204,7 @@ def detail(request, pk):
             "forecast": forecast,
             "tips": tips,
             "penalty": booking.penalty_if_cancelled_now(),
+            "can_rate": can_rate(booking),
         },
     )
 
@@ -432,7 +434,10 @@ def checklist(request, pk):
         return redirect(treverse(request.tenant, "bookings:detail", booking.pk))
     needs_key = booking.facility.access_level == 1
     form = ChecklistForm(request.POST or None, needs_key=needs_key)
-    if request.method == "POST" and form.is_valid():
+    rating_form = RatingForm(request.POST or None, prefix="v")
+    if request.method == "POST" and form.is_valid() and rating_form.is_valid():
+        if can_rate(booking):
+            rating_form.save(booking)
         d = form.cleaned_data
         incident = services.submit_closing_checklist(
             booking,
@@ -452,7 +457,32 @@ def checklist(request, pk):
             messages.success(request, _("Grazas! Instalación pechada correctamente."))
         return redirect(treverse(request.tenant, "bookings:detail", booking.pk))
     return render(
-        request, "bookings/checklist.html", {"booking": booking, "form": form, "nav": "bookings"}
+        request,
+        "bookings/checklist.html",
+        {"booking": booking, "form": form, "rating_form": rating_form, "nav": "bookings"},
+    )
+
+
+@neighbour_required
+def rate(request, pk):
+    """«Que tal foi?» fóra do checklist (instalacións abertas ou valoración posterior)."""
+    booking = _own_booking(request, pk)
+    if not can_rate(booking):
+        return redirect(treverse(request.tenant, "bookings:detail", booking.pk))
+    form = RatingForm(request.POST or None, prefix="v", required=True)
+    if request.method == "POST" and form.is_valid():
+        rating = form.save(booking)
+        if rating.incident:
+            messages.warning(
+                request,
+                _("Grazas. Creamos a incidencia #%(n)s para que o concello o revise.")
+                % {"n": rating.incident.pk},
+            )
+        else:
+            messages.success(request, _("Grazas pola túa valoración!"))
+        return redirect(treverse(request.tenant, "bookings:detail", booking.pk))
+    return render(
+        request, "bookings/rate.html", {"booking": booking, "rating_form": form, "nav": "bookings"}
     )
 
 

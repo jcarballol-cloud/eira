@@ -158,3 +158,19 @@ Formato: data · decisión · motivo · alternativas descartadas.
   - Infancia: cinco caras OMNI de debuxo propio. Adultos: número grande coa etiqueta Borg CR-10.
   - Quen non ten consentimento sáltase. Sen JavaScript, todas as persoas na mesma páxina.
 - `[hidden]` gaña sempre ao `display` dos compoñentes, e os `input` ocultos non tapan os clics.
+
+## v2 F7 — Valoracións e observatorio
+- **«Que tal foi?»**: Ben, Regular ou Mal, con 11 etiquetas (positivas e negativas) e un comentario de ata 500 caracteres.
+  - Vai integrado no checklist de peche, e alí é opcional. Tamén se pode valorar despois, desde a reserva. Unha valoración por reserva.
+  - «Mal» co aviso marcado crea unha incidencia. A categoría sae da primeira etiqueta negativa (luces → iluminación; porta → acceso…).
+- **Privacidade nas valoracións.** O concello ve os comentarios sen nome nin correo. O CSV/ODS só leva agregados por instalación, sen comentarios.
+- **Índice de satisfacción 0–100** (Ben = 100, Regular = 50, Mal = 0). No ranking só entran instalacións con 5 valoracións ou máis; as demais aparecen entre parénteses.
+- **Observatorio.**
+  - Filtros por período (6, 12 ou 26 semanas) e por actividade.
+  - Gráficas HTML/SVG sen JavaScript nin estilos en liña, cada unha coa súa táboa.
+  - Exportación CSV/ODS de agregados, coas celas suprimidas como `<10`. Os microdatos seudonimizados quedan só para o concello.
+  - Os números dos atributos SVG xéranse en Python con punto decimal, porque a localización galega pon coma.
+- **Deputación.**
+  - Comparativa coa variación fronte ao período anterior, reservas por 1.000 habitantes, satisfacción, horas ata resolver incidencias e ingresos por habitante, máis CSV/ODS.
+  - Acción de soporte «Reenviar invitación», só para concellos da propia rede.
+- **Alta dun concello en 6 pasos:** datos, responsable, módulos, imaxe (escudo limpo de metadatos e cor con contraste AA comprobado), primeira instalación con plantilla (sen publicar) e invitación con vista previa. Non se pode saltar pasos.

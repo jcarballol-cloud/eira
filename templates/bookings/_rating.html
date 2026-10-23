@@ -1,0 +1,22 @@
+{% load i18n eira %}<fieldset class="rating" data-rating>
+  <legend class="rating__q">{% translate "Que tal foi?" %}</legend>
+  <div class="rating__faces">
+    {% for value, label in rating_form.fields.score.choices %}
+    <div class="rating__face rating__face--{{ value }}">
+      <input type="radio" name="{{ rating_form.score.html_name }}" id="sc-{{ value }}" value="{{ value }}" {% if rating_form.score.value == value %}checked{% endif %}>
+      <label for="sc-{{ value }}">{% if value == 'good' %}{% icon 'smile' %}{% elif value == 'ok' %}{% icon 'meh' %}{% else %}{% icon 'frown' %}{% endif %}<span>{{ label }}</span></label>
+    </div>
+    {% endfor %}
+  </div>
+  {% if rating_form.score.errors %}<p class="error">{{ rating_form.score.errors.0 }}</p>{% endif %}
+  <div class="rating__more" data-rating-more>
+    <p class="rating__sub">{% translate "Algo a destacar?" %} <span class="muted">({% translate "opcional" %})</span></p>
+    <div class="chips">
+      {% for value, label in rating_form.fields.tags.choices %}
+      <span class="chip"><input type="checkbox" name="{{ rating_form.tags.html_name }}" id="tg-{{ value }}" value="{{ value }}" {% if value in rating_form.tags.value %}checked{% endif %}><label for="tg-{{ value }}">{{ label }}</label></span>
+      {% endfor %}
+    </div>
+    {% with field=rating_form.comment %}{% include "includes/field.html" %}{% endwith %}
+    <div class="rating__incident" data-rating-bad>{% with field=rating_form.make_incident %}{% include "includes/field.html" %}{% endwith %}</div>
+  </div>
+</fieldset>

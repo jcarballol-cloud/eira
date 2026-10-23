@@ -22,6 +22,7 @@ urlpatterns = [
     path("reservas/<int:pk>/", bookings.booking_detail, name="booking"),
     path("reservas/<int:pk>/chave/<slug:action>/", bookings.key_action, name="key_action"),
     path("cobros/", bookings.payments_list, name="payments"),
+    path("valoracions/", bookings.ratings_view, name="ratings"),
     path("cobros/<int:pk>/devolver/", bookings.payment_refund, name="payment_refund"),
     path("reservas/<int:pk>/cancelar/", bookings.staff_cancel, name="staff_cancel"),
     path("instalacions/", facilities.facility_list, name="facilities"),

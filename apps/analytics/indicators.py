@@ -140,14 +140,14 @@ def revenue_by_week(tenant, start, end):
     ]
 
 
-def summary(tenant, weeks=4):
-    start, end = period(weeks)
+def summary(tenant, weeks=4, today=None):
+    start, end = period(weeks, today)
     occ = occupancy_by_facility(tenant, start, end)
     booked = sum(r["booked"] for r in occ)
     avail = sum(r["available"] for r in occ)
     revenue = (
         Booking.objects.for_tenant(tenant)
-        .filter(created_at__gte=_aware(start))
+        .filter(created_at__gte=_aware(start), created_at__lt=_aware(end) + dt.timedelta(days=1))
         .aggregate(p=Sum("paid_cents"), r=Sum("refunded_cents"))
     )
     return {

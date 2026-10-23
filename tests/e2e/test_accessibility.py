@@ -93,6 +93,8 @@ def page_sets():
             f"{c}/actividades/observatorio/?semanas=12",
             f"{c}/xestion/altas/{signup.pk}/folla/",
             f"{c}/xestion/axenda/",
+            f"{c}/xestion/axenda/?vista=semana",
+            f"{c}/xestion/axenda/?vista=mes",
             f"{c}/xestion/reservar/?instalacion={f.pk}",
             f"{c}/xestion/instalacions/",
             f"{c}/xestion/instalacions/nova/",

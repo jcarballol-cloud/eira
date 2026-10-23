@@ -104,6 +104,9 @@ def agenda(request):
         day = dt.date.fromisoformat(request.GET.get("dia", ""))
     except ValueError:
         day = timezone.localdate()
+    view = request.GET.get("vista", "lista")
+    if view in ("semana", "mes"):
+        return _agenda_calendar(request, day, view)
     start = timezone.make_aware(dt.datetime.combine(day, dt.time.min))
     bookings = (
         Booking.objects.for_tenant(tenant)
@@ -119,6 +122,63 @@ def agenda(request):
             "bookings": bookings,
             "prev": day - dt.timedelta(days=1),
             "next": day + dt.timedelta(days=1),
+            "nav": "manage",
+            "sub": "agenda",
+        },
+    )
+
+
+def _agenda_calendar(request, day, view):
+    """Axenda en calendario: semana (días × horas) ou mes, con filtro de instalacións e .ics."""
+    from django.http import HttpResponse
+
+    from . import calendar
+
+    tenant = request.tenant
+    all_facilities = list(Facility.objects.for_tenant(tenant).order_by("name"))
+    chosen = {int(x) for x in request.GET.getlist("i") if x.isdigit()}
+    facilities = [f for f in all_facilities if f.pk in chosen] or all_facilities
+    if view == "semana":
+        first = day - dt.timedelta(days=day.weekday())
+        days, prev, nxt = 7, first - dt.timedelta(days=7), first + dt.timedelta(days=7)
+    else:
+        first = day.replace(day=1)
+        nxt_month = (first + dt.timedelta(days=32)).replace(day=1)
+        days, prev, nxt = (
+            (nxt_month - first).days,
+            (first - dt.timedelta(days=1)).replace(day=1),
+            nxt_month,
+        )
+    span_start = first - dt.timedelta(days=first.weekday()) if view == "mes" else first
+    span_days = days + first.weekday() + 7 if view == "mes" else days
+    evts = calendar.events(tenant, facilities, span_start, span_days)
+    if request.GET.get("formato") == "ics":
+        in_range = [e for e in evts if first <= e["start"].date() < first + dt.timedelta(days=days)]
+        resp = HttpResponse(
+            calendar.ics(in_range, f"{tenant.name} · Eira"),
+            content_type="text/calendar; charset=utf-8",
+        )
+        resp["Content-Disposition"] = (
+            f'attachment; filename="axenda-{tenant.slug}-{first:%Y%m%d}.ics"'
+        )
+        return resp
+    query = "&".join(f"i={f.pk}" for f in facilities) if chosen else ""
+    return render(
+        request,
+        "manage/agenda_calendar.html",
+        {
+            "view": view,
+            "day": day,
+            "first": first,
+            "prev": prev,
+            "next": nxt,
+            "facilities": all_facilities,
+            "chosen": {f.pk for f in facilities} if chosen else set(),
+            "query": query,
+            "week": calendar.week_grid(evts, first) if view == "semana" else None,
+            "month": calendar.month_grid(evts, first) if view == "mes" else None,
+            "states": calendar.STATES,
+            "today": timezone.localdate(),
             "nav": "manage",
             "sub": "agenda",
         },

@@ -1,0 +1,5 @@
+{% load i18n %}<nav class="seg" aria-label="{% translate 'Vista da axenda' %}">
+  <a href="?vista=lista&amp;dia={{ day|date:'Y-m-d' }}" {% if view == "lista" or not view %}aria-current="page"{% endif %}>{% translate "Lista" %}</a>
+  <a href="?vista=semana&amp;dia={{ day|date:'Y-m-d' }}{% if query %}&amp;{{ query }}{% endif %}" {% if view == "semana" %}aria-current="page"{% endif %}>{% translate "Semana" %}</a>
+  <a href="?vista=mes&amp;dia={{ day|date:'Y-m-d' }}{% if query %}&amp;{{ query }}{% endif %}" {% if view == "mes" %}aria-current="page"{% endif %}>{% translate "Mes" %}</a>
+</nav>

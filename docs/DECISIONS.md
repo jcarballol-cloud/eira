@@ -293,3 +293,15 @@ Formato: data · decisión · motivo · alternativas descartadas.
   - A sensación térmica calcúlase no servidor (`Forecast.feels_like_c`); o resto do cálculo, no dispositivo.
 - **Primeira hora.** Para sesións temperás non se di «bebe ás 5:00»: aplícase a variante de 2 h do ACSM.
 - **MeteoSIX** queda listo para produción (`EIRA_ADAPTERS["weather"]` e `EIRA_METEOSIX_API_KEY`). O seu parser está probado cunha resposta de mostra, non coa API real.
+
+## v3 · 7 — Axenda en calendario
+- **Vistas:** «Lista» (a de antes, por día), «Semana» e «Mes» (`?vista=`).
+  - Filtro de instalacións con checkboxes (`?i=`); sen marcar ningunha, son todas.
+  - Exportación `.ics` do rango e o filtro activos, sen datos persoais (instalación, estado e referencia).
+- **Semana:** táboa con columnas por día e filas por hora (da primeira á última con eventos), con cabeceiras `th` de fila e columna.
+  - Fichas con cor e texto oculto de estado: pagada, reservada, pendente de pago, pechada (peches) e actividade municipal (sesións das escolas, calculadas cos días do grupo).
+  - Cada ficha enlaza á reserva, aos peches ou á ficha do grupo.
+  - Nas instalacións compartidas, as reservas da mesma hora e estado van nunha ficha con contador que leva á lista dese día: a semana pasou de 3.222 px a 1.872 px.
+- **Mes:** grella luns–domingo con contadores por estado (texto oculto e `title`); cada día abre a súa semana.
+- As canceladas, rexeitadas e caducadas non ocupan a axenda.
+- **Teclado:** todas as fichas e días son ligazóns. A alternativa en lista segue dispoñible.

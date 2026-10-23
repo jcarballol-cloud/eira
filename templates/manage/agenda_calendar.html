@@ -1,0 +1,62 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Axenda" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{% translate "Axenda" %}</h1>
+  <p>{% if view == "semana" %}{% blocktranslate with a=first|date:"j \d\e F" %}Semana do {{ a }}{% endblocktranslate %}{% else %}{{ first|date:"F \d\e Y"|capfirst }}{% endif %}</p></div>
+  {% include "manage/_agenda_views.html" %}
+</div>
+
+<form method="get" class="cal-filter card" aria-label="{% translate 'Filtrar a axenda' %}">
+  <input type="hidden" name="vista" value="{{ view }}"><input type="hidden" name="dia" value="{{ first|date:'Y-m-d' }}">
+  <fieldset><legend>{% translate "Instalacións" %} <small class="muted">({% translate "sen marcar = todas" %})</small></legend>
+    <div class="chips">{% for f in facilities %}<span class="chip"><input type="checkbox" name="i" value="{{ f.pk }}" id="cf-{{ f.pk }}" {% if f.pk in chosen %}checked{% endif %}><label for="cf-{{ f.pk }}">{{ f.name }}</label></span>{% endfor %}</div>
+  </fieldset>
+  <div class="row"><button class="btn btn-sm" type="submit">{% translate "Aplicar" %}</button>
+    <a class="btn btn-sm btn-secondary" href="?vista={{ view }}&amp;dia={{ first|date:'Y-m-d' }}&amp;{{ query }}&amp;formato=ics">{% icon 'download' %} {% translate "Exportar .ics" %}</a></div>
+</form>
+
+<nav class="row-between mb-1" aria-label="{% translate 'Período' %}">
+  <a class="btn btn-sm btn-secondary" href="?vista={{ view }}&amp;dia={{ prev|date:'Y-m-d' }}&amp;{{ query }}">← {% if view == "semana" %}{% translate "Semana anterior" %}{% else %}{% translate "Mes anterior" %}{% endif %}</a>
+  <a class="btn btn-sm btn-ghost" href="?vista={{ view }}&amp;{{ query }}">{% translate "Hoxe" %}</a>
+  <a class="btn btn-sm btn-secondary" href="?vista={{ view }}&amp;dia={{ next|date:'Y-m-d' }}&amp;{{ query }}">{% if view == "semana" %}{% translate "Semana seguinte" %}{% else %}{% translate "Mes seguinte" %}{% endif %} →</a>
+</nav>
+
+<ul class="cal-legend" aria-label="{% translate 'Lenda' %}">{% for k, label in states.items %}<li><span class="ev-dot ev-{{ k }}" aria-hidden="true"></span>{{ label }}</li>{% endfor %}</ul>
+
+{% if week %}
+<div class="table-wrap cal-wrap" tabindex="0">
+<table class="cal-week">
+  <caption class="visually-hidden">{% translate "Axenda semanal: columnas, días; filas, horas. Cada evento leva o seu estado en texto." %}</caption>
+  <thead><tr><th scope="col"><span class="visually-hidden">{% translate "Hora" %}</span></th>{% for d in week.days %}<th scope="col" {% if d == today %}class="is-today" aria-current="date"{% endif %}><a href="?vista=lista&amp;dia={{ d|date:'Y-m-d' }}">{{ d|date:"D" }} <strong>{{ d|date:"j" }}</strong></a></th>{% endfor %}</tr></thead>
+  <tbody>
+  {% for row in week.rows %}
+    <tr><th scope="row">{{ row.hour|stringformat:"02d" }}:00</th>
+    {% for cell in row.cells %}<td{% if cell.day == today %} class="is-today"{% endif %}>
+      {% for e in cell.events %}
+        {% if e.kind == "booking" and e.count > 1 %}<a class="ev ev-{{ e.state }}" href="?vista=lista&amp;dia={{ e.start|date:'Y-m-d' }}">
+        {% elif e.kind == "booking" %}<a class="ev ev-{{ e.state }}" href="{% turl 'manage:booking' e.obj.pk %}">
+        {% elif e.kind == "closure" %}<a class="ev ev-closed" href="{% turl 'manage:closures' %}">
+        {% else %}<a class="ev ev-activity" href="{% turl 'manage:group' e.obj.pk %}">{% endif %}
+          <span class="ev__time">{{ e.start|time:"H:i" }}</span> <span class="ev__fac">{{ e.facility.name }}</span><span class="ev__title">{% if e.count > 1 %}{% blocktranslate with n=e.count %}{{ n }} reservas{% endblocktranslate %}{% else %}{{ e.title }}{% endif %}</span>
+          <span class="visually-hidden">, {{ e.start|date:"l j" }}, {{ states|get_item:e.state }}</span></a>
+      {% endfor %}
+    </td>{% endfor %}</tr>
+  {% endfor %}
+  </tbody>
+</table></div>
+{% else %}
+<div class="table-wrap cal-wrap" tabindex="0">
+<table class="cal-month">
+  <caption class="visually-hidden">{% translate "Axenda mensual: cada día co número de eventos por estado. Abre un día para velo en lista." %}</caption>
+  <thead><tr>{% for d in month.0.days %}<th scope="col">{{ d.day|date:"D" }}</th>{% endfor %}</tr></thead>
+  <tbody>{% for w in month %}<tr>{% for d in w.days %}
+    <td class="{% if not d.in_month %}is-out{% endif %}{% if d.day == today %} is-today{% endif %}">
+      <a class="cal-day" href="?vista=semana&amp;dia={{ d.day|date:'Y-m-d' }}&amp;{{ query }}" {% if d.day == today %}aria-current="date"{% endif %}>
+        <span class="cal-day__n">{{ d.day|date:"j" }}<span class="visually-hidden"> {{ d.day|date:"F" }}</span></span>
+        {% for key, label, n in d.counts %}<span class="cal-count ev-{{ key }}" title="{{ n }} {{ label|lower }}">{{ n }}<span class="visually-hidden"> {{ label|lower }}</span></span>{% empty %}{% if d.in_month %}<span class="visually-hidden">{% translate "sen eventos" %}</span>{% endif %}{% endfor %}
+      </a>
+    </td>{% endfor %}</tr>{% endfor %}</tbody>
+</table></div>
+{% endif %}
+<p class="help mt-1">{% translate "Alternativa accesible: a vista «Lista» amosa cada día en táboa, con todos os datos." %}</p>
+{% endblock %}

@@ -205,6 +205,11 @@ def detail(request, pk):
             "tips": tips,
             "penalty": booking.penalty_if_cancelled_now(),
             "can_rate": can_rate(booking),
+            "now": timezone.now(),
+            # Só a propia persoa e só se ela decidiu gardalo na conta (art. 9)
+            "account_health": getattr(
+                getattr(request.user, "health_profile", None), "as_dict", lambda: None
+            )(),
         },
     )
 

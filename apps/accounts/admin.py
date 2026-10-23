@@ -4,6 +4,9 @@
 from django.apps import apps
 from django.contrib import admin
 
+# Os datos de saúde (art. 9) non se amosan nin sequera no admin técnico.
+EXCLUDED = {"HealthProfile"}
+
 for model in apps.get_app_config("accounts").get_models():
-    if not admin.site.is_registered(model):
+    if model.__name__ not in EXCLUDED and not admin.site.is_registered(model):
         admin.site.register(model)

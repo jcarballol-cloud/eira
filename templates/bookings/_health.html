@@ -1,0 +1,16 @@
+{% load i18n static %}{% if booking.end > now %}
+<section class="card health-box" aria-labelledby="hb-title" data-health-booking
+  data-start="{{ booking.start.isoformat }}" data-duration="{{ booking.duration_minutes }}"
+  data-indoor="{% if booking.facility.indoor %}1{% else %}0{% endif %}"
+  data-sprite="{% static 'img/icons.svg' %}"
+  {% if forecast %}data-temp="{{ forecast.temperature_c|stringformat:'s' }}" data-uv="{{ forecast.uv_index }}" data-rain="{{ forecast.precipitation_prob }}" data-wind="{{ forecast.wind_kmh }}"{% endif %}>
+  <h2 id="hb-title">{% translate "Para esta sesión" %}</h2>
+  <p class="help" data-health-personal hidden>{% translate "Calculado no teu dispositivo co teu peso e idade." %}</p>
+  <div data-health-list aria-live="polite"><noscript><p class="muted">{% translate "As recomendacións calcúlanse no teu dispositivo e precisan JavaScript." %}</p></noscript></div>
+  <p class="mt-1" data-health-cta hidden><a href="{% url 'health' %}">{% translate "Engade o teu peso e idade para ver cantidades concretas" %}</a> <small class="muted">({% translate "quedan no teu teléfono" %})</small></p>
+  <p class="help mb-0">{% translate "Información educativa e xeral, non é consello clínico." %}</p>
+</section>
+{% include "includes/health_strings.html" %}
+{% if account_health %}{{ account_health|json_script:"h-account" }}{% endif %}
+<script src="{% static 'js/health-engine.js' %}" defer></script>
+{% endif %}

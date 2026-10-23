@@ -1,11 +1,11 @@
 {% extends "base.html" %}{% load i18n static %}
 {% block title %}{% translate "A miña saúde" %}{% endblock %}
-{% block head %}<script src="{% static 'js/health.js' %}" defer></script>{% endblock %}
+{% block head %}<script src="{% static 'js/health-engine.js' %}" defer></script><script src="{% static 'js/health.js' %}" defer></script>{% endblock %}
 {% block content %}
 <div class="layout-aside">
   <div class="stack">
-    <div class="page-head"><div><p class="eyebrow">{% translate "Só no teu dispositivo" %}</p><h1>{% translate "A miña saúde" %}</h1>
-      <p>{% translate "Estes datos gárdanse só neste navegador. Nunca se envían ao concello nin a ningún servidor." %}</p></div></div>
+    <div class="page-head"><div><p class="eyebrow">{% if account_profile %}{% translate "Gardado na túa conta" %}{% else %}{% translate "Só no teu dispositivo" %}{% endif %}</p><h1>{% translate "A miña saúde" %}</h1>
+      <p>{% if account_profile %}{% translate "Decidiches gardar estes datos na túa conta para velos noutros dispositivos. Ninguén do persoal pode velos e podes borralos cando queiras." %}{% else %}{% translate "Estes datos gárdanse só neste navegador. Non se envían ao concello salvo que ti decidas gardalos na túa conta." %}{% endif %}</p></div></div>
     <form id="health-form" class="card" novalidate>
       <div class="grid grid-3">
         <div class="field"><label for="h-age">{% translate "Idade (anos)" %}</label><input id="h-age" type="number" min="5" max="110" inputmode="numeric" autocomplete="off"></div>
@@ -18,36 +18,46 @@
       </div>
       <div class="form-actions">
         <button class="btn" type="submit">{% translate "Gardar e ver consellos" %}</button>
-        <button class="btn btn-secondary" type="button" id="h-clear">{% translate "Borrar os meus datos" %}</button>
+        <button class="btn btn-secondary" type="button" id="h-clear">{% translate "Borrar deste dispositivo" %}</button>
       </div>
     </form>
     <section class="card" aria-labelledby="h-advice-title">
-      <h2 id="h-advice-title">{% translate "Consellos orientativos" %}</h2>
-      <div id="h-advice" aria-live="polite"><p class="muted">{% translate "Introduce os teus datos para ver consellos." %}</p></div>
+      <h2 id="h-advice-title">{% translate "Consellos para ti" %}</h2>
+      <div id="h-advice" aria-live="polite" data-sprite="{% static 'img/icons.svg' %}"><p class="muted">{% translate "Introduce os teus datos para ver consellos." %}</p></div>
+      <p class="help mb-0">{% translate "Dentro de cada reserva verás tamén as recomendacións para esa sesión (hora, duración, se é cuberta e a previsión)." %}</p>
       <p class="alert alert-warn mt-2"><strong>{% translate "Aviso:" %}</strong> {% translate "Información educativa e xeral, non é consello clínico. Se tes unha enfermidade ou dúbidas, consulta co teu centro de saúde." %}</p>
     </section>
+
+    {% if user.is_authenticated %}
+    <section class="card" aria-labelledby="h-acc-title">
+      <h2 id="h-acc-title">{% translate "Gardar na túa conta (opcional)" %}</h2>
+      {% if account_profile %}
+        <p>{% translate "Os teus datos de saúde están gardados na conta." %}</p>
+        <form method="post">{% csrf_token %}<input type="hidden" name="action" value="forget"><button class="btn btn-danger" type="submit">{% translate "Borrar os meus datos de saúde da conta" %}</button></form>
+      {% else %}
+        <p>{% translate "Só se queres ver as recomendacións noutros dispositivos." %}</p>
+      {% endif %}
+      <form method="post" id="health-account-form" class="mt-1" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="age" data-copy="h-age"><input type="hidden" name="weight" data-copy="h-weight"><input type="hidden" name="minutes" data-copy="h-minutes">
+        <div class="field{% if error %} has-error{% endif %}"><div class="check"><input type="checkbox" id="h-consent" name="consent" value="1" {% if error %}aria-invalid="true" aria-describedby="h-consent-err"{% endif %}><label for="h-consent">{% translate "Consinto expresamente que o concello garde o meu peso, idade e minutos de actividade só para calcular as miñas recomendacións. Ninguén do persoal pode velos e non se usan para estatísticas. Podo borralos cando queira." %}</label></div>
+          {% if error %}<p class="error" id="h-consent-err">{{ error }}</p>{% endif %}</div>
+        <button class="btn btn-secondary" type="submit">{% if account_profile %}{% translate "Actualizar na conta" %}{% else %}{% translate "Gardar tamén na miña conta" %}{% endif %}</button>
+      </form>
+    </section>
+    {% endif %}
   </div>
   <aside class="card" aria-labelledby="h-sources">
     <h2 id="h-sources">{% translate "De onde saen os consellos" %}</h2>
     <ul class="prose">
-      <li>{% translate "Actividade física: OMS, Directrices sobre actividade física e comportamentos sedentarios (2020): 150–300 min/semana de actividade moderada para persoas adultas; media de 60 min/día para nenos e adolescentes." %}</li>
-      <li>{% translate "Hidratación antes do exercicio: American College of Sports Medicine, «Exercise and Fluid Replacement» (2007): uns 5–7 ml por kg de peso polo menos 4 horas antes." %}</li>
-      <li>{% translate "Auga diaria total (bebida e alimentos): EFSA (2010), 2,0 l/día mulleres e 2,5 l/día homes adultos, en condicións temperadas." %}</li>
+      <li>{% translate "Hidratación: American College of Sports Medicine, «Exercise and Fluid Replacement» (2007). Antes: 5–7 ml/kg catro horas antes. Durante: 0,4–0,8 l/h como punto de partida. Despois: arredor de 1,5 l por kg perdido. Aviso de hiponatremia." %}</li>
+      <li>{% translate "Enerxía: Thomas, Erdman e Burke, «Nutrition and Athletic Performance» (ACSM, Academy of Nutrition and Dietetics e Dietitians of Canada, 2016): 30–60 g de hidratos por hora en sesións de máis de unha hora." %}</li>
+      <li>{% translate "Actividade física: OMS, Directrices sobre actividade física e comportamentos sedentarios (2020): 150–300 min/semana para persoas adultas; media de 60 min/día para nenos e adolescentes." %}</li>
+      <li>{% translate "Auga diaria total: EFSA (2010), 2,0 l/día mulleres e 2,5 l/día homes adultos." %}</li>
     </ul>
-    <p class="muted"><small>{% translate "Detalle e límites en docs/health/recomendacions.md." %}</small></p>
+    <p class="muted"><small>{% translate "As cantidades por peso só se dan a persoas adultas: as referencias son para adultos. Detalle en docs/health/recomendacions.md." %}</small></p>
   </aside>
 </div>
-<template id="h-t-advice">
-  <ul class="stack-sm" data-list></ul>
-</template>
-<div hidden id="h-strings"
-  data-water-before="{% translate 'Antes de adestrar (4 h antes): arredor de %s ml de auga.' %}"
-  data-water-during="{% translate 'Durante a sesión: bebe pequenos grolos a miúdo; en sesións de máis de 60 min ou con calor, repón tamén sales.' %}"
-  data-water-short="{% translate 'Sesión curta: chega con beber auga se tes sede e despois de rematar.' %}"
-  data-who-adult="{% translate 'Levas %s de 150 minutos semanais recomendados pola OMS.' %}"
-  data-who-adult-ok="{% translate 'Superas os 150 minutos semanais recomendados pola OMS. Moi ben!' %}"
-  data-who-child="{% translate 'Para a túa idade, a OMS recomenda unha media de 60 minutos ao día de actividade.' %}"
-  data-senior="{% translate 'Maiores de 65: engade exercicios de equilibrio e forza 3 días á semana.' %}"
-  data-saved="{% translate 'Gardado só neste dispositivo.' %}"
-  data-cleared="{% translate 'Borrados os teus datos deste dispositivo.' %}"></div>
+{% include "includes/health_strings.html" %}
+{% if account_profile %}{{ account_profile|json_script:"h-account" }}{% endif %}
 {% endblock %}

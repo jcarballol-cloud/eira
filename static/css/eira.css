@@ -860,3 +860,14 @@ del { color: var(--text-muted); }
 .name-photo.is-off { background: oklch(0.93 0.05 25); color: #A3261F; }
 .name-toggle .name-text { flex: 1; text-align: left; }
 .name-toggle { gap: .7rem; }
+/* ---- v2 F6: recomendacións de saúde (icona + título + texto + cantidade) ---- */
+.rec-list { list-style: none; padding: 0; margin: 0; display: grid; gap: .55rem; }
+.rec { display: grid; grid-template-columns: 2.6rem 1fr auto; gap: .75rem; align-items: start; padding: .75rem .85rem; border-radius: var(--radius-sm); background: var(--branco); border: 1px solid var(--liña); }
+.rec__icon { width: 2.6rem; height: 2.6rem; padding: .55rem; border-radius: 12px; background: var(--neboa); color: var(--musgo-escuro); }
+.rec__body strong { display: block; }
+.rec__body p { margin: .15rem 0 .2rem; }
+.rec__body small { color: var(--text-muted); font-size: .78rem; }
+.rec__amount { font-weight: 800; font-size: 1.05rem; color: var(--granito); white-space: nowrap; padding-top: .1rem; }
+.rec--warn { border-color: #E3B341; background: oklch(0.97 0.03 85); }
+.rec--warn .rec__icon { background: oklch(0.92 0.07 85); color: #6B4E00; }
+@container pane (max-width: 420px) { .rec { grid-template-columns: 2.4rem 1fr; } .rec__amount { grid-column: 2; } }

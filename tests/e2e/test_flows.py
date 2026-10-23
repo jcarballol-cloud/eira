@@ -216,3 +216,32 @@ def test_request_app_by_email_install_and_first_open(new_page, base):
     assert page.input_value("#code") == code
     page.click("main button[type=submit]")
     page.wait_for_selector("text=Tes fillos ou persoas ao teu cargo?")
+
+
+def test_booking_shows_personal_recommendations_computed_on_device(new_page, base):
+    """v2 F6: dentro da reserva, consellos concretos co perfil do dispositivo e sen enviar o peso."""
+    upcoming = (
+        Booking.objects.filter(
+            user__email="uxia@demo.eira.example", status="confirmed", start__gt=timezone.now()
+        )
+        .order_by("start")
+        .first()
+    )
+    page = new_page(viewport=MOBILE)
+    sent = []
+    page.on("request", lambda r: sent.append((r.url, r.post_data or "")))
+    page.goto(base + "/")
+    page.locator("form:has(input[value='uxia@demo.eira.example']) button").click()
+    page.wait_for_load_state("networkidle")
+    page.evaluate(
+        """localStorage.setItem('eira-health-v1', JSON.stringify({age: '27', weight: '61.5', minutes: '60'}))"""
+    )
+    page.goto(f"{base}/c/vilardeiras/reservas/{upcoming.pk}/")
+    box = page.locator("[data-health-booking]")
+    box.locator(".rec").first.wait_for()
+    text = box.inner_text()
+    assert "Auga antes" in text and "300–450 ml" in text and "Bebe arredor das" in text
+    assert "A túa semana" in text and "Fonte: ACSM 2007" in text
+    assert box.locator("[data-health-cta]").is_hidden()
+    for url, body in sent:
+        assert "61.5" not in url and "61.5" not in body

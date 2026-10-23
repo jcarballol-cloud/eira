@@ -392,3 +392,28 @@ def audit(action, actor=None, municipality=None, obj=None, **detail):
         object_id=str(getattr(obj, "pk", "")) if obj is not None else "",
         detail=detail,
     )
+
+
+class HealthProfile(models.Model):
+    """Datos de saúde gardados na conta **só** con consentimento explícito (art. 9.2.a RXPD).
+
+    Por defecto viven no dispositivo (localStorage). Nunca se mostran ao persoal, non van nas
+    exportacións do concello nin no observatorio; si na exportación persoal (dereito de acceso).
+    Non se rexistra no admin de Django."""
+
+    CONSENT_VERSION = "saude-2026-1"
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="health_profile")
+    weight_kg = models.DecimalField(max_digits=5, decimal_places=1, null=True, blank=True)
+    age = models.PositiveSmallIntegerField(null=True, blank=True)
+    weekly_minutes = models.PositiveSmallIntegerField(null=True, blank=True)
+    consent_version = models.CharField(max_length=20, default=CONSENT_VERSION)
+    consent_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def as_dict(self):
+        return {
+            "weight": float(self.weight_kg) if self.weight_kg else None,
+            "age": self.age,
+            "minutes": self.weekly_minutes,
+        }

@@ -190,3 +190,21 @@ Formato: data · decisión · motivo · alternativas descartadas.
 - **Conservación.** `booking_maintenance` borra as solicitudes da app aos 12 meses (RAT n.º 10).
 - **Cookies.** Unha proba percorre páxinas públicas, da veciñanza e do concello e falla se aparece algunha cookie que non sexa técnica.
 - **Deputación.** A matriz recolle con honestidade que ve o mesmo ca o concello, en só lectura.
+
+## v2 F6 — Saúde personalizada
+- **Motor en JavaScript, no navegador** (`static/js/health-engine.js`). Así o peso e a idade non saen do dispositivo por defecto, e non hai un segundo motor en Python que manter sincronizado. As regras, os limiares e as fontes están en `docs/health/recomendacions.md`.
+- **Dentro de cada reserva**: icona, título, texto, cantidade e fonte.
+  - Auga antes, coa hora concreta (inicio − 4 h); durante; sales; aviso de hiponatremia; hidratos; despois; tempo; idade; semana OMS.
+  - Sen perfil, consellos cualitativos e unha ligazón para engadilo.
+- **Prudencia.**
+  - Cantidades por peso só para persoas adultas.
+  - «Punto de partida» nas cantidades durante a sesión.
+  - Sen taxa de suor inventada.
+  - Aviso «non é consello clínico».
+- **Gardado na conta (opcional, art. 9.2.a).**
+  - `HealthProfile` con consentimento explícito e versionado, rexistrado en auditoría, e botón de borrado.
+  - Fóra do admin técnico, da exportación do concello e do observatorio.
+  - Si na exportación persoal (art. 15).
+- **Probas.**
+  - Python: o persoal non ve o dato en ningunha páxina nin no ZIP de portabilidade, e o gardado esixe consentimento.
+  - E2E: as recomendacións calcúlanse no dispositivo e ningunha petición leva o peso.

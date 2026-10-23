@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.templatetags.static import static
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.translation import gettext as _
 from django.views.decorators.cache import cache_control
@@ -56,7 +57,57 @@ def preferences(request):
 
 
 def health(request):
-    return render(request, "core/health.html", {"nav": "health"})
+    """A miña saúde: no dispositivo por defecto; na conta só con consentimento explícito (art. 9)."""
+    from decimal import Decimal, InvalidOperation
+
+    from django.contrib import messages
+    from django.shortcuts import redirect
+
+    from apps.accounts.models import HealthProfile, audit
+
+    user = request.user if request.user.is_authenticated else None
+    profile = HealthProfile.objects.filter(user=user).first() if user else None
+    error = ""
+    if request.method == "POST" and user:
+        if request.POST.get("action") == "forget":
+            if profile:
+                profile.delete()
+                audit("health.delete", user, obj=user)
+            messages.success(request, _("Borramos os teus datos de saúde da conta."))
+            return redirect("health")
+        if request.POST.get("consent") != "1":
+            error = _("Para gardalos na conta tes que marcar o consentimento.")
+        else:
+
+            def num(key, cast, lo, hi):
+                try:
+                    v = cast(request.POST.get(key, "").replace(",", "."))
+                except (ValueError, InvalidOperation):
+                    return None
+                return v if lo <= v <= hi else None
+
+            HealthProfile.objects.update_or_create(
+                user=user,
+                defaults={
+                    "weight_kg": num("weight", Decimal, 15, 250),
+                    "age": num("age", int, 5, 110),
+                    "weekly_minutes": num("minutes", int, 0, 3000),
+                    "consent_version": HealthProfile.CONSENT_VERSION,
+                    "consent_at": profile.consent_at if profile else timezone.now(),
+                },
+            )
+            audit("health.store", user, obj=user)
+            messages.success(request, _("Gardado na túa conta. Podes borralo cando queiras."))
+            return redirect("health")
+    return render(
+        request,
+        "core/health.html",
+        {
+            "nav": "health",
+            "account_profile": profile.as_dict() if profile else None,
+            "error": error,
+        },
+    )
 
 
 def offline(request):

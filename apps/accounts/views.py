@@ -224,6 +224,16 @@ def export_user_data(user):
             "notify_telegram": user.notify_telegram,
             "linked_public_identity": bool(user.identity_subject),
         },
+        # Saúde: só se a persoa a gardou na conta (dereito de acceso; nunca nas exportacións do concello)
+        "health": (
+            {
+                **user.health_profile.as_dict(),
+                "consent_version": user.health_profile.consent_version,
+                "consent_at": dt(user.health_profile.consent_at),
+            }
+            if hasattr(user, "health_profile")
+            else None
+        ),
         "roles": [
             {"municipality": m.municipality.slug, "role": m.role}
             for m in user.memberships.select_related("municipality")

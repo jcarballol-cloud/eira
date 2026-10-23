@@ -3,6 +3,7 @@
 
 import hashlib
 import json
+from urllib.parse import quote
 
 from django.conf import settings
 from django.contrib import messages
@@ -11,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.translation import gettext as _
@@ -48,6 +50,20 @@ def _next(request):
         or "/"
     )
     return nxt if url_has_allowed_host_and_scheme(nxt, allowed_hosts={request.get_host()}) else "/"
+
+
+def _after_login(request, user, nxt, last_tenant):
+    """Destino tras identificarse. `nxt` e `last_tenant` lense ANTES de login(): ao cambiar de
+    persoa, login() baleira a sesión."""
+    if nxt != "/":
+        return nxt
+    if last_tenant and not user.memberships.exists():
+        from apps.tenants.models import Municipality
+
+        tenant = Municipality.objects.filter(slug=last_tenant, is_active=True).first()
+        if tenant:
+            return home_url(user, tenant=tenant, roles=set())
+    return home_url(user)
 
 
 def _client_ip(request):
@@ -112,11 +128,11 @@ def login_code(request):
             if created:
                 user.set_unusable_password()
                 user.save()
+            nxt, last = _next(request), request.session.get("last_tenant")
             login(request, user, backend="django.contrib.auth.backends.ModelBackend")
             audit("auth.login", user, method="email_code")
             request.session.pop("login_email", None)
-            nxt = _next(request)
-            return redirect(home_url(user) if nxt == "/" else nxt)
+            return redirect(_after_login(request, user, nxt, last))
         form.add_error("code", _("Código incorrecto ou caducado."))
     return render(request, "accounts/code.html", {"form": form, "email": email})
 
@@ -130,8 +146,14 @@ def identity_callback(request):
     adapter = get_adapter("identity")
     identity = adapter.complete(request)
     if identity is None:
-        messages.error(request, _("Non se puido completar a identificación."))
-        return redirect("accounts:login")
+        messages.error(
+            request,
+            _(
+                "A identificación caducou ou xa se usou (por exemplo, ao volver atrás). Téntao de novo."
+            ),
+        )
+        nxt = request.session.get("identity_next") or request.session.get("login_next") or "/"
+        return redirect(reverse("accounts:login") + "?next=" + quote(nxt))
     user = User.objects.filter(identity_subject=identity.subject).first()
     if user is None:
         user, _created = User.objects.get_or_create(email=identity.email.lower())
@@ -140,14 +162,13 @@ def identity_callback(request):
         if not user.display_name:
             user.display_name = identity.name
         user.save()
+    nxt = request.session.pop("identity_next", None) or _next(request)
+    if not url_has_allowed_host_and_scheme(nxt, allowed_hosts={request.get_host()}):
+        nxt = "/"
+    last = request.session.get("last_tenant")
     login(request, user, backend="django.contrib.auth.backends.ModelBackend")
     audit("auth.login", user, method=identity.provider)
-    nxt = request.session.pop("identity_next", None) or _next(request)
-    if nxt == "/":
-        nxt = home_url(user)
-    return redirect(
-        nxt if url_has_allowed_host_and_scheme(nxt, allowed_hosts={request.get_host()}) else "/"
-    )
+    return redirect(_after_login(request, user, nxt, last))
 
 
 @require_POST

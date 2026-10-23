@@ -208,3 +208,13 @@ Formato: data · decisión · motivo · alternativas descartadas.
 - **Probas.**
   - Python: o persoal non ve o dato en ningunha páxina nin no ZIP de portabilidade, e o gardado esixe consentimento.
   - E2E: as recomendacións calcúlanse no dispositivo e ningunha petición leva o peso.
+
+## v3 · 5 — Ferramentas de demo e Cl@ve
+- **Ferramentas de demo independentes.** Correo, outras canles e pechadura usan `templates/dev/base.html`, un deseño neutro que nunca herda o marco, as pestanas nin o menú do perfil. TPV e Cl@ve usan esa mesma base co rótulo «Simulación dun servizo externo». Dende a barra de demo ábrense nunha pestana nova.
+- **Correo:** `white-space: pre-wrap` e `overflow-wrap: anywhere`, con ligazóns pulsables (`urlize`).
+- **Pechadura: «cousas raras» reproducidas e corrixidas.**
+  1. O bloqueo por intentos usaba o reloxo **simulado**. Ao fallar 5 veces cunha hora futura, `locked_until` quedaba horas por diante en tempo real e o teclado ficaba bloqueado para todas as persoas que probaban a demo. Agora `validate_code(..., lock_clock=)` aplica o bloqueo co tempo real no simulador; nunha pechadura real os dous reloxos son o mesmo.
+  2. Desde a barra abría sempre o primeiro dispositivo da base de datos, e o código da persoa daba DENEGADO. Agora, con sesión, preselecciona o dispositivo e a hora da súa próxima reserva de nivel 2.
+  3. Engadín o botón «Restablecer a pechadura (só demo)».
+  4. En escritorio, teclado e «Como funciona» van en dúas columnas; en móbil, unha debaixo da outra.
+- **Cl@ve.** Con outra sesión aberta, `login()` baleira a sesión ao cambiar de persoa, perdíase o destino e a persoa acababa en Pontedouro, que é o primeiro concello alfabeticamente. Agora o destino e o último concello visitado (`last_tenant`, gardado só se xa hai sesión) lense antes de `login()`. Se a identificación caduca ou se reutiliza, explícase e mantense o destino. O mesmo arranxo aplícase ao acceso por código.

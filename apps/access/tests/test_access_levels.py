@@ -140,3 +140,30 @@ def test_exponential_lockout_and_alert(gym_a, admin_a):
         at = device.locked_until + dt.timedelta(seconds=1)
     assert durations == [5, 10, 20]
     assert Notification.objects.filter(user=admin_a, title__contains="forzar").exists()
+
+
+def test_simulator_lockout_uses_real_time_not_simulated_clock(client, gym_a, citizen):
+    """v3: bloquear o teclado cunha hora simulada futura non pode deixalo bloqueado horas reais."""
+    b = booking_now(gym_a, citizen)
+    future = timezone.localtime(timezone.now() + dt.timedelta(hours=2)).strftime("%Y-%m-%dT%H:%M")
+    for _ in range(LockDevice.MAX_FAILED):
+        client.post("/dev/lock-simulator/", {"device": gym_a.lock.pk, "at": future, "code": "000000"})
+    gym_a.lock.refresh_from_db()
+    assert gym_a.lock.locked_until <= timezone.now() + dt.timedelta(minutes=LockDevice.LOCKOUT_MINUTES, seconds=5)
+    # Restablecer (só demo) desbloquea e a reserva abre á súa hora
+    client.post("/dev/lock-simulator/", {"device": gym_a.lock.pk, "action": "reset"})
+    at = timezone.localtime(b.start + dt.timedelta(minutes=1)).strftime("%Y-%m-%dT%H:%M")
+    r = client.post(
+        "/dev/lock-simulator/", {"device": gym_a.lock.pk, "at": at, "code": gym_a.lock.code_for_booking(b)}
+    )
+    assert "ABERTO" in r.content.decode()
+
+
+def test_simulator_preselects_device_of_my_next_booking(client, gym_a, citizen, padel_a):
+    b = booking_now(gym_a, citizen)
+    client.force_login(citizen)
+    html = client.get("/dev/lock-simulator/").content.decode()
+    assert f'<option value="{gym_a.lock.pk}" selected' in html
+    # reserva en curso: o reloxo da pechadura ponse na hora actual (dentro da franxa)
+    expected = max(b.start, timezone.now().replace(second=0, microsecond=0))
+    assert f'value="{timezone.localtime(expected).strftime("%Y-%m-%dT%H:%M")}"' in html

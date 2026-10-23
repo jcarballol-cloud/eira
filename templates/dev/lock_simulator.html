@@ -1,26 +1,44 @@
-{% extends "base.html" %}{% load i18n eira %}
+{% extends "dev/base.html" %}{% load i18n eira %}
 {% block title %}{% translate "Simulador de pechadura" %}{% endblock %}
 {% block content %}
-<div class="layout-aside">
+<div class="devtool__head"><h1>{% translate "Simulador de pechadura sen conexión" %}</h1>
+  <p>{% translate "Un teclado de nivel 2: sen internet, só co segredo compartido e o seu reloxo." %}</p></div>
+{% if not device %}
+  <p>{% translate "Non hai ningún teclado de nivel 2. Executa «make seed»." %}</p>
+{% else %}
+<div class="lock-layout">
   <section class="lock-sim" aria-labelledby="lock-title">
-    <h1 id="lock-title" class="center">{% icon 'lock' %} {% translate "Pechadura sen conexión" %}</h1>
-    {% if not device %}
-      <p>{% translate "Non hai ningún teclado de nivel 2. Executa «make seed»." %}</p>
-    {% else %}
-    <div class="lock-screen {% if result.ok %}lock-open{% elif result %}lock-denied{% endif %}" role="status" aria-live="assertive">
+    <h2 id="lock-title" class="visually-hidden">{% translate "Teclado" %}</h2>
+    <div class="lock-screen {% if result.ok %}lock-open{% elif result %}lock-denied{% elif locked %}lock-denied{% endif %}" role="status" aria-live="assertive">
       {% if result.ok %}
-        <div><span class="lock-led" aria-hidden="true"></span> <span class="state">{% translate "ABERTO" %}</span>
+        <span class="lock-led" aria-hidden="true"></span><span class="state">{% translate "ABERTO" %}</span>
         <p class="mb-0">{% blocktranslate with a=result.slot_start|hhmm b=result.slot_end|hhmm %}Código da franxa {{ a }}–{{ b }}{% endblocktranslate %}<br>
         <small>{% blocktranslate with a=result.match.window_start|hhmm b=result.match.window_end|hhmm %}Xanela con tolerancia: {{ a }}–{{ b }}{% endblocktranslate %}</small>
-        {% if result.booking %}<br><small>{% blocktranslate with r=result.booking.reference %}Reserva {{ r }}{% endblocktranslate %}{% if result.live %} · {% translate "uso rexistrado" %}{% endif %}</small>{% endif %}</p></div>
+        {% if result.booking %}<br><small>{% blocktranslate with r=result.booking.reference %}Reserva {{ r }}{% endblocktranslate %}{% if result.live %} · {% translate "uso rexistrado" %}{% endif %}</small>{% endif %}</p>
       {% elif result %}
-        <div><span class="lock-led" aria-hidden="true"></span> <span class="state">{% translate "DENEGADO" %}</span>
-        <p class="mb-0">{% if result.reason == 'locked' or result.reason == 'now_locked' %}{% translate "Demasiados intentos: teclado bloqueado 5 minutos." %}{% else %}{% translate "Código incorrecto ou fóra da súa franxa." %}{% endif %}</p></div>
+        <span class="lock-led" aria-hidden="true"></span><span class="state">{% translate "DENEGADO" %}</span>
+        <p class="mb-0">{% if result.reason == 'locked' or result.reason == 'now_locked' %}{% translate "Demasiados intentos: teclado bloqueado 5 minutos (tempo real)." %}{% else %}{% translate "Código incorrecto ou fóra da súa franxa." %}{% endif %}</p>
       {% else %}
-        <div><span class="lock-led" aria-hidden="true"></span> <span class="state">{% if locked %}{% translate "BLOQUEADO" %}{% else %}{% translate "PECHADO" %}{% endif %}</span><p class="mb-0">{% translate "Introduce o código" %}</p></div>
+        <span class="lock-led" aria-hidden="true"></span><span class="state">{% if locked %}{% translate "BLOQUEADO" %}{% else %}{% translate "PECHADO" %}{% endif %}</span><p class="mb-0">{% if locked %}{% translate "Demasiados intentos fallidos." %}{% else %}{% translate "Introduce o código" %}{% endif %}</p>
       {% endif %}
     </div>
-    <form method="get" class="mt-2" aria-label="{% translate 'Reloxo e dispositivo' %}">
+    <form method="post" class="lock-form">
+      {% csrf_token %}
+      <input type="hidden" name="device" value="{{ device.pk }}">
+      <input type="hidden" name="at" value="{{ at_value }}">
+      <label for="code" class="lock-form__label">{% translate "Código" %}</label>
+      <input id="code" name="code" class="lock-code" inputmode="numeric" autocomplete="off" maxlength="{{ device.digits }}" pattern="[0-9]*">
+      <div class="keypad" data-keypad="code" aria-hidden="true">
+        {% for k in "123456789" %}<button type="button" tabindex="-1" data-key="{{ k }}">{{ k }}</button>{% endfor %}
+        <button type="button" tabindex="-1" data-key="del">⌫</button><button type="button" tabindex="-1" data-key="0">0</button><button type="button" tabindex="-1" data-key="ok">OK</button>
+      </div>
+      <button class="btn btn-accent btn-block" type="submit">{% translate "Probar código" %}</button>
+    </form>
+  </section>
+
+  <div class="lock-side">
+    <form method="get" class="card" aria-labelledby="clock-title">
+      <h2 id="clock-title" class="h3">{% translate "Dispositivo e reloxo" %}</h2>
       <div class="field">
         <label for="device">{% translate "Dispositivo" %}</label>
         <select id="device" name="device">{% for d in devices %}<option value="{{ d.pk }}" {% if d.pk == device.pk %}selected{% endif %}>{{ d.municipality.name }} · {{ d.facility.name }}</option>{% endfor %}</select>
@@ -30,40 +48,26 @@
         <input id="at" name="at" type="datetime-local" value="{{ at_value }}">
       </div>
       <div class="row" role="group" aria-label="{% translate 'Mover o reloxo' %}">
-        <button class="btn btn-sm btn-secondary" type="submit">{% translate "Aplicar" %}</button>
+        <button class="btn btn-sm" type="submit">{% translate "Aplicar" %}</button>
         <button class="btn btn-sm btn-secondary" name="shift" value="-15" type="submit">−15 min</button>
-        <button class="btn btn-sm btn-secondary" name="shift" value="-5" type="submit">−5 min</button>
         <button class="btn btn-sm btn-secondary" name="shift" value="5" type="submit">+5 min</button>
         <button class="btn btn-sm btn-secondary" name="shift" value="15" type="submit">+15 min</button>
         <button class="btn btn-sm btn-secondary" name="shift" value="60" type="submit">+1 h</button>
       </div>
     </form>
-    <form method="post" class="mt-2">
-      {% csrf_token %}
-      <input type="hidden" name="device" value="{{ device.pk }}">
-      <input type="hidden" name="at" value="{{ at_value }}">
-      <div class="field">
-        <label for="code">{% translate "Código" %}</label>
-        <input id="code" name="code" inputmode="numeric" autocomplete="off" maxlength="{{ device.digits }}" pattern="[0-9]*">
-      </div>
-      <div class="keypad" data-keypad="code" aria-hidden="true">
-        {% for k in "123456789" %}<button type="button" tabindex="-1" data-key="{{ k }}">{{ k }}</button>{% endfor %}
-        <button type="button" tabindex="-1" data-key="del">⌫</button><button type="button" tabindex="-1" data-key="0">0</button><button type="button" tabindex="-1" data-key="ok">OK</button>
-      </div>
-      <button class="btn btn-accent btn-lg btn-block mt-2" type="submit">{% translate "Probar código" %}</button>
-    </form>
-    {% endif %}
-  </section>
-  <aside class="card prose" aria-labelledby="how-title">
-    <h2 id="how-title">{% translate "Como funciona" %}</h2>
-    <p>{% translate "A pechadura non ten internet. Comparte un segredo coa plataforma e calcula co seu propio reloxo se o código corresponde á franxa actual." %}</p>
-    <ol>
-      <li>{% translate "Reserva unha instalación de nivel 2 e copia o código." %}</li>
-      <li>{% translate "Pon o reloxo na hora da reserva: ábrese." %}</li>
-      <li>{% blocktranslate with t=device.tolerance_minutes %}Move o reloxo máis de {{ t }} minutos fóra da franxa: denégase.{% endblocktranslate %}</li>
-    </ol>
-    {% if device %}<dl class="kv"><dt>{% translate "Bloque" %}</dt><dd>{{ device.step_minutes }} min</dd><dt>{% translate "Tolerancia" %}</dt><dd>±{{ device.tolerance_minutes }} min</dd><dt>{% translate "Díxitos" %}</dt><dd>{{ device.digits }}</dd><dt>{% translate "Intentos fallidos" %}</dt><dd>{{ device.failed_attempts }}/5</dd></dl>{% endif %}
-    <p><small>{% translate "Algoritmo: HOTP (RFC 4226) cun contador ligado ao bloque horario e á duración da reserva. Ver docs/access/offline-codes.md." %}</small></p>
-  </aside>
+    <section class="card prose" aria-labelledby="how-title">
+      <h2 id="how-title" class="h3">{% translate "Como funciona" %}</h2>
+      <p>{% translate "A pechadura non ten internet. Comparte un segredo coa plataforma e calcula co seu propio reloxo se o código corresponde á franxa actual." %}</p>
+      <ol>
+        <li>{% translate "Reserva unha instalación de nivel 2 e copia o código." %}</li>
+        <li>{% translate "Pon o reloxo na hora da reserva: ábrese." %}</li>
+        <li>{% blocktranslate with t=device.tolerance_minutes %}Move o reloxo máis de {{ t }} minutos fóra da franxa: denégase.{% endblocktranslate %}</li>
+      </ol>
+      <dl class="kv"><dt>{% translate "Bloque" %}</dt><dd>{{ device.step_minutes }} min</dd><dt>{% translate "Tolerancia" %}</dt><dd>±{{ device.tolerance_minutes }} min</dd><dt>{% translate "Díxitos" %}</dt><dd>{{ device.digits }}</dd><dt>{% translate "Intentos fallidos" %}</dt><dd>{{ device.failed_attempts }}/5</dd></dl>
+      <form method="post">{% csrf_token %}<input type="hidden" name="device" value="{{ device.pk }}"><input type="hidden" name="action" value="reset"><button class="btn btn-sm btn-ghost" type="submit">{% translate "Restablecer a pechadura (só demo)" %}</button></form>
+      <p class="help mb-0">{% translate "Algoritmo: HOTP (RFC 4226) cun contador ligado ao bloque horario e á duración da reserva. Ver docs/access/offline-codes.md." %}</p>
+    </section>
+  </div>
 </div>
+{% endif %}
 {% endblock %}

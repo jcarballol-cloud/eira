@@ -134,7 +134,9 @@ def format_violations(results):
     return "\n".join(out)
 
 
-@pytest.mark.parametrize("viewport", [MOBILE, TABLET, DESKTOP], ids=["movil", "tableta", "escritorio"])
+@pytest.mark.parametrize(
+    "viewport", [MOBILE, TABLET, DESKTOP], ids=["movil", "tableta", "escritorio"]
+)
 def test_axe_main_pages(new_page, base, viewport):
     failures = []
     checked = 0

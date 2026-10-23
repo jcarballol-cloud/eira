@@ -1,5 +1,7 @@
-{% extends "base.html" %}{% load i18n %}
+{% extends "dev/base.html" %}{% load i18n %}
 {% block title %}{% translate "Cl@ve simulada" %}{% endblock %}
+{% block body_class %}devtool--external{% endblock %}
+{% block tool_brand %}<span class="devtool__brand">{% translate "Simulación dun servizo externo: identidade dixital" %}</span>{% endblock %}
 {% block content %}
 <section class="card prose">
   <p class="eyebrow">{% translate "Provedor de identidade simulado" %}</p>

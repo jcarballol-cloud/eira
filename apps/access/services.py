@@ -68,20 +68,25 @@ def booking_access_info(booking):
     return info
 
 
-def validate_code(device, code, at=None, record=True):
-    """Simula o firmware da pechadura: valida o código co reloxo `at` e aplica bloqueo por intentos."""
+def validate_code(device, code, at=None, record=True, lock_clock=None):
+    """Simula o firmware da pechadura: valida o código co reloxo `at` e aplica bloqueo por intentos.
+
+    `lock_clock` é o reloxo do bloqueo por intentos. Nunha pechadura real é o mesmo que `at`; no
+    simulador, onde `at` se move a man, é o tempo real: así un bloqueo feito cunha hora simulada
+    futura non deixa o teclado bloqueado horas reais."""
     from apps.bookings.models import Booking
     from apps.bookings.services import check_in
 
     at = at or timezone.now()
-    if device.locked_until and device.locked_until > at:
+    lock_clock = lock_clock or at
+    if device.locked_until and device.locked_until > lock_clock:
         return {"ok": False, "reason": "locked", "until": device.locked_until}
     match = offline_codes.validate(code, at, device.params)
     if not match:
         device.failed_attempts += 1
         reason = "invalid"
         if device.failed_attempts >= LockDevice.MAX_FAILED:
-            device.locked_until = at + dt.timedelta(minutes=device.lockout_minutes())
+            device.locked_until = lock_clock + dt.timedelta(minutes=device.lockout_minutes())
             device.lockout_count += 1
             device.failed_attempts = 0
             reason = "now_locked"

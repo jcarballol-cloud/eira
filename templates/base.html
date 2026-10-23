@@ -23,8 +23,8 @@
   <div class="demo-bar" role="note">
     <span class="demo-bar__label">{% translate "Demo · datos ficticios" %}</span>
     <a href="{% url 'home' %}#demo">{% icon 'users' %} {% translate "Cambiar de perfil" %}</a>
-    <a href="{% url 'dev:mailbox' %}">{% translate "Correo simulado" %}</a>
-    <a href="{% url 'dev:lock_simulator' %}">{% translate "Pechadura" %}</a>
+    <a href="{% url 'dev:mailbox' %}" target="_blank" rel="noopener">{% translate "Correo simulado" %}<span class="visually-hidden"> ({% translate "abre nunha pestana nova" %})</span></a>
+    <a href="{% url 'dev:lock_simulator' %}" target="_blank" rel="noopener">{% translate "Pechadura" %}<span class="visually-hidden"> ({% translate "abre nunha pestana nova" %})</span></a>
     {% if layout == 'app' or layout == 'tablet' %}<a href="?marco={% if framed %}0{% else %}1{% endif %}">{% if framed %}{% translate "Sen marco" %}{% else %}{% translate "Ver en marco" %}{% endif %}</a>{% endif %}
   </div>
   {% endif %}

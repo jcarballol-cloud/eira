@@ -27,11 +27,12 @@ def mailbox(request):
     mails = DevMail.objects.all()
     if to:
         mails = mails.filter(to__iexact=to)
-    return render(request, "dev/mailbox.html", {"mails": mails[:50], "to": to})
+    return render(request, "dev/mailbox.html", {"mails": mails[:50], "to": to, "tool": "mail"})
 
 
 def outbox(request):
-    return render(request, "dev/outbox.html", {"messages_out": OutboundMessage.objects.all()[:100]})
+    return render(request, "dev/outbox.html", {"messages_out": OutboundMessage.objects.all()[:100], "tool": "outbox"}
+    )
 
 
 def tpv(request, reference):
@@ -74,11 +75,33 @@ def lock_simulator(request):
     shift = request.GET.get("shift")
     if request.method == "GET" and shift and shift.lstrip("-").isdigit():
         at = at + dt.timedelta(minutes=int(shift))
-    device = devices.filter(pk=device_id).first() if device_id else devices.first()
+    device = devices.filter(pk=device_id).first() if device_id else None
+    if device is None and request.user.is_authenticated and not at_raw:
+        # Sen parámetros: o dispositivo e a hora da próxima reserva da persoa (nivel 2)
+        from apps.bookings.models import Booking
+
+        mine = (
+            Booking.objects.filter(
+                user=request.user,
+                facility__lock__kind=LockDevice.Kind.OFFLINE,
+                end__gt=timezone.now(),
+            )
+            .holding()
+            .order_by("start")
+            .select_related("facility__lock")
+            .first()
+        )
+        if mine:
+            device = mine.facility.lock
+            at = max(mine.start, now)  # en curso: agora; se non, á hora de inicio
+    device = device or devices.first()
     code = request.POST.get("code", "").strip()
-    if request.method == "POST" and device and code:
+    if request.method == "POST" and device and request.POST.get("action") == "reset":
+        device.failed_attempts, device.lockout_count, device.locked_until = 0, 0, None
+        device.save(update_fields=["failed_attempts", "lockout_count", "locked_until"])
+    elif request.method == "POST" and device and code:
         live = abs((at - timezone.now()).total_seconds()) < 300
-        result = validate_code(device, code, at=at, record=live)
+        result = validate_code(device, code, at=at, record=live, lock_clock=timezone.now())
         result["live"] = live
         device.refresh_from_db()
     return render(
@@ -90,7 +113,8 @@ def lock_simulator(request):
             "at": at,
             "result": result,
             "at_value": timezone.localtime(at).strftime("%Y-%m-%dT%H:%M"),
-            "locked": bool(device and device.locked_until and device.locked_until > at),
+            "locked": bool(device and device.locked_until and device.locked_until > timezone.now()),
+            "tool": "lock",
         },
     )
 

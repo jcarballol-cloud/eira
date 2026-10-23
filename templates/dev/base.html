@@ -1,0 +1,32 @@
+{% load static i18n %}<!doctype html>
+{% get_current_language as LANG %}
+<html lang="{{ LANG }}" class="{{ prefs.classes }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>{% block title %}{% endblock %} · {% translate "Ferramenta de demostración" %} · Eira</title>
+  <link rel="icon" href="{% static 'img/eira.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'css/eira.css' %}">
+  <script src="{% static 'js/eira.js' %}" defer></script>
+</head>
+{# Páxinas independentes: nunca herdan o marco, a barra de pestanas nin o menú do perfil activo. #}
+<body class="devtool {% block body_class %}{% endblock %}">
+  <a class="skip-link" href="#main">{% translate "Saltar ao contido" %}</a>
+  <header class="devtool__bar">
+    <div class="devtool__wrap">
+      {% block tool_brand %}<span class="devtool__brand"><img src="{% static 'img/eira.svg' %}" alt="" width="22" height="22"> <strong>Eira</strong> · {% translate "Ferramentas de demostración" %}</span>
+      <nav aria-label="{% translate 'Ferramentas de demostración' %}" class="devtool__nav">
+        <a href="{% url 'dev:mailbox' %}" {% if tool == 'mail' %}aria-current="page"{% endif %}>{% translate "Correo simulado" %}</a>
+        <a href="{% url 'dev:outbox' %}" {% if tool == 'outbox' %}aria-current="page"{% endif %}>{% translate "Outras canles" %}</a>
+        <a href="{% url 'dev:lock_simulator' %}" {% if tool == 'lock' %}aria-current="page"{% endif %}>{% translate "Pechadura" %}</a>
+        <a href="{% url 'home' %}">{% translate "Volver á demo" %}</a>
+      </nav>{% endblock %}
+    </div>
+  </header>
+  <main id="main" tabindex="-1" class="devtool__wrap devtool__main">
+    {% if messages %}<ul class="messages">{% for message in messages %}<li class="alert">{{ message }}</li>{% endfor %}</ul>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

@@ -146,3 +146,31 @@ def test_cannot_touch_others_dependents(client, citizen, outsider):
     dep = Dependent.objects.create(household=hh, first_name="X", birth_year=2018)
     client.force_login(citizen)
     assert client.post(f"/conta/familia/{dep.pk}/consentimento/image/").status_code == 404
+
+
+def test_clave_with_another_session_keeps_next(client, muni_a, citizen):
+    """v3: con outra sesión aberta, login() baleiraba a sesión e perdíase o destino."""
+    client.force_login(citizen)
+    client.get("/acceso/clave/?next=/c/concello-a/")
+    state = client.session["identity_state"]
+    r = client.post("/acceso/clave/volta/", {"state": state, "identity": "proba-1"})
+    assert r.status_code == 302 and r["Location"] == "/c/concello-a/"
+
+
+def test_clave_without_next_returns_to_last_visited_tenant(client, muni_a, muni_b):
+    client.get("/acceso/")  # crea a sesión
+    client.get("/c/concello-b/")
+    client.get("/acceso/clave/")
+    state = client.session["identity_state"]
+    r = client.post("/acceso/clave/volta/", {"state": state, "identity": "proba-2"})
+    assert r["Location"] == "/c/concello-b/app/"
+
+
+def test_clave_reused_state_explains_and_keeps_next(client, muni_a):
+    client.get("/acceso/clave/?next=/c/concello-a/")
+    state = client.session["identity_state"]
+    client.post("/acceso/clave/volta/", {"state": state, "identity": "proba-1"})
+    client.logout()
+    client.get("/acceso/clave/?next=/c/concello-a/")
+    r = client.post("/acceso/clave/volta/", {"state": state + "x", "identity": "proba-1"})
+    assert r["Location"] == "/acceso/?next=/c/concello-a/"

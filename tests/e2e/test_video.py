@@ -76,12 +76,14 @@ def run_script(page, base, d):
     page.fill("#id_birth_year", "1990")
     page.fill("#id_postcode", "15999")
     page.check("#id_resident")
-    d.say("Sabela pide a app. O concello contrasta o padrón sen copialo: só «figura» ou «non».", 3.2)
+    d.say(
+        "Sabela pide a app. O concello contrasta o padrón sen copialo: só «figura» ou «non».", 3.2
+    )
     page.click("main button[type=submit]")
     page.wait_for_load_state("networkidle")
     d.go(base + f"/dev/mailbox/?para={email}")
     d.say("Recibe un correo coa ligazón de instalación e o seu código de empadroamento.", 3)
-    body = page.locator("pre").first.inner_text()
+    body = page.locator(".mail__body").first.inner_text()
     link = re.search(r"(http\S+/app/instalar/\?codigo=\S+)", body).group(1)
     d.go(link)
     d.say("Instrucións para Android e iPhone. A app instálase desde o navegador.", 2.8)
@@ -91,7 +93,7 @@ def run_script(page, base, d):
     page.click("main button[type=submit]")
     page.wait_for_load_state("networkidle")
     page.goto(base + f"/dev/mailbox/?para={email}")
-    otp = re.search(r"\b(\d{6})\b", page.locator("pre").first.inner_text()).group(1)
+    otp = re.search(r"\b(\d{6})\b", page.locator(".mail__body").first.inner_text()).group(1)
     d.go(base + "/acceso/codigo/")
     page.fill("#id_code", otp)
     page.click("main button[type=submit]")
@@ -140,7 +142,9 @@ def run_script(page, base, d):
     code = page.locator(".access-code").first.inner_text().strip()
     page.locator("[data-health-booking] .rec").first.wait_for()
     page.locator("[data-health-booking]").scroll_into_view_if_needed()
-    d.say("Consellos para esta sesión: a que hora beber, canto para o seu peso, e a previsión.", 3.4)
+    d.say(
+        "Consellos para esta sesión: a que hora beber, canto para o seu peso, e a previsión.", 3.4
+    )
     # 4. Pechadura sen conexión
     page.locator(".access-code").first.scroll_into_view_if_needed()
     d.say("Código de 6 díxitos válido só na súa franxa.", 2.6)
@@ -194,7 +198,9 @@ def run_script(page, base, d):
     d.go(c + "/xestion/valoracions/")
     d.say("Valoracións: índice por instalación e comentarios, sen nomes.", 3)
     d.go(c + "/actividades/observatorio/?semanas=12")
-    d.say("Observatorio da actividade física: anónimo, con grupos de 10 ou máis, fronte á OMS.", 3.2)
+    d.say(
+        "Observatorio da actividade física: anónimo, con grupos de 10 ou máis, fronte á OMS.", 3.2
+    )
     # 9. Deputación
     d.login(base, "deputacion@demo.eira.example")
     d.say("A deputación compara concellos: uso por habitante, satisfacción, tendencia.", 3.2)

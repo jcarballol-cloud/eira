@@ -87,6 +87,11 @@ class TenantMiddleware:
         except Municipality.DoesNotExist as exc:
             raise Http404("Concello descoñecido") from exc
         request.tenant = tenant
+        # Lembra o último concello visitado (para volver a el despois de identificarse).
+        # Só se xa hai sesión: non se crean sesións para visitantes anónimos.
+        session = getattr(request, "session", None)
+        if session is not None and session.session_key and session.get("last_tenant") != slug:
+            session["last_tenant"] = slug
         if request.user.is_authenticated:
             from apps.accounts.models import Membership
 

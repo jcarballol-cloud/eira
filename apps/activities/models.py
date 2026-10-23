@@ -90,6 +90,9 @@ class Enrollment(TenantModel):
         related_name="enrollments",
     )
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING_PAYMENT)
+    # Dato da inscrición, que achega o concello (padrón ou folla de inscrición), non a monitora.
+    # A tableta só amosa nome + primeiro apelido; o nome completo, só na administración.
+    surnames = models.CharField(_("apelidos (inscrición)"), max_length=80, blank=True)
     paid_cents = models.PositiveIntegerField(default=0)
     payment_reference = models.CharField(max_length=40, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -103,9 +106,7 @@ class Enrollment(TenantModel):
 
     @property
     def participant_surnames(self):
-        if self.dependent:
-            return self.dependent.surnames
-        return self.user.surnames if self.user else ""
+        return self.surnames
 
     @property
     def participant_name(self):
@@ -136,7 +137,6 @@ class PendingParticipant(TenantModel):
 
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="pending_participants")
     first_name = models.CharField(_("nome"), max_length=60)
-    surnames = models.CharField(_("apelidos"), max_length=80, blank=True)
     birth_year = models.PositiveIntegerField(_("ano de nacemento"), null=True, blank=True)
     guardian_email = models.EmailField(_("correo da familia ou da persoa"), blank=True)
     added_by = models.ForeignKey(

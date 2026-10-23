@@ -21,5 +21,22 @@
     <form method="post" novalidate>{% csrf_token %}<input type="hidden" name="action" value="eligibility">{% with form=elig_form %}{% include "includes/form.html" %}{% endwith %}<button class="btn" type="submit">{% translate "Validar" %}</button></form>
     <ul class="list mt-1">{% for e in eligibilities %}<li class="row-between"><span>{{ e.user.email }}</span><span class="badge {% if e.is_valid %}badge-ok{% else %}badge-muted{% endif %}">{{ e.get_kind_display }}{% if e.expires_on %} · {{ e.expires_on|date:"d/m/Y" }}{% endif %}</span></li>{% endfor %}</ul>
   </section>
+  <section class="card" id="soporte" aria-labelledby="sup-title">
+    <h2 id="sup-title">{% translate "Acceso de soporte da deputación" %}</h2>
+    <p>{% translate "A deputación ve sempre os datos agregados e anónimos. Para ver datos persoais (reservas, persoas, cobros) precisa que o concello o autorice: o acceso dura 24 horas, cada páxina vista queda rexistrada e recibes un aviso cando o empeza a usar." %}</p>
+    {% if support_active %}
+      <p class="alert alert-warn">{% blocktranslate with d=support_active.expires_at|date:"d/m H:i" m=support_active.reason %}Acceso activo ata o {{ d }}. Motivo: {{ m }}.{% endblocktranslate %}</p>
+      <form method="post">{% csrf_token %}<input type="hidden" name="action" value="support_revoke"><button class="btn btn-danger btn-sm" type="submit">{% translate "Retirar o acceso agora" %}</button></form>
+    {% elif tenant.region %}
+      <form method="post" class="stack-sm">{% csrf_token %}<input type="hidden" name="action" value="support_grant">
+        <div class="field"><label for="sup-reason">{% translate "Motivo" %}</label><input id="sup-reason" name="reason" type="text" maxlength="200" required placeholder="{% translate 'Ex.: revisar unha incidencia de cobros' %}"></div>
+        <button class="btn btn-sm" type="submit">{% blocktranslate with r=tenant.region.name %}Autorizar a {{ r }} durante 24 h{% endblocktranslate %}</button>
+      </form>
+    {% else %}<p class="muted">{% translate "Este concello non pertence a ningunha deputación." %}</p>{% endif %}
+    {% if support_uses %}<h3 class="mt-2">{% translate "Últimas consultas con acceso de soporte" %}</h3>
+      <ul class="list">{% for u in support_uses %}<li><small>{{ u.at|date:"d/m H:i" }} · {{ u.actor.email|default:"—" }} · <span class="mono">{{ u.detail.path }}</span></small></li>{% endfor %}</ul>{% endif %}
+    {% if support_history %}<h3 class="mt-2">{% translate "Historial" %}</h3>
+      <ul class="list">{% for a in support_history %}<li><small>{{ a.granted_at|date:"d/m H:i" }} → {{ a.expires_at|date:"d/m H:i" }} · {{ a.reason }}{% if a.revoked_at %} · {% translate "retirado" %}{% elif a.is_active %} · <strong>{% translate "activo" %}</strong>{% else %} · {% translate "caducado" %}{% endif %}</small></li>{% endfor %}</ul>{% endif %}
+  </section>
 </div>
 {% endblock %}

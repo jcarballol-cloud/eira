@@ -33,7 +33,7 @@
     <a href="{% url 'region:dashboard' nav_region.slug %}" {% if nav == 'region' %}aria-current="page"{% endif %}>{% icon 'chart' %} {% translate "Rede" %}</a>
     <a href="{% url 'region:new_municipality' nav_region.slug %}" {% if nav == 'region_new' %}aria-current="page"{% endif %}>{% icon 'star' %} {% translate "Novo concello" %}</a>
     <p class="sidenav__group">{% translate "Concellos" %}</p>
-    {% for m in nav_region.municipalities.all %}<a href="{% url 'manage:dashboard' m.slug %}" {% if tenant == m %}aria-current="page"{% endif %}>{% icon 'map' %} {{ m.name }}</a>{% endfor %}
+    {% for m in nav_region.municipalities.all %}<a href="{% url 'manage:indicators' m.slug %}" {% if tenant == m %}aria-current="page"{% endif %}>{% icon 'map' %} {{ m.name }}</a>{% endfor %}
     {% endif %}
   </nav>
   {% endif %}

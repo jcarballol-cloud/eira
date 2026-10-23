@@ -44,7 +44,6 @@ class ProfileForm(forms.ModelForm):
         model = User
         fields = [
             "display_name",
-            "surnames",
             "phone",
             "birth_year",
             "preferred_language",
@@ -90,7 +89,7 @@ class DependentForm(forms.ModelForm):
 
     class Meta:
         model = Dependent
-        fields = ["first_name", "surnames", "birth_year"]
+        fields = ["first_name", "birth_year"]
         help_texts = {"first_name": _("O nome co que o chaman.")}
 
     def clean_birth_year(self):

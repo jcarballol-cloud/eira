@@ -30,14 +30,13 @@
       <input type="hidden" name="next" value="kiosk">
       <div class="filters">
         <div class="field"><label for="pp-name">{% translate "Nome" %}</label><input id="pp-name" name="first_name" type="text" required maxlength="60" autocomplete="off"></div>
-        <div class="field"><label for="pp-surnames">{% translate "Apelidos" %}</label><input id="pp-surnames" name="surnames" type="text" maxlength="80" autocomplete="off"></div>
         <div class="field"><label for="pp-year">{% translate "Ano de nacemento" %}</label><input id="pp-year" name="birth_year" type="number" inputmode="numeric" min="1900" max="2100"></div>
         <div class="field"><label for="pp-mail">{% translate "Correo da familia (opcional)" %}</label><input id="pp-mail" name="guardian_email" type="email" inputmode="email" autocomplete="off"></div>
       </div>
       <p class="help">{% translate "Queda pendente ata que o concello valide a inscrición." %}</p>
       <button class="btn" type="submit">{% translate "Apuntar" %}</button>
     </form>
-    {% if pending %}<p class="mb-0 mt-1"><strong>{% translate "Pendentes de validar:" %}</strong> {% for p in pending %}{{ p.first_name }} {{ p.surnames }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>{% endif %}
+    {% if pending %}<p class="mb-0 mt-1"><strong>{% translate "Pendentes de validar:" %}</strong> {% for p in pending %}{{ p.first_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>{% endif %}
   </details>
   <p class="mt-1"><a href="{% turl 'monitor:today' %}">← {% translate "Sesións de hoxe" %}</a> · <a href="{% turl 'monitor:attendance' session.pk %}">{% translate "Lista rápida" %}</a></p>
 </div>

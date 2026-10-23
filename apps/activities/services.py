@@ -67,7 +67,7 @@ def enroll(group, user, dependent=None):
     return e
 
 
-def validate_pending(pending, email, actor):
+def validate_pending(pending, email, actor, surnames=""):
     """Converte unha persoa apuntada polo monitor nunha inscrición real.
 
     Menor de idade → menor ao cargo da conta do correo indicado (coa autorización en papel
@@ -90,7 +90,6 @@ def validate_pending(pending, email, actor):
                 dependent = Dependent.objects.create(
                     household=household,
                     first_name=pending.first_name,
-                    surnames=pending.surnames,
                     birth_year=pending.birth_year,
                 )
             if not dependent.has_consent(Consent.Kind.DATA):
@@ -101,6 +100,9 @@ def validate_pending(pending, email, actor):
                     text_version="papel",
                 )
         e = enroll(pending.group, user, dependent)
+        if surnames:
+            e.surnames = surnames.strip()[:80]
+            e.save(update_fields=["surnames"])
         pending.status = PendingParticipant.Status.VALIDATED
         pending.resolved_at = timezone.now()
         pending.enrollment = e
@@ -225,31 +227,36 @@ def week_start(day):
 
 
 def kiosk_people(session):
-    """Participantes da sesión para a tableta: «Apelidos, Nome», inicial, fotos, esforzo e estado."""
-    from .names import display, initial, sort_key
+    """Participantes da sesión para a tableta: nome e primeiro apelido, inicial, fotos, esforzo e
+    estado. Os apelidos completos quedan no servidor: só se usan para a inicial e a orde."""
+    from .names import first_surname_label, initial, sort_key
 
     marks = {a.enrollment_id: a for a in session.attendances.all()}
     rows = []
     for e in session.group.enrolled().select_related("dependent", "user"):
         a = marks.get(e.pk)
-        surnames, name = e.participant_surnames or "", e.participant_name or ""
+        surnames, name = e.surnames or "", e.participant_name or ""
+        first = first_surname_label(surnames)
+        # Minimización: á tableta só chega nome + primeiro apelido (o resto queda no servidor)
         rows.append(
-            {
-                "id": e.pk,
-                "name": name,
-                "surnames": surnames,
-                "label": display(surnames, name),
-                "initial": initial(surnames, name),
-                "sort": " ".join(sort_key(surnames, name)),
-                "photo": e.can_appear_in_photos,
-                "effort": can_record_effort(e),
-                "minor": bool(e.dependent_id),
-                "in": bool(a and a.present),
-                "rpe": a.rpe if a else None,
-            }
+            (
+                sort_key(surnames, name),
+                {
+                    "id": e.pk,
+                    "name": name,
+                    "surname1": first,
+                    "label": f"{name} {first}".strip(),
+                    "initial": initial(surnames, name),
+                    "photo": e.can_appear_in_photos,
+                    "effort": can_record_effort(e),
+                    "minor": bool(e.dependent_id),
+                    "in": bool(a and a.present),
+                    "rpe": a.rpe if a else None,
+                },
+            )
         )
-    rows.sort(key=lambda r: r["sort"])
-    return rows
+    rows.sort(key=lambda r: r[0])
+    return [r for _k, r in rows]
 
 
 def kiosk_record(session, enrollment, action, value=None, at=None):

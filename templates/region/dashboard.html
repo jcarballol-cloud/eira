@@ -32,7 +32,7 @@
     <td class="num">{{ r.resolve_hours|default:"—" }}</td>
     <td class="num">{% if r.revenue_per_inh is not None %}{{ r.revenue_per_inh }} €{% else %}—{% endif %}</td>
     <td><div class="row">
-      <a class="btn btn-sm btn-secondary" href="{% url 'manage:dashboard' r.m.slug %}">{% translate "Consultar" %}<span class="visually-hidden"> {{ r.m.name }}</span></a>
+      <a class="btn btn-sm btn-secondary" href="{% url 'manage:indicators' r.m.slug %}">{% translate "Consultar" %}<span class="visually-hidden"> {{ r.m.name }}</span></a>
       {% if r.admin %}<form method="post" action="{% url 'region:resend_invitation' region.slug r.m.slug %}">{% csrf_token %}<button class="btn btn-sm btn-ghost" type="submit" title="{% if r.invited_at %}{% blocktranslate with d=r.invited_at|date:'d/m H:i' %}Última invitación: {{ d }}{% endblocktranslate %}{% endif %}">{% translate "Reenviar invitación" %}<span class="visually-hidden"> {{ r.m.name }}</span></button></form>{% endif %}
     </div></td></tr>
   {% empty %}<tr><td colspan="10">{% translate "Aínda non hai concellos." %}</td></tr>{% endfor %}</tbody>

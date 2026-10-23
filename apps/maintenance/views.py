@@ -14,7 +14,7 @@ from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
 from apps.tenants.uploads import clean_image
-from apps.tenants.urlutils import role_required, treverse
+from apps.tenants.urlutils import aggregate_view, role_required, treverse
 
 from . import services
 from .models import Frequency, MaintenancePlan, MaintenanceTask, WorkOrder, WorkOrderPhoto
@@ -246,6 +246,7 @@ class TaskForm(forms.ModelForm):
 
 
 @role_required("admin", "region_admin")
+@aggregate_view
 def plans(request):
     plans_qs = (
         MaintenancePlan.objects.for_tenant(request.tenant)

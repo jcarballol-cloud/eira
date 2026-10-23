@@ -130,7 +130,7 @@ def page_sets():
         "deputacion@demo.eira.example": [
             "/rexion/marismas/",
             "/rexion/marismas/novo-concello/",
-            "/c/pontedouro/xestion/",
+            "/c/pontedouro/xestion/instalacions/",
             "/c/pontedouro/xestion/indicadores/",
         ],
     }

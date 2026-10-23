@@ -125,7 +125,6 @@ def add_pending(request, pk):
                 municipality=request.tenant,
                 group=session.group,
                 first_name=name,
-                surnames=request.POST.get("surnames", "").strip()[:80],
                 birth_year=int(year) if year.isdigit() and 1900 < int(year) < 2100 else None,
                 guardian_email=request.POST.get("guardian_email", "").strip().lower()[:254],
                 added_by=request.user,

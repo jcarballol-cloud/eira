@@ -11,7 +11,7 @@ from django.utils.translation import gettext_lazy
 from apps.accounts.models import audit
 from apps.bookings.services import apply_closure
 from apps.tenants.uploads import clean_image
-from apps.tenants.urlutils import role_required, treverse
+from apps.tenants.urlutils import aggregate_view, role_required, treverse
 
 from .catalog import TEMPLATES, apply_template, ensure_lock, template_choices
 from .models import Closure, Facility, OpeningHours, Parish, RulesVersion, Tariff
@@ -134,6 +134,7 @@ class FacilityForm(forms.ModelForm):
 
 
 @role_required(*ADMIN_ROLES)
+@aggregate_view
 def facility_list(request):
     facilities = Facility.objects.for_tenant(request.tenant).select_related("parish")
     return render(
@@ -385,6 +386,7 @@ class ClosureForm(forms.ModelForm):
 
 
 @role_required(*ADMIN_ROLES)
+@aggregate_view
 def closures(request):
     form = ClosureForm(request.POST or None, tenant=request.tenant)
     if request.method == "POST" and form.is_valid():

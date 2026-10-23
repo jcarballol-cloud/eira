@@ -317,7 +317,12 @@ def export_user_data(user):
             else [],
         },
         "enrollments": [
-            {"group": str(e.group), "participant": e.participant_name, "status": e.status}
+            {
+                "group": str(e.group),
+                "participant": e.participant_name,
+                "surnames": e.surnames,
+                "status": e.status,
+            }
             for e in Enrollment.objects.filter(user=user).select_related(
                 "group", "group__activity", "dependent"
             )

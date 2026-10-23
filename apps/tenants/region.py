@@ -470,3 +470,27 @@ def new_municipality(request):
             "nav": "region_new",
         },
     )
+
+
+@region_admin_required
+@require_POST
+def request_support(request, slug):
+    """A deputación solicita ao concello un acceso de soporte (o concello é quen o autoriza)."""
+    from apps.notifications.services import notify
+
+    m = get_object_or_404(Municipality, slug=slug, region=request.region)
+    reason = (request.POST.get("reason") or "").strip()[:200] or _("Sen motivo indicado")
+    for admin in Membership.objects.filter(municipality=m, role=Role.ADMIN).select_related("user"):
+        notify(
+            admin.user,
+            _("A deputación solicita acceso de soporte"),
+            _("%(r)s pide acceso de soporte durante 24 horas. Motivo: %(m)s")
+            % {"r": request.region.name, "m": reason},
+            url=treverse(m, "manage:staff") + "#soporte",
+            municipality=m,
+        )
+    audit("support.request", request.user, m, request.region, reason=reason)
+    messages.success(
+        request, _("Solicitude enviada a %(m)s. Avisarémoste cando a autorice.") % {"m": m.name}
+    )
+    return redirect("region:dashboard", request.region.slug)

@@ -1,8 +1,10 @@
 # SPDX-License-Identifier: EUPL-1.2
 """Concellos (tenants) e agrupacións supramunicipais (deputacións, mancomunidades)."""
 
+from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 hex_color = RegexValidator(r"^#[0-9A-Fa-f]{6}$", _("Cor en formato #RRGGBB."))
@@ -206,3 +208,48 @@ def contrast_ratio(hex_a, hex_b):
 
     la, lb = sorted((luminance(hex_a), luminance(hex_b)), reverse=True)
     return (la + 0.05) / (lb + 0.05)
+
+
+class SupportAccess(models.Model):
+    """Acceso de soporte da deputación aos datos persoais dun concello.
+
+    Por defecto a deputación só ve datos agregados ou anónimos. O concello autoriza o acceso,
+    que caduca ás 24 h (ou antes, se o revoga). Cada páxina vista queda en AuditLog e o
+    concello recibe un aviso no primeiro uso."""
+
+    DURATION = timezone.timedelta(hours=24)
+
+    municipality = models.ForeignKey(
+        Municipality, on_delete=models.CASCADE, related_name="support_accesses"
+    )
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name="support_accesses")
+    reason = models.CharField(_("motivo"), max_length=200)
+    granted_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    granted_at = models.DateTimeField(default=timezone.now)
+    expires_at = models.DateTimeField()
+    revoked_at = models.DateTimeField(null=True, blank=True)
+    first_used_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = _("acceso de soporte da deputación")
+        verbose_name_plural = _("accesos de soporte da deputación")
+        ordering = ["-granted_at"]
+
+    @classmethod
+    def active_for(cls, municipality, region_ids):
+        return (
+            cls.objects.filter(
+                municipality=municipality,
+                region_id__in=region_ids,
+                revoked_at__isnull=True,
+                expires_at__gt=timezone.now(),
+            )
+            .order_by("-expires_at")
+            .first()
+        )
+
+    @property
+    def is_active(self):
+        return self.revoked_at is None and self.expires_at > timezone.now()

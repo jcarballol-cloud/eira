@@ -14,11 +14,16 @@
   <caption class="visually-hidden">{% translate "Participantes e consentimentos" %}</caption>
   <thead><tr><th scope="col">{% translate "Participante" %}</th><th scope="col">{% translate "Estado" %}</th><th scope="col">{% translate "Fotos" %}</th><th scope="col">{% translate "Rexistro do esforzo" %}</th></tr></thead>
   <tbody>{% for r in rows %}<tr>
-    <th scope="row">{{ r.e.participant_name }}{% if r.minor %} <small class="muted">({% translate "menor" %})</small>{% endif %}</th>
+    <th scope="row">{{ r.e.participant_name }} {{ r.e.surnames }}{% if r.minor %} <small class="muted">({% translate "menor" %})</small>{% endif %}
+      <form method="post" class="row mt-1 surnames-form">{% csrf_token %}<input type="hidden" name="action" value="surnames"><input type="hidden" name="enrollment" value="{{ r.e.pk }}">
+        <label class="visually-hidden" for="sur-{{ r.e.pk }}">{% blocktranslate with n=r.e.participant_name %}Apelidos de {{ n }}{% endblocktranslate %}</label>
+        <input id="sur-{{ r.e.pk }}" name="surnames" type="text" maxlength="80" value="{{ r.e.surnames }}" placeholder="{% translate 'apelidos (padrón)' %}">
+        <button class="btn btn-sm btn-secondary" type="submit">{% translate "Gardar" %}<span class="visually-hidden"> {{ r.e.participant_name }}</span></button></form></th>
     <td>{{ r.e.get_status_display }}</td>
     <td>{% if r.photo %}<span class="consent-ico is-on">{% icon 'camera' %}</span> {% translate "Pode saír" %}{% else %}<span class="consent-ico is-off">{% icon 'camera-off' %}</span> <strong>{% translate "Non pode saír" %}</strong>{% endif %}</td>
     <td>{% if r.performance %}{% translate "Autorizado" %}{% else %}<span class="muted">{% translate "Sen autorización" %}</span>{% endif %}</td>
   </tr>{% empty %}<tr><td colspan="4" class="muted">{% translate "Ninguén neste filtro." %}</td></tr>{% endfor %}</tbody>
 </table></div>
 <p class="help mt-1">{% translate "Os consentimentos dáos a propia persoa ou, nos menores de 14 anos, a súa familia desde a app. O concello non os pode cambiar." %}</p>
+<p class="help">{% translate "Os apelidos son dato da inscrición: os achega o concello (padrón ou folla de inscrición). Na tableta da monitora só se ve o nome e o primeiro apelido." %}</p>
 {% endblock %}

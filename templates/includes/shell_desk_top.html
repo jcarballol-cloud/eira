@@ -7,5 +7,5 @@
   </div>
 </div>
 {% if region_consult %}
-<div class="consult-banner" role="note">{% icon 'chart' %} <span>{% blocktranslate with t=tenant.name %}Estás vendo <strong>{{ t }}</strong> como Deputación · só lectura{% endblocktranslate %}</span> <a href="{% url 'region:dashboard' tenant.region.slug %}">{% translate "Volver á rede" %}</a></div>
+<div class="consult-banner" role="note">{% icon 'chart' %} <span>{% blocktranslate with t=tenant.name %}Estás vendo <strong>{{ t }}</strong> como Deputación · só lectura{% endblocktranslate %} · {% if support_access %}{% blocktranslate with d=support_access.expires_at|date:"d/m H:i" %}acceso de soporte ata o {{ d }} (rexistrado){% endblocktranslate %}{% else %}{% translate "só datos agregados" %}{% endif %}</span> <a href="{% url 'region:dashboard' tenant.region.slug %}">{% translate "Volver á rede" %}</a></div>
 {% endif %}

@@ -1,9 +1,22 @@
-{% extends "base.html" %}{% load i18n %}
+{% extends "base.html" %}{% load i18n eira %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
 <div class="card prose">
   <p class="eyebrow">{% translate "Erro" %} {{ code }}</p>
   <h1>{{ title }}</h1>
+  {% if support_denied %}
+  <p>{% blocktranslate with t=tenant.name %}A deputación ve sempre os datos agregados e anónimos de {{ t }} (indicadores, instalacións, peches e mantemento). Esta páxina contén datos persoais: só se pode ver cun <strong>acceso de soporte</strong> que autorice o concello, que caduca ás 24 horas e queda rexistrado.{% endblocktranslate %}</p>
+  {% if region_slug %}
+  <form method="post" action="{% url 'region:request_support' region_slug tenant.slug %}" class="stack-sm">
+    {% csrf_token %}
+    <div class="field"><label for="reason">{% translate "Motivo da solicitude" %}</label>
+      <input id="reason" name="reason" type="text" maxlength="200" required placeholder="{% translate 'Ex.: revisar unha incidencia de cobros' %}"></div>
+    <button class="btn" type="submit">{% translate "Solicitar acceso de soporte ao concello" %}</button>
+  </form>
+  {% endif %}
+  <p class="mt-1"><a href="{% turl 'manage:indicators' %}">{% translate "Ver os indicadores (datos agregados)" %}</a></p>
+  {% else %}
   <p><a class="btn" href="{% url 'home' %}">{% translate "Ir ao inicio" %}</a></p>
+  {% endif %}
 </div>
 {% endblock %}

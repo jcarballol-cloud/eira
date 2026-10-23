@@ -191,9 +191,14 @@ def not_found(request, exception=None):
 
 
 def forbidden(request, exception=None):
-    return render(
-        request,
-        "core/error.html",
-        {"code": 403, "title": _("Non tes permiso para ver isto")},
-        status=403,
-    )
+    ctx = {"code": 403, "title": _("Non tes permiso para ver isto")}
+    if getattr(request, "support_denied", False):
+        # Deputación sen acceso de soporte: explícase e pódese solicitar ao concello
+        ctx.update(
+            {
+                "title": _("Datos persoais: precisa acceso de soporte"),
+                "support_denied": True,
+                "region_slug": request.tenant.region.slug if request.tenant.region else "",
+            }
+        )
+    return render(request, "core/error.html", ctx, status=403)

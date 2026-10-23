@@ -92,8 +92,10 @@ def test_region_admin_manages_member_municipalities(client, region, muni_a, muni
     RegionMembership.objects.create(user=dep, region=region)
     client.force_login(dep)
     assert client.get("/rexion/proba/").status_code == 200
-    assert client.get("/c/concello-a/xestion/").status_code == 200
-    assert client.get("/c/concello-b/xestion/").status_code == 200
+    # sen acceso de soporte: só os indicadores agregados de cada concello
+    assert client.get("/c/concello-a/xestion/indicadores/").status_code == 200
+    assert client.get("/c/concello-b/xestion/indicadores/").status_code == 200
+    assert client.get("/c/concello-a/xestion/").status_code == 403
 
 
 def test_region_admin_of_other_region_forbidden(client, muni_a):

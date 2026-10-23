@@ -65,10 +65,11 @@ MATRIX = [
     (f"{C}/reservas/", {"neighbour"}),
     (f"{C}/incidencias/nova/", {"neighbour"}),
     ("/conta/familia/", {"neighbour"}),
-    (f"{C}/xestion/", {"admin", "region"}),
+    # A deputación só ve agregados sen acceso de soporte (v3): panel, ordes e altas teñen datos persoais
+    (f"{C}/xestion/", {"admin"}),
     (f"{C}/xestion/indicadores/", {"admin", "region"}),
-    (f"{C}/xestion/ordes/", {"admin", "region"}),
-    (f"{C}/xestion/altas/", {"admin", "region"}),
+    (f"{C}/xestion/ordes/", {"admin"}),
+    (f"{C}/xestion/altas/", {"admin"}),
     (f"{C}/app/benvida/", {"neighbour"}),
     (f"{C}/operario/", {"operator"}),
     (f"{C}/operario/calendario/", {"operator"}),
@@ -122,7 +123,18 @@ def test_operator_only_sees_own_and_unassigned_orders(client, people, objects, p
     assert r.status_code == 404
 
 
-def test_region_is_read_only_except_support_actions(client, people, padel_a):
+def test_region_is_read_only_except_support_actions(client, people, padel_a, muni_a):
+    from django.utils import timezone
+
+    from apps.tenants.models import SupportAccess
+
+    SupportAccess.objects.create(
+        municipality=muni_a,
+        region=muni_a.region,
+        reason="proba",
+        granted_by=people["admin"],
+        expires_at=timezone.now() + SupportAccess.DURATION,
+    )
     client.force_login(people["region"])
     html = client.get(f"{C}/xestion/").content.decode()
     assert "como Deputación" in html and "Volver á rede" in html

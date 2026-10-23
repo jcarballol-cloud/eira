@@ -59,16 +59,20 @@ def setup(muni_a, citizen):
     )
     hh = Household.objects.create(responsible=citizen)
     year = timezone.localdate().year
-    kid = Dependent.objects.create(
-        household=hh, first_name="Lúa", surnames="Ñeiro Pazos", birth_year=year - 9
-    )
+    kid = Dependent.objects.create(household=hh, first_name="Lúa", birth_year=year - 9)
     Consent.objects.create(dependent=kid, kind="data", granted_by=citizen)
+    # Os apelidos son dato da inscrición (do concello)
     e_kid = Enrollment.objects.create(
-        municipality=muni_a, group=g, user=citizen, dependent=kid, status="active"
+        municipality=muni_a,
+        group=g,
+        user=citizen,
+        dependent=kid,
+        status="active",
+        surnames="Ñeiro Pazos",
     )
-    citizen.surnames = "da Silva"
-    citizen.save()
-    e_adult = Enrollment.objects.create(municipality=muni_a, group=g, user=citizen, status="active")
+    e_adult = Enrollment.objects.create(
+        municipality=muni_a, group=g, user=citizen, status="active", surnames="da Silva Otero"
+    )
     s = Session.objects.create(
         municipality=muni_a, group=g, date=timezone.localdate(), start_time=dt.time(17)
     )
@@ -88,7 +92,10 @@ def test_kiosk_page_lists_people_by_initial(client, setup):
     r = client.get(f"/c/concello-a/monitor/sesion/{setup['session'].pk}/rexistro/")
     data = r.context["data"]
     by_name = {p["name"]: p for p in data["people"]}
-    assert by_name["Lúa"]["initial"] == "Ñ" and by_name["Lúa"]["label"] == "Ñeiro Pazos, Lúa"
+    assert by_name["Lúa"]["initial"] == "Ñ" and by_name["Lúa"]["label"] == "Lúa Ñeiro"
+    # Minimización: á tableta só chega o primeiro apelido; o segundo nunca
+    html = r.content.decode()
+    assert "Pazos" not in html and "Otero" not in html and "da Silva" in html
     assert not by_name["Lúa"]["effort"]  # sen consentimento de esforzo
     assert data["scale"] == "omni" and len(data["points"]) == 11
 

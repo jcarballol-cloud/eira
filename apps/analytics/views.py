@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.translation import gettext as _
 
-from apps.tenants.urlutils import role_required
+from apps.tenants.urlutils import aggregate_view, role_required
 
 from . import indicators
 
@@ -33,6 +33,7 @@ def _csv(filename, header, rows, ods=False):
 
 
 @role_required(*ADMIN_ROLES)
+@aggregate_view
 def dashboard(request):
     weeks = 8 if request.GET.get("semanas") == "8" else 4
     s = indicators.summary(request.tenant, weeks)

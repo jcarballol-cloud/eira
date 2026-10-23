@@ -161,12 +161,18 @@ def seed_kiosk_group(m, monitor, facility, rng):
         u = User.objects.create_user(
             f"grupo40-{i:02d}@demo.eira.example",
             display_name=name,
-            surnames=f"{first} {rng.choice(SURNAMES)}",
             birth_year=year - rng.randint(55, 82),
             photo_consent=i % 5 != 0,
         )
         Membership.objects.create(user=u, municipality=m, role=Role.CITIZEN)
-        e = Enrollment.objects.create(municipality=m, group=group, user=u, status="active")
+        # Os apelidos son dato da inscrición (os achega o concello desde o padrón)
+        e = Enrollment.objects.create(
+            municipality=m,
+            group=group,
+            user=u,
+            status="active",
+            surnames=f"{first} {rng.choice(SURNAMES)}",
+        )
         e.pseudonym = pseudonym(e.pk)
         e.save(update_fields=["pseudonym"])
     return group
@@ -294,7 +300,6 @@ def seed(rng):
         d = Dependent.objects.create(
             household=hh,
             first_name=name,
-            surnames=parent.surnames or fake_surnames(rng),
             birth_year=today.year - age,
         )
         Consent.objects.create(dependent=d, kind="data", granted_by=parent)
@@ -312,6 +317,7 @@ def seed(rng):
                     dependent=d,
                     status="active",
                     paid_cents=g.fee_cents,
+                    surnames=fake_surnames(rng),
                 )
             )
     adults = list(User.objects.filter(email__startswith="vecinanza"))
@@ -322,16 +328,30 @@ def seed(rng):
         u = User.objects.create_user(
             f"maior{i:02d}@demo.eira.example",
             display_name=KIDS[i % len(KIDS)],
-            surnames=fake_surnames(rng),
             birth_year=today.year - rng.randint(62, 84),
         )
         Membership.objects.create(user=u, municipality=m, role=Role.CITIZEN)
         extra_seniors.append(u)
     for u in seniors + extra_seniors:
-        enrollments.append(Enrollment(municipality=m, group=groups[2], user=u, status="active"))
+        enrollments.append(
+            Enrollment(
+                municipality=m,
+                group=groups[2],
+                user=u,
+                status="active",
+                surnames=fake_surnames(rng),
+            )
+        )
     for u in others[:12]:
         enrollments.append(
-            Enrollment(municipality=m, group=groups[3], user=u, status="active", paid_cents=2000)
+            Enrollment(
+                municipality=m,
+                group=groups[3],
+                user=u,
+                status="active",
+                paid_cents=2000,
+                surnames=fake_surnames(rng),
+            )
         )
     Enrollment.objects.bulk_create(enrollments)
     for e in Enrollment.objects.filter(municipality=m):

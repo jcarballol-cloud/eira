@@ -49,6 +49,18 @@ def first_surname(surnames):
     return words[0] if words else ""
 
 
+def first_surname_label(surnames):
+    """Primeiro apelido tal como se escribe, coas partículas que o preceden («do Campo»,
+    «de la Fuente»). É o único apelido que se amosa na tableta."""
+    words = (surnames or "").replace("-", " ").split()
+    out = []
+    for w in words:
+        out.append(w)
+        if fold(w) not in PARTICLES:
+            break
+    return " ".join(out)
+
+
 def initial(surnames, name=""):
     word = first_surname(surnames) or fold(name).strip()
     for ch in word:

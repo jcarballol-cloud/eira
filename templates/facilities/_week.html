@@ -49,7 +49,8 @@
             <span class="pill__star" aria-hidden="true">✓</span><span class="pill__time" aria-hidden="true">{{ when }}</span><span class="pill__price" aria-hidden="true">{% translate "A túa" %}</span>
           </a>
           {% else %}
-          <span class="pill pill-{{ s.status }}" aria-label="{{ day_label }}, {{ when }}, {{ s.label|lower }}{% if s.closure_reason %} ({{ s.closure_reason }}){% endif %}" {% if s.closure_reason %}title="{{ s.closure_reason }}"{% endif %}>
+          <span class="pill pill-{{ s.status }}" {% if s.closure_reason %}title="{{ s.closure_reason }}"{% endif %}>
+            <span class="visually-hidden">{{ day_label }}, {{ when }}, {{ s.label|lower }}{% if s.closure_reason %} ({{ s.closure_reason }}){% endif %}</span>
             {% if s.status == 'mine' %}<span class="pill__star" aria-hidden="true">✓</span>{% endif %}
             <span class="pill__time" aria-hidden="true">{{ when }}</span><span class="pill__price" aria-hidden="true">{{ s.label }}</span>
           </span>

@@ -49,6 +49,7 @@ def eira(request):
                 else None
             )
     return {
+        "support_access": getattr(request, "support_access", None),
         "demo_persona": demo_persona,
         "demo_place": demo_place,
         "demo_change_url": "/?concello=" + (demo_persona["tenant"] or "") + "#perfil"

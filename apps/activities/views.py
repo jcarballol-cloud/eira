@@ -12,6 +12,7 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
+from apps.accounts.models import audit
 from apps.analytics import observatory
 from apps.bookings.payments import start_online_payment
 from apps.integrations.registry import get_adapter
@@ -229,7 +230,9 @@ def pending_resolve(request, pk):
         )
         return back
     try:
-        enrollment = services.validate_pending(pending, email, request.user)
+        enrollment = services.validate_pending(
+            pending, email, request.user, surnames=request.POST.get("surnames", "")
+        )
     except services.EnrollmentError as exc:
         messages.error(request, str(exc))
         return back
@@ -269,6 +272,13 @@ def manage_group(request, pk):
                 "minor": bool(e.dependent),
             }
         )
+    if request.method == "POST" and request.POST.get("action") == "surnames":
+        e = get_object_or_404(group.enrollments, pk=request.POST.get("enrollment"))
+        e.surnames = request.POST.get("surnames", "").strip()[:80]
+        e.save(update_fields=["surnames"])
+        audit("enrollment.surnames", request.user, request.tenant, e)
+        messages.success(request, _("Apelidos gardados."))
+        return redirect(treverse(request.tenant, "manage:group", group.pk))
     no_photo = sum(1 for r in rows if not r["photo"])
     only = request.GET.get("sen_fotos") == "1"
     return render(

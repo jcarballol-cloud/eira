@@ -10,11 +10,19 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
-from apps.accounts.models import Eligibility, Membership, ResidencyInvitation, Role, User, audit
+from apps.accounts.models import (
+    AuditLog,
+    Eligibility,
+    Membership,
+    ResidencyInvitation,
+    Role,
+    User,
+    audit,
+)
 from apps.bookings.services import apply_closure
 from apps.facilities.models import Closure, Facility
 
-from .models import DEFAULT_MODULES, Municipality
+from .models import DEFAULT_MODULES, Municipality, SupportAccess
 from .urlutils import role_required, treverse
 
 ADMIN_ROLES = ("admin", "region_admin")
@@ -123,6 +131,11 @@ def staff(request):
     elig_form = EligibilityForm(
         request.POST if request.POST.get("action") == "eligibility" else None, prefix="elig"
     )
+    if request.method == "POST" and request.POST.get("action") in (
+        "support_grant",
+        "support_revoke",
+    ):
+        return _support_access(request)
     if request.method == "POST" and request.POST.get("action") == "eligibility":
         if elig_form.is_valid():
             d = elig_form.cleaned_data
@@ -182,10 +195,53 @@ def staff(request):
             "form": form,
             "members": members,
             "invitations": invitations,
+            "support_active": SupportAccess.active_for(
+                request.tenant, [request.tenant.region_id] if request.tenant.region_id else []
+            ),
+            "support_history": SupportAccess.objects.filter(municipality=request.tenant)[:10],
+            "support_uses": AuditLog.objects.filter(
+                municipality=request.tenant, action="support.view"
+            ).select_related("actor")[:15],
             "nav": "manage",
             "sub": "staff",
         },
     )
+
+
+def _support_access(request):
+    """O concello autoriza (24 h) ou revoga o acceso de soporte da deputación aos datos persoais."""
+    tenant = request.tenant
+    back = redirect(treverse(tenant, "manage:staff") + "#soporte")
+    if not tenant.region_id:
+        messages.error(request, _("Este concello non pertence a ningunha deputación."))
+        return back
+    if request.POST["action"] == "support_grant":
+        reason = (request.POST.get("reason") or "").strip()[:200]
+        if not reason:
+            messages.error(request, _("Indica o motivo do acceso de soporte."))
+            return back
+        now = timezone.now()
+        access = SupportAccess.objects.create(
+            municipality=tenant,
+            region_id=tenant.region_id,
+            reason=reason,
+            granted_by=request.user,
+            granted_at=now,
+            expires_at=now + SupportAccess.DURATION,
+        )
+        audit("support.grant", request.user, tenant, access, reason=reason)
+        messages.success(
+            request,
+            _("Acceso de soporte autorizado ata o %(d)s.")
+            % {"d": timezone.localtime(access.expires_at).strftime("%d/%m %H:%M")},
+        )
+    else:
+        n = SupportAccess.objects.filter(
+            municipality=tenant, revoked_at__isnull=True, expires_at__gt=timezone.now()
+        ).update(revoked_at=timezone.now())
+        audit("support.revoke", request.user, tenant, tenant, count=n)
+        messages.success(request, _("Acceso de soporte retirado."))
+    return back
 
 
 @role_required(*ADMIN_ROLES)

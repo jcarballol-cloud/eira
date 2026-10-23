@@ -12,4 +12,9 @@ urlpatterns = [
         region.resend_invitation,
         name="resend_invitation",
     ),
+    path(
+        "concello/<slug:slug>/solicitar-soporte/",
+        region.request_support,
+        name="request_support",
+    ),
 ]

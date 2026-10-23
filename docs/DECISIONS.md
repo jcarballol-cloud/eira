@@ -305,3 +305,25 @@ Formato: data · decisión · motivo · alternativas descartadas.
 - **Mes:** grella luns–domingo con contadores por estado (texto oculto e `title`); cada día abre a súa semana.
 - As canceladas, rexeitadas e caducadas non ocupan a axenda.
 - **Teclado:** todas as fichas e días son ligazóns. A alternativa en lista segue dispoñible.
+
+## v3 · Apelidos como dato da inscrición (minimización)
+- **Antes:** os apelidos eran un campo novo na conta, nos menores e no formulario da monitora para persoas que viñan a probar.
+- **Agora:** `Enrollment.surnames`, un dato da **inscrición** que achega o concello (padrón ou folla de inscrición).
+  - O concello edítao na ficha do grupo e ao validar unha persoa apuntada.
+  - A monitora non os enche: só anota o nome de quen vén a probar.
+  - A migración copia os apelidos existentes ás inscricións e despois borra os campos de `User`, `Dependent` e `PendingParticipant`.
+- **Na tableta**, só nome e primeiro apelido, coas partículas («Fina do Campo»).
+  - O resto dos apelidos non sae do servidor: úsanse alí para calcular a inicial e a orde, e ao navegador non chega nin a clave de orde. Hai un test que comproba que o segundo apelido non está no HTML.
+  - O nome completo só se ve na administración do concello e na exportación persoal da propia persoa.
+- **Por que:** a monitora necesita distinguir persoas nun grupo de 40, e para iso abondan o nome e o primeiro apelido. O nome completo xa o ten o concello pola inscrición, así que non se crea outra copia nas contas.
+
+## v3 · Deputación: agregados por defecto e acceso de soporte
+- Por defecto, a deputación só ve vistas sen datos persoais (`@aggregate_view`): indicadores, comparativa da rede, instalacións, peches e plans de mantemento. A súa ligazón «Consultar» leva aos indicadores.
+- **Datos persoais:** só con **acceso de soporte** (`SupportAccess`).
+  - Autorízao o concello en «Persoal e códigos», con motivo; a deputación non se pode autorizar a si mesma.
+  - Caduca ás 24 h e pódese revogar antes.
+  - Cada páxina vista rexístrase en AuditLog (`support.view`, coa ruta), e o concello ve as últimas consultas e o historial.
+  - No primeiro uso, o persoal administrador do concello recibe un aviso (na app e por correo).
+  - A deputación pode **solicitalo** desde a páxina 403, o que avisa ao concello pero non dá acceso.
+  - Mesmo con acceso, todo é só lectura. A exportación íntegra tamén precisa este acceso.
+- Tests en `apps/tenants/tests/test_support_access.py`: 403 → autorización → 200 con rexistro e aviso → 403 ao caducar; revogación; acceso por concello; solicitude; exportación.

@@ -146,7 +146,8 @@
       var marks = [];
       if (p["in"]) marks.push(el("span", { class: "kiosk__mark", text: "✓ " + T.inMark }));
       if (p.rpe !== null) marks.push(el("span", { class: "kiosk__mark kiosk__mark--rpe rpe-v" + p.rpe, text: "RPE " + p.rpe }));
-      var parts = p.surnames ? [el("span", { class: "kiosk__surnames", text: p.surnames }), el("span", { class: "kiosk__first", text: p.name })] : [el("span", { class: "kiosk__surnames", text: p.name })];
+      // Só nome + primeiro apelido (minimización); o apelido en negra porque a lista vai por apelido
+      var parts = p.surname1 ? [el("span", { class: "kiosk__first", text: p.name }), el("span", { class: "kiosk__surnames", text: p.surname1 })] : [el("span", { class: "kiosk__surnames", text: p.name })];
       return el("button", {
         type: "button", class: "kiosk__name" + (p["in"] ? " is-in" : ""), "data-person": p.id,
         "aria-label": p.label + ", " + (p.photo ? T.photoOk : T.photoNo) + (p["in"] ? ", " + T.inMark : "") + (p.rpe !== null ? ", RPE " + p.rpe : ""),
@@ -171,7 +172,7 @@
         results.textContent = "";
         var q = fold(state.search.trim());
         if (q.length < 2) return;
-        var list = people.filter(function (p) { return fold(p.label).indexOf(q) !== -1 || fold(p.name + " " + p.surnames).indexOf(q) !== -1; }).slice(0, 60);
+        var list = people.filter(function (p) { return fold(p.label).indexOf(q) !== -1 || fold(p.surname1 + " " + p.name).indexOf(q) !== -1; }).slice(0, 60);
         results.appendChild(names(list, T.noMatch));
       }
       var counts = {};

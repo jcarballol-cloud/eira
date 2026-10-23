@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: EUPL-1.2
 import csv
 
-from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.translation import gettext as _

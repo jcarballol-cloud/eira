@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: EUPL-1.2
+* text=auto eol=lf
+*.png binary
+*.mo binary

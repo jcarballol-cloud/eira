@@ -16,10 +16,12 @@ for po_path in sorted((ROOT / "locale").glob("*/LC_MESSAGES/*.po")):
     po = polib.pofile(str(po_path))
     if po_path.parts[-3] == "gl":
         for entry in po:
-            if entry.msgid_plural and not any(entry.msgstr_plural.values()):
+            # Sempre idéntico ao msgid (evita coincidencias «fuzzy» de makemessages con textos antigos)
+            if entry.msgid_plural:
                 entry.msgstr_plural = {0: entry.msgid, 1: entry.msgid_plural}
-            elif not entry.msgid_plural and not entry.msgstr:
+            else:
                 entry.msgstr = entry.msgid
+            entry.previous_msgid = None
             if "fuzzy" in entry.flags:
                 entry.flags.remove("fuzzy")
         po.metadata["Language"] = "gl"

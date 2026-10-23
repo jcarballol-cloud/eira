@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 03:05+0200\n"
+"POT-Creation-Date: 2026-10-23 03:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,6 +79,14 @@ msgstr "%(who)s recollerá a chave para %(d)s de %(s)s a %(e)s (ref. %(r)s)."
 
 msgid "Unha persoa"
 msgstr "Unha persoa"
+
+#, python-format
+msgid "Posible intento de forzar o teclado: %(f)s"
+msgstr "Posible intento de forzar o teclado: %(f)s"
+
+#, python-format
+msgid "O teclado bloqueouse %(n)s veces seguidas por códigos incorrectos."
+msgstr "O teclado bloqueouse %(n)s veces seguidas por códigos incorrectos."
 
 msgid "Correo electrónico"
 msgstr "Correo electrónico"
@@ -341,6 +349,104 @@ msgstr "batería de probas"
 
 msgid "baterías de probas"
 msgstr "baterías de probas"
+
+msgid "Nada cansado"
+msgstr "Nada cansado"
+
+msgid "Un pouco"
+msgstr "Un pouco"
+
+msgid "Algo cansado"
+msgstr "Algo cansado"
+
+msgid "Cansado"
+msgstr "Cansado"
+
+msgid "Moi cansado"
+msgstr "Moi cansado"
+
+msgid "Esgotado"
+msgstr "Esgotado"
+
+msgid "Repouso"
+msgstr "Repouso"
+
+msgid "Moi, moi doado"
+msgstr "Moi, moi doado"
+
+msgid "Doado"
+msgstr "Doado"
+
+msgid "Moderado"
+msgstr "Moderado"
+
+msgid "Algo duro"
+msgstr "Algo duro"
+
+msgid "Duro"
+msgstr "Duro"
+
+msgid "Moi duro"
+msgstr "Moi duro"
+
+msgid "Máximo"
+msgstr "Máximo"
+
+#, python-format
+msgid "Sesión pechada. Carga media: %(l)s (sRPE × minutos)."
+msgstr "Sesión pechada. Carga media: %(l)s (sRPE × minutos)."
+
+#, python-format
+msgid "Gardados %(n)s resultados."
+msgstr "Gardados %(n)s resultados."
+
+msgid "Só podes inscribir menores da túa unidade familiar."
+msgstr "Só podes inscribir menores da túa unidade familiar."
+
+msgid "Falta o consentimento para o tratamento de datos do menor."
+msgstr "Falta o consentimento para o tratamento de datos do menor."
+
+msgid "A idade non corresponde a este grupo."
+msgstr "A idade non corresponde a este grupo."
+
+msgid "Xa hai unha inscrición para esta persoa neste grupo."
+msgstr "Xa hai unha inscrición para esta persoa neste grupo."
+
+#, python-format
+msgid "Inscrición confirmada: %(g)s"
+msgstr "Inscrición confirmada: %(g)s"
+
+#, python-format
+msgid "Quedou unha praza libre en %(g)s"
+msgstr "Quedou unha praza libre en %(g)s"
+
+msgid "Saíches da lista de espera."
+msgstr "Saíches da lista de espera."
+
+msgid "Completa o pagamento para confirmala."
+msgstr "Completa o pagamento para confirmala."
+
+msgid "Escolle unha persoa válida."
+msgstr "Escolle unha persoa válida."
+
+msgid ""
+"O grupo está completo: quedas na lista de espera. Avisarémoste se queda unha"
+" praza."
+msgstr ""
+"O grupo está completo: quedas na lista de espera. Avisarémoste se queda unha"
+" praza."
+
+msgid "Inscrición confirmada."
+msgstr "Inscrición confirmada."
+
+msgid "Pagamento recibido. Inscrición confirmada."
+msgstr "Pagamento recibido. Inscrición confirmada."
+
+msgid "O pagamento non se completou."
+msgstr "O pagamento non se completou."
+
+msgid "Baixa tramitada."
+msgstr "Baixa tramitada."
 
 msgid "semana"
 msgstr "semana"
@@ -1756,11 +1862,172 @@ msgstr "Unidade familiar e consentimentos"
 msgid "Descargar todos os meus datos (JSON)"
 msgstr "Descargar todos os meus datos (JSON)"
 
-msgid "Actividades"
-msgstr "Actividades"
+msgid "Inscrición"
+msgstr "Inscrición"
+
+msgid "Idades"
+msgstr "Idades"
+
+msgid "Horario"
+msgstr "Horario"
+
+msgid "Cota"
+msgstr "Cota"
+
+msgid "Gratuíta"
+msgstr "Gratuíta"
+
+msgid "Prazas libres"
+msgstr "Prazas libres"
+
+msgid "Quen se inscribe?"
+msgstr "Quen se inscribe?"
+
+msgid "Eu"
+msgstr "Eu"
+
+msgid "sen consentimento"
+msgstr "sen consentimento"
+
+msgid "Engadir menores ou xestionar os consentimentos"
+msgstr "Engadir menores ou xestionar os consentimentos"
+
+msgid "Inscribirse e pagar"
+msgstr "Inscribirse e pagar"
+
+msgid "Inscribirse"
+msgstr "Inscribirse"
+
+msgid "Apuntarse á lista de espera"
+msgstr "Apuntarse á lista de espera"
+
+msgid "Inscribe a persoas adultas ou aos menores da túa unidade familiar."
+msgstr "Inscribe a persoas adultas ou aos menores da túa unidade familiar."
+
+msgid "As miñas inscricións"
+msgstr "As miñas inscricións"
+
+msgid "Observatorio"
+msgstr "Observatorio"
+
+#, python-format
+msgid "%(a)s–%(b)s anos"
+msgstr "%(a)s–%(b)s anos"
+
+#, python-format
+msgid "%(m)s min"
+msgstr "%(m)s min"
+
+#, python-format
+msgid "%(n)s praza libre"
+msgid_plural "%(n)s prazas libres"
+msgstr[0] "%(n)s praza libre"
+msgstr[1] "%(n)s prazas libres"
+
+msgid "Completo: lista de espera"
+msgstr "Completo: lista de espera"
 
 msgid "Non hai actividades publicadas."
 msgstr "Non hai actividades publicadas."
+
+msgid "Actividades"
+msgstr "Actividades"
+
+msgid "Escolas e grupos"
+msgstr "Escolas e grupos"
+
+msgid "Grupos"
+msgstr "Grupos"
+
+msgid "Actividade"
+msgstr "Actividade"
+
+msgid "Grupo"
+msgstr "Grupo"
+
+msgid "Inscritas"
+msgstr "Inscritas"
+
+msgid "Espera"
+msgstr "Espera"
+
+msgid "Probas"
+msgstr "Probas"
+
+msgid "Rexistrar"
+msgstr "Rexistrar"
+
+msgid "Ver o observatorio anónimo"
+msgstr "Ver o observatorio anónimo"
+
+msgid "Dar de baixa"
+msgstr "Dar de baixa"
+
+msgid "Aínda non tes inscricións."
+msgstr "Aínda non tes inscricións."
+
+msgid "Ver actividades"
+msgstr "Ver actividades"
+
+msgid "Observatorio da actividade física"
+msgstr "Observatorio da actividade física"
+
+msgid "Datos anónimos e agregados"
+msgstr "Datos anónimos e agregados"
+
+#, python-format
+msgid ""
+"Escolas deportivas municipais, últimas %(w)s semanas. Só se mostran grupos "
+"de polo menos %(k)s persoas."
+msgstr ""
+"Escolas deportivas municipais, últimas %(w)s semanas. Só se mostran grupos "
+"de polo menos %(k)s persoas."
+
+msgid "Microdatos seudonimizados (CSV)"
+msgstr "Microdatos seudonimizados (CSV)"
+
+msgid "Actividade por grupo de idade"
+msgstr "Actividade por grupo de idade"
+
+msgid "Idade"
+msgstr "Idade"
+
+msgid "Persoas"
+msgstr "Persoas"
+
+msgid "Asistencia"
+msgstr "Asistencia"
+
+msgid "Minutos/semana"
+msgstr "Minutos/semana"
+
+msgid "Referencia OMS"
+msgstr "Referencia OMS"
+
+msgid "Fronte á referencia"
+msgstr "Fronte á referencia"
+
+msgid "Esforzo medio (0–10)"
+msgstr "Esforzo medio (0–10)"
+
+msgid "Datos ocultos: grupo demasiado pequeno para garantir o anonimato."
+msgstr "Datos ocultos: grupo demasiado pequeno para garantir o anonimato."
+
+msgid "Evolución semanal (minutos por persoa)"
+msgstr "Evolución semanal (minutos por persoa)"
+
+#, python-format
+msgid "Evolución %(b)s"
+msgstr "Evolución %(b)s"
+
+msgid ""
+"Os minutos contan só as sesións das escolas municipais. Referencia: OMS "
+"2020, 150 min/semana para persoas adultas e unha media de 60 min/día para "
+"menores (configurable)."
+msgstr ""
+"Os minutos contan só as sesións das escolas municipais. Referencia: OMS "
+"2020, 150 min/semana para persoas adultas e unha media de 60 min/día para "
+"menores (configurable)."
 
 msgid "Indicadores"
 msgstr "Indicadores"
@@ -2020,9 +2287,6 @@ msgstr "Quen ten a chave"
 msgid "Onde"
 msgstr "Onde"
 
-msgid "Horario"
-msgstr "Horario"
-
 #, python-format
 msgid "Chave recollida ás %(t)s: lembra devolvela"
 msgstr "Chave recollida ás %(t)s: lembra devolvela"
@@ -2154,9 +2418,6 @@ msgstr "Día"
 
 msgid "Prezo"
 msgstr "Prezo"
-
-msgid "Gratuíta"
-msgstr "Gratuíta"
 
 msgid "Normas de uso, dereitos e deberes"
 msgstr "Normas de uso, dereitos e deberes"
@@ -3666,8 +3927,85 @@ msgstr "Dispoñible"
 msgid "Caducado"
 msgstr "Caducado"
 
-msgid "Hoxe"
-msgstr "Hoxe"
+msgid "Toca o nome de cada persoa presente."
+msgstr "Toca o nome de cada persoa presente."
+
+msgid "presentes"
+msgstr "presentes"
+
+msgid "Non hai persoas inscritas."
+msgstr "Non hai persoas inscritas."
+
+msgid "Este modo de tableta necesita JavaScript activado."
+msgstr "Este modo de tableta necesita JavaScript activado."
+
+msgid "Gardar e pasar ao esforzo"
+msgstr "Gardar e pasar ao esforzo"
+
+msgid "Esforzo percibido"
+msgstr "Esforzo percibido"
+
+msgid "Como de duro foi?"
+msgstr "Como de duro foi?"
+
+msgid ""
+"Cada persoa sinala a cara que mellor describe o seu cansazo. Calcúlase a "
+"carga da sesión (esforzo × minutos)."
+msgstr ""
+"Cada persoa sinala a cara que mellor describe o seu cansazo. Calcúlase a "
+"carga da sesión (esforzo × minutos)."
+
+msgid "Sen consentimento para rexistrar o esforzo deste menor."
+msgstr "Sen consentimento para rexistrar o esforzo deste menor."
+
+msgid "Ninguén marcado como presente."
+msgstr "Ninguén marcado como presente."
+
+msgid "Pechar sesión"
+msgstr "Pechar sesión"
+
+msgid "Probas físicas"
+msgstr "Probas físicas"
+
+msgid "Batería"
+msgstr "Batería"
+
+msgid "Cambiar"
+msgstr "Cambiar"
+
+msgid "Só se rexistran os valores; Eira non aplica baremos."
+msgstr "Só se rexistran os valores; Eira non aplica baremos."
+
+msgid "Ninguén con consentimento para probas."
+msgstr "Ninguén con consentimento para probas."
+
+msgid "Gardar resultados"
+msgstr "Gardar resultados"
+
+msgid "Non hai baterías configuradas."
+msgstr "Non hai baterías configuradas."
+
+msgid "Modo tableta"
+msgstr "Modo tableta"
+
+msgid "Onte"
+msgstr "Onte"
+
+msgid "Mañá"
+msgstr "Mañá"
+
+#, python-format
+#| msgid_plural "%(n)s instalacións"
+msgid "%(n)s inscrita"
+msgid_plural "%(n)s inscritas"
+msgstr[0] "%(n)s inscrita"
+msgstr[1] "%(n)s inscritas"
+
+msgid "Pasar lista"
+msgstr "Pasar lista"
+
+msgid "Hoxe non tes sesións."
+msgstr "Hoxe non tes sesións."
 
 msgid "Marcar todo como lido"
 msgstr "Marcar todo como lido"
@@ -3719,3 +4057,6 @@ msgstr "Crear concello"
 
 msgid "Atrás"
 msgstr "Atrás"
+
+#~ msgid "Hoxe"
+#~ msgstr "Hoxe"

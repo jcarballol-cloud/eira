@@ -1,0 +1,24 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Declaración de accesibilidade" %}{% endblock %}
+{% block content %}
+<article class="prose card">
+  <h1>{% translate "Declaración de accesibilidade" %}</h1>
+  {% if tenant.accessibility_statement %}<div>{{ tenant.accessibility_statement|linebreaks }}</div>{% endif %}
+  <p>{% blocktranslate trimmed with n=tenant.name %}O Concello de {{ n }} comprométese a facer accesible este sitio web, de conformidade co Real Decreto 1112/2018, do 7 de setembro, sobre accesibilidade dos sitios web e aplicacións para dispositivos móbiles do sector público.{% endblocktranslate %}</p>
+  <h2>{% translate "Situación de cumprimento" %}</h2>
+  <p>{% translate "Este sitio web é parcialmente conforme co RD 1112/2018 debido ás excepcións e á falta de conformidade dos aspectos que se indican a continuación. O obxectivo é a conformidade co nivel AA das WCAG 2.1 (norma EN 301 549)." %}</p>
+  <h2>{% translate "Contido non accesible" %}</h2>
+  <ul>
+    <li>{% translate "O mapa de instalacións é un complemento visual: toda a súa información está dispoñible na lista accesible e nos filtros." %}</li>
+    <li>{% translate "As fotos subidas pola veciñanza nos avisos de avaría poden non ter texto alternativo descritivo." %}</li>
+  </ul>
+  <h2>{% translate "Preparación desta declaración" %}</h2>
+  <p>{% translate "Avaliación propia con probas automáticas (axe-core) en todas as páxinas principais, en móbil e escritorio, e revisión manual con teclado e lector de pantalla." %}</p>
+  <h2>{% translate "Observacións e contacto" %}</h2>
+  <p>{% translate "Podes comunicar problemas de accesibilidade ou solicitar información en formato accesible:" %} {% if tenant.contact_email %}<a href="mailto:{{ tenant.contact_email }}">{{ tenant.contact_email }}</a>{% endif %}{% if tenant.contact_phone %} · {{ tenant.contact_phone }}{% endif %}</p>
+  <h2>{% translate "Procedemento de aplicación" %}</h2>
+  <p>{% translate "Se unha vez realizada unha solicitude de información accesible ou queixa a resposta non é satisfactoria, podes presentar unha reclamación ante a unidade responsable de accesibilidade do concello." %}</p>
+  <h2>{% translate "Axustes de lectura" %}</h2>
+  <p><a href="{% url 'preferences' %}">{% translate "Activa texto grande, alto contraste ou movemento reducido." %}</a></p>
+</article>
+{% endblock %}

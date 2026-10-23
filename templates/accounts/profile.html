@@ -1,0 +1,43 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "A miña conta" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{% translate "A miña conta" %}</h1><p>{{ user.email }}</p></div>
+  <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button class="btn btn-secondary" type="submit">{% translate "Saír" %}</button></form>
+</div>
+<div class="layout-aside">
+  <section class="card" aria-labelledby="p-data">
+    <h2 id="p-data">{% translate "Os meus datos" %}</h2>
+    <p class="muted">{% translate "Só pedimos o imprescindible. Todo é opcional agás o correo." %}</p>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% include "includes/form.html" %}
+      <div class="form-actions"><button class="btn" type="submit">{% translate "Gardar" %}</button></div>
+    </form>
+  </section>
+  <aside class="stack">
+    <section class="card" aria-labelledby="p-res">
+      <h2 id="p-res">{% translate "Empadroamento" %}</h2>
+      {% for r in residencies %}<p><span class="badge badge-ok">{% icon 'check' %} {{ r.municipality.name }}</span></p>{% empty %}<p class="muted">{% translate "Non tes ningún empadroamento validado." %}</p>{% endfor %}
+      <form method="post" action="{% url 'account:residency' %}">
+        {% csrf_token %}
+        {% with form=residency_form %}{% include "includes/form.html" %}{% endwith %}
+        <button class="btn btn-secondary" type="submit">{% translate "Validar" %}</button>
+      </form>
+    </section>
+    {% if memberships %}
+    <section class="card" aria-labelledby="p-roles">
+      <h2 id="p-roles">{% translate "Os meus roles" %}</h2>
+      <ul class="list">{% for m in memberships %}<li><a href="{% url 'tenant_home' m.municipality.slug %}">{{ m.municipality.name }}</a> · {{ m.get_role_display }}</li>{% endfor %}</ul>
+    </section>
+    {% endif %}
+    <section class="card" aria-labelledby="p-priv">
+      <h2 id="p-priv">{% translate "Privacidade" %}</h2>
+      <ul class="list">
+        <li><a href="{% url 'account:household' %}">{% translate "Unidade familiar e consentimentos" %}</a></li>
+        <li><a href="{% url 'account:export' %}">{% icon 'download' %} {% translate "Descargar todos os meus datos (JSON)" %}</a></li>
+        <li><a href="{% url 'account:delete' %}">{% translate "Eliminar a miña conta" %}</a></li>
+      </ul>
+    </section>
+  </aside>
+</div>
+{% endblock %}

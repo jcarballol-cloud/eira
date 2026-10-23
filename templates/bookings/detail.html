@@ -1,0 +1,51 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Reserva" %} {{ booking.reference }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <p class="eyebrow">{% translate "Reserva" %} {{ booking.reference }}</p>
+    <h1>{{ booking.facility.name }}</h1>
+    <p>{{ booking.start|date:"l j \d\e F" }} · {{ booking.start|hhmm }}–{{ booking.end|hhmm }}</p>
+  </div>
+  <span class="badge {% if booking.status == 'confirmed' or booking.status == 'used' %}badge-ok{% elif booking.status == 'pending_payment' %}badge-warn{% elif booking.status == 'cancelled' or booking.status == 'no_show' %}badge-alert{% endif %} big">{{ booking.get_status_display }}</span>
+</div>
+
+{% if booking.status == 'pending_payment' %}
+<div class="alert alert-warn">{% translate "Falta completar o pagamento. Gardamos a franxa uns minutos." %} <a class="btn btn-sm" href="{% turl 'bookings:retry_payment' booking.pk %}">{% translate "Pagar agora" %}</a></div>
+{% endif %}
+{% if booking.needs_closing_checklist %}
+<div class="alert alert-warn"><strong>{% translate "Ao rematar:" %}</strong> {% translate "confirma que todo queda pechado e en orde." %} <a class="btn btn-sm" href="{% turl 'bookings:checklist' booking.pk %}">{% translate "Checklist de peche" %}</a></div>
+{% endif %}
+
+<div class="layout-aside">
+  <div class="stack">
+    {% include "bookings/_access.html" %}
+    <section class="card" aria-labelledby="act-title">
+      <h2 id="act-title">{% translate "Xestionar" %}</h2>
+      <div class="row">
+        <a class="btn btn-secondary" href="{% turl 'bookings:ics' booking.pk %}">{% icon 'calendar' %} {% translate "Descargar .ics" %}</a>
+        <a class="btn btn-secondary" href="{{ gcal_url }}" target="_blank" rel="noopener noreferrer">{% translate "Engadir a Google Calendar" %}<span class="visually-hidden"> ({% translate "abre noutra xanela" %})</span></a>
+        {% if booking.paid_cents %}<a class="btn btn-secondary" href="{% turl 'bookings:receipt' booking.pk %}">{% translate "Recibo" %}</a>{% endif %}
+        {% if booking.can_modify %}<a class="btn btn-secondary" href="{% turl 'bookings:modify' booking.pk %}">{% translate "Cambiar hora" %}</a>{% endif %}
+        {% if booking.can_cancel %}<a class="btn btn-danger" href="{% turl 'bookings:cancel' booking.pk %}">{% translate "Cancelar" %}</a>{% endif %}
+      </div>
+      {% if booking.can_cancel %}<p class="help mt-1">{% if penalty %}{% blocktranslate with p=penalty|euros %}Se cancelas agora, a penalización é de {{ p }}.{% endblocktranslate %}{% else %}{% blocktranslate with h=tenant.cancellation_hours %}Cancelación gratuíta ata {{ h }} h antes.{% endblocktranslate %}{% endif %}</p>{% endif %}
+    </section>
+    {% if booking.closed_at %}
+    <section class="card" aria-labelledby="close-title"><h2 id="close-title">{% translate "Peche" %}</h2>
+      <p>{% blocktranslate with t=booking.closed_at|date:"d/m H:i" %}Checklist enviado o {{ t }}.{% endblocktranslate %}</p></section>
+    {% endif %}
+  </div>
+  <aside class="stack">
+    <section class="card" aria-labelledby="sum-title">
+      <h2 id="sum-title">{% translate "Resumo" %}</h2>
+      <dl class="kv">
+        <dt>{% translate "Importe" %}</dt><dd>{% if booking.price_cents %}{{ booking.price_cents|euros }}{% else %}{% translate "Gratuíta" %}{% endif %}</dd>
+        {% if booking.refunded_cents %}<dt>{% translate "Devolto" %}</dt><dd>{{ booking.refunded_cents|euros }}</dd>{% endif %}
+        <dt>{% translate "Normas aceptadas" %}</dt><dd>v{{ booking.rules_version.version }} · {{ booking.rules_accepted_at|date:"d/m/Y H:i" }}</dd>
+      </dl>
+    </section>
+    {% include "bookings/_weather.html" %}
+  </aside>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Avisar dunha avaría" %}{% endblock %}
+{% block content %}
+<div class="layout-aside">
+  <section class="card" aria-labelledby="inc-title">
+    <h1 id="inc-title">{% translate "Avisar dunha avaría" %}</h1>
+    <p>{% translate "En 30 segundos: que instalación, que pasa e, se queres, unha foto." %}</p>
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      {% include "includes/form.html" %}
+      <div class="form-actions"><button class="btn btn-lg" type="submit">{% icon 'alert' %} {% translate "Enviar aviso" %}</button></div>
+    </form>
+  </section>
+  <aside class="card" aria-labelledby="mine-title">
+    <h2 id="mine-title">{% translate "Os meus avisos" %}</h2>
+    <ul class="list">{% for i in mine %}<li><a href="{% turl 'incidents:detail' i.pk %}">#{{ i.pk }} {{ i.facility.name }}</a><br><span class="badge">{{ i.get_status_display }}</span></li>{% empty %}<li class="muted">{% translate "Aínda non enviaches avisos." %}</li>{% endfor %}</ul>
+  </aside>
+</div>
+{% endblock %}

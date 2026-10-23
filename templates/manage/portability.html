@@ -1,0 +1,14 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Portabilidade" %}{% endblock %}
+{% block content %}
+<h1>{% translate "Soberanía dos datos" %}</h1>
+<div class="grid grid-2">
+  <section class="card"><h2>{% translate "Exportación íntegra" %}</h2>
+    <p>{% translate "Descarga todos os datos do concello nun ZIP con formatos abertos: JSON completo, CSV, iCalendar, GeoJSON e os ficheiros subidos. Pódese importar noutra instalación de Eira." %}</p>
+    <p class="alert alert-warn">{% translate "Contén datos persoais e os segredos das pechaduras: gárdao con seguridade." %}</p>
+    <a class="btn" href="{% turl 'manage:export' %}">{% icon 'download' %} {% translate "Descargar ZIP" %}</a></section>
+  <section class="card"><h2>{% translate "Importar un concello" %}</h2>
+    <p>{% translate "Só para a administración da deputación: crea un concello novo a partir dunha exportación." %}</p>
+    <form method="post" action="{% turl 'manage:import' %}" enctype="multipart/form-data" novalidate>{% csrf_token %}{% include "includes/form.html" %}<button class="btn" type="submit">{% translate "Importar" %}</button></form></section>
+</div>
+{% endblock %}

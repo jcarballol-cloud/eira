@@ -1,0 +1,23 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Peches e bloqueos" %}{% endblock %}
+{% block content %}
+<h1>{% translate "Horarios especiais, festivos e bloqueos" %}</h1>
+<div class="layout-aside">
+  <section aria-labelledby="cl-list">
+    <h2 id="cl-list">{% translate "Peches programados" %}</h2>
+    <div class="table-wrap"><table class="data">
+      <caption class="visually-hidden">{% translate "Peches" %}</caption>
+      <thead><tr><th scope="col">{% translate "Motivo" %}</th><th scope="col">{% translate "Instalación" %}</th><th scope="col">{% translate "Desde" %}</th><th scope="col">{% translate "Ata" %}</th><th scope="col"><span class="visually-hidden">{% translate "Accións" %}</span></th></tr></thead>
+      <tbody>{% for c in closures %}<tr><td><span class="badge {% if c.kind == 'weather' %}badge-alert{% endif %}">{{ c.get_kind_display }}</span> {{ c.reason }}</td><td>{{ c.facility.name|default:_("Todas") }}</td><td>{{ c.starts_at|date:"d/m/Y H:i" }}</td><td>{{ c.ends_at|date:"d/m/Y H:i" }}</td>
+        <td><form method="post" action="{% turl 'manage:closure_delete' c.pk %}">{% csrf_token %}<button class="btn btn-sm btn-secondary" type="submit">{% translate "Eliminar" %}<span class="visually-hidden"> {{ c.reason }}</span></button></form></td></tr>
+      {% empty %}<tr><td colspan="5">{% translate "Non hai peches." %}</td></tr>{% endfor %}</tbody>
+    </table></div>
+  </section>
+  <aside class="stack">
+    <section class="card" aria-labelledby="cl-new"><h2 id="cl-new">{% translate "Novo peche" %}</h2>
+      <p class="help">{% translate "As reservas afectadas cancélanse con devolución íntegra e a persoa recibe un aviso." %}</p>
+      <form method="post" novalidate>{% csrf_token %}{% include "includes/form.html" %}<button class="btn" type="submit">{% translate "Gardar e avisar" %}</button></form></section>
+    <form method="post" action="{% turl 'manage:weather_alert' %}" class="card">{% csrf_token %}<h2>{% translate "Alerta meteorolóxica" %}</h2><p>{% translate "Simula un aviso laranxa: pecha as instalacións descubertas as próximas 6 horas." %}</p><button class="btn btn-danger" type="submit">{% translate "Simular alerta" %}</button></form>
+  </aside>
+</div>
+{% endblock %}

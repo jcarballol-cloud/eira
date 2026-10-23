@@ -1,0 +1,14 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Instalacións" %}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "Instalacións" %}</h1><a class="btn" href="{% turl 'manage:facility_new' %}">{% translate "Alta asistida" %}</a></div>
+<div class="table-wrap"><table class="data">
+  <caption class="visually-hidden">{% translate "Instalacións do concello" %}</caption>
+  <thead><tr><th scope="col">{% translate "Nome" %}</th><th scope="col">{% translate "Tipo" %}</th><th scope="col">{% translate "Parroquia" %}</th><th scope="col">{% translate "Acceso" %}</th><th scope="col">{% translate "Estado" %}</th><th scope="col">{% translate "QR" %}</th></tr></thead>
+  <tbody>{% for f in facilities %}<tr>
+    <td><a href="{% turl 'manage:facility_edit' f.pk %}">{{ f.name }}</a></td><td>{{ f.get_kind_display }}</td><td>{{ f.parish.name|default:"—" }}</td>
+    <td>{{ f.access_level }} · {{ f.get_access_level_display }}</td><td>{% if f.is_published %}<span class="badge badge-ok">{% translate "Publicada" %}</span>{% else %}<span class="badge badge-warn">{% translate "Borrador" %}</span>{% endif %}</td>
+    <td><a href="{% turl 'manage:facility_qr' f.pk %}">{% translate "Cartel" %}<span class="visually-hidden"> {{ f.name }}</span></a></td></tr>
+  {% endfor %}</tbody>
+</table></div>
+{% endblock %}

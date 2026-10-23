@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Datos abertos" %}{% endblock %}
+{% block content %}
+<article class="card prose">
+  <h1>{% translate "Datos abertos" %}</h1>
+  <p>{% blocktranslate with n=tenant.name %}Ocupación das instalacións deportivas de {{ n }}: número de reservas por instalación, día e hora nas últimas 8 semanas. Non contén ningún dato persoal.{% endblocktranslate %}</p>
+  <ul>
+    <li><a href="{{ csv_url }}">{% icon 'download' %} {% translate "Descargar CSV" %}</a> · {% translate "licenza CC BY 4.0" %}</li>
+    <li><a href="{{ dcat_url }}">{% translate "Metadatos DCAT-AP (JSON-LD)" %}</a></li>
+    <li><a href="{% url 'schema' %}">{% translate "API aberta (OpenAPI 3.1)" %}</a></li>
+  </ul>
+</article>
+{% endblock %}

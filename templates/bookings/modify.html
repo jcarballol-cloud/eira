@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Cambiar reserva" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{% translate "Cambiar a hora da reserva" %}</h1>
+  <p>{% blocktranslate with f=booking.facility.name d=booking.start|date:"l j" h=booking.start|hhmm %}Agora: {{ f }}, {{ d }} ás {{ h }}.{% endblocktranslate %}</p></div></div>
+{% if start %}
+  <form method="post" class="card mb-2">
+    {% csrf_token %}
+    <input type="hidden" name="inicio" value="{{ start|date:'c' }}">
+    <p class="big">{% blocktranslate with d=start|date:"l j \d\e F" h=start|hhmm %}Novo horario: <strong>{{ d }} ás {{ h }}</strong>{% endblocktranslate %}</p>
+    <div class="form-actions"><button class="btn" type="submit">{% translate "Confirmar o cambio" %}</button><a class="btn btn-ghost" href="?">{% translate "Escoller outra" %}</a></div>
+  </form>
+{% else %}
+  <p>{% translate "Escolle a nova franxa:" %}</p>
+{% endif %}
+<div id="week">{% include "facilities/_week.html" %}</div>
+{% endblock %}

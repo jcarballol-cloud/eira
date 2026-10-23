@@ -1,0 +1,24 @@
+{% extends "manage/base.html" %}{% load i18n %}
+{% block title %}{% translate "Horario" %} · {{ facility.name }}{% endblock %}
+{% block content %}
+{% include "manage/_facility_tabs.html" %}
+<form method="post" class="card" novalidate>
+  {% csrf_token %}
+  {{ formset.management_form }}
+  {% if formset.non_form_errors %}<div class="alert alert-error">{{ formset.non_form_errors }}</div>{% endif %}
+  <div class="table-wrap"><table class="data">
+    <caption>{% translate "Franxas de apertura" %}</caption>
+    <thead><tr><th scope="col">{% translate "Día" %}</th><th scope="col">{% translate "Abre" %}</th><th scope="col">{% translate "Pecha" %}</th><th scope="col">{% translate "Tempada desde" %}</th><th scope="col">{% translate "Tempada ata" %}</th><th scope="col">{% translate "Eliminar" %}</th></tr></thead>
+    <tbody>{% for f in formset %}<tr>
+      {% for hidden in f.hidden_fields %}{{ hidden }}{% endfor %}
+      <td><label class="visually-hidden" for="{{ f.weekday.auto_id }}">{% translate "Día" %} {{ forloop.counter }}</label>{{ f.weekday }}{{ f.weekday.errors }}</td>
+      <td><label class="visually-hidden" for="{{ f.opens.auto_id }}">{% translate "Abre" %} {{ forloop.counter }}</label>{{ f.opens }}{{ f.opens.errors }}</td>
+      <td><label class="visually-hidden" for="{{ f.closes.auto_id }}">{% translate "Pecha" %} {{ forloop.counter }}</label>{{ f.closes }}{{ f.closes.errors }}</td>
+      <td><label class="visually-hidden" for="{{ f.season_start.auto_id }}">{% translate "Tempada desde" %} {{ forloop.counter }}</label>{{ f.season_start }}</td>
+      <td><label class="visually-hidden" for="{{ f.season_end.auto_id }}">{% translate "Tempada ata" %} {{ forloop.counter }}</label>{{ f.season_end }}</td>
+      <td>{% if f.instance.pk %}<label class="visually-hidden" for="{{ f.DELETE.auto_id }}">{% translate "Eliminar" %} {{ forloop.counter }}</label>{{ f.DELETE }}{% endif %}</td>
+    </tr>{% endfor %}</tbody>
+  </table></div>
+  <div class="form-actions"><button class="btn" type="submit">{% translate "Gardar horario" %}</button></div>
+</form>
+{% endblock %}

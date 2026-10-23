@@ -1,0 +1,17 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Configuración" %}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "Configuración do concello" %}</h1>
+  <a class="btn btn-secondary" href="{% turl 'manage:portability' %}">{% translate "Exportar / importar datos" %}</a></div>
+<form method="post" novalidate>
+  {% csrf_token %}
+  {% if form.errors %}<div class="alert alert-error" role="alert" tabindex="-1" data-focus>{% translate "Revisa os campos marcados." %}</div>{% endif %}
+  <div class="layout-aside">
+    <section class="card">{% for field in base_fields %}{% include "includes/field.html" %}{% endfor %}</section>
+    <aside class="card"><fieldset><legend>{% translate "Módulos activos" %}</legend>
+      <p class="help">{% translate "Activa só o que o concello vaia usar. O resto non aparece." %}</p>
+      {% for field in module_fields %}{% include "includes/field.html" %}{% endfor %}</fieldset></aside>
+  </div>
+  <div class="form-actions"><button class="btn" type="submit">{% translate "Gardar" %}</button></div>
+</form>
+{% endblock %}

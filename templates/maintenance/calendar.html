@@ -1,0 +1,16 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Calendario de mantemento" %}{% endblock %}
+{% block subnav %}{% if nav == 'manage' %}{{ block.super }}{% endif %}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "Calendario de mantemento" %} · {{ month|date:"F Y" }}</h1>
+  <nav class="row" aria-label="{% translate 'Cambiar mes' %}"><a class="btn btn-secondary btn-sm" href="?mes={{ prev_month|date:'Y-m' }}">← {% translate "Mes anterior" %}</a><a class="btn btn-secondary btn-sm" href="?mes={{ next_month|date:'Y-m' }}">{% translate "Mes seguinte" %} →</a></nav></div>
+<div class="cal">
+  <div class="dow" aria-hidden="true">{% translate "Lu" %}</div><div class="dow" aria-hidden="true">{% translate "Ma" %}</div><div class="dow" aria-hidden="true">{% translate "Mé" %}</div><div class="dow" aria-hidden="true">{% translate "Xo" %}</div><div class="dow" aria-hidden="true">{% translate "Ve" %}</div><div class="dow" aria-hidden="true">{% translate "Sá" %}</div><div class="dow" aria-hidden="true">{% translate "Do" %}</div>
+  {% for week in weeks %}{% for day, orders in week %}
+    <div class="day {% if day.month != month.month %}out{% endif %} {% if day == today %}today{% endif %} {% if not orders %}empty{% endif %}">
+      <span class="n">{{ day|date:"D j" }}</span>
+      {% if orders %}<ul>{% for o in orders %}<li class="{% if o.status == 'done' %}done{% elif o.is_overdue %}overdue{% endif %}"><a href="{% turl 'maintenance:order' o.pk %}">{{ o.title }}</a><span class="visually-hidden"> · {{ o.facility.name }} · {{ o.get_status_display }}</span></li>{% endfor %}</ul>{% endif %}
+    </div>
+  {% endfor %}{% endfor %}
+</div>
+{% endblock %}

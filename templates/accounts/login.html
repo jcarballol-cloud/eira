@@ -1,0 +1,21 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Acceder" %}{% endblock %}
+{% block content %}
+<div class="grid grid-2">
+  <section class="card" aria-labelledby="mail-title">
+    <h1 id="mail-title">{% translate "Acceder sen contrasinal" %}</h1>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}">
+      {% include "includes/form.html" %}
+      <div class="form-actions"><button class="btn btn-lg" type="submit">{% translate "Enviarme o código" %}</button></div>
+    </form>
+  </section>
+  <section class="card" aria-labelledby="clave-title">
+    <h2 id="clave-title">{% translate "Con identidade dixital" %}</h2>
+    <p>{% translate "Usa Cl@ve ou Chave365 se queres validar a túa identidade (por exemplo, para tarifas de empadroamento)." %}</p>
+    <a class="btn btn-secondary btn-lg" href="{% url 'accounts:identity_start' %}?next={{ next|urlencode }}">{% translate "Acceder con Cl@ve" %}</a>
+    {% if demo_tools %}<p class="help mt-1">{% translate "No prototipo, Cl@ve está simulada." %}</p>{% endif %}
+  </section>
+</div>
+{% endblock %}

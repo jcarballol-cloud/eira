@@ -1,0 +1,20 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Mantemento preventivo" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{% translate "Mantemento preventivo" %}</h1><p>{% translate "As tarefas periódicas xeran ordes de traballo no calendario compartido." %}</p></div>
+  <div class="row"><a class="btn btn-secondary" href="{% turl 'maintenance:calendar' %}">{% icon 'calendar' %} {% translate "Calendario" %}</a>
+  <form method="post">{% csrf_token %}<input type="hidden" name="action" value="generate"><input type="hidden" name="days" value="14"><button class="btn" type="submit">{% translate "Xerar ordes (14 días)" %}</button></form></div></div>
+<div class="grid grid-2">
+  {% for p in plans %}
+  <section class="card" aria-labelledby="plan-{{ p.pk }}">
+    <h2 id="plan-{{ p.pk }}">{{ p.facility.name }}</h2>
+    <p class="muted">{{ p.name }}</p>
+    <ul class="list">{% for t in p.tasks.all %}<li><strong>{{ t.title }}</strong> · {{ t.get_frequency_display }}<br><small>{{ t.checklist_items|join:" · " }}</small></li>{% endfor %}</ul>
+    <details><summary>{% translate "Engadir tarefa" %}</summary>
+      <form method="post" novalidate class="mt-1">{% csrf_token %}<input type="hidden" name="plan" value="{{ p.pk }}">
+        {% for field in form %}<div class="field"><label for="p{{ p.pk }}-{{ field.name }}">{{ field.label }}</label>{% if field.name == 'frequency' %}<select id="p{{ p.pk }}-{{ field.name }}" name="frequency">{% for v, l in frequencies %}<option value="{{ v }}">{{ l }}</option>{% endfor %}</select>{% elif field.name == 'checklist' %}<textarea id="p{{ p.pk }}-checklist" name="checklist" rows="3"></textarea>{% elif field.name == 'start_date' %}<input id="p{{ p.pk }}-start_date" type="date" name="start_date">{% else %}<input id="p{{ p.pk }}-title" type="text" name="title" maxlength="160">{% endif %}</div>{% endfor %}
+        <button class="btn btn-sm" type="submit">{% translate "Engadir" %}</button></form></details>
+  </section>
+  {% empty %}<p>{% translate "Sen plans." %}</p>{% endfor %}
+</div>
+{% endblock %}

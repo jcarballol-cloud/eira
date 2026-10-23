@@ -1,0 +1,21 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Entrada" %} · {{ facility.name }}{% endblock %}
+{% block content %}
+<section class="card prose center">
+  <p class="eyebrow">{% icon 'qr' %} {% translate "Entrada" %}</p>
+  <h1>{{ facility.name }}</h1>
+  {% if done %}
+    {% if booking %}
+      <p class="alert alert-success" role="status">{% blocktranslate with a=booking.start|hhmm b=booking.end|hhmm %}Benvida/o! Rexistramos a túa entrada na reserva de {{ a }} a {{ b }}.{% endblocktranslate %}</p>
+      <p><a class="btn" href="{% turl 'bookings:detail' booking.pk %}">{% translate "Ver a miña reserva" %}</a></p>
+    {% else %}
+      <p class="alert" role="status">{% translate "Grazas. Rexistramos o uso da instalación (sen datos persoais) para mellorar o servizo." %}</p>
+      <p><a class="btn btn-secondary" href="{% turl 'facilities:detail' facility.pk %}">{% translate "Reservar para outro día" %}</a></p>
+    {% endif %}
+  {% else %}
+    <p>{% translate "Rexistra a túa chegada. Se tes reserva agora, marcarase como usada." %}</p>
+    <form method="post">{% csrf_token %}<button class="btn btn-lg" type="submit">{% translate "Rexistrar entrada" %}</button></form>
+    {% if not user.is_authenticated %}<p class="help mt-1"><a href="{% url 'accounts:login' %}?next={{ request.get_full_path|urlencode }}">{% translate "Accede primeiro se tes reserva" %}</a></p>{% endif %}
+  {% endif %}
+</section>
+{% endblock %}

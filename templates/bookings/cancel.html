@@ -1,0 +1,21 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Cancelar reserva" %}{% endblock %}
+{% block content %}
+<section class="card prose">
+  <h1>{% translate "Cancelar a reserva" %}</h1>
+  <p><strong>{{ booking.facility.name }}</strong> · {{ booking.start|date:"l j \d\e F" }} · {{ booking.start|hhmm }}–{{ booking.end|hhmm }}</p>
+  {% if penalty %}
+    <div class="alert alert-warn">{% blocktranslate trimmed with p=penalty|euros h=tenant.cancellation_hours %}Quedan menos de {{ h }} horas: aplicarase unha penalización de {{ p }}.{% endblocktranslate %}</div>
+  {% elif booking.paid_cents %}
+    <div class="alert alert-success">{% blocktranslate with p=booking.paid_cents|euros %}Devolveremos o importe íntegro ({{ p }}).{% endblocktranslate %}</div>
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    <div class="field"><label for="reason">{% translate "Motivo (opcional)" %}</label><input id="reason" type="text" name="reason" maxlength="200"></div>
+    <div class="form-actions">
+      <button class="btn btn-danger" type="submit">{% translate "Si, cancelar" %}</button>
+      <a class="btn btn-ghost" href="{% turl 'bookings:detail' booking.pk %}">{% translate "Non, manter a reserva" %}</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

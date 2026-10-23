@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Cartel QR" %} · {{ facility.name }}{% endblock %}
+{% block content %}
+<article class="card prose center ticket">
+  <p class="eyebrow">{{ tenant.name }}</p>
+  <h1>{{ facility.name }}</h1>
+  <p class="big">{% translate "Ao entrar, escanea este código para rexistrar o uso." %}</p>
+  <div class="qr" role="img" aria-label="{% translate 'Código QR de entrada' %}">{{ svg|safe }}</div>
+  <p class="mono"><small>{{ url }}</small></p>
+  <p>{% translate "Avarías: usa o botón «Avisar dunha avaría» na web do concello." %}</p>
+  <button class="btn no-print" type="button" data-print>{% translate "Imprimir cartel" %}</button>
+</article>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Panel do día" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{{ today|date:"l j \d\e F" }}</p><h1>{% translate "Panel do día" %}</h1></div>
+  <a class="btn" href="{% turl 'manage:on_behalf' %}">{% translate "Reservar en nome dun veciño" %}</a></div>
+<div class="grid grid-4 mb-2">
+  <div class="stat"><div class="label">{% translate "Reservas hoxe" %}</div><div class="value">{{ held }}</div></div>
+  <div class="stat"><div class="label">{% translate "Ocupación hoxe" %}</div><div class="value">{{ occupancy }} %</div></div>
+  <div class="stat"><div class="label">{% translate "Incidencias novas" %}</div><div class="value">{{ incidents_new|length }}</div></div>
+  <div class="stat"><div class="label">{% translate "Cobrado hoxe" %}</div><div class="value">{{ revenue|euros }}</div></div>
+</div>
+<div class="layout-aside">
+  <div class="stack">
+    <section class="card" aria-labelledby="today-title">
+      <h2 id="today-title">{% translate "Reservas de hoxe" %}</h2>
+      <div class="table-wrap"><table class="data">
+        <caption class="visually-hidden">{% translate "Reservas de hoxe" %}</caption>
+        <thead><tr><th scope="col">{% translate "Hora" %}</th><th scope="col">{% translate "Instalación" %}</th><th scope="col">{% translate "Persoa" %}</th><th scope="col">{% translate "Estado" %}</th><th scope="col">{% translate "Acceso" %}</th></tr></thead>
+        <tbody>
+        {% for b in bookings %}
+          <tr><td class="nowrap">{{ b.start|hhmm }}–{{ b.end|hhmm }}</td><td>{{ b.facility.name }}</td><td>{{ b.holder_label|default:"—" }}{% if b.channel != 'online' %} <span class="badge">{{ b.get_channel_display }}</span>{% endif %}</td>
+            <td><span class="badge {% if b.status == 'used' %}badge-ok{% elif b.status == 'no_show' %}badge-alert{% elif b.status == 'pending_payment' %}badge-warn{% endif %}">{{ b.get_status_display }}</span></td>
+            <td>{% if b.checked_in_at %}{% icon 'check' %} {{ b.checked_in_at|hhmm }}{% else %}<small>{{ b.facility.get_access_level_display }}</small>{% endif %}</td></tr>
+        {% empty %}<tr><td colspan="5">{% translate "Hoxe non hai reservas." %}</td></tr>{% endfor %}
+        </tbody></table></div>
+    </section>
+    {% if key_bookings %}
+    <section class="card" aria-labelledby="keys-title">
+      <h2 id="keys-title">{% icon 'key' %} {% translate "Chaves de hoxe" %}</h2>
+      <ul class="list">{% for b in key_bookings %}
+        <li class="row-between"><span><strong>{{ b.start|hhmm }}</strong> {{ b.facility.name }} · {{ b.holder_label }}</span>
+          <span class="row">
+            {% with h=b.key_handover %}
+            {% if not h.handed_at %}<form method="post" action="{% turl 'manage:key_action' b.pk 'out' %}">{% csrf_token %}<button class="btn btn-sm" type="submit">{% translate "Entregada" %}<span class="visually-hidden"> {{ b.holder_label }}</span></button></form>
+            {% elif not h.returned_at %}<form method="post" action="{% turl 'manage:key_action' b.pk 'in' %}">{% csrf_token %}<button class="btn btn-sm btn-secondary" type="submit">{% translate "Devolta" %}<span class="visually-hidden"> {{ b.holder_label }}</span></button></form>
+            {% else %}<span class="badge badge-ok">{% translate "Devolta" %}</span>{% endif %}
+            {% endwith %}
+          </span></li>
+      {% endfor %}</ul>
+    </section>
+    {% endif %}
+  </div>
+  <aside class="stack">
+    {% if forecast %}{% include "bookings/_weather.html" %}
+      <form method="post" action="{% turl 'manage:weather_alert' %}" class="card-flat">{% csrf_token %}<p class="mb-1">{% translate "Demo: simular aviso meteorolóxico que pecha as instalacións descubertas e avisa ás reservas." %}</p><button class="btn btn-danger btn-sm" type="submit">{% translate "Simular alerta (6 h)" %}</button></form>
+    {% endif %}
+    <section class="card" aria-labelledby="inc-title"><h2 id="inc-title">{% translate "Incidencias por validar" %}</h2>
+      <ul class="list">{% for i in incidents_new %}<li><a href="{% turl 'manage:incident_detail' i.pk %}">#{{ i.pk }} {{ i.facility.name }}</a><br><small>{{ i.description|truncatechars:80 }}</small></li>{% empty %}<li class="muted">{% translate "Ningunha." %}</li>{% endfor %}</ul></section>
+    <section class="card" aria-labelledby="wo-title"><h2 id="wo-title">{% translate "Ordes de traballo pendentes" %}</h2>
+      <ul class="list">{% for o in orders_today %}<li>{% if o.is_overdue %}<span class="badge badge-alert">{% translate "Atrasada" %}</span> {% endif %}{{ o.title }}<br><small>{{ o.facility.name }} · {{ o.due_date|date:"d/m" }}{% if o.assigned_to %} · {{ o.assigned_to }}{% endif %}</small></li>{% empty %}<li class="muted">{% translate "Ningunha." %}</li>{% endfor %}</ul>
+      <a href="{% turl 'maintenance:calendar' %}">{% translate "Calendario de mantemento" %}</a></section>
+  </aside>
+</div>
+{% endblock %}

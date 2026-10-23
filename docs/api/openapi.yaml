@@ -1,0 +1,894 @@
+openapi: 3.1.0
+info:
+  title: Eira API
+  version: 0.1.0
+  description: 'API aberta de Eira: concellos, instalacións, dispoñibilidade, reservas
+    e incidencias.'
+  license:
+    name: EUPL-1.2
+    url: https://interoperable-europe.ec.europa.eu/collection/eupl
+paths:
+  /api/v1/municipalities/:
+    get:
+      operationId: municipalities_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - municipalities
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMunicipalityList'
+          description: ''
+  /api/v1/municipalities/{municipality_slug}/bookings/:
+    get:
+      operationId: municipalities_bookings_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: municipality_slug
+        schema:
+          type: string
+        required: true
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - municipalities
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBookingList'
+          description: ''
+    post:
+      operationId: municipalities_bookings_create
+      parameters:
+      - in: path
+        name: municipality_slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - municipalities
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BookingCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BookingCreate'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+          description: ''
+  /api/v1/municipalities/{municipality_slug}/bookings/{id}/:
+    get:
+      operationId: municipalities_bookings_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: municipality_slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - municipalities
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+          description: ''
+  /api/v1/municipalities/{municipality_slug}/bookings/{id}/cancel/:
+    post:
+      operationId: municipalities_bookings_cancel_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: municipality_slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - municipalities
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelResult'
+          description: ''
+  /api/v1/municipalities/{municipality_slug}/facilities/:
+    get:
+      operationId: municipalities_facilities_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: municipality_slug
+        schema:
+          type: string
+        required: true
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - municipalities
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFacilityList'
+          description: ''
+  /api/v1/municipalities/{municipality_slug}/facilities/{id}/:
+    get:
+      operationId: municipalities_facilities_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: municipality_slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - municipalities
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Facility'
+          description: ''
+  /api/v1/municipalities/{municipality_slug}/facilities/{id}/availability/:
+    get:
+      operationId: municipalities_facilities_availability_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: municipality_slug
+        schema:
+          type: string
+        required: true
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: week
+        schema:
+          type: string
+          format: date
+        description: Calquera día da semana (ISO 8601)
+      tags:
+      - municipalities
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSlotList'
+          description: ''
+  /api/v1/municipalities/{municipality_slug}/incidents/:
+    get:
+      operationId: municipalities_incidents_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: path
+        name: municipality_slug
+        schema:
+          type: string
+        required: true
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - municipalities
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedIncidentList'
+          description: ''
+    post:
+      operationId: municipalities_incidents_create
+      parameters:
+      - in: path
+        name: municipality_slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - municipalities
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Incident'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Incident'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Incident'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Incident'
+          description: ''
+  /api/v1/municipalities/{slug}/:
+    get:
+      operationId: municipalities_retrieve
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+          description: 'Identificador na URL: /c/<slug>/'
+        required: true
+      tags:
+      - municipalities
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Municipality'
+          description: ''
+components:
+  schemas:
+    AccessLevelEnum:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      type: integer
+      description: |-
+        * `0` - Aberta (QR de entrada)
+        * `1` - Chave custodiada
+        * `2` - Código temporal sen conexión
+        * `3` - Pechadura conectada
+    AudienceEnum:
+      enum:
+      - resident
+      - non_resident
+      - youth
+      - senior
+      type: string
+      description: |-
+        * `resident` - Persoas empadroadas
+        * `non_resident` - Persoas non empadroadas
+        * `youth` - Mocidade (ata 25 anos, empadroada)
+        * `senior` - Maiores de 65 (empadroadas)
+    Booking:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        reference:
+          type: string
+          readOnly: true
+        facility:
+          type: integer
+        facility_name:
+          type: string
+          readOnly: true
+        start:
+          type: string
+          format: date-time
+          title: Inicio
+        end:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Fin
+        status:
+          allOf:
+          - $ref: '#/components/schemas/BookingStatusEnum'
+          readOnly: true
+          title: Estado
+        price_cents:
+          type: integer
+          readOnly: true
+        paid_cents:
+          type: integer
+          readOnly: true
+        rules_accepted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+      required:
+      - end
+      - facility
+      - facility_name
+      - id
+      - paid_cents
+      - price_cents
+      - reference
+      - rules_accepted_at
+      - start
+      - status
+    BookingCreate:
+      type: object
+      properties:
+        facility:
+          type: integer
+        start:
+          type: string
+          format: date-time
+        accept_rules_version:
+          type: integer
+          description: Versión das normas que a persoa acepta expresamente
+      required:
+      - accept_rules_version
+      - facility
+      - start
+    BookingStatusEnum:
+      enum:
+      - pending_payment
+      - confirmed
+      - cancelled
+      - used
+      - no_show
+      type: string
+      description: |-
+        * `pending_payment` - Pendente de pagamento
+        * `confirmed` - Confirmada
+        * `cancelled` - Cancelada
+        * `used` - Usada
+        * `no_show` - Non presentada
+    CancelResult:
+      type: object
+      properties:
+        refunded_cents:
+          type: integer
+        penalty_cents:
+          type: integer
+      required:
+      - penalty_cents
+      - refunded_cents
+    CategoryEnum:
+      enum:
+      - damage
+      - cleaning
+      - lighting
+      - access
+      - water
+      - safety
+      - other
+      type: string
+      description: |-
+        * `damage` - Desperfecto
+        * `cleaning` - Limpeza
+        * `lighting` - Iluminación
+        * `access` - Porta ou pechadura
+        * `water` - Auga ou duchas
+        * `safety` - Seguridade
+        * `other` - Outra
+    Facility:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Nome
+          maxLength: 120
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/KindEnum'
+          title: Tipo
+        parish:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          title: Descrición
+        address:
+          type: string
+          title: Enderezo
+          maxLength: 200
+        latitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+        longitude:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+          title: Lonxitude
+        indoor:
+          type: boolean
+          title: Cuberta
+        lighting:
+          type: boolean
+          title: Iluminación
+        step_free:
+          type: boolean
+          title: Acceso sen chanzos
+        adapted_toilet:
+          type: boolean
+          title: Aseo adaptado
+        adapted_changing:
+          type: boolean
+          title: Vestiario adaptado
+        accessible_parking:
+          type: boolean
+          title: Aparcadoiro reservado
+        capacity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          title: Prazas simultáneas
+          description: 1 = uso exclusivo (pista). Máis de 1 = uso compartido (ximnasio,
+            piscina).
+        slot_minutes:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          title: Duración da franxa (min)
+        access_level:
+          allOf:
+          - $ref: '#/components/schemas/AccessLevelEnum'
+          title: Nivel de acceso
+          minimum: -9223372036854775808
+          maximum: 9223372036854775807
+        opening_hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpeningHours'
+          readOnly: true
+        tariffs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tariff'
+          readOnly: true
+        rules_version:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+      required:
+      - id
+      - kind
+      - name
+      - opening_hours
+      - parish
+      - rules_version
+      - tariffs
+    Incident:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        facility:
+          type: integer
+          title: Instalación
+        category:
+          allOf:
+          - $ref: '#/components/schemas/CategoryEnum'
+          title: Tipo
+        description:
+          type: string
+          title: Que pasou?
+        status:
+          allOf:
+          - $ref: '#/components/schemas/IncidentStatusEnum'
+          readOnly: true
+          title: Estado
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - description
+      - facility
+      - id
+      - status
+    IncidentStatusEnum:
+      enum:
+      - received
+      - validated
+      - work_order
+      - resolved
+      - rejected
+      type: string
+      description: |-
+        * `received` - Recibida
+        * `validated` - Validada
+        * `work_order` - Orde de traballo creada
+        * `resolved` - Resolta
+        * `rejected` - Descartada
+    KindEnum:
+      enum:
+      - outdoor_court
+      - sports_hall
+      - grass_field
+      - gym
+      - pool
+      - padel
+      - other
+      type: string
+      description: |-
+        * `outdoor_court` - Pista exterior
+        * `sports_hall` - Pavillón
+        * `grass_field` - Campo de herba
+        * `gym` - Ximnasio
+        * `pool` - Piscina
+        * `padel` - Pista de pádel
+        * `other` - Outra
+    Municipality:
+      type: object
+      properties:
+        slug:
+          type: string
+          description: 'Identificador na URL: /c/<slug>/'
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+          title: Nome
+          maxLength: 120
+        ine_code:
+          type: string
+          title: Código INE
+          maxLength: 5
+        accent_color:
+          type: string
+          title: Cor de acento
+          pattern: ^#[0-9A-Fa-f]{6}$
+          maxLength: 7
+        languages:
+          type: string
+          title: Idiomas
+          maxLength: 40
+        contact_email:
+          title: Correo de contacto
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        contact_phone:
+          type: string
+          title: Teléfono de contacto
+          maxLength: 20
+        cancellation_hours:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          title: Horas mínimas para cancelar sen penalización
+        max_advance_days:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          title: Días máximos de antelación
+      required:
+      - name
+      - slug
+    OpeningHours:
+      type: object
+      properties:
+        weekday:
+          allOf:
+          - $ref: '#/components/schemas/WeekdayEnum'
+          title: Día
+          minimum: -9223372036854775808
+          maximum: 9223372036854775807
+        opens:
+          type: string
+          format: time
+          title: Abre
+        closes:
+          type: string
+          format: time
+          title: Pecha
+        season_start:
+          type:
+          - string
+          - 'null'
+          format: date
+          title: Inicio de tempada
+        season_end:
+          type:
+          - string
+          - 'null'
+          format: date
+          title: Fin de tempada
+      required:
+      - closes
+      - opens
+      - weekday
+    PaginatedBookingList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Booking'
+    PaginatedFacilityList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Facility'
+    PaginatedIncidentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Incident'
+    PaginatedMunicipalityList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Municipality'
+    PaginatedSlotList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Slot'
+    Slot:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        status:
+          type: string
+        booked:
+          type: integer
+        capacity:
+          type: integer
+      required:
+      - booked
+      - capacity
+      - end
+      - start
+      - status
+    Tariff:
+      type: object
+      properties:
+        audience:
+          allOf:
+          - $ref: '#/components/schemas/AudienceEnum'
+          title: Colectivo
+        price_cents:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          title: Prezo por franxa (céntimos)
+      required:
+      - audience
+      - price_cents
+    WeekdayEnum:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      type: integer
+      description: |-
+        * `0` - Luns
+        * `1` - Martes
+        * `2` - Mércores
+        * `3` - Xoves
+        * `4` - Venres
+        * `5` - Sábado
+        * `6` - Domingo
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

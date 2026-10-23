@@ -1,0 +1,29 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{{ order.title }}{% endblock %}
+{% block content %}
+<nav class="mb-1" aria-label="{% translate 'Migas' %}"><a href="{% turl 'maintenance:my_orders' %}">{% translate "Ordes" %}</a> / <span aria-current="page">#{{ order.pk }}</span></nav>
+<div class="page-head"><div><p class="eyebrow">{{ order.facility.name }} · {{ order.due_date|date:"l j \d\e F" }}</p><h1>{{ order.title }}</h1>
+  {% if order.description %}<p>{{ order.description }}</p>{% endif %}</div><span class="badge big">{{ order.get_status_display }}</span></div>
+{% if order.incident %}<div class="alert">{% translate "Orixe: incidencia" %} #{{ order.incident.pk }} · {{ order.incident.get_category_display }}{% if order.incident.photo %} · <a href="{{ order.incident.photo.url }}">{% translate "ver foto" %}</a>{% endif %}</div>{% endif %}
+<p class="alert alert-warn queue-note" data-queue-count hidden>{% translate "Pendentes de enviar:" %} <strong data-n>0</strong></p>
+{% if order.status == 'done' %}
+  <div class="alert alert-success">{% blocktranslate with t=order.closed_at|date:"d/m H:i" %}Pechada o {{ t }}.{% endblocktranslate %} {{ order.closing_notes }}</div>
+  {% for p in order.photos.all %}<img src="{{ p.image.url }}" alt="{% translate 'Foto do traballo' %}" class="card">{% endfor %}
+{% else %}
+<form method="post" enctype="multipart/form-data" class="card tablet" data-offline-queue data-offline-message="{% translate 'Sen conexión: gardado no dispositivo, enviarase ao volver a rede.' %}">
+  {% csrf_token %}
+  <fieldset><legend>{% translate "Checklist" %}</legend>
+    {% for item in order.checklist_state %}
+      <div class="check"><input type="checkbox" id="chk-{{ forloop.counter0 }}" name="done" value="{{ forloop.counter0 }}" {% if item.done %}checked{% endif %}><label for="chk-{{ forloop.counter0 }}">{{ item.label }}</label></div>
+    {% empty %}<p class="muted">{% translate "Sen puntos de checklist." %}</p>{% endfor %}
+  </fieldset>
+  <div class="field"><label for="id_closing_notes">{% translate "Notas de peche" %}</label><textarea id="id_closing_notes" name="closing_notes" rows="3"></textarea></div>
+  <div class="field"><label for="id_photo">{% icon 'camera' %} {% translate "Foto do traballo feito (opcional)" %}</label><input id="id_photo" type="file" name="photo" accept="image/*" capture="environment" aria-describedby="photo-help"><span class="help" id="photo-help">{% translate "Sen conexión, a foto gárdase no dispositivo e súbese despois." %}</span></div>
+  <p class="alert alert-warn" data-offline-note hidden role="status"></p>
+  <div class="form-actions">
+    <button class="btn btn-secondary" type="submit" name="action" value="checklist">{% translate "Gardar checklist" %}</button>
+    <button class="btn btn-lg" type="submit" name="action" value="close">{% icon 'check' %} {% translate "Pechar orde" %}</button>
+  </div>
+</form>
+{% endif %}
+{% endblock %}

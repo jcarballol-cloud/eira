@@ -1,0 +1,39 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Confirmar reserva" %}{% endblock %}
+{% block content %}
+{% include "bookings/_steps.html" with step=2 %}
+<div class="layout-aside">
+  <section class="card" aria-labelledby="c-title">
+    <h1 id="c-title">{% translate "Revisa e confirma" %}</h1>
+    {% if error %}<div class="alert alert-error" role="alert" tabindex="-1" data-focus>{{ error }} <a href="{% turl 'facilities:detail' facility.pk %}">{% translate "Volver á grella" %}</a></div>{% endif %}
+    <dl class="kv big mb-2">
+      <dt>{% translate "Instalación" %}</dt><dd>{{ facility.name }}</dd>
+      <dt>{% translate "Día" %}</dt><dd>{{ start|date:"l j \d\e F" }}</dd>
+      <dt>{% translate "Hora" %}</dt><dd>{{ start|hhmm }}–{{ end|hhmm }}</dd>
+      <dt>{% translate "Prezo" %}</dt><dd>{% if price %}{{ price|euros }}{% else %}{% translate "Gratuíta" %}{% endif %} <small>({{ audience_label }})</small></dd>
+    </dl>
+    {% if rules %}
+    <section aria-labelledby="r-title" class="card-flat mb-2">
+      <h2 id="r-title">{% translate "Normas de uso, dereitos e deberes" %} <small>{% blocktranslate with v=rules.version %}versión {{ v }}{% endblocktranslate %}</small></h2>
+      <ul>{% for line in rules.lines %}<li>{{ line }}</li>{% endfor %}</ul>
+      <p class="help">{% blocktranslate trimmed with h=tenant.cancellation_hours p=tenant.late_cancel_penalty_pct %}Podes cancelar ou cambiar gratis ata {{ h }} horas antes. Despois, a cancelación ten unha penalización do {{ p }} %.{% endblocktranslate %}</p>
+    </section>
+    {% endif %}
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="inicio" value="{{ start|date:'c' }}">
+      {% include "includes/form.html" %}
+      <div class="form-actions">
+        <button class="btn btn-lg" type="submit">{% if price %}{% blocktranslate with p=price|euros %}Confirmar e pagar {{ p }}{% endblocktranslate %}{% else %}{% translate "Confirmar reserva" %}{% endif %}</button>
+        <a class="btn btn-ghost" href="{% turl 'facilities:detail' facility.pk %}">{% translate "Escoller outra franxa" %}</a>
+      </div>
+    </form>
+  </section>
+  <aside class="stack">
+    {% include "bookings/_weather.html" %}
+    <section class="card"><h2>{% translate "Despois de reservar" %}</h2>
+      <p>{% if facility.access_level == 0 %}{% translate "Escanea o QR da entrada ao chegar." %}{% elif facility.access_level == 1 %}{% translate "Recolle a chave onde se indica e devólvea ao rematar." %}{% elif facility.access_level == 2 %}{% translate "Recibirás un código que abre só na túa franxa." %}{% else %}{% translate "Abrirás a porta desde o móbil." %}{% endif %}</p>
+    </section>
+  </aside>
+</div>
+{% endblock %}

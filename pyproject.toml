@@ -1,0 +1,49 @@
+# SPDX-License-Identifier: EUPL-1.2
+[project]
+name = "eira"
+version = "0.1.0"
+description = "Eira: plataforma libre de xestión, reserva e acceso a instalacións deportivas municipais"
+readme = "README.md"
+license = "EUPL-1.2"
+authors = [{ name = "Equipo Eira" }]
+requires-python = ">=3.12"
+dependencies = [
+    "Django>=5.2,<6",
+    "djangorestframework>=3.15",
+    "drf-spectacular>=0.28",
+    "pyotp>=2.9",
+    "Pillow>=11",
+    "psycopg[binary]>=3.2",
+    "qrcode>=8",
+    "whitenoise>=6.8",
+    "polib>=1.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-django>=4.9",
+    "pytest-playwright>=0.6",
+    "axe-playwright-python>=0.1.4",
+    "ruff>=0.8",
+    "pip-licenses>=5",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "eira.settings"
+python_files = ["test_*.py"]
+testpaths = ["apps", "tests"]
+addopts = "-q --strict-markers"
+markers = ["e2e: browser end-to-end tests (Playwright + axe)"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["**/migrations/*", ".venv", "static/vendor"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "DJ"]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["eira", "apps"]

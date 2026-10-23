@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Aviso" %} #{{ incident.pk }}{% endblock %}
+{% block content %}
+<section class="card prose">
+  <p class="eyebrow">{% translate "Aviso" %} #{{ incident.pk }} · {{ incident.created_at|date:"d/m/Y H:i" }}</p>
+  <h1>{{ incident.facility.name }}: {{ incident.get_category_display }}</h1>
+  {% include "incidents/_timeline.html" %}
+  <p class="mt-2">{{ incident.description|linebreaksbr }}</p>
+  {% if incident.photo %}<img src="{{ incident.photo.url }}" alt="{% translate 'Foto enviada co aviso' %}" class="card">{% endif %}
+  {% if incident.resolution_note %}<div class="alert alert-success"><strong>{% translate "Resposta do concello:" %}</strong> {{ incident.resolution_note }}</div>{% endif %}
+</section>
+{% endblock %}

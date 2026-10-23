@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Cl@ve simulada" %}{% endblock %}
+{% block content %}
+<section class="card prose">
+  <p class="eyebrow">{% translate "Provedor de identidade simulado" %}</p>
+  <h1>Cl@ve · {% translate "identificación de proba" %}</h1>
+  <p>{% translate "No despregamento real, aquí estaría a pasarela Cl@ve (SAML 2.0) ou Chave365 (OpenID Connect). Escolle unha identidade ficticia:" %}</p>
+  <form method="post" action="{% url 'accounts:identity_callback' %}">
+    {% csrf_token %}
+    <input type="hidden" name="state" value="{{ state }}">
+    <fieldset><legend>{% translate "Identidade" %}</legend>
+      {% for key, ident in identities.items %}<div class="check"><input type="radio" name="identity" id="id-{{ key }}" value="{{ key }}" {% if forloop.first %}checked{% endif %}><label for="id-{{ key }}">{{ ident.name }} <small>({{ ident.email }})</small></label></div>{% endfor %}
+    </fieldset>
+    <button class="btn btn-lg" type="submit">{% translate "Identificarme" %}</button>
+  </form>
+</section>
+{% endblock %}

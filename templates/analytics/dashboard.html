@@ -1,0 +1,63 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Indicadores" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{% translate "Indicadores" %}</h1><p>{% blocktranslate with a=s.start|date:"d/m" b=s.end|date:"d/m" %}Período: {{ a }}–{{ b }}{% endblocktranslate %}</p></div>
+  <nav class="row" aria-label="{% translate 'Período' %}"><a class="btn btn-sm {% if weeks != 4 %}btn-secondary{% endif %}" href="?semanas=4" {% if weeks == 4 %}aria-current="page"{% endif %}>{% translate "4 semanas" %}</a><a class="btn btn-sm {% if weeks != 8 %}btn-secondary{% endif %}" href="?semanas=8" {% if weeks == 8 %}aria-current="page"{% endif %}>{% translate "8 semanas" %}</a></nav></div>
+
+{% if ai_summary %}<section class="card mb-2" aria-labelledby="ai-title"><h2 id="ai-title">{% translate "Resumo semanal" %}</h2><p>{{ ai_summary|linebreaksbr }}</p><p class="help">{% translate "Xerado só con datos agregados. Se se usa IA, é un modelo de pesos abertos aloxado polo propio concello." %}</p></section>{% endif %}
+
+<div class="grid grid-4 mb-2">
+  <div class="stat"><div class="label">{% translate "Ocupación media" %}</div><div class="value">{{ s.occupancy_pct }} %</div><div class="delta muted">{% blocktranslate with b=s.booked a=s.available %}{{ b }} de {{ a }} prazas-franxa{% endblocktranslate %}</div></div>
+  <div class="stat"><div class="label">{% translate "Reservas non usadas" %}</div><div class="value">{{ s.no_show_pct }} %</div><div class="delta muted">{% blocktranslate with n=s.no_shows %}{{ n }} non presentadas{% endblocktranslate %}</div></div>
+  <div class="stat"><div class="label">{% translate "Incidencias abertas" %}</div><div class="value">{{ s.incidents.open }}</div><div class="delta muted">{% if s.incidents.avg_hours %}{% blocktranslate with h=s.incidents.avg_hours %}{{ h }} h de media ata resolver{% endblocktranslate %}{% endif %}</div></div>
+  <div class="stat"><div class="label">{% translate "Ingresos netos" %}</div><div class="value">{{ s.revenue_cents|euros }}</div></div>
+</div>
+
+<div class="grid grid-2">
+  <section class="card" aria-labelledby="occ-title">
+    <div class="row-between"><h2 id="occ-title">{% translate "Ocupación por instalación" %}</h2><a href="?semanas={{ weeks }}&amp;csv=ocupacion">{% icon 'download' %} CSV<span class="visually-hidden"> {% translate "ocupación" %}</span></a></div>
+    {% include "includes/hbar.html" with chart=occ_chart cid="occ" title=_("Ocupación por instalación (%)") %}
+    <details class="mt-1"><summary>{% translate "Ver datos en táboa" %}</summary>
+      <div class="table-wrap mt-1"><table class="data"><caption class="visually-hidden">{% translate "Ocupación por instalación" %}</caption>
+        <thead><tr><th scope="col">{% translate "Instalación" %}</th><th scope="col" class="num">{% translate "Ofertadas" %}</th><th scope="col" class="num">{% translate "Reservadas" %}</th><th scope="col" class="num">%</th></tr></thead>
+        <tbody>{% for r in s.occupancy %}<tr><th scope="row">{{ r.facility }}</th><td class="num">{{ r.available }}</td><td class="num">{{ r.booked }}</td><td class="num">{{ r.pct }}</td></tr>{% endfor %}</tbody></table></div></details>
+  </section>
+  <section class="card" aria-labelledby="ns-title">
+    <h2 id="ns-title">{% translate "Reservas non usadas (non presentadas)" %}</h2>
+    {% include "includes/hbar.html" with chart=ns_chart cid="ns" title=_("Porcentaxe de non presentadas por instalación") warn=True %}
+    <details class="mt-1"><summary>{% translate "Ver datos en táboa" %}</summary>
+      <div class="table-wrap mt-1"><table class="data"><caption class="visually-hidden">{% translate "Non presentadas" %}</caption>
+        <thead><tr><th scope="col">{% translate "Instalación" %}</th><th scope="col" class="num">{% translate "Non presentadas" %}</th><th scope="col" class="num">%</th></tr></thead>
+        <tbody>{% for r in s.occupancy %}{% if r.booked %}<tr><th scope="row">{{ r.facility }}</th><td class="num">{{ r.no_shows }}</td><td class="num">{{ r.no_show_pct }}</td></tr>{% endif %}{% endfor %}</tbody></table></div></details>
+  </section>
+</div>
+
+<section class="card mt-2" aria-labelledby="heat-title">
+  <div class="row-between"><h2 id="heat-title">{% translate "Ocupación por franxa horaria" %}</h2><a href="?semanas={{ weeks }}&amp;csv=franxas">{% icon 'download' %} CSV<span class="visually-hidden"> {% translate "franxas" %}</span></a></div>
+  <p class="help">{% translate "Número de reservas por día da semana e hora (todas as instalacións). As cores reforzan o número, que sempre se mostra." %}</p>
+  <div class="table-wrap"><table class="data heat">
+    <caption class="visually-hidden">{% translate "Reservas por día da semana e hora" %}</caption>
+    <thead><tr><th scope="col">{% translate "Hora" %}</th>{% for d in weekdays %}<th scope="col" class="center">{{ d }}</th>{% endfor %}</tr></thead>
+    <tbody>{% for row in s.heatmap %}<tr><th scope="row" class="mono">{{ row.hour|stringformat:"02d" }}:00</th>{% for c in row.cells %}<td class="h h{{ c.level }}">{{ c.value }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+  </table></div>
+</section>
+
+<div class="grid grid-2 mt-2">
+  <section class="card" aria-labelledby="under-title">
+    <h2 id="under-title">{% translate "Infrauso (menos do 20 %)" %}</h2>
+    <ul class="list">{% for r in s.underused %}<li class="row-between"><span>{{ r.facility }}</span><span class="badge badge-warn">{{ r.pct }} %</span></li>{% empty %}<li class="muted">{% translate "Ningunha instalación por baixo do 20 %." %}</li>{% endfor %}</ul>
+  </section>
+  <section class="card" aria-labelledby="inc2-title">
+    <div class="row-between"><h2 id="inc2-title">{% translate "Incidencias" %}</h2><a href="?semanas={{ weeks }}&amp;csv=incidencias">{% icon 'download' %} CSV<span class="visually-hidden"> {% translate "incidencias" %}</span></a></div>
+    <table class="data"><caption class="visually-hidden">{% translate "Incidencias por estado" %}</caption><tbody>{% for label, n in s.incidents.by_status %}<tr><th scope="row">{{ label }}</th><td class="num">{{ n }}</td></tr>{% endfor %}</tbody></table>
+  </section>
+</div>
+
+<section class="card mt-2" aria-labelledby="rev-title">
+  <div class="row-between"><h2 id="rev-title">{% translate "Ingresos netos por semana" %}</h2><a href="?semanas={{ weeks }}&amp;csv=ingresos">{% icon 'download' %} CSV<span class="visually-hidden"> {% translate "ingresos" %}</span></a></div>
+  {% include "includes/hbar.html" with chart=rev_chart cid="rev" title=_("Ingresos netos por semana (euros)") %}
+  <details class="mt-1"><summary>{% translate "Ver datos en táboa" %}</summary>
+    <table class="data mt-1"><caption class="visually-hidden">{% translate "Ingresos" %}</caption><thead><tr><th scope="col">{% translate "Semana do" %}</th><th scope="col" class="num">{% translate "Cobrado" %}</th><th scope="col" class="num">{% translate "Devolto" %}</th><th scope="col" class="num">{% translate "Neto" %}</th></tr></thead>
+      <tbody>{% for r in s.revenue_weeks %}<tr><th scope="row">{{ r.week|date:"d/m/Y" }}</th><td class="num">{{ r.paid|euros }}</td><td class="num">{{ r.refunded|euros }}</td><td class="num">{{ r.net|euros }}</td></tr>{% endfor %}</tbody></table></details>
+</section>
+{% endblock %}

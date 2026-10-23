@@ -1,0 +1,5 @@
+{% load i18n %}<ol class="steps" aria-label="{% translate 'Pasos da alta' %}">
+  <li class="{% if step > 1 %}done{% endif %}" {% if step == 1 %}aria-current="step"{% endif %}>{% translate "Plantilla" %}</li>
+  <li class="{% if step > 2 %}done{% endif %}" {% if step == 2 %}aria-current="step"{% endif %}>{% translate "Datos" %}</li>
+  <li {% if step == 3 %}aria-current="step"{% endif %}>{% translate "Revisar e publicar" %}</li>
+</ol>

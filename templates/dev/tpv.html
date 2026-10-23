@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "TPV simulado" %}{% endblock %}
+{% block content %}
+{% include "bookings/_steps.html" with step=3 %}
+<section class="card prose">
+  <p class="eyebrow">{% translate "Pasarela de pagamento simulada (tipo Redsys)" %}</p>
+  <h1>{% translate "Pagamento" %}</h1>
+  <dl class="kv big"><dt>{% translate "Concepto" %}</dt><dd>{{ payment.description }}</dd><dt>{% translate "Importe" %}</dt><dd><strong>{{ payment.amount_cents|euros }}</strong></dd><dt>{% translate "Operación" %}</dt><dd class="mono">{{ payment.reference }}</dd></dl>
+  <p class="alert">{% translate "Prototipo: non se pide ningunha tarxeta. No despregamento real, aquí apareceria o TPV da entidade bancaria do concello." %}</p>
+  <form method="post" class="form-actions">
+    {% csrf_token %}
+    <button class="btn btn-lg" type="submit" name="result" value="ok">{% translate "Pagar" %}</button>
+    <button class="btn btn-secondary" type="submit" name="result" value="ko">{% translate "Simular pagamento rexeitado" %}</button>
+  </form>
+</section>
+{% endblock %}

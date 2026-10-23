@@ -1,0 +1,53 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Inicio" %}{% endblock %}
+{% block hero %}
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap">
+    <p class="eyebrow">{% translate "Software libre para concellos" %}</p>
+    <h1 id="hero-title">{% translate "Reservar é o fácil. O difícil é abrir a porta." %}</h1>
+    <p>{% blocktranslate trimmed %}Eira acompaña cada instalación deportiva municipal durante todo o seu ciclo, tamén nas parroquias sen conserxe: da reserva á chave, do aviso de avaría ao mantemento e aos datos de uso.{% endblocktranslate %}</p>
+    <ol class="cycle" aria-label="{% translate 'Ciclo completo' %}">
+      <li><strong>1</strong> {% translate "atopar" %}</li><li><strong>2</strong> {% translate "reservar" %}</li><li><strong>3</strong> {% translate "pagar" %}</li><li><strong>4</strong> {% translate "acceder" %}</li><li><strong>5</strong> {% translate "usar" %}</li><li><strong>6</strong> {% translate "pechar e avisar" %}</li><li><strong>7</strong> {% translate "manter" %}</li><li><strong>8</strong> {% translate "medir" %}</li>
+    </ol>
+  </div>
+</section>
+{% endblock %}
+{% block content %}
+<section aria-labelledby="concellos-title" class="mb-2">
+  <h2 id="concellos-title">{% translate "Escolle o teu concello" %}</h2>
+  <ul class="grid grid-3 list" role="list">
+    {% for m in municipalities %}
+      <li class="card row">
+        <span class="crest crest-lg" aria-hidden="true">{{ m.initials }}</span>
+        <div>
+          <h3 class="mb-0"><a href="{% url 'tenant_home' m.slug %}">{{ m.name }}</a></h3>
+          <small>{% if m.region %}{{ m.region.name }}{% endif %}{% if m.population %} · {% blocktranslate with n=m.population %}{{ n }} habitantes{% endblocktranslate %}{% endif %}</small>
+        </div>
+      </li>
+    {% empty %}
+      <li class="alert alert-warn">{% translate "Aínda non hai concellos. Executa «make seed» para cargar os datos de demostración." %}</li>
+    {% endfor %}
+  </ul>
+</section>
+
+{% if personas %}
+<section id="demo" aria-labelledby="demo-title" class="mt-3">
+  <h2 id="demo-title">{% translate "Proba Eira cun perfil de demostración" %}</h2>
+  <p class="muted">{% translate "Persoas ficticias. Entra cun clic e segue o percorrido. Todos os servizos externos están simulados." %}</p>
+  <ul class="grid grid-3 list" role="list">
+    {% for p in personas %}
+      <li class="card persona">
+        <div class="row"><span class="avatar" aria-hidden="true">{{ p.initials }}</span><span class="who">{{ p.name }}</span></div>
+        <span>{{ p.role }}</span>
+        <small>{{ p.goal }}</small>
+        <form method="post" action="{% url 'dev:login_as' %}">
+          {% csrf_token %}
+          <input type="hidden" name="email" value="{{ p.email }}">
+          <button class="btn btn-secondary btn-block" type="submit">{% blocktranslate with n=p.name %}Entrar como {{ n }}{% endblocktranslate %}</button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endblock %}

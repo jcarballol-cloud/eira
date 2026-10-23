@@ -1,0 +1,66 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{{ facility.name }}{% endblock %}
+{% block content %}
+<nav aria-label="{% translate 'Migas' %}" class="mb-1"><a href="{% turl 'tenant_home' %}">{% translate "Instalacións" %}</a> / <span aria-current="page">{{ facility.name }}</span></nav>
+<div class="page-head">
+  <div>
+    <p class="eyebrow">{{ facility.get_kind_display }}{% if facility.parish %} · {{ facility.parish.name }}{% endif %}</p>
+    <h1>{{ facility.name }}</h1>
+    {% if facility.description %}<p>{{ facility.description }}</p>{% endif %}
+  </div>
+  <a class="btn btn-secondary" href="{% turl 'incidents:new' %}?instalacion={{ facility.pk }}">{% icon 'alert' %} {% translate "Avisar dunha avaría" %}</a>
+</div>
+
+<div class="layout-aside">
+  <section aria-labelledby="disp-title" class="stack">
+    <div class="row-between"><h2 id="disp-title" class="mb-0">{% translate "Dispoñibilidade" %}</h2></div>
+    <p class="muted mb-0">{% translate "Escolle unha franxa libre para reservala. As marcadas con ★ adoitan ter pouca demanda." %}</p>
+    <div id="week">{% include "facilities/_week.html" %}</div>
+  </section>
+
+  <aside class="stack" aria-label="{% translate 'Información da instalación' %}">
+    {% if facility.photo %}<img class="card" src="{{ facility.photo.url }}" alt="{{ facility.photo_alt }}">{% endif %}
+    <section class="card" aria-labelledby="acc-title">
+      <h2 id="acc-title">{% translate "Como se accede" %}</h2>
+      <p><span class="badge badge-level">{{ facility.get_access_level_display }}</span></p>
+      {% if facility.access_level == 0 %}<p>{% translate "Instalación aberta. Ao chegar, escanea o QR da entrada para rexistrar o uso." %}</p>
+      {% elif facility.access_level == 1 %}<p>{% blocktranslate trimmed with who=facility.key_holder_name where=facility.key_holder_place when=facility.key_holder_hours %}A chave tena <strong>{{ who }}</strong> en {{ where }} ({{ when }}). Avisarémola da túa reserva.{% endblocktranslate %}</p>
+      {% elif facility.access_level == 2 %}<p>{% translate "Teclado con código. Ao reservar recibes un código que só abre durante a túa franxa, aínda que a instalación non teña internet." %}</p>
+      {% else %}<p>{% translate "Pechadura conectada. Durante a túa franxa abres a porta desde o móbil e as luces acéndense soas." %}</p>{% endif %}
+    </section>
+    <section class="card" aria-labelledby="info-title">
+      <h2 id="info-title">{% translate "Datos prácticos" %}</h2>
+      <dl class="kv">
+        {% if facility.address %}<dt>{% translate "Enderezo" %}</dt><dd>{{ facility.address }}</dd>{% endif %}
+        <dt>{% translate "Franxas" %}</dt><dd>{% blocktranslate with m=facility.slot_minutes %}{{ m }} minutos{% endblocktranslate %}</dd>
+        <dt>{% translate "Prazas" %}</dt><dd>{% if facility.is_shared %}{{ facility.capacity }}{% else %}{% translate "Uso exclusivo" %}{% endif %}</dd>
+        <dt>{% translate "Iluminación" %}</dt><dd>{{ facility.lighting|yesno:_("Si,Non") }}</dd>
+        <dt>{% translate "Cuberta" %}</dt><dd>{{ facility.indoor|yesno:_("Si,Non") }}</dd>
+      </dl>
+    </section>
+    <section class="card" aria-labelledby="a11y-title">
+      <h2 id="a11y-title">{% icon 'accessible' %} {% translate "Accesibilidade física" %}</h2>
+      {% with feats=facility.accessibility_features %}
+      {% if feats %}<ul>{% for f in feats %}<li>{{ f|capfirst }}</li>{% endfor %}</ul>{% else %}<p class="muted">{% translate "Sen información de accesibilidade." %}</p>{% endif %}
+      {% endwith %}
+      {% if facility.accessibility_notes %}<p>{{ facility.accessibility_notes }}</p>{% endif %}
+    </section>
+    <section class="card" aria-labelledby="tar-title">
+      <h2 id="tar-title">{% translate "Tarifas por franxa" %}</h2>
+      <table class="data"><caption class="visually-hidden">{% translate "Tarifas" %}</caption>
+        <tbody>{% for t in tariffs %}<tr><th scope="row">{{ t.get_audience_display }}</th><td class="num">{% if t.price_cents %}{{ t.price_cents|euros }}{% else %}{% translate "Gratuíta" %}{% endif %}</td></tr>{% endfor %}</tbody>
+      </table>
+    </section>
+    <section class="card" aria-labelledby="hours-title">
+      <h2 id="hours-title">{% translate "Horario" %}</h2>
+      <ul class="list">{% for h in hours %}<li class="row-between"><span>{{ h.get_weekday_display }}</span><span>{{ h.opens|time:"H:i" }}–{{ h.closes|time:"H:i" }}</span></li>{% endfor %}</ul>
+    </section>
+    {% if rules %}
+    <section class="card" aria-labelledby="rules-title">
+      <h2 id="rules-title">{% translate "Normas de uso" %} <small>v{{ rules.version }}</small></h2>
+      <ul>{% for line in rules.lines %}<li>{{ line }}</li>{% endfor %}</ul>
+    </section>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}

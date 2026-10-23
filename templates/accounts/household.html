@@ -1,0 +1,36 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Unidade familiar" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{% translate "Unidade familiar" %}</h1><p>{% translate "Inscribe aos menores ao teu cargo nas escolas deportivas. Os consentimentos son explícitos, revogables e quedan rexistrados con data." %}</p></div></div>
+<div class="layout-aside">
+  <section aria-labelledby="hh-list">
+    <h2 id="hh-list">{% translate "Menores ao teu cargo" %}</h2>
+    {% for d, consents in dependents %}
+      <article class="card mb-2" aria-labelledby="dep-{{ d.pk }}">
+        <h3 id="dep-{{ d.pk }}">{{ d.first_name }} <small>({% blocktranslate with a=d.age %}{{ a }} anos{% endblocktranslate %})</small></h3>
+        <ul class="list">
+          {% for value, label, consent in consents %}
+            <li class="row-between">
+              <span>{{ label }}<br>{% if consent %}<span class="badge badge-ok">{% translate "Outorgado" %} {{ consent.granted_at|date:"d/m/Y" }}</span>{% else %}<span class="badge badge-muted">{% translate "Sen consentimento" %}</span>{% endif %}</span>
+              <form method="post" action="{% url 'account:consent_toggle' d.pk value %}">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-secondary" type="submit">{% if consent %}{% translate "Retirar" %}{% else %}{% translate "Outorgar" %}{% endif %}<span class="visually-hidden">: {{ label }} ({{ d.first_name }})</span></button>
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+      </article>
+    {% empty %}
+      <p class="muted">{% translate "Aínda non engadiches ningún menor." %}</p>
+    {% endfor %}
+  </section>
+  <section class="card" aria-labelledby="hh-add">
+    <h2 id="hh-add">{% translate "Engadir menor" %}</h2>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% include "includes/form.html" %}
+      <button class="btn" type="submit">{% translate "Engadir" %}</button>
+    </form>
+  </section>
+</div>
+{% endblock %}

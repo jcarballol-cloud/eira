@@ -1,0 +1,15 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Revisar e publicar" %}{% endblock %}
+{% block content %}
+{% include "manage/_wizard_steps.html" with step=3 %}
+<h1>{% blocktranslate with n=facility.name %}Revisa «{{ n }}»{% endblocktranslate %}</h1>
+<div class="grid grid-2">
+  <section class="card"><h2>{% translate "Horario" %}</h2><ul class="list">{% for h in facility.opening_hours.all %}<li class="row-between"><span>{{ h.get_weekday_display }}</span><span>{{ h.opens|time:"H:i" }}–{{ h.closes|time:"H:i" }}</span></li>{% endfor %}</ul><a href="{% turl 'manage:facility_hours' facility.pk %}">{% translate "Editar horario" %}</a></section>
+  <section class="card"><h2>{% translate "Tarifas" %}</h2><ul class="list">{% for t in facility.tariffs.all %}<li class="row-between"><span>{{ t.get_audience_display }}</span><span>{{ t.price_cents|euros }}</span></li>{% endfor %}</ul><a href="{% turl 'manage:facility_tariffs' facility.pk %}">{% translate "Editar tarifas" %}</a></section>
+  <section class="card"><h2>{% translate "Normas" %}</h2>{% with r=facility.current_rules %}<ul>{% for l in r.lines %}<li>{{ l }}</li>{% endfor %}</ul>{% endwith %}<a href="{% turl 'manage:facility_rules' facility.pk %}">{% translate "Editar normas" %}</a></section>
+  <section class="card"><h2>{% translate "Plan de mantemento" %}</h2>{% for p in plans %}<ul>{% for t in p.tasks.all %}<li>{{ t.title }} · {{ t.get_frequency_display }}</li>{% endfor %}</ul>{% endfor %}</section>
+  <section class="card"><h2>{% translate "Acceso" %}</h2><p>{{ facility.get_access_level_display }}</p>
+    {% if facility.access_level == 0 %}<a href="{% turl 'manage:facility_qr' facility.pk %}">{% translate "Imprimir o cartel QR" %}</a>{% elif facility.lock %}<p>{% translate "Dispositivo" %}: <span class="mono">{{ facility.lock.label }}</span></p>{% endif %}</section>
+</div>
+<form method="post" class="form-actions">{% csrf_token %}<button class="btn btn-lg" type="submit">{% translate "Publicar instalación" %}</button><a class="btn btn-ghost" href="{% turl 'manage:facility_edit' facility.pk %}">{% translate "Gardar como borrador" %}</a></form>
+{% endblock %}

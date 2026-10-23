@@ -1,0 +1,11 @@
+{% load i18n %}<figure class="mb-0">
+  <svg class="chart" viewBox="0 0 {{ chart.width }} {{ chart.height }}" role="img" aria-labelledby="{{ cid }}-t {{ cid }}-d">
+    <title id="{{ cid }}-t">{{ title }}</title>
+    <desc id="{{ cid }}-d">{% translate "Os mesmos datos están na táboa que segue ao gráfico." %}</desc>
+    {% for b in chart.bars %}
+      <text x="{{ chart.x0|add:'-8' }}" y="{{ b.text_y }}" text-anchor="end">{{ b.label|truncatechars:28 }}</text>
+      <rect class="bar{% if warn %} bar-warn{% endif %}" x="{{ chart.x0 }}" y="{{ b.y }}" width="{{ b.w }}" height="20" rx="4"></rect>
+      <text class="val" x="{{ chart.x0 }}" dx="{{ b.w }}" dy="0" y="{{ b.text_y }}"><tspan dx="6">{{ b.display }}</tspan></text>
+    {% endfor %}
+  </svg>
+</figure>

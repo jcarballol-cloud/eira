@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Bandexa de correo simulada" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% translate "Ferramenta de demostración" %}</p><h1>{% translate "Bandexa de correo simulada" %}</h1>
+  <p>{% translate "En desenvolvemento ningún correo sae do servidor: aparecen aquí." %}</p></div>
+  <a class="btn btn-secondary" href="{% url 'dev:outbox' %}">{% translate "Outras canles (Telegram, push, MQTT)" %}</a></div>
+<form method="get" class="row mb-2"><label for="para" class="visually-hidden">{% translate "Filtrar por destinatario" %}</label><input id="para" name="para" type="email" value="{{ to }}" placeholder="{% translate 'Filtrar por destinatario' %}"><button class="btn btn-secondary" type="submit">{% translate "Filtrar" %}</button></form>
+<ul class="list">
+  {% for m in mails %}
+    <li class="card mb-1">
+      <div class="row-between"><strong>{{ m.subject }}</strong><small>{{ m.sent_at|date:"d/m H:i:s" }}</small></div>
+      <small class="muted">{% translate "Para:" %} {{ m.to }}</small>
+      <pre class="mono mt-1 mb-0">{{ m.body }}</pre>
+    </li>
+  {% empty %}
+    <li class="muted">{% translate "Bandexa baleira." %}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

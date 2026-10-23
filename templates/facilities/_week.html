@@ -1,0 +1,40 @@
+{% load i18n eira %}
+<div data-announce="{% blocktranslate with d=monday|date:'j \d\e F' %}Semana do {{ d }}{% endblocktranslate %}">
+<div class="week-nav">
+  {% if prev_week %}<a class="btn btn-secondary btn-sm" href="?semana={{ prev_week|date:'Y-m-d' }}{% if facility_param %}{{ facility_param }}{% endif %}" {% if not staff_mode and not modify_mode %}hx-get="?semana={{ prev_week|date:'Y-m-d' }}" hx-target="#week" hx-push-url="true"{% endif %}>← {% translate "Semana anterior" %}</a>{% else %}<span></span>{% endif %}
+  <strong>{% blocktranslate with a=monday|date:'j/n' %}Semana do {{ a }}{% endblocktranslate %}</strong>
+  {% if next_week %}<a class="btn btn-secondary btn-sm" href="?semana={{ next_week|date:'Y-m-d' }}{% if facility_param %}{{ facility_param }}{% endif %}" {% if not staff_mode and not modify_mode %}hx-get="?semana={{ next_week|date:'Y-m-d' }}" hx-target="#week" hx-push-url="true"{% endif %}>{% translate "Semana seguinte" %} →</a>{% else %}<span></span>{% endif %}
+</div>
+<ul class="legend" aria-label="{% translate 'Lenda' %}">
+  <li><span class="swatch slot-free" aria-hidden="true"></span>○ {% translate "Libre" %}</li>
+  <li><span class="swatch slot-recommended" aria-hidden="true"></span>★ {% translate "Recomendada (pouca demanda)" %}</li>
+  {% if facility.is_shared %}<li><span class="swatch slot-few" aria-hidden="true"></span>◔ {% translate "Pouca xente" %}</li>{% endif %}
+  <li><span class="swatch slot-busy" aria-hidden="true"></span>● {% translate "Ocupada" %}</li>
+  <li><span class="swatch slot-closed" aria-hidden="true"></span>✕ {% translate "Pechada" %}</li>
+  <li><span class="swatch slot-mine" aria-hidden="true"></span>✓ {% translate "A túa reserva" %}</li>
+</ul>
+<div class="week-scroll has-daylist">
+<table class="week">
+  <caption class="visually-hidden">{% blocktranslate with f=facility.name %}Dispoñibilidade semanal de {{ f }}. Filas: horas; columnas: días.{% endblocktranslate %}</caption>
+  <thead><tr><th scope="col"><span class="visually-hidden">{% translate "Hora" %}</span></th>{% for d in grid.days %}<th scope="col">{{ d|date:"D" }}<br><small>{{ d|date:"j/n" }}</small></th>{% endfor %}</tr></thead>
+  <tbody>
+  {% for row in grid.rows %}
+    <tr><th scope="row">{{ row.time|time:"H:i" }}</th>
+    {% for s in row.cells %}
+      <td>{% include "facilities/_slot.html" %}</td>
+    {% endfor %}</tr>
+  {% empty %}
+    <tr><td colspan="8">{% translate "A instalación non abre esta semana." %}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+<div class="day-list">
+  {% for day, slots in grid.by_day %}
+    <details {% if forloop.first %}open{% endif %}>
+      <summary>{{ day|date:"l j \d\e F" }} · {% blocktranslate count n=slots|length %}{{ n }} franxa{% plural %}{{ n }} franxas{% endblocktranslate %}</summary>
+      <ul>{% for s in slots %}<li>{% include "facilities/_slot.html" with mobile=True %}</li>{% empty %}<li>{% translate "Pechado" %}</li>{% endfor %}</ul>
+    </details>
+  {% endfor %}
+</div>
+</div>

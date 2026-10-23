@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Preferencias de lectura" %}{% endblock %}
+{% block content %}
+<div class="prose">
+  <h1>{% translate "Preferencias de lectura" %}</h1>
+  <p>{% translate "Garda estas preferencias neste dispositivo. Non se asocian á túa conta nin se envían a ningún servizo." %}</p>
+  <form method="post" class="card">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}">
+    <fieldset>
+      <legend>{% translate "Axustes" %}</legend>
+      <div class="check"><input type="checkbox" id="pref-large" name="large_text" {% if current.large_text %}checked{% endif %}><label for="pref-large">{% translate "Texto grande" %}</label></div>
+      <div class="check"><input type="checkbox" id="pref-contrast" name="high_contrast" {% if current.high_contrast %}checked{% endif %}><label for="pref-contrast">{% translate "Alto contraste" %}</label></div>
+      <div class="check"><input type="checkbox" id="pref-motion" name="reduced_motion" {% if current.reduced_motion %}checked{% endif %}><label for="pref-motion">{% translate "Reducir o movemento" %}</label></div>
+    </fieldset>
+    <div class="form-actions"><button class="btn" type="submit">{% translate "Gardar preferencias" %}</button></div>
+  </form>
+</div>
+{% endblock %}

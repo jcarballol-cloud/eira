@@ -1,0 +1,10 @@
+{% load i18n eira %}{% if forecast %}
+<section class="card" aria-labelledby="wx-title">
+  <h2 id="wx-title">{% if forecast.sky == 'clear' %}{% icon 'sun' %}{% elif forecast.sky == 'rain' %}{% icon 'rain' %}{% else %}{% icon 'cloud' %}{% endif %} {% translate "Tempo previsto" %}</h2>
+  <p class="big mb-1"><strong>{{ forecast.temperature_c|floatformat:0 }} °C</strong> · {{ forecast.sky_label }}</p>
+  <dl class="kv"><dt>{% translate "Probabilidade de chuvia" %}</dt><dd>{{ forecast.precipitation_prob }} %</dd>
+    <dt>{% translate "Vento" %}</dt><dd>{{ forecast.wind_kmh }} km/h</dd><dt>{% translate "Índice UV" %}</dt><dd>{{ forecast.uv_index }}</dd></dl>
+  <ul class="mt-1">{% for t in tips %}<li>{{ t }}</li>{% endfor %}</ul>
+  <p class="help">{% translate "Previsión simulada para o prototipo (adaptador MeteoGalicia preparado)." %}</p>
+</section>
+{% endif %}

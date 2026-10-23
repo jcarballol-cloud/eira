@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Sen conexión" %}{% endblock %}
+{% block content %}
+<div class="card prose">
+  <h1>{% translate "Non hai conexión" %}</h1>
+  <p>{% translate "Esta páxina aínda non estaba gardada no dispositivo. As túas reservas e as ordes de traballo que xa abriches si se poden consultar sen rede." %}</p>
+  <p>{% translate "Cando volva a conexión, os cambios pendentes envíanse sós." %}</p>
+</div>
+{% endblock %}

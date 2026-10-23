@@ -1,0 +1,19 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Alta asistida" %}{% endblock %}
+{% block content %}
+{% include "manage/_wizard_steps.html" with step=1 %}
+<h1>{% translate "Que tipo de instalación é?" %}</h1>
+<p>{% translate "A plantilla precarga normas, horario, tarifas, plan de mantemento e o dispositivo de acceso. Podes cambialo todo despois." %}</p>
+<ul class="grid grid-3 list" role="list">
+  {% for key, t in templates.items %}
+  <li class="card facility-card">
+    <div class="thumb">{% icon t.kind 'icon-lg' %}</div>
+    <div class="body">
+      <h2 class="h3"><a href="?plantilla={{ key }}">{{ t.label }}</a></h2>
+      <small>{{ t.description }}</small>
+      <ul class="badges list"><li class="badge">{% blocktranslate with m=t.slot_minutes %}Franxas de {{ m }} min{% endblocktranslate %}</li><li class="badge">{% translate "Nivel" %} {{ t.access_level }}</li><li class="badge">{% blocktranslate count n=t.maintenance|length %}{{ n }} tarefa de mantemento{% plural %}{{ n }} tarefas de mantemento{% endblocktranslate %}</li></ul>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% load i18n %}{% with idx=incident.step_index %}
+<ol class="timeline" aria-label="{% translate 'Estado da incidencia' %}">
+  {% for value, label in incident.Status.choices %}{% if value != 'rejected' %}
+  <li class="{% if forloop.counter0 < idx %}done{% endif %}{% if forloop.counter0 == idx and value == 'resolved' %} done{% endif %}" {% if forloop.counter0 == idx %}aria-current="step"{% endif %}>{{ label }}</li>
+  {% endif %}{% endfor %}
+</ol>
+{% if incident.status == 'rejected' %}<p class="badge badge-alert mt-1">{% translate "Descartada" %}</p>{% endif %}
+{% endwith %}

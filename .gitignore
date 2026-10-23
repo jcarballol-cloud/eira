@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: EUPL-1.2
+.venv/
+__pycache__/
+*.pyc
+db.sqlite3
+db.sqlite3-journal
+/media/
+/staticfiles/
+.env
+.pytest_cache/
+.ruff_cache/
+test-results/
+playwright-report/
+*.log
+.coverage

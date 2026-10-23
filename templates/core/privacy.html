@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Privacidade" %}{% endblock %}
+{% block content %}
+<article class="prose card">
+  <h1>{% translate "Privacidade" %}</h1>
+  {% if tenant.privacy_text %}<div>{{ tenant.privacy_text|linebreaks }}</div>{% endif %}
+  <h2>{% translate "Texto modelo" %}</h2>
+  <p><strong>{% translate "Responsable:" %}</strong> {% blocktranslate with n=tenant.name %}Concello de {{ n }}.{% endblocktranslate %} {% if tenant.contact_email %}{{ tenant.contact_email }}{% endif %}</p>
+  <p><strong>{% translate "Finalidade:" %}</strong> {% translate "xestionar as reservas, o acceso e o mantemento das instalacións deportivas municipais e as inscricións en actividades." %}</p>
+  <p><strong>{% translate "Base xurídica:" %}</strong> {% translate "exercicio de poderes públicos e prestación do servizo público de deportes (art. 6.1.e RXPD; Lei 7/1985 de bases de réxime local, art. 25.2.l). O consentimento só se usa para o que é opcional (imaxe, rexistro de esforzo)." %}</p>
+  <p><strong>{% translate "Que datos:" %}</strong> {% translate "correo, nome para mostrar, teléfono opcional e ano de nacemento opcional (para tarifas). Non gardamos o DNI nin contrasinais. Dos menores, só nome e ano de nacemento, con consentimento da persoa responsable." %}</p>
+  <p><strong>{% translate "Datos que non saen do teu dispositivo:" %}</strong> {% translate "os da páxina «A miña saúde» (idade, peso, actividade) gárdanse só no navegador." %}</p>
+  <p><strong>{% translate "Estatísticas:" %}</strong> {% blocktranslate trimmed with n=min_aggregation %}os indicadores públicos e o observatorio só mostran datos agregados de grupos de polo menos {{ n }} persoas.{% endblocktranslate %}</p>
+  <p><strong>{% translate "Conservación:" %}</strong> {% translate "as reservas consérvanse o tempo esixido pola normativa contable; ao eliminar a conta, as reservas quedan anonimizadas." %}</p>
+  <p><strong>{% translate "Os teus dereitos:" %}</strong> {% translate "acceso, rectificación, supresión, portabilidade, oposición e limitación. Podes descargar e borrar os teus datos desde «A miña conta». Tamén podes reclamar ante a Axencia Española de Protección de Datos." %}</p>
+</article>
+{% endblock %}

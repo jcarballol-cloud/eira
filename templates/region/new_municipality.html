@@ -1,0 +1,21 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Novo concello" %}{% endblock %}
+{% block content %}
+<ol class="steps" aria-label="{% translate 'Pasos da alta' %}">
+  <li class="{% if step > 1 %}done{% endif %}" {% if step == 1 %}aria-current="step"{% endif %}>{% translate "Datos básicos" %}</li>
+  <li class="{% if step > 2 %}done{% endif %}" {% if step == 2 %}aria-current="step"{% endif %}>{% translate "Módulos e regras" %}</li>
+  <li {% if step == 3 %}aria-current="step"{% endif %}>{% translate "Administración e instalacións" %}</li>
+</ol>
+<section class="card prose">
+  <h1>{% translate "Dar de alta un concello" %}</h1>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="step" value="{{ step }}">
+    {% include "includes/form.html" %}
+    <div class="form-actions">
+      <button class="btn" type="submit">{% if step < 3 %}{% translate "Continuar" %}{% else %}{% translate "Crear concello" %}{% endif %}</button>
+      {% if step > 1 %}<a class="btn btn-ghost" href="?paso={{ step|add:'-1' }}">{% translate "Atrás" %}</a>{% endif %}
+    </div>
+  </form>
+</section>
+{% endblock %}

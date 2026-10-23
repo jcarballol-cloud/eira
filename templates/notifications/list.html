@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Avisos" %}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{% translate "Avisos" %}</h1>
+  {% if unread_notifications %}<form method="post" action="{% url 'notifications:mark_all_read' tenant.slug %}">{% csrf_token %}<button class="btn btn-secondary" type="submit">{% translate "Marcar todo como lido" %}</button></form>{% endif %}
+</div>
+<ul class="list card">
+  {% for n in notifications %}
+    <li>
+      <div class="row-between"><strong>{% if not n.read_at %}<span class="badge badge-warn">{% translate "Novo" %}</span> {% endif %}{% if n.url %}<a href="{{ n.url }}">{{ n.title }}</a>{% else %}{{ n.title }}{% endif %}</strong><small>{{ n.created_at|date:"d/m H:i" }}</small></div>
+      {% if n.body %}<p class="mb-0">{{ n.body|linebreaksbr }}</p>{% endif %}
+      <small class="muted">{% translate "Canles:" %} {{ n.channels }}</small>
+    </li>
+  {% empty %}
+    <li class="muted">{% translate "Non tes avisos." %}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

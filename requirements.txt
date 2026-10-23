@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: EUPL-1.2
+# Dependencias de execución (todas con licenza libre compatible con EUPL-1.2; ver `make licenses`).
+Django==5.2.18
+djangorestframework==3.18.3
+drf-spectacular==0.30.0
+pyotp==2.10.0
+Pillow==13.0.0
+psycopg[binary]==3.3.6
+qrcode==8.2
+whitenoise==6.12.0
+polib==1.2.0
+gunicorn==23.0.0

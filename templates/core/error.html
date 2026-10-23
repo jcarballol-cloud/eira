@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="card prose">
+  <p class="eyebrow">{% translate "Erro" %} {{ code }}</p>
+  <h1>{{ title }}</h1>
+  <p><a class="btn" href="{% url 'home' %}">{% translate "Ir ao inicio" %}</a></p>
+</div>
+{% endblock %}

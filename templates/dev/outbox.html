@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Saída simulada" %}{% endblock %}
+{% block content %}
+<h1>{% translate "Mensaxes simuladas doutras canles" %}</h1>
+<div class="table-wrap"><table class="data"><caption class="visually-hidden">{% translate "Mensaxes" %}</caption>
+<thead><tr><th scope="col">{% translate "Data" %}</th><th scope="col">{% translate "Canle" %}</th><th scope="col">{% translate "Destino" %}</th><th scope="col">{% translate "Contido" %}</th></tr></thead>
+<tbody>{% for m in messages_out %}<tr><td>{{ m.sent_at|date:"d/m H:i:s" }}</td><td>{{ m.channel }}</td><td class="mono">{{ m.target }}</td><td class="mono">{{ m.payload }}</td></tr>{% empty %}<tr><td colspan="4">{% translate "Sen mensaxes." %}</td></tr>{% endfor %}</tbody></table></div>
+{% endblock %}

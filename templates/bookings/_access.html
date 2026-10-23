@@ -1,0 +1,43 @@
+{% load i18n eira %}
+<section class="card" id="access-card" aria-labelledby="access-title" {% if just_opened %}data-announce="{% translate 'Porta aberta' %}"{% endif %}>
+  <h2 id="access-title">{% icon 'door' %} {% translate "Acceso" %}</h2>
+  {% if booking.status == 'cancelled' %}
+    <p class="muted">{% translate "Reserva cancelada." %}</p>
+  {% elif booking.status == 'pending_payment' %}
+    <p>{% translate "O acceso aparecerá ao completar o pagamento." %}</p>
+  {% elif access.level == 0 %}
+    <p>{% translate "Instalación aberta. Ao chegar, escanea co móbil o QR da entrada para rexistrar o uso." %}</p>
+    {% if booking.checked_in_at %}<p class="badge badge-ok">{% icon 'check' %} {% blocktranslate with t=booking.checked_in_at|hhmm %}Entrada rexistrada ás {{ t }}{% endblocktranslate %}</p>{% endif %}
+  {% elif access.level == 1 %}
+    <dl class="kv">
+      <dt>{% translate "Quen ten a chave" %}</dt><dd>{{ booking.facility.key_holder_name }}</dd>
+      <dt>{% translate "Onde" %}</dt><dd>{{ booking.facility.key_holder_place }}</dd>
+      <dt>{% translate "Horario" %}</dt><dd>{{ booking.facility.key_holder_hours }}</dd>
+      {% if booking.facility.key_holder_phone %}<dt>{% translate "Teléfono" %}</dt><dd><a href="tel:{{ booking.facility.key_holder_phone }}">{{ booking.facility.key_holder_phone }}</a></dd>{% endif %}
+    </dl>
+    {% with h=access.handover %}
+      <p class="mt-1">{% if h.returned_at %}<span class="badge badge-ok">{% translate "Chave devolta" %}</span>{% elif h.handed_at %}<span class="badge badge-warn">{% blocktranslate with t=h.handed_at|hhmm %}Chave recollida ás {{ t }}: lembra devolvela{% endblocktranslate %}</span>{% elif h.custodian_notified_at %}<span class="badge">{% translate "A custodia xa sabe da túa reserva" %}</span>{% endif %}</p>
+    {% endwith %}
+  {% elif access.level == 2 %}
+    {% if access.code %}
+      <p>{% translate "Teclea este código na porta:" %}</p>
+      <p class="access-code" aria-label="{% translate 'Código de acceso' %}: {{ access.code|make_list|join:' ' }}">{{ access.code }}</p>
+      <p>{% blocktranslate trimmed with a=access.valid_from|hhmm b=access.valid_until|hhmm %}Válido só de <strong>{{ a }}</strong> a <strong>{{ b }}</strong> do día da reserva. Funciona aínda que a instalación non teña internet.{% endblocktranslate %}</p>
+      <p class="help">{% translate "Non o compartas fóra do teu grupo: calquera persoa co código pode entrar durante a túa franxa." %}</p>
+      {% if demo_tools %}<p><a class="btn btn-accent" href="{% url 'dev:lock_simulator' %}?device={{ booking.facility.lock.pk }}&amp;at={{ booking.start|date:'Y-m-d\TH:i' }}">{% icon 'lock' %} {% translate "Probalo no simulador de pechadura" %}</a></p>{% endif %}
+    {% else %}
+      <p class="alert alert-warn">{% translate "Esta franxa non é compatible co teclado. Contacta co concello." %}</p>
+    {% endif %}
+  {% elif access.level == 3 %}
+    {% if access.can_open %}
+      <form method="post" action="{% turl 'bookings:open' booking.pk %}" hx-post="{% turl 'bookings:open' booking.pk %}" hx-target="#access-card" hx-swap="outerHTML">
+        {% csrf_token %}
+        <button class="btn btn-lg btn-accent btn-block" type="submit">{% icon 'unlock' %} {% translate "Abrir a porta" %}</button>
+      </form>
+    {% else %}
+      <p>{% blocktranslate trimmed with t=access.opens_from|hhmm %}O botón «Abrir» aparecerá desde as {{ t }} do día da reserva.{% endblocktranslate %}</p>
+    {% endif %}
+    {% if access.controls_lights %}<p class="mt-1">{% icon 'light' %} {% if access.lights_on %}<strong>{% blocktranslate with t=booking.end|hhmm %}Luces acesas ata as {{ t }}{% endblocktranslate %}</strong>{% else %}{% translate "As luces acéndense ao abrir e apáganse ao rematar a franxa." %}{% endif %}</p>{% endif %}
+    {% if booking.checked_in_at %}<p class="badge badge-ok">{% icon 'check' %} {% blocktranslate with t=booking.checked_in_at|hhmm %}Porta aberta ás {{ t }}{% endblocktranslate %}</p>{% endif %}
+  {% endif %}
+</section>

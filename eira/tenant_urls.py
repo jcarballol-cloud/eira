@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: EUPL-1.2
+"""URLs dun concello: todas colgan de /c/<slug>/ (ou do subdominio do concello)."""
+
+from django.urls import include, path
+
+from apps.facilities import views as facilities
+from apps.tenants import views as core
+
+urlpatterns = [
+    path("", facilities.home, name="tenant_home"),
+    path("tema.css", core.theme_css, name="theme_css"),
+    path("privacidade/", core.privacy, name="privacy"),
+    path("accesibilidade/", core.accessibility, name="accessibility"),
+    path("instalacions/", include("apps.facilities.urls")),
+    path("reservas/", include("apps.bookings.urls")),
+    path("acceso/", include("apps.access.urls")),
+    path("incidencias/", include("apps.incidents.urls")),
+    path("avisos/", include("apps.notifications.urls")),
+    path("actividades/", include("apps.activities.urls")),
+    path("monitor/", include("apps.activities.urls_monitor")),
+    path("operario/", include("apps.maintenance.urls")),
+    path("xestion/", include("eira.manage_urls")),
+    path("datos-abertos/", include("apps.analytics.urls_open")),
+]

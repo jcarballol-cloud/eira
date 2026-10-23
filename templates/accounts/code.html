@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Introduce o código" %}{% endblock %}
+{% block content %}
+<section class="card prose">
+  <h1>{% translate "Revisa o teu correo" %}</h1>
+  <p>{% blocktranslate with e=email %}Enviamos un código de 6 díxitos a <strong>{{ e }}</strong>. Caduca en 10 minutos.{% endblocktranslate %}</p>
+  {% if demo_tools %}<p class="alert">{% translate "Prototipo: o correo non sae do servidor." %} <a href="{% url 'dev:mailbox' %}?para={{ email|urlencode }}" target="_blank" rel="noopener">{% translate "Abrir a bandexa simulada (nova xanela)" %}</a></p>{% endif %}
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% include "includes/form.html" %}
+    <div class="form-actions">
+      <button class="btn btn-lg" type="submit">{% translate "Entrar" %}</button>
+      <a class="btn btn-ghost" href="{% url 'accounts:login' %}">{% translate "Usar outro correo" %}</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

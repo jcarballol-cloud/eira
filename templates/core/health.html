@@ -1,0 +1,53 @@
+{% extends "base.html" %}{% load i18n static %}
+{% block title %}{% translate "A miña saúde" %}{% endblock %}
+{% block head %}<script src="{% static 'js/health.js' %}" defer></script>{% endblock %}
+{% block content %}
+<div class="layout-aside">
+  <div class="stack">
+    <div class="page-head"><div><p class="eyebrow">{% translate "Só no teu dispositivo" %}</p><h1>{% translate "A miña saúde" %}</h1>
+      <p>{% translate "Estes datos gárdanse só neste navegador. Nunca se envían ao concello nin a ningún servidor." %}</p></div></div>
+    <form id="health-form" class="card" novalidate>
+      <div class="grid grid-3">
+        <div class="field"><label for="h-age">{% translate "Idade (anos)" %}</label><input id="h-age" type="number" min="5" max="110" inputmode="numeric" autocomplete="off"></div>
+        <div class="field"><label for="h-weight">{% translate "Peso (kg)" %}</label><input id="h-weight" type="number" min="15" max="250" step="0.5" inputmode="decimal" autocomplete="off"></div>
+        <div class="field"><label for="h-minutes">{% translate "Minutos de actividade moderada esta semana" %}</label><input id="h-minutes" type="number" min="0" max="3000" inputmode="numeric" autocomplete="off"></div>
+      </div>
+      <div class="field">
+        <label for="h-session">{% translate "Duración da próxima sesión (min)" %}</label>
+        <input id="h-session" type="number" min="0" max="600" inputmode="numeric" autocomplete="off">
+      </div>
+      <div class="form-actions">
+        <button class="btn" type="submit">{% translate "Gardar e ver consellos" %}</button>
+        <button class="btn btn-secondary" type="button" id="h-clear">{% translate "Borrar os meus datos" %}</button>
+      </div>
+    </form>
+    <section class="card" aria-labelledby="h-advice-title">
+      <h2 id="h-advice-title">{% translate "Consellos orientativos" %}</h2>
+      <div id="h-advice" aria-live="polite"><p class="muted">{% translate "Introduce os teus datos para ver consellos." %}</p></div>
+      <p class="alert alert-warn mt-2"><strong>{% translate "Aviso:" %}</strong> {% translate "Información educativa e xeral, non é consello clínico. Se tes unha enfermidade ou dúbidas, consulta co teu centro de saúde." %}</p>
+    </section>
+  </div>
+  <aside class="card" aria-labelledby="h-sources">
+    <h2 id="h-sources">{% translate "De onde saen os consellos" %}</h2>
+    <ul class="prose">
+      <li>{% translate "Actividade física: OMS, Directrices sobre actividade física e comportamentos sedentarios (2020): 150–300 min/semana de actividade moderada para persoas adultas; media de 60 min/día para nenos e adolescentes." %}</li>
+      <li>{% translate "Hidratación antes do exercicio: American College of Sports Medicine, «Exercise and Fluid Replacement» (2007): uns 5–7 ml por kg de peso polo menos 4 horas antes." %}</li>
+      <li>{% translate "Auga diaria total (bebida e alimentos): EFSA (2010), 2,0 l/día mulleres e 2,5 l/día homes adultos, en condicións temperadas." %}</li>
+    </ul>
+    <p class="muted"><small>{% translate "Detalle e límites en docs/health/recomendacions.md." %}</small></p>
+  </aside>
+</div>
+<template id="h-t-advice">
+  <ul class="stack-sm" data-list></ul>
+</template>
+<div hidden id="h-strings"
+  data-water-before="{% translate 'Antes de adestrar (4 h antes): arredor de %s ml de auga.' %}"
+  data-water-during="{% translate 'Durante a sesión: bebe pequenos grolos a miúdo; en sesións de máis de 60 min ou con calor, repón tamén sales.' %}"
+  data-water-short="{% translate 'Sesión curta: chega con beber auga se tes sede e despois de rematar.' %}"
+  data-who-adult="{% translate 'Levas %s de 150 minutos semanais recomendados pola OMS.' %}"
+  data-who-adult-ok="{% translate 'Superas os 150 minutos semanais recomendados pola OMS. Moi ben!' %}"
+  data-who-child="{% translate 'Para a túa idade, a OMS recomenda unha media de 60 minutos ao día de actividade.' %}"
+  data-senior="{% translate 'Maiores de 65: engade exercicios de equilibrio e forza 3 días á semana.' %}"
+  data-saved="{% translate 'Gardado só neste dispositivo.' %}"
+  data-cleared="{% translate 'Borrados os teus datos deste dispositivo.' %}"></div>
+{% endblock %}

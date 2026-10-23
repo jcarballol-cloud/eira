@@ -1,0 +1,60 @@
+{% extends "base.html" %}{% load i18n static eira %}
+{% block title %}{% translate "Instalacións" %}{% endblock %}
+{% block head %}{% if view == "mapa" %}<link rel="stylesheet" href="{% static 'vendor/leaflet/leaflet.css' %}"><script src="{% static 'vendor/leaflet/leaflet.js' %}" defer></script><script src="{% static 'js/map.js' %}" defer></script>{% endif %}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><p class="eyebrow">{{ tenant.name }}</p><h1>{% translate "Instalacións deportivas" %}</h1>
+  <p>{% translate "Consulta sen rexistrarte. Para reservar só necesitas o teu correo." %}</p></div>
+  <nav aria-label="{% translate 'Modo de vista' %}" class="row">
+    <a class="btn {% if view != 'mapa' %}{% else %}btn-secondary{% endif %}" href="?{% if request.GET.urlencode %}{{ request.GET.urlencode }}&amp;{% endif %}vista=lista" {% if view != 'mapa' %}aria-current="page"{% endif %}>{% translate "Lista" %}</a>
+    <a class="btn {% if view == 'mapa' %}{% else %}btn-secondary{% endif %}" href="?{% if request.GET.urlencode %}{{ request.GET.urlencode }}&amp;{% endif %}vista=mapa" {% if view == 'mapa' %}aria-current="page"{% endif %}>{% icon 'map' %} {% translate "Mapa" %}</a>
+  </nav>
+</div>
+
+<form method="get" class="card mb-2" role="search" aria-label="{% translate 'Filtrar instalacións' %}">
+  <input type="hidden" name="vista" value="{{ view }}">
+  <div class="filters">
+    <div class="field"><label for="{{ form.q.auto_id }}">{{ form.q.label }}</label>{{ form.q }}</div>
+    <div class="field"><label for="{{ form.kind.auto_id }}">{{ form.kind.label }}</label>{{ form.kind }}</div>
+    <div class="field"><label for="{{ form.parish.auto_id }}">{{ form.parish.label }}</label>{{ form.parish }}</div>
+  </div>
+  <fieldset class="mt-1 mb-0">
+    <legend>{% translate "Características" %}</legend>
+    <div class="row">
+      <div class="check">{{ form.accessible }}<label for="{{ form.accessible.auto_id }}">{% icon 'accessible' %} {{ form.accessible.label }}</label></div>
+      <div class="check">{{ form.lighting }}<label for="{{ form.lighting.auto_id }}">{% icon 'light' %} {{ form.lighting.label }}</label></div>
+      <div class="check">{{ form.indoor }}<label for="{{ form.indoor.auto_id }}">{{ form.indoor.label }}</label></div>
+    </div>
+  </fieldset>
+  <div class="form-actions"><button class="btn" type="submit">{% translate "Filtrar" %}</button>{% if request.GET.q or request.GET.kind or request.GET.parish or request.GET.accessible or request.GET.lighting or request.GET.indoor %}<a class="btn btn-ghost" href="?vista={{ view }}">{% translate "Quitar filtros" %}</a>{% endif %}</div>
+</form>
+
+<p role="status" class="muted">{% blocktranslate count n=facilities|length %}{{ n }} instalación{% plural %}{{ n }} instalacións{% endblocktranslate %}</p>
+
+{% if view == "mapa" %}
+  {{ geo|json_script:"facilities-geo" }}
+  <div id="map" class="map mb-2" data-map="facilities-geo" role="region" aria-label="{% translate 'Mapa das instalacións (a mesma información está na lista de embaixo)' %}"></div>
+  <p class="map-hint">{% translate "Mapa: © OpenStreetMap. A lista seguinte contén a mesma información de forma accesible." %}</p>
+{% endif %}
+
+<ul class="grid grid-3 list" role="list">
+  {% for f in facilities %}
+    <li class="card facility-card">
+      <div class="thumb">{% if f.photo %}<img src="{{ f.photo.url }}" alt="{{ f.photo_alt }}">{% else %}{% icon f.kind 'icon-lg' %}{% endif %}</div>
+      <div class="body">
+        <h3><a href="{% turl 'facilities:detail' f.pk %}">{{ f.name }}</a></h3>
+        <small>{{ f.get_kind_display }}{% if f.parish %} · {{ f.parish.name }}{% endif %}</small>
+        <ul class="badges list" aria-label="{% translate 'Características' %}">
+          <li class="badge badge-level">{% if f.access_level == 0 %}{% icon 'qr' %}{% elif f.access_level == 1 %}{% icon 'key' %}{% else %}{% icon 'lock' %}{% endif %} {{ f.get_access_level_display }}</li>
+          {% if f.step_free %}<li class="badge">{% icon 'accessible' %} {% translate "Sen chanzos" %}</li>{% endif %}
+          {% if f.lighting %}<li class="badge">{% icon 'light' %} {% translate "Luz" %}</li>{% endif %}
+          {% if f.indoor %}<li class="badge">{% translate "Cuberta" %}</li>{% endif %}
+          {% if f.is_shared %}<li class="badge">{% blocktranslate with c=f.capacity %}{{ c }} prazas{% endblocktranslate %}</li>{% endif %}
+        </ul>
+      </div>
+    </li>
+  {% empty %}
+    <li class="alert">{% translate "Non hai instalacións con eses filtros." %}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

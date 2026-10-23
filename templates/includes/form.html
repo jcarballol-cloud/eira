@@ -1,0 +1,2 @@
+{% load i18n %}{% if form.non_field_errors %}<div class="alert alert-error" role="alert"><ul class="errorlist">{% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}</ul></div>{% elif form.errors %}<div class="alert alert-error" role="alert" tabindex="-1" data-focus>{% translate "Revisa os campos marcados." %}</div>{% endif %}
+{% for field in form %}{% include "includes/field.html" %}{% endfor %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Eliminar a conta" %}{% endblock %}
+{% block content %}
+<section class="card prose">
+  <h1>{% translate "Eliminar a miña conta" %}</h1>
+  <p>{% translate "Eliminaremos os teus datos persoais, a túa unidade familiar e os consentimentos. As reservas pasadas consérvanse sen ningún dato que te identifique, porque o concello debe xustificar os ingresos." %}</p>
+  <p><a href="{% url 'account:export' %}">{% translate "Antes, podes descargar unha copia dos teus datos." %}</a></p>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% include "includes/form.html" %}
+    <div class="form-actions">
+      <button class="btn btn-danger" type="submit">{% translate "Eliminar definitivamente" %}</button>
+      <a class="btn btn-ghost" href="{% url 'account:profile' %}">{% translate "Cancelar" %}</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

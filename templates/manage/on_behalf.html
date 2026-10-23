@@ -1,0 +1,25 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Reservar en nome dunha persoa" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{% translate "Reservar en nome dunha persoa" %}</h1><p>{% translate "Para chamadas ou atención no mostrador. Usa a mesma axenda que a reserva en liña." %}</p></div></div>
+<form method="get" class="card mb-2 row" data-autosubmit>
+  <div class="field mb-0"><label for="instalacion">{% translate "Instalación" %}</label>
+    <select id="instalacion" name="instalacion"><option value="">{% translate "Escolle…" %}</option>{% for f in facilities %}<option value="{{ f.pk }}" {% if facility.pk == f.pk %}selected{% endif %}>{{ f.name }}</option>{% endfor %}</select></div>
+  <button class="btn btn-secondary" type="submit">{% translate "Ver dispoñibilidade" %}</button>
+</form>
+{% if facility and start %}
+  <section class="card" aria-labelledby="ob-title">
+    <h2 id="ob-title">{{ facility.name }} · {{ start|date:"l j \d\e F" }} {{ start|hhmm }}</h2>
+    <p>{% translate "Prezo (non empadroada, se non se indica conta):" %} <strong>{{ price|euros }}</strong></p>
+    {% with rules=facility.current_rules %}{% if rules %}<details class="mb-2"><summary>{% translate "Normas para ler á persoa" %} (v{{ rules.version }})</summary><ul>{% for l in rules.lines %}<li>{{ l }}</li>{% endfor %}</ul></details>{% endif %}{% endwith %}
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="instalacion" value="{{ facility.pk }}"><input type="hidden" name="inicio" value="{{ start|date:'c' }}">
+      {% include "includes/form.html" %}
+      <div class="form-actions"><button class="btn" type="submit">{% translate "Facer a reserva" %}</button><a class="btn btn-ghost" href="?instalacion={{ facility.pk }}">{% translate "Outra franxa" %}</a></div>
+    </form>
+  </section>
+{% elif grid %}
+  <div id="week">{% include "facilities/_week.html" %}</div>
+{% endif %}
+{% endblock %}

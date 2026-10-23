@@ -1,0 +1,5 @@
+{% load i18n %}<ol class="steps" aria-label="{% translate 'Pasos da reserva' %}">
+  <li class="{% if step > 1 %}done{% endif %}" {% if step == 1 %}aria-current="step"{% endif %}>{% translate "Escolle franxa" %}</li>
+  <li class="{% if step > 2 %}done{% endif %}" {% if step == 2 %}aria-current="step"{% endif %}>{% translate "Normas e confirmación" %}</li>
+  <li {% if step == 3 %}aria-current="step"{% endif %}>{% translate "Pagamento e acceso" %}</li>
+</ol>

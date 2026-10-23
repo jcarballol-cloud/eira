@@ -12,6 +12,7 @@ from pathlib import Path
 
 import pytest
 from django.conf import settings
+from django.utils import timezone
 
 from apps.incidents.models import Incident
 
@@ -19,7 +20,7 @@ from .conftest import DESKTOP, MOBILE, demo_url
 
 pytestmark = [pytest.mark.e2e, pytest.mark.video, pytest.mark.django_db(transaction=False)]
 OUT = Path(settings.BASE_DIR) / "docs" / "demo"
-SHOTS = Path(settings.BASE_DIR) / "docs" / "capturas" / "v2"
+SHOTS = Path(settings.BASE_DIR) / "docs" / "capturas" / "v3"
 
 CAPTION_JS = """(text) => {
   let bar = document.getElementById('eira-caption');
@@ -145,8 +146,8 @@ def run_script(page, base, d):
     page.click("text=Ver o acceso e a reserva")
     page.wait_for_load_state("networkidle")
     code = page.locator(".access-code").first.inner_text().strip()
-    page.locator("[data-health-booking] .rec").first.wait_for()
-    page.locator("[data-health-booking]").scroll_into_view_if_needed()
+    page.locator("main [data-health-booking] .tip").first.wait_for()
+    page.locator("main [data-health-booking]").first.scroll_into_view_if_needed()
     d.say(
         "Consellos para esta sesión: a que hora beber, canto para o seu peso, e a previsión.", 3.4
     )
@@ -198,6 +199,22 @@ def run_script(page, base, d):
     page.click("button[value=close]")
     page.wait_for_load_state("networkidle")
     d.say("Orde pechada: Uxía recibe «Arranxado!».", 2.6)
+    # 7b. Tableta da monitora: grupo de 40, abecedario do primeiro apelido
+    from apps.activities.models import Group
+    from apps.activities.services import sessions_for_day
+
+    kiosk = sessions_for_day([Group.objects.get(name="Grupo grande (40)")], timezone.localdate())[0]
+    d.login(base, "antia@demo.eira.example")
+    d.go(f"{c}/monitor/sesion/{kiosk.pk}/rexistro/")
+    d.say("Tableta da monitora: cada persoa toca a inicial do seu primeiro apelido.", 3)
+    page.click("[data-mode=out]")
+    page.locator(".kiosk__letter.has-people").nth(3).click()
+    d.say("Ao saír: o seu nome, coa icona de se pode saír en fotos.", 2.6)
+    page.locator(".kiosk__name").first.click()
+    d.say("Escala de esforzo Borg CR-10, de verde a vermello. Un toque e listo.", 3)
+    page.locator(".kiosk__rpebtn[data-rpe='5']").click()
+    page.wait_for_selector(".kiosk__thanks")
+    d.say("«Grazas!» e volve soa ao abecedario. Funciona sen conexión.", 2.8)
     # 8. Observatorio e valoracións
     d.login(base, "admin@vilardeiras.demo.eira.example")
     d.go(c + "/xestion/valoracions/")

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: EUPL-1.2
-"""Capturas automáticas das pantallas clave (móbil, tableta e escritorio) en docs/capturas/v2/pantallas/.
+"""Capturas automáticas das pantallas clave (móbil, tableta e escritorio) en docs/capturas/v3/pantallas/.
 As de v1 quedan en docs/capturas/ como «antes».
 
 python tools/tasks.py screenshots
@@ -21,7 +21,7 @@ from apps.maintenance.models import WorkOrder
 from .conftest import DESKTOP, MOBILE, TABLET
 
 pytestmark = [pytest.mark.e2e, pytest.mark.django_db(transaction=False)]
-OUT = Path(settings.BASE_DIR) / "docs" / "capturas" / "v2" / "pantallas"
+OUT = Path(settings.BASE_DIR) / "docs" / "capturas" / "v3" / "pantallas"
 
 
 def shots():

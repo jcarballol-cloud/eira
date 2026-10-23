@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: EUPL-1.2
+name: CI
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: eira
+          POSTGRES_USER: eira
+          POSTGRES_PASSWORD: eira
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U eira" --health-interval 5s --health-retries 10
+    env:
+      EIRA_DEBUG: "1"
+      DATABASE_URL: postgres://eira:eira@localhost:5432/eira
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - name: Lint
+        run: python tools/tasks.py lint
+      - name: Licenzas compatibles con EUPL-1.2
+        run: python tools/tasks.py licenses
+      - name: Cabeceiras SPDX
+        run: python tools/check_spdx.py
+      - name: OpenAPI
+        run: python tools/tasks.py openapi && git diff --exit-code docs/api/openapi.yaml
+      - name: Tests
+        run: python tools/tasks.py test
+      - name: Navegador para E2E
+        run: python -m playwright install --with-deps chromium
+      - name: E2E + accesibilidade (axe)
+        run: python tools/tasks.py e2e

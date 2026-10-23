@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: EUPL-1.2
+# Demostración local: `docker compose up --build` → http://localhost:8000
+# Para produción, ver docs/despregamento.md (segredos propios, HTTPS e EIRA_DEMO_TOOLS=0).
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: eira
+      POSTGRES_USER: eira
+      POSTGRES_PASSWORD: eira-local-only
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U eira -d eira"]
+      interval: 3s
+      retries: 20
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://eira:eira-local-only@db:5432/eira
+      EIRA_DEBUG: "0"
+      EIRA_SECRET_KEY: ${EIRA_SECRET_KEY:-local-demo-key-change-me-in-production-xxxxxxxxxxxxxxxx}
+      EIRA_ALLOWED_HOSTS: localhost,127.0.0.1,.localhost
+      EIRA_DEMO_TOOLS: "1"
+      EIRA_SEED_DEMO: "1"
+      EIRA_SECURE_COOKIES: "0"
+      EIRA_CACHE_DIR: /tmp/eira-cache
+    ports:
+      - "8000:8000"
+    volumes:
+      - media:/app/media
+
+volumes:
+  pgdata:
+  media:

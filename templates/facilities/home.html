@@ -44,7 +44,7 @@
       <div class="body">
         <h3><a href="{% turl 'facilities:detail' f.pk %}">{{ f.name }}</a></h3>
         <small>{{ f.get_kind_display }}{% if f.parish %} · {{ f.parish.name }}{% endif %}</small>
-        <ul class="badges list" aria-label="{% translate 'Características' %}">
+        <ul class="badges pill-list" aria-label="{% translate 'Características' %}">
           <li class="badge badge-level">{% if f.access_level == 0 %}{% icon 'qr' %}{% elif f.access_level == 1 %}{% icon 'key' %}{% else %}{% icon 'lock' %}{% endif %} {{ f.get_access_level_display }}</li>
           {% if f.step_free %}<li class="badge">{% icon 'accessible' %} {% translate "Sen chanzos" %}</li>{% endif %}
           {% if f.lighting %}<li class="badge">{% icon 'light' %} {% translate "Luz" %}</li>{% endif %}

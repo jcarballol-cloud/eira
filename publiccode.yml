@@ -1,0 +1,60 @@
+# SPDX-License-Identifier: EUPL-1.2
+publiccodeYmlVersion: "0.4"
+name: Eira
+url: "https://example.org/eira.git"  # URL definitiva pendente de publicación
+releaseDate: "2026-11-18"
+softwareVersion: "0.1.0"
+platforms:
+  - web
+categories:
+  - facility-management
+  - appointment-scheduling
+  - asset-management
+developmentStatus: development
+softwareType: standalone/web
+description:
+  gl:
+    shortDescription: Reserva e acceso ás instalacións deportivas municipais para concellos pequenos.
+    longDescription: >
+      Eira cobre o ciclo completo de cada instalación deportiva municipal: atopar, reservar, pagar,
+      acceder, usar, pechar e avisar, manter e medir. Inclúe acceso por niveis (QR, chave custodiada,
+      código temporal que funciona sen conexión e pechadura conectada), avisos de avaría con foto,
+      mantemento preventivo con app do operario sen cobertura, escolas deportivas, indicadores e
+      datos abertos. É multi-concello e pensado para despregarse nunha deputación ou mancomunidade,
+      con exportación íntegra dos datos en formatos abertos.
+    features:
+      - Consulta e reserva en liña accesible (WCAG 2.1 AA) en galego e castelán
+      - Acceso sen conserxe con códigos temporais sen conexión
+      - Incidencias e mantemento preventivo
+      - Indicadores, datos abertos DCAT-AP e API OpenAPI 3.1
+      - Multi-concello con vista de deputación
+  es:
+    shortDescription: Reserva y acceso a las instalaciones deportivas municipales para ayuntamientos pequeños.
+    longDescription: >
+      Eira cubre el ciclo completo de cada instalación deportiva municipal: encontrar, reservar, pagar,
+      acceder, usar, cerrar y avisar, mantener y medir, con acceso por niveles sin conserje,
+      incidencias, mantenimiento preventivo, escuelas deportivas, indicadores y datos abiertos.
+    features:
+      - Reserva online accesible en gallego y castellano
+      - Acceso sin conserje con códigos temporales sin conexión
+      - Incidencias y mantenimiento preventivo
+      - Multi-municipio con vista de diputación
+legal:
+  license: EUPL-1.2
+  mainCopyrightOwner: Equipo Eira
+  repoOwner: Equipo Eira
+maintenance:
+  type: community
+  contacts:
+    - name: Equipo Eira
+localisation:
+  localisationReady: true
+  availableLanguages:
+    - gl
+    - es
+dependsOn:
+  open:
+    - name: PostgreSQL
+      versionMin: "14"
+    - name: Python
+      versionMin: "3.12"

@@ -97,7 +97,13 @@ def hour_weight(hour, weekday):
 class Command(BaseCommand):
     help = "Carga datos de demostración ficticios (borra os anteriores de demostración)."
 
+    def add_arguments(self, parser):
+        parser.add_argument("--if-empty", action="store_true", help="Só se aínda non hai ningún concello")
+
     def handle(self, *args, **options):
+        if options["if_empty"] and Municipality.objects.exists():
+            self.stdout.write("Xa hai datos: non se carga a demo.")
+            return
         self.rng = random.Random(2026)
         with transaction.atomic():
             self.reset()
@@ -310,14 +316,20 @@ class Command(BaseCommand):
         hall = Facility.objects.get(municipality=m, kind="sports_hall")
         now = timezone.now()
 
-        def free_slot(f, day_offset, hour=None, after=None):
-            day = timezone.localdate() + dt.timedelta(days=day_offset)
-            for s in slot_starts(f, day):
-                if hour is not None and timezone.localtime(s).hour != hour:
-                    continue
-                if after and s <= after:
-                    continue
-                return s
+        def next_slot(f, after, hour=None):
+            """Primeira franxa da instalación que comeza despois de `after` (opcionalmente a unha hora)."""
+            for i in range(0, 10):
+                for s_ in slot_starts(f, timezone.localdate(after) + dt.timedelta(days=i)):
+                    if s_ >= after and (hour is None or timezone.localtime(s_).hour == hour):
+                        return s_
+            return None
+
+        def last_finished(f):
+            for i in range(0, 4):
+                past = [s_ for s_ in slot_starts(f, timezone.localdate() - dt.timedelta(days=i))
+                        if s_ + dt.timedelta(minutes=f.slot_minutes) <= now]
+                if past:
+                    return past[-1]
             return None
 
         def make(f, user, start, status="confirmed"):
@@ -325,7 +337,7 @@ class Command(BaseCommand):
                 return None
             end = start + dt.timedelta(minutes=f.slot_minutes)
             Booking.objects.filter(facility=f, start__lt=end, end__gt=start).exclude(user=user).filter(
-                status__in=["confirmed", "pending_payment"]).update(status="cancelled")
+                status__in=["confirmed", "pending_payment", "used"]).update(status="cancelled")
             audience = "senior" if user == manuel else "resident"
             price = {t.audience: t.price_cents for t in f.tariffs.all()}.get(audience, 0)
             return Booking.objects.create(
@@ -334,23 +346,24 @@ class Command(BaseCommand):
                 rules_version=f.current_rules(), rules_accepted_at=now - dt.timedelta(days=1),
             )
 
-        # Uxía: unha reserva en curso no ximnasio (o código funciona agora mesmo no simulador)
+        # Uxía: reserva no ximnasio (nivel 2) en curso ou a seguinte franxa aberta: o código próbase no simulador
         current = None
-        for s in slot_starts(gym, timezone.localdate()):
-            if s <= now < s + dt.timedelta(minutes=gym.slot_minutes):
-                current = s
-        make(gym, uxia, current or free_slot(gym, 1, 19))
-        # Uxía: pádel mañá ás 19:30 e unha reserva que acaba de rematar (para o checklist de peche)
-        make(padel, uxia, free_slot(padel, 1, 19) or free_slot(padel, 2, 19))
-        recent = [s for s in slot_starts(padel, timezone.localdate()) if s + dt.timedelta(minutes=padel.slot_minutes) <= now]
-        if recent:
-            b = make(padel, uxia, recent[-1], status="used")
-            if b:
-                b.checked_in_at = b.start
-                b.save(update_fields=["checked_in_at"])
-        # Manuel: ximnasio pasado mañá ás 10:00 e pavillón (chave custodiada) o sábado
-        make(gym, manuel, free_slot(gym, 2, 10))
-        b = make(hall, manuel, free_slot(hall, 3, 11))
+        for s_ in slot_starts(gym, timezone.localdate()):
+            if s_ <= now < s_ + dt.timedelta(minutes=gym.slot_minutes):
+                current = s_
+        make(gym, uxia, current or next_slot(gym, now))
+        # Uxía: pádel ás 19:30 do próximo día e unha reserva xa rematada (checklist de peche pendente)
+        make(padel, uxia, next_slot(padel, now + dt.timedelta(hours=12), hour=19))
+        b = make(padel, uxia, last_finished(padel), status="used")
+        if b:
+            b.checked_in_at = b.start
+            b.save(update_fields=["checked_in_at"])
+        # Historial de Uxía: pasa a ela algunhas reservas pasadas dos veciños
+        past = Booking.objects.filter(municipality=m, status__in=["used", "no_show"], end__lt=now - dt.timedelta(days=1))
+        Booking.objects.filter(pk__in=list(past.order_by("-start").values_list("pk", flat=True)[:40:5])).update(user=uxia)
+        # Manuel: ximnasio ás 10:00 e pavillón (chave custodiada) ás 11:00
+        make(gym, manuel, next_slot(gym, now + dt.timedelta(days=1), hour=10))
+        b = make(hall, manuel, next_slot(hall, now + dt.timedelta(days=1), hour=11))
         if b:
             KeyHandover.objects.create(municipality=m, booking=b, custodian_notified_at=now)
         # Unidade familiar de Uxía con dúas crianzas

@@ -35,6 +35,7 @@ python_files = ["test_*.py"]
 testpaths = ["apps", "tests"]
 addopts = "-q --strict-markers"
 markers = ["e2e: browser end-to-end tests (Playwright + axe)"]
+filterwarnings = ["ignore:No directory at:UserWarning"]
 
 [tool.ruff]
 line-length = 100

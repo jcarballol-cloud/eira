@@ -16,6 +16,8 @@ from apps.notifications.services import notify
 from .models import Booking
 
 HOLD_MINUTES = 15
+RECOMMENDED_PER_DAY = 2
+RECOMMEND_THRESHOLD = 0.3
 
 
 class BookingError(Exception):
@@ -120,10 +122,16 @@ def week_grid(facility, monday, user=None, now=None):
                 status = "few"
             else:
                 status = "free"
-            if status in ("free", "few") and expected.get((start.weekday(), timezone.localtime(start).hour), 1) < 0.3:
-                status = "recommended"
             slots.append(Slot(start, end, status, n, facility.capacity, closure.reason if closure else "", mine))
             times.add(timezone.localtime(start).time())
+        # Recomendadas: como moito as 2 franxas libres con menor demanda histórica do día
+        candidates = sorted(
+            (expected.get((s.start.weekday(), timezone.localtime(s.start).hour), 1), i)
+            for i, s in enumerate(slots) if s.status in ("free", "few")
+        )
+        for value, i in candidates[:RECOMMENDED_PER_DAY]:
+            if value < RECOMMEND_THRESHOLD:
+                slots[i].status = "recommended"
         by_day[day] = slots
 
     rows = []

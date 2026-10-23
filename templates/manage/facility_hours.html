@@ -6,7 +6,7 @@
   {% csrf_token %}
   {{ formset.management_form }}
   {% if formset.non_form_errors %}<div class="alert alert-error">{{ formset.non_form_errors }}</div>{% endif %}
-  <div class="table-wrap"><table class="data">
+  <div class="table-wrap" tabindex="0"><table class="data">
     <caption>{% translate "Franxas de apertura" %}</caption>
     <thead><tr><th scope="col">{% translate "Día" %}</th><th scope="col">{% translate "Abre" %}</th><th scope="col">{% translate "Pecha" %}</th><th scope="col">{% translate "Tempada desde" %}</th><th scope="col">{% translate "Tempada ata" %}</th><th scope="col">{% translate "Eliminar" %}</th></tr></thead>
     <tbody>{% for f in formset %}<tr>

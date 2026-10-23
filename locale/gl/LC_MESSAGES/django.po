@@ -1,0 +1,3721 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 03:05+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: gl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Teclado con código sen conexión (nivel 2)"
+msgstr "Teclado con código sen conexión (nivel 2)"
+
+msgid "Pechadura conectada (nivel 3)"
+msgstr "Pechadura conectada (nivel 3)"
+
+msgid "identificador"
+msgstr "identificador"
+
+msgid "controla as luces"
+msgstr "controla as luces"
+
+msgid "dispositivo de acceso"
+msgstr "dispositivo de acceso"
+
+msgid "dispositivos de acceso"
+msgstr "dispositivos de acceso"
+
+msgid "Entrada (QR)"
+msgstr "Entrada (QR)"
+
+msgid "Código aceptado"
+msgstr "Código aceptado"
+
+msgid "Código rexeitado"
+msgstr "Código rexeitado"
+
+msgid "Apertura remota"
+msgstr "Apertura remota"
+
+msgid "Luces acesas"
+msgstr "Luces acesas"
+
+msgid "Luces apagadas"
+msgstr "Luces apagadas"
+
+msgid "Chave entregada"
+msgstr "Chave entregada"
+
+msgid "Chave devolta"
+msgstr "Chave devolta"
+
+msgid "Uso sen reserva rexistrado"
+msgstr "Uso sen reserva rexistrado"
+
+msgid "evento de acceso"
+msgstr "evento de acceso"
+
+msgid "eventos de acceso"
+msgstr "eventos de acceso"
+
+#, python-format
+msgid "Eira · Entrega de chave: %(f)s"
+msgstr "Eira · Entrega de chave: %(f)s"
+
+#, python-format
+msgid "%(who)s recollerá a chave para %(d)s de %(s)s a %(e)s (ref. %(r)s)."
+msgstr "%(who)s recollerá a chave para %(d)s de %(s)s a %(e)s (ref. %(r)s)."
+
+msgid "Unha persoa"
+msgstr "Unha persoa"
+
+msgid "Correo electrónico"
+msgstr "Correo electrónico"
+
+msgid "Enviarémosche un código de 6 díxitos. Non necesitas contrasinal."
+msgstr "Enviarémosche un código de 6 díxitos. Non necesitas contrasinal."
+
+msgid "Código de 6 díxitos"
+msgstr "Código de 6 díxitos"
+
+msgid "O código só ten números."
+msgstr "O código só ten números."
+
+msgid "Opcional. Só o ano, para aplicar tarifas por idade."
+msgstr "Opcional. Só o ano, para aplicar tarifas por idade."
+
+msgid "Opcional. Identificador do chat co bot do concello."
+msgstr "Opcional. Identificador do chat co bot do concello."
+
+msgid "Ano non válido."
+msgstr "Ano non válido."
+
+msgid ""
+"Autorizo o tratamento dos datos necesarios para a súa inscrición en "
+"actividades."
+msgstr ""
+"Autorizo o tratamento dos datos necesarios para a súa inscrición en "
+"actividades."
+
+msgid "Autorizo o uso da súa imaxe en comunicacións municipais."
+msgstr "Autorizo o uso da súa imaxe en comunicacións municipais."
+
+msgid ""
+"Autorizo rexistrar o esforzo percibido e as probas físicas da actividade."
+msgstr ""
+"Autorizo rexistrar o esforzo percibido e as probas físicas da actividade."
+
+msgid "Só o nome; non pedimos apelidos."
+msgstr "Só o nome; non pedimos apelidos."
+
+msgid "Só se poden engadir menores de idade."
+msgstr "Só se poden engadir menores de idade."
+
+msgid "Código de empadroamento"
+msgstr "Código de empadroamento"
+
+msgid "Facilítao o concello no mostrador ou por carta (p. ex. ABCD-2345)."
+msgstr "Facilítao o concello no mostrador ou por carta (p. ex. ABCD-2345)."
+
+msgid "Entendo que se eliminarán os meus datos e non se pode desfacer."
+msgstr "Entendo que se eliminarán os meus datos e non se pode desfacer."
+
+msgid "correo electrónico"
+msgstr "correo electrónico"
+
+msgid "nome para mostrar"
+msgstr "nome para mostrar"
+
+msgid "teléfono"
+msgstr "teléfono"
+
+msgid "ano de nacemento"
+msgstr "ano de nacemento"
+
+msgid "idioma preferido"
+msgstr "idioma preferido"
+
+msgid "avisos por correo"
+msgstr "avisos por correo"
+
+msgid "avisos por Telegram"
+msgstr "avisos por Telegram"
+
+msgid "chat de Telegram"
+msgstr "chat de Telegram"
+
+msgid "persoa usuaria"
+msgstr "persoa usuaria"
+
+msgid "persoas usuarias"
+msgstr "persoas usuarias"
+
+msgid "Veciñanza"
+msgstr "Veciñanza"
+
+msgid "Administración do concello"
+msgstr "Administración do concello"
+
+msgid "Mantemento"
+msgstr "Mantemento"
+
+msgid "Monitor/a"
+msgstr "Monitor/a"
+
+msgid "rol"
+msgstr "rol"
+
+msgid "rol no concello"
+msgstr "rol no concello"
+
+msgid "roles nos concellos"
+msgstr "roles nos concellos"
+
+msgid "nota interna"
+msgstr "nota interna"
+
+msgid "Código de invitación"
+msgstr "Código de invitación"
+
+msgid "Mostrador"
+msgstr "Mostrador"
+
+msgid "Identidade pública + padrón"
+msgstr "Identidade pública + padrón"
+
+msgid "empadroamento validado"
+msgstr "empadroamento validado"
+
+msgid "empadroamentos validados"
+msgstr "empadroamentos validados"
+
+msgid "nome"
+msgstr "nome"
+
+msgid "menor ao cargo"
+msgstr "menor ao cargo"
+
+msgid "menores ao cargo"
+msgstr "menores ao cargo"
+
+msgid "Tratamento de datos para a actividade"
+msgstr "Tratamento de datos para a actividade"
+
+msgid "Uso da imaxe en comunicacións municipais"
+msgstr "Uso da imaxe en comunicacións municipais"
+
+msgid "Rexistro de esforzo e probas físicas"
+msgstr "Rexistro de esforzo e probas físicas"
+
+msgid "consentimento"
+msgstr "consentimento"
+
+msgid "consentimentos"
+msgstr "consentimentos"
+
+msgid "Demasiados intentos. Agarda un pouco antes de pedir outro código."
+msgstr "Demasiados intentos. Agarda un pouco antes de pedir outro código."
+
+#, python-format
+msgid "O teu código de acceso a Eira: %(c)s"
+msgstr "O teu código de acceso a Eira: %(c)s"
+
+#, python-format
+msgid ""
+"Introduce este código para entrar: %(c)s\n"
+"\n"
+"Caduca en 10 minutos. Se non o pediches, ignora esta mensaxe."
+msgstr ""
+"Introduce este código para entrar: %(c)s\n"
+"\n"
+"Caduca en 10 minutos. Se non o pediches, ignora esta mensaxe."
+
+msgid "Código incorrecto ou caducado."
+msgstr "Código incorrecto ou caducado."
+
+msgid "Non se puido completar a identificación."
+msgstr "Non se puido completar a identificación."
+
+msgid "Saíches da túa conta."
+msgstr "Saíches da túa conta."
+
+msgid "Datos gardados."
+msgstr "Datos gardados."
+
+#, python-format
+msgid "Empadroamento validado en %(m)s."
+msgstr "Empadroamento validado en %(m)s."
+
+msgid "O código non é válido ou xa se usou."
+msgstr "O código non é válido ou xa se usou."
+
+msgid "A túa conta e os teus datos persoais foron eliminados."
+msgstr "A túa conta e os teus datos persoais foron eliminados."
+
+#, python-format
+msgid "Engadiuse a %(n)s á túa unidade familiar."
+msgstr "Engadiuse a %(n)s á túa unidade familiar."
+
+msgid "Consentimento retirado."
+msgstr "Consentimento retirado."
+
+msgid "Consentimento outorgado."
+msgstr "Consentimento outorgado."
+
+msgid "descrición"
+msgstr "descrición"
+
+msgid "tempada"
+msgstr "tempada"
+
+msgid "actividade"
+msgstr "actividade"
+
+msgid "actividades"
+msgstr "actividades"
+
+msgid "OMNI 0–10 (infancia)"
+msgstr "OMNI 0–10 (infancia)"
+
+msgid "Borg CR-10 (persoas adultas)"
+msgstr "Borg CR-10 (persoas adultas)"
+
+msgid "grupo"
+msgstr "grupo"
+
+msgid "idade mínima"
+msgstr "idade mínima"
+
+msgid "idade máxima"
+msgstr "idade máxima"
+
+msgid "prazas"
+msgstr "prazas"
+
+msgid "cota (céntimos)"
+msgstr "cota (céntimos)"
+
+msgid "días (0=luns)"
+msgstr "días (0=luns)"
+
+msgid "hora de inicio"
+msgstr "hora de inicio"
+
+msgid "duración (min)"
+msgstr "duración (min)"
+
+msgid "grupos"
+msgstr "grupos"
+
+msgid "Pendente de pagamento"
+msgstr "Pendente de pagamento"
+
+msgid "Inscrita"
+msgstr "Inscrita"
+
+msgid "Lista de espera"
+msgstr "Lista de espera"
+
+msgid "Baixa"
+msgstr "Baixa"
+
+msgid "inscrición"
+msgstr "inscrición"
+
+msgid "inscricións"
+msgstr "inscricións"
+
+msgid "batería de probas"
+msgstr "batería de probas"
+
+msgid "baterías de probas"
+msgstr "baterías de probas"
+
+msgid "semana"
+msgstr "semana"
+
+msgid "O asistente non está dispoñible agora."
+msgstr "O asistente non está dispoñible agora."
+
+msgid "Lu"
+msgstr "Lu"
+
+msgid "Ma"
+msgstr "Ma"
+
+msgid "Mé"
+msgstr "Mé"
+
+msgid "Xo"
+msgstr "Xo"
+
+msgid "Ve"
+msgstr "Ve"
+
+msgid "Sá"
+msgstr "Sá"
+
+msgid "Do"
+msgstr "Do"
+
+msgid "Nome da persoa"
+msgstr "Nome da persoa"
+
+msgid "Teléfono"
+msgstr "Teléfono"
+
+msgid "Correo (se ten conta)"
+msgstr "Correo (se ten conta)"
+
+msgid "Se o indicas, a reserva aparecerá no seu historial e recibirá avisos."
+msgstr "Se o indicas, a reserva aparecerá no seu historial e recibirá avisos."
+
+msgid "Canle"
+msgstr "Canle"
+
+msgid "Cobrado no mostrador"
+msgstr "Cobrado no mostrador"
+
+msgid "Lin as normas á persoa e acéptaas"
+msgstr "Lin as normas á persoa e acéptaas"
+
+#, python-format
+msgid "Reserva %(r)s feita para %(n)s."
+msgstr "Reserva %(r)s feita para %(n)s."
+
+#, python-format
+msgid "Chave entregada a %(n)s."
+msgstr "Chave entregada a %(n)s."
+
+msgid "Chave devolta."
+msgstr "Chave devolta."
+
+msgid "Cancelada polo concello"
+msgstr "Cancelada polo concello"
+
+msgid "Reserva cancelada e reembolsada."
+msgstr "Reserva cancelada e reembolsada."
+
+msgid "Confirmada"
+msgstr "Confirmada"
+
+msgid "Cancelada"
+msgstr "Cancelada"
+
+msgid "Usada"
+msgstr "Usada"
+
+msgid "Non presentada"
+msgstr "Non presentada"
+
+msgid "En liña"
+msgstr "En liña"
+
+msgid "inicio"
+msgstr "inicio"
+
+msgid "fin"
+msgstr "fin"
+
+msgid "estado"
+msgstr "estado"
+
+msgid "canle"
+msgstr "canle"
+
+msgid "nome da persoa"
+msgstr "nome da persoa"
+
+msgid "teléfono de contacto"
+msgstr "teléfono de contacto"
+
+msgid "reserva"
+msgstr "reserva"
+
+msgid "reservas"
+msgstr "reservas"
+
+msgid "Libre"
+msgstr "Libre"
+
+msgid "Recomendada"
+msgstr "Recomendada"
+
+msgid "Pouca xente"
+msgstr "Pouca xente"
+
+msgid "Ocupada"
+msgstr "Ocupada"
+
+msgid "A túa reserva"
+msgstr "A túa reserva"
+
+msgid "Pechada"
+msgstr "Pechada"
+
+msgid "Pasada"
+msgstr "Pasada"
+
+msgid "Esa franxa xa pasou."
+msgstr "Esa franxa xa pasou."
+
+msgid "Aínda non se pode reservar con tanta antelación."
+msgstr "Aínda non se pode reservar con tanta antelación."
+
+msgid "A instalación non abre nesa franxa."
+msgstr "A instalación non abre nesa franxa."
+
+msgid "A instalación está pechada nesa franxa."
+msgstr "A instalación está pechada nesa franxa."
+
+msgid "Esa franxa acaba de quedar ocupada. Escolle outra."
+msgstr "Esa franxa acaba de quedar ocupada. Escolle outra."
+
+msgid "Debes aceptar as normas de uso vixentes."
+msgstr "Debes aceptar as normas de uso vixentes."
+
+msgid "Xa tes o máximo de reservas activas permitidas neste concello."
+msgstr "Xa tes o máximo de reservas activas permitidas neste concello."
+
+msgid "Importe pagado insuficiente."
+msgstr "Importe pagado insuficiente."
+
+#, python-format
+msgid "Reserva confirmada: %(f)s"
+msgstr "Reserva confirmada: %(f)s"
+
+#, python-format
+msgid "%(d)s de %(s)s a %(e)s. Referencia %(r)s."
+msgstr "%(d)s de %(s)s a %(e)s. Referencia %(r)s."
+
+msgid "Esta reserva xa non se pode cancelar."
+msgstr "Esta reserva xa non se pode cancelar."
+
+msgid "A reserva xa comezou."
+msgstr "A reserva xa comezou."
+
+#, python-format
+msgid "Reserva cancelada: %(f)s"
+msgstr "Reserva cancelada: %(f)s"
+
+#, python-format
+msgid "Devolución: %(r)s €."
+msgstr "Devolución: %(r)s €."
+
+msgid "Xa non se pode modificar esta reserva (prazo superado)."
+msgstr "Xa non se pode modificar esta reserva (prazo superado)."
+
+msgid "A porta non quedou pechada."
+msgstr "A porta non quedou pechada."
+
+msgid "A chave non se devolveu."
+msgstr "A chave non se devolveu."
+
+msgid "Non todo quedou en orde."
+msgstr "Non todo quedou en orde."
+
+#, python-format
+msgid "Peche da instalación: %(r)s"
+msgstr "Peche da instalación: %(r)s"
+
+msgid "Lin e acepto as normas de uso, dereitos e deberes desta instalación."
+msgstr "Lin e acepto as normas de uso, dereitos e deberes desta instalación."
+
+msgid "Para reservar debes aceptar as normas."
+msgstr "Para reservar debes aceptar as normas."
+
+msgid "Reserva confirmada."
+msgstr "Reserva confirmada."
+
+msgid "Pagamento recibido. Reserva confirmada."
+msgstr "Pagamento recibido. Reserva confirmada."
+
+msgid "O pagamento non se completou. A franxa queda gardada uns minutos."
+msgstr "O pagamento non se completou. A franxa queda gardada uns minutos."
+
+msgid "Reserva cancelada."
+msgstr "Reserva cancelada."
+
+#, python-format
+msgid "Devolverémosche %(r)s €."
+msgstr "Devolverémosche %(r)s €."
+
+msgid "Reserva cambiada."
+msgstr "Reserva cambiada."
+
+msgid "Si"
+msgstr "Si"
+
+msgid "Non"
+msgstr "Non"
+
+msgid "Deixaches a porta pechada?"
+msgstr "Deixaches a porta pechada?"
+
+msgid "Devolviches a chave?"
+msgstr "Devolviches a chave?"
+
+msgid "Quedou todo en orde (luces, material, limpeza)?"
+msgstr "Quedou todo en orde (luces, material, limpeza)?"
+
+msgid "Algo que contar? (opcional)"
+msgstr "Algo que contar? (opcional)"
+
+msgid "Xa enviaches o checklist de peche desta reserva."
+msgstr "Xa enviaches o checklist de peche desta reserva."
+
+#, python-format
+msgid "Grazas. Creamos a incidencia #%(n)s para que o concello o revise."
+msgstr "Grazas. Creamos a incidencia #%(n)s para que o concello o revise."
+
+msgid "Grazas! Instalación pechada correctamente."
+msgstr "Grazas! Instalación pechada correctamente."
+
+msgid ""
+"Agora non se pode abrir. A porta ábrese desde 10 minutos antes do inicio."
+msgstr ""
+"Agora non se pode abrir. A porta ábrese desde 10 minutos antes do inicio."
+
+msgid "Porta aberta. Ben adestramento!"
+msgstr "Porta aberta. Ben adestramento!"
+
+msgid "Respecta o horario reservado: entra e sae á hora."
+msgstr "Respecta o horario reservado: entra e sae á hora."
+
+msgid ""
+"Deixa a instalación como a atopaches: luces apagadas, material recollido e "
+"porta pechada."
+msgstr ""
+"Deixa a instalación como a atopaches: luces apagadas, material recollido e "
+"porta pechada."
+
+msgid "Comunica calquera desperfecto co botón «Avisar dunha avaría»."
+msgstr "Comunica calquera desperfecto co botón «Avisar dunha avaría»."
+
+msgid "Non se permite fumar nin introducir vidro."
+msgstr "Non se permite fumar nin introducir vidro."
+
+msgid "Se non podes vir, cancela con antelación: outra persoa poderá usala."
+msgstr "Se non podes vir, cancela con antelación: outra persoa poderá usala."
+
+msgid "Pista exterior"
+msgstr "Pista exterior"
+
+msgid ""
+"Pista polideportiva descuberta para fútbol sala, baloncesto ou balonmán."
+msgstr ""
+"Pista polideportiva descuberta para fútbol sala, baloncesto ou balonmán."
+
+msgid "Calzado deportivo. Non se permiten bicicletas nin patíns na pista."
+msgstr "Calzado deportivo. Non se permiten bicicletas nin patíns na pista."
+
+msgid "Revisión visual da pista e redes"
+msgstr "Revisión visual da pista e redes"
+
+msgid "Limpeza de follas e drenaxes"
+msgstr "Limpeza de follas e drenaxes"
+
+msgid "Revisión eléctrica das torres de luz"
+msgstr "Revisión eléctrica das torres de luz"
+
+msgid "Pavillón"
+msgstr "Pavillón"
+
+msgid "Pavillón cuberto con pista central e vestiarios."
+msgstr "Pavillón cuberto con pista central e vestiarios."
+
+msgid "Calzado deportivo limpo e de sola clara."
+msgstr "Calzado deportivo limpo e de sola clara."
+
+msgid "Os vestiarios péchanse 30 minutos despois da última franxa."
+msgstr "Os vestiarios péchanse 30 minutos despois da última franxa."
+
+msgid "Limpeza de vestiarios"
+msgstr "Limpeza de vestiarios"
+
+msgid "Revisión de desfibrilador (DEA)"
+msgstr "Revisión de desfibrilador (DEA)"
+
+msgid "Revisión de extintores"
+msgstr "Revisión de extintores"
+
+msgid "Campo de herba"
+msgstr "Campo de herba"
+
+msgid "Campo de fútbol de herba (natural ou artificial)."
+msgstr "Campo de fútbol de herba (natural ou artificial)."
+
+msgid "Botas de tacos de goma; prohibidos os tacos metálicos."
+msgstr "Botas de tacos de goma; prohibidos os tacos metálicos."
+
+msgid "Non se pode usar o campo con alerta laranxa ou vermella."
+msgstr "Non se pode usar o campo con alerta laranxa ou vermella."
+
+msgid "Cepillado e reposición de caucho"
+msgstr "Cepillado e reposición de caucho"
+
+msgid "Revisión de porterías e redes"
+msgstr "Revisión de porterías e redes"
+
+msgid "Ximnasio"
+msgstr "Ximnasio"
+
+msgid "Sala de musculación e cardio de uso compartido."
+msgstr "Sala de musculación e cardio de uso compartido."
+
+msgid "Toalla obrigatoria. Limpa as máquinas despois de usalas."
+msgstr "Toalla obrigatoria. Limpa as máquinas despois de usalas."
+
+msgid "Idade mínima: 16 anos."
+msgstr "Idade mínima: 16 anos."
+
+msgid "Desinfección de máquinas"
+msgstr "Desinfección de máquinas"
+
+msgid "Revisión de cables e poleas"
+msgstr "Revisión de cables e poleas"
+
+msgid "Piscina"
+msgstr "Piscina"
+
+msgid "Piscina climatizada con rúas de nado libre."
+msgstr "Piscina climatizada con rúas de nado libre."
+
+msgid "Ducha obrigatoria antes do baño. Gorro obrigatorio."
+msgstr "Ducha obrigatoria antes do baño. Gorro obrigatorio."
+
+msgid "Menores de 14 anos acompañados."
+msgstr "Menores de 14 anos acompañados."
+
+msgid "Control de cloro e pH"
+msgstr "Control de cloro e pH"
+
+msgid "Limpeza de fondo"
+msgstr "Limpeza de fondo"
+
+msgid "Revisión sanitaria anual"
+msgstr "Revisión sanitaria anual"
+
+msgid "Pista de pádel"
+msgstr "Pista de pádel"
+
+msgid "Pista de pádel con cristal."
+msgstr "Pista de pádel con cristal."
+
+msgid "Calzado de pádel ou tenis. Non pendurarse da rede."
+msgstr "Calzado de pádel ou tenis. Non pendurarse da rede."
+
+msgid "Revisión de cristais e rede"
+msgstr "Revisión de cristais e rede"
+
+msgid "Cepillado da herba"
+msgstr "Cepillado da herba"
+
+msgid "Plan preventivo básico"
+msgstr "Plan preventivo básico"
+
+msgid "Indica quen custodia a chave (nivel 1)."
+msgstr "Indica quen custodia a chave (nivel 1)."
+
+msgid "Describe a foto para as persoas que non a ven."
+msgstr "Describe a foto para as persoas que non a ven."
+
+msgid "Instalación publicada. Xa se pode reservar."
+msgstr "Instalación publicada. Xa se pode reservar."
+
+msgid "Cambios gardados."
+msgstr "Cambios gardados."
+
+msgid "Horario gardado."
+msgstr "Horario gardado."
+
+msgid "Euros por franxa. Baleiro = non aplica."
+msgstr "Euros por franxa. Baleiro = non aplica."
+
+msgid "Tarifas gardadas."
+msgstr "Tarifas gardadas."
+
+msgid "Normas, dereitos e deberes (unha por liña)"
+msgstr "Normas, dereitos e deberes (unha por liña)"
+
+#, python-format
+msgid ""
+"Publicada a versión %(v)s das normas. As reservas novas aceptarán esta "
+"versión."
+msgstr ""
+"Publicada a versión %(v)s das normas. As reservas novas aceptarán esta "
+"versión."
+
+msgid "Baleiro = todas as instalacións do concello (p. ex. festivo)."
+msgstr "Baleiro = todas as instalacións do concello (p. ex. festivo)."
+
+msgid "Todas as instalacións"
+msgstr "Todas as instalacións"
+
+msgid "O fin debe ser posterior ao inicio."
+msgstr "O fin debe ser posterior ao inicio."
+
+#, python-format
+msgid ""
+"Peche gardado. %(n)s reservas afectadas foron canceladas, reembolsadas e "
+"avisadas."
+msgstr ""
+"Peche gardado. %(n)s reservas afectadas foron canceladas, reembolsadas e "
+"avisadas."
+
+msgid "Peche eliminado."
+msgstr "Peche eliminado."
+
+msgid "parroquia"
+msgstr "parroquia"
+
+msgid "parroquias"
+msgstr "parroquias"
+
+msgid "Outra"
+msgstr "Outra"
+
+msgid "Aberta (QR de entrada)"
+msgstr "Aberta (QR de entrada)"
+
+msgid "Chave custodiada"
+msgstr "Chave custodiada"
+
+msgid "Código temporal sen conexión"
+msgstr "Código temporal sen conexión"
+
+msgid "Pechadura conectada"
+msgstr "Pechadura conectada"
+
+msgid "tipo"
+msgstr "tipo"
+
+msgid "enderezo"
+msgstr "enderezo"
+
+msgid "latitude"
+msgstr "latitude"
+
+msgid "lonxitude"
+msgstr "lonxitude"
+
+msgid "foto"
+msgstr "foto"
+
+msgid "texto alternativo da foto"
+msgstr "texto alternativo da foto"
+
+msgid "cuberta"
+msgstr "cuberta"
+
+msgid "iluminación"
+msgstr "iluminación"
+
+msgid "acceso sen chanzos"
+msgstr "acceso sen chanzos"
+
+msgid "aseo adaptado"
+msgstr "aseo adaptado"
+
+msgid "vestiario adaptado"
+msgstr "vestiario adaptado"
+
+msgid "aparcadoiro reservado"
+msgstr "aparcadoiro reservado"
+
+msgid "notas de accesibilidade"
+msgstr "notas de accesibilidade"
+
+msgid "prazas simultáneas"
+msgstr "prazas simultáneas"
+
+msgid ""
+"1 = uso exclusivo (pista). Máis de 1 = uso compartido (ximnasio, piscina)."
+msgstr ""
+"1 = uso exclusivo (pista). Máis de 1 = uso compartido (ximnasio, piscina)."
+
+msgid "duración da franxa (min)"
+msgstr "duración da franxa (min)"
+
+msgid "nivel de acceso"
+msgstr "nivel de acceso"
+
+msgid "custodia da chave"
+msgstr "custodia da chave"
+
+msgid "onde se recolle"
+msgstr "onde se recolle"
+
+msgid "horario de recollida"
+msgstr "horario de recollida"
+
+msgid "teléfono da custodia"
+msgstr "teléfono da custodia"
+
+msgid "correo da custodia"
+msgstr "correo da custodia"
+
+msgid "publicada"
+msgstr "publicada"
+
+msgid "instalación"
+msgstr "instalación"
+
+msgid "instalacións"
+msgstr "instalacións"
+
+msgid "Luns"
+msgstr "Luns"
+
+msgid "Martes"
+msgstr "Martes"
+
+msgid "Mércores"
+msgstr "Mércores"
+
+msgid "Xoves"
+msgstr "Xoves"
+
+msgid "Venres"
+msgstr "Venres"
+
+msgid "Sábado"
+msgstr "Sábado"
+
+msgid "Domingo"
+msgstr "Domingo"
+
+msgid "día"
+msgstr "día"
+
+msgid "abre"
+msgstr "abre"
+
+msgid "pecha"
+msgstr "pecha"
+
+msgid "inicio de tempada"
+msgstr "inicio de tempada"
+
+msgid "fin de tempada"
+msgstr "fin de tempada"
+
+msgid "horario"
+msgstr "horario"
+
+msgid "horarios"
+msgstr "horarios"
+
+msgid "Festivo"
+msgstr "Festivo"
+
+msgid "Evento"
+msgstr "Evento"
+
+msgid "Obras"
+msgstr "Obras"
+
+msgid "Alerta meteorolóxica"
+msgstr "Alerta meteorolóxica"
+
+msgid "Outro"
+msgstr "Outro"
+
+msgid "motivo"
+msgstr "motivo"
+
+msgid "desde"
+msgstr "desde"
+
+msgid "ata"
+msgstr "ata"
+
+msgid "peche ou bloqueo"
+msgstr "peche ou bloqueo"
+
+msgid "peches e bloqueos"
+msgstr "peches e bloqueos"
+
+msgid "Persoas empadroadas"
+msgstr "Persoas empadroadas"
+
+msgid "Persoas non empadroadas"
+msgstr "Persoas non empadroadas"
+
+msgid "Mocidade (ata 25 anos, empadroada)"
+msgstr "Mocidade (ata 25 anos, empadroada)"
+
+msgid "Maiores de 65 (empadroadas)"
+msgstr "Maiores de 65 (empadroadas)"
+
+msgid "colectivo"
+msgstr "colectivo"
+
+msgid "prezo por franxa (céntimos)"
+msgstr "prezo por franxa (céntimos)"
+
+msgid "tarifa"
+msgstr "tarifa"
+
+msgid "tarifas"
+msgstr "tarifas"
+
+msgid "normas"
+msgstr "normas"
+
+msgid "versión das normas"
+msgstr "versión das normas"
+
+msgid "versións das normas"
+msgstr "versións das normas"
+
+msgid "Buscar"
+msgstr "Buscar"
+
+msgid "Tipo"
+msgstr "Tipo"
+
+msgid "Parroquia"
+msgstr "Parroquia"
+
+msgid "Acceso sen chanzos"
+msgstr "Acceso sen chanzos"
+
+msgid "Con iluminación"
+msgstr "Con iluminación"
+
+msgid "Cuberta"
+msgstr "Cuberta"
+
+msgid "Todos"
+msgstr "Todos"
+
+msgid "Todas"
+msgstr "Todas"
+
+msgid "Título da orde"
+msgstr "Título da orde"
+
+msgid "Asignar a"
+msgstr "Asignar a"
+
+msgid "Data prevista"
+msgstr "Data prevista"
+
+msgid "Sen asignar"
+msgstr "Sen asignar"
+
+#, python-format
+msgid "Incidencia #%(n)s: %(c)s"
+msgstr "Incidencia #%(n)s: %(c)s"
+
+msgid "Incidencia validada. Avisamos a quen informou."
+msgstr "Incidencia validada. Avisamos a quen informou."
+
+msgid "Incidencia descartada."
+msgstr "Incidencia descartada."
+
+msgid "Incidencia resolta. Avisamos a quen informou."
+msgstr "Incidencia resolta. Avisamos a quen informou."
+
+#, python-format
+msgid "Creada a orde de traballo #%(n)s."
+msgstr "Creada a orde de traballo #%(n)s."
+
+msgid "Recibida"
+msgstr "Recibida"
+
+msgid "Validada"
+msgstr "Validada"
+
+msgid "Orde de traballo creada"
+msgstr "Orde de traballo creada"
+
+msgid "Resolta"
+msgstr "Resolta"
+
+msgid "Descartada"
+msgstr "Descartada"
+
+msgid "Checklist de peche"
+msgstr "Checklist de peche"
+
+msgid "Persoal municipal"
+msgstr "Persoal municipal"
+
+msgid "Desperfecto"
+msgstr "Desperfecto"
+
+msgid "Limpeza"
+msgstr "Limpeza"
+
+msgid "Iluminación"
+msgstr "Iluminación"
+
+msgid "Porta ou pechadura"
+msgstr "Porta ou pechadura"
+
+msgid "Auga ou duchas"
+msgstr "Auga ou duchas"
+
+msgid "Seguridade"
+msgstr "Seguridade"
+
+msgid "que pasou?"
+msgstr "que pasou?"
+
+msgid "nota de resolución"
+msgstr "nota de resolución"
+
+msgid "incidencia"
+msgstr "incidencia"
+
+msgid "incidencias"
+msgstr "incidencias"
+
+#, python-format
+msgid "Nova incidencia: %(f)s"
+msgstr "Nova incidencia: %(f)s"
+
+msgid "Recibimos o teu aviso e xa o revisamos"
+msgstr "Recibimos o teu aviso e xa o revisamos"
+
+#, python-format
+msgid "Incidencia #%(n)s en %(f)s."
+msgstr "Incidencia #%(n)s en %(f)s."
+
+#, python-format
+msgid "Pechamos o teu aviso #%(n)s"
+msgstr "Pechamos o teu aviso #%(n)s"
+
+msgid "Revisar e reparar"
+msgstr "Revisar e reparar"
+
+msgid "Deixar a zona segura e limpa"
+msgstr "Deixar a zona segura e limpa"
+
+#, python-format
+msgid "Nova orde de traballo: %(t)s"
+msgstr "Nova orde de traballo: %(t)s"
+
+msgid "O teu aviso xa ten unha orde de traballo"
+msgstr "O teu aviso xa ten unha orde de traballo"
+
+#, python-format
+msgid "O equipo de mantemento vai revisar %(f)s."
+msgstr "O equipo de mantemento vai revisar %(f)s."
+
+msgid "Arranxado! Grazas polo teu aviso"
+msgstr "Arranxado! Grazas polo teu aviso"
+
+#, python-format
+msgid "A incidencia #%(n)s en %(f)s está resolta."
+msgstr "A incidencia #%(n)s en %(f)s está resolta."
+
+msgid "P. ex.: a rede da pista 2 está rota"
+msgstr "P. ex.: a rede da pista 2 está rota"
+
+msgid "Opcional. Eliminamos a localización e outros metadatos da foto."
+msgstr "Opcional. Eliminamos a localización e outros metadatos da foto."
+
+msgid "Escolle a instalación"
+msgstr "Escolle a instalación"
+
+#, python-format
+msgid ""
+"Grazas! Recibimos o teu aviso (#%(n)s). Avisarémoste cando estea arranxado."
+msgstr ""
+"Grazas! Recibimos o teu aviso (#%(n)s). Avisarémoste cando estea arranxado."
+
+msgid "Resumo semanal (xerado sen IA, a partir de datos agregados):"
+msgstr "Resumo semanal (xerado sen IA, a partir de datos agregados):"
+
+#, python-format
+msgid "%(b)s reservas, ocupación media do %(o)s %% e %(n)s non presentadas."
+msgstr "%(b)s reservas, ocupación media do %(o)s %% e %(n)s non presentadas."
+
+#, python-format
+msgid "A instalación máis usada foi %(f)s."
+msgstr "A instalación máis usada foi %(f)s."
+
+#, python-format
+msgid "Infrautilizadas: %(f)s. Valora ofrecelas a escolas ou clubs."
+msgstr "Infrautilizadas: %(f)s. Valora ofrecelas a escolas ou clubs."
+
+#, python-format
+msgid "Quedan %(n)s incidencias abertas."
+msgstr "Quedan %(n)s incidencias abertas."
+
+msgid "Veciña nova, usa o móbil"
+msgstr "Veciña nova, usa o móbil"
+
+msgid "Reserva a pista de pádel e abre co código."
+msgstr "Reserva a pista de pádel e abre co código."
+
+msgid "Veciño maior, lector de pantalla e texto grande"
+msgstr "Veciño maior, lector de pantalla e texto grande"
+
+msgid "Reserva o ximnasio por voz e teclado."
+msgstr "Reserva o ximnasio por voz e teclado."
+
+msgid "Non empadroada (outra tarifa)"
+msgstr "Non empadroada (outra tarifa)"
+
+msgid "Ve a tarifa de non empadroadas."
+msgstr "Ve a tarifa de non empadroadas."
+
+msgid "Panel do día, alta asistida e indicadores."
+msgstr "Panel do día, alta asistida e indicadores."
+
+msgid "Operario de mantemento"
+msgstr "Operario de mantemento"
+
+msgid "Ordes do día, checklist con foto, sen conexión."
+msgstr "Ordes do día, checklist con foto, sen conexión."
+
+msgid "Monitora deportiva"
+msgstr "Monitora deportiva"
+
+msgid "Asistencia na tableta e escala de esforzo."
+msgstr "Asistencia na tableta e escala de esforzo."
+
+msgid "Administración da deputación"
+msgstr "Administración da deputación"
+
+msgid "Compara concellos e dá de alta un novo."
+msgstr "Compara concellos e dá de alta un novo."
+
+msgid "Despexado"
+msgstr "Despexado"
+
+msgid "Nubrado"
+msgstr "Nubrado"
+
+msgid "Chuvia"
+msgstr "Chuvia"
+
+msgid ""
+"Fai frío: leva roupa de abrigo por capas e quenta ben antes de empezar."
+msgstr ""
+"Fai frío: leva roupa de abrigo por capas e quenta ben antes de empezar."
+
+msgid "Calor: bebe auga antes, durante e despois, e evita as horas centrais."
+msgstr "Calor: bebe auga antes, durante e despois, e evita as horas centrais."
+
+msgid "Leva auga e bebe a miúdo, aínda que non teñas sede."
+msgstr "Leva auga e bebe a miúdo, aínda que non teñas sede."
+
+msgid "Índice UV alto: crema solar, gorra e sombra nos descansos."
+msgstr "Índice UV alto: crema solar, gorra e sombra nos descansos."
+
+msgid "Índice UV moderado: usa protección solar."
+msgstr "Índice UV moderado: usa protección solar."
+
+msgid ""
+"Probable chuvia: o pavimento pode esvarar. Considera unha instalación "
+"cuberta."
+msgstr ""
+"Probable chuvia: o pavimento pode esvarar. Considera unha instalación "
+"cuberta."
+
+msgid "Vento forte: coidado con redes, porterías e obxectos soltos."
+msgstr "Vento forte: coidado con redes, porterías e obxectos soltos."
+
+msgid "Bo tempo para facer deporte. Hidrátate e disfruta."
+msgstr "Bo tempo para facer deporte. Hidrátate e disfruta."
+
+msgid "Diaria"
+msgstr "Diaria"
+
+msgid "Semanal"
+msgstr "Semanal"
+
+msgid "Mensual"
+msgstr "Mensual"
+
+msgid "Anual"
+msgstr "Anual"
+
+msgid "plan de mantemento"
+msgstr "plan de mantemento"
+
+msgid "plans de mantemento"
+msgstr "plans de mantemento"
+
+msgid "tarefa"
+msgstr "tarefa"
+
+msgid "frecuencia"
+msgstr "frecuencia"
+
+msgid "checklist (unha liña por punto)"
+msgstr "checklist (unha liña por punto)"
+
+msgid "data de inicio"
+msgstr "data de inicio"
+
+msgid "tarefa periódica"
+msgstr "tarefa periódica"
+
+msgid "tarefas periódicas"
+msgstr "tarefas periódicas"
+
+msgid "Pendente"
+msgstr "Pendente"
+
+msgid "En curso"
+msgstr "En curso"
+
+msgid "título"
+msgstr "título"
+
+msgid "data prevista"
+msgstr "data prevista"
+
+msgid "asignada a"
+msgstr "asignada a"
+
+msgid "notas de peche"
+msgstr "notas de peche"
+
+msgid "orde de traballo"
+msgstr "orde de traballo"
+
+msgid "ordes de traballo"
+msgstr "ordes de traballo"
+
+msgid "Notas de peche"
+msgstr "Notas de peche"
+
+msgid "Foto do traballo feito"
+msgstr "Foto do traballo feito"
+
+msgid "Esta orde xa estaba pechada."
+msgstr "Esta orde xa estaba pechada."
+
+msgid "Checklist gardado."
+msgstr "Checklist gardado."
+
+msgid "Orde pechada. Bo traballo!"
+msgstr "Orde pechada. Bo traballo!"
+
+#, python-format
+msgid "Xeradas %(n)s ordes novas."
+msgstr "Xeradas %(n)s ordes novas."
+
+msgid "Tarefa engadida."
+msgstr "Tarefa engadida."
+
+msgid "Información"
+msgstr "Información"
+
+msgid "Confirmación"
+msgstr "Confirmación"
+
+msgid "Aviso"
+msgstr "Aviso"
+
+msgid "aviso"
+msgstr "aviso"
+
+msgid "avisos"
+msgstr "avisos"
+
+msgid "Reservas"
+msgstr "Reservas"
+
+msgid "Acceso por niveis"
+msgstr "Acceso por niveis"
+
+msgid "Incidencias"
+msgstr "Incidencias"
+
+msgid "Mantemento preventivo"
+msgstr "Mantemento preventivo"
+
+msgid "Escolas e actividades"
+msgstr "Escolas e actividades"
+
+msgid "Modo tableta para monitores"
+msgstr "Modo tableta para monitores"
+
+msgid "Observatorio anónimo"
+msgstr "Observatorio anónimo"
+
+msgid "Meteoroloxía"
+msgstr "Meteoroloxía"
+
+msgid "Saúde no dispositivo"
+msgstr "Saúde no dispositivo"
+
+msgid "Resumo semanal con IA autoaloxada"
+msgstr "Resumo semanal con IA autoaloxada"
+
+msgid "Datos abertos"
+msgstr "Datos abertos"
+
+msgid "Configuración gardada."
+msgstr "Configuración gardada."
+
+msgid "Correo"
+msgstr "Correo"
+
+msgid "Rol"
+msgstr "Rol"
+
+msgid "Rol retirado."
+msgstr "Rol retirado."
+
+msgid "Rol asignado."
+msgstr "Rol asignado."
+
+#, python-format
+msgid "Código de empadroamento xerado: %(c)s"
+msgstr "Código de empadroamento xerado: %(c)s"
+
+msgid "Aviso laranxa por vento e chuvia (simulado)"
+msgstr "Aviso laranxa por vento e chuvia (simulado)"
+
+#, python-format
+msgid ""
+"Alerta aplicada ás instalacións descubertas. %(n)s reservas canceladas e "
+"avisadas."
+msgstr ""
+"Alerta aplicada ás instalacións descubertas. %(n)s reservas canceladas e "
+"avisadas."
+
+msgid "Cor en formato #RRGGBB."
+msgstr "Cor en formato #RRGGBB."
+
+msgid "Deputación provincial"
+msgstr "Deputación provincial"
+
+msgid "Mancomunidade"
+msgstr "Mancomunidade"
+
+msgid "Outra agrupación"
+msgstr "Outra agrupación"
+
+msgid "agrupación supramunicipal"
+msgstr "agrupación supramunicipal"
+
+msgid "agrupacións supramunicipais"
+msgstr "agrupacións supramunicipais"
+
+msgid "Identificador na URL: /c/<slug>/"
+msgstr "Identificador na URL: /c/<slug>/"
+
+msgid "agrupación"
+msgstr "agrupación"
+
+msgid "código INE"
+msgstr "código INE"
+
+msgid "cor de acento"
+msgstr "cor de acento"
+
+msgid "escudo"
+msgstr "escudo"
+
+msgid "idiomas"
+msgstr "idiomas"
+
+msgid "dominio propio"
+msgstr "dominio propio"
+
+msgid "Opcional: p. ex. deportes.concello.example"
+msgstr "Opcional: p. ex. deportes.concello.example"
+
+msgid "correo de contacto"
+msgstr "correo de contacto"
+
+msgid "poboación"
+msgstr "poboación"
+
+msgid "texto de privacidade"
+msgstr "texto de privacidade"
+
+msgid "declaración de accesibilidade"
+msgstr "declaración de accesibilidade"
+
+msgid "aviso legal"
+msgstr "aviso legal"
+
+msgid "módulos activos"
+msgstr "módulos activos"
+
+msgid "horas mínimas para cancelar sen penalización"
+msgstr "horas mínimas para cancelar sen penalización"
+
+msgid "penalización por cancelación tardía (%)"
+msgstr "penalización por cancelación tardía (%)"
+
+msgid "días máximos de antelación"
+msgstr "días máximos de antelación"
+
+msgid "reservas activas máximas por persoa"
+msgstr "reservas activas máximas por persoa"
+
+msgid "minutos de cortesía para non presentado"
+msgstr "minutos de cortesía para non presentado"
+
+msgid "activo"
+msgstr "activo"
+
+msgid "concello"
+msgstr "concello"
+
+msgid "concellos"
+msgstr "concellos"
+
+msgid "Ficheiro ZIP de Eira"
+msgstr "Ficheiro ZIP de Eira"
+
+msgid "Identificador do novo concello"
+msgstr "Identificador do novo concello"
+
+msgid "Xa existe un concello con ese identificador."
+msgstr "Xa existe un concello con ese identificador."
+
+#, python-format
+msgid "Non se puido importar: %(e)s"
+msgstr "Non se puido importar: %(e)s"
+
+msgid "Concello importado."
+msgstr "Concello importado."
+
+msgid "Nome do concello"
+msgstr "Nome do concello"
+
+msgid "Identificador na URL"
+msgstr "Identificador na URL"
+
+msgid "Só minúsculas, números e guións."
+msgstr "Só minúsculas, números e guións."
+
+msgid "Código INE"
+msgstr "Código INE"
+
+msgid "Poboación"
+msgstr "Poboación"
+
+msgid "Cor de acento"
+msgstr "Cor de acento"
+
+msgid "Módulos activos"
+msgstr "Módulos activos"
+
+msgid "Horas para cancelar sen penalización"
+msgstr "Horas para cancelar sen penalización"
+
+msgid "Días máximos de antelación"
+msgstr "Días máximos de antelación"
+
+msgid "Correo da persoa administradora do concello"
+msgstr "Correo da persoa administradora do concello"
+
+msgid "Crear instalacións de exemplo a partir de plantillas"
+msgstr "Crear instalacións de exemplo a partir de plantillas"
+
+msgid "Concello"
+msgstr "Concello"
+
+#, python-format
+msgid "Concello %(n)s creado. Xa podes entrar na súa xestión."
+msgstr "Concello %(n)s creado. Xa podes entrar na súa xestión."
+
+#, python-format
+msgid "A foto é demasiado grande (máximo %(mb)s MB)."
+msgstr "A foto é demasiado grande (máximo %(mb)s MB)."
+
+msgid "Formato non admitido. Usa JPEG, PNG ou WebP."
+msgstr "Formato non admitido. Usa JPEG, PNG ou WebP."
+
+msgid "O ficheiro non é unha imaxe válida."
+msgstr "O ficheiro non é unha imaxe válida."
+
+msgid "Reserva e acceso ás instalacións deportivas municipais."
+msgstr "Reserva e acceso ás instalacións deportivas municipais."
+
+msgid "A miña saúde"
+msgstr "A miña saúde"
+
+msgid "Non atopamos esta páxina"
+msgstr "Non atopamos esta páxina"
+
+msgid "Non tes permiso para ver isto"
+msgstr "Non tes permiso para ver isto"
+
+msgid "Galego"
+msgstr "Galego"
+
+msgid "Castelán"
+msgstr "Castelán"
+
+msgid "Entrada"
+msgstr "Entrada"
+
+#, python-format
+msgid "Benvida/o! Rexistramos a túa entrada na reserva de %(a)s a %(b)s."
+msgstr "Benvida/o! Rexistramos a túa entrada na reserva de %(a)s a %(b)s."
+
+msgid "Ver a miña reserva"
+msgstr "Ver a miña reserva"
+
+msgid ""
+"Grazas. Rexistramos o uso da instalación (sen datos persoais) para mellorar "
+"o servizo."
+msgstr ""
+"Grazas. Rexistramos o uso da instalación (sen datos persoais) para mellorar "
+"o servizo."
+
+msgid "Reservar para outro día"
+msgstr "Reservar para outro día"
+
+msgid "Rexistra a túa chegada. Se tes reserva agora, marcarase como usada."
+msgstr "Rexistra a túa chegada. Se tes reserva agora, marcarase como usada."
+
+msgid "Rexistrar entrada"
+msgstr "Rexistrar entrada"
+
+msgid "Accede primeiro se tes reserva"
+msgstr "Accede primeiro se tes reserva"
+
+msgid "Cartel QR"
+msgstr "Cartel QR"
+
+msgid "Ao entrar, escanea este código para rexistrar o uso."
+msgstr "Ao entrar, escanea este código para rexistrar o uso."
+
+msgid "Código QR de entrada"
+msgstr "Código QR de entrada"
+
+msgid "Avarías: usa o botón «Avisar dunha avaría» na web do concello."
+msgstr "Avarías: usa o botón «Avisar dunha avaría» na web do concello."
+
+msgid "Imprimir cartel"
+msgstr "Imprimir cartel"
+
+msgid "Introduce o código"
+msgstr "Introduce o código"
+
+msgid "Revisa o teu correo"
+msgstr "Revisa o teu correo"
+
+#, python-format
+msgid ""
+"Enviamos un código de 6 díxitos a <strong>%(e)s</strong>. Caduca en 10 "
+"minutos."
+msgstr ""
+"Enviamos un código de 6 díxitos a <strong>%(e)s</strong>. Caduca en 10 "
+"minutos."
+
+msgid "Prototipo: o correo non sae do servidor."
+msgstr "Prototipo: o correo non sae do servidor."
+
+msgid "Abrir a bandexa simulada (nova xanela)"
+msgstr "Abrir a bandexa simulada (nova xanela)"
+
+msgid "Entrar"
+msgstr "Entrar"
+
+msgid "Usar outro correo"
+msgstr "Usar outro correo"
+
+msgid "Eliminar a conta"
+msgstr "Eliminar a conta"
+
+msgid "Eliminar a miña conta"
+msgstr "Eliminar a miña conta"
+
+msgid ""
+"Eliminaremos os teus datos persoais, a túa unidade familiar e os "
+"consentimentos. As reservas pasadas consérvanse sen ningún dato que te "
+"identifique, porque o concello debe xustificar os ingresos."
+msgstr ""
+"Eliminaremos os teus datos persoais, a túa unidade familiar e os "
+"consentimentos. As reservas pasadas consérvanse sen ningún dato que te "
+"identifique, porque o concello debe xustificar os ingresos."
+
+msgid "Antes, podes descargar unha copia dos teus datos."
+msgstr "Antes, podes descargar unha copia dos teus datos."
+
+msgid "Eliminar definitivamente"
+msgstr "Eliminar definitivamente"
+
+msgid "Cancelar"
+msgstr "Cancelar"
+
+msgid "Unidade familiar"
+msgstr "Unidade familiar"
+
+msgid ""
+"Inscribe aos menores ao teu cargo nas escolas deportivas. Os consentimentos "
+"son explícitos, revogables e quedan rexistrados con data."
+msgstr ""
+"Inscribe aos menores ao teu cargo nas escolas deportivas. Os consentimentos "
+"son explícitos, revogables e quedan rexistrados con data."
+
+msgid "Menores ao teu cargo"
+msgstr "Menores ao teu cargo"
+
+#, python-format
+msgid "%(a)s anos"
+msgstr "%(a)s anos"
+
+msgid "Outorgado"
+msgstr "Outorgado"
+
+msgid "Sen consentimento"
+msgstr "Sen consentimento"
+
+msgid "Retirar"
+msgstr "Retirar"
+
+msgid "Outorgar"
+msgstr "Outorgar"
+
+msgid "Aínda non engadiches ningún menor."
+msgstr "Aínda non engadiches ningún menor."
+
+msgid "Engadir menor"
+msgstr "Engadir menor"
+
+msgid "Engadir"
+msgstr "Engadir"
+
+msgid "Acceder"
+msgstr "Acceder"
+
+msgid "Acceder sen contrasinal"
+msgstr "Acceder sen contrasinal"
+
+msgid "Enviarme o código"
+msgstr "Enviarme o código"
+
+msgid "Con identidade dixital"
+msgstr "Con identidade dixital"
+
+msgid ""
+"Usa Cl@ve ou Chave365 se queres validar a túa identidade (por exemplo, para "
+"tarifas de empadroamento)."
+msgstr ""
+"Usa Cl@ve ou Chave365 se queres validar a túa identidade (por exemplo, para "
+"tarifas de empadroamento)."
+
+msgid "Acceder con Cl@ve"
+msgstr "Acceder con Cl@ve"
+
+msgid "No prototipo, Cl@ve está simulada."
+msgstr "No prototipo, Cl@ve está simulada."
+
+msgid "A miña conta"
+msgstr "A miña conta"
+
+msgid "Saír"
+msgstr "Saír"
+
+msgid "Os meus datos"
+msgstr "Os meus datos"
+
+msgid "Só pedimos o imprescindible. Todo é opcional agás o correo."
+msgstr "Só pedimos o imprescindible. Todo é opcional agás o correo."
+
+msgid "Gardar"
+msgstr "Gardar"
+
+msgid "Empadroamento"
+msgstr "Empadroamento"
+
+msgid "Non tes ningún empadroamento validado."
+msgstr "Non tes ningún empadroamento validado."
+
+msgid "Validar"
+msgstr "Validar"
+
+msgid "Os meus roles"
+msgstr "Os meus roles"
+
+msgid "Privacidade"
+msgstr "Privacidade"
+
+msgid "Unidade familiar e consentimentos"
+msgstr "Unidade familiar e consentimentos"
+
+msgid "Descargar todos os meus datos (JSON)"
+msgstr "Descargar todos os meus datos (JSON)"
+
+msgid "Actividades"
+msgstr "Actividades"
+
+msgid "Non hai actividades publicadas."
+msgstr "Non hai actividades publicadas."
+
+msgid "Indicadores"
+msgstr "Indicadores"
+
+#, python-format
+msgid "Período: %(a)s–%(b)s"
+msgstr "Período: %(a)s–%(b)s"
+
+msgid "Período"
+msgstr "Período"
+
+msgid "4 semanas"
+msgstr "4 semanas"
+
+msgid "8 semanas"
+msgstr "8 semanas"
+
+msgid "Resumo semanal"
+msgstr "Resumo semanal"
+
+msgid ""
+"Xerado só con datos agregados. Se se usa IA, é un modelo de pesos abertos "
+"aloxado polo propio concello."
+msgstr ""
+"Xerado só con datos agregados. Se se usa IA, é un modelo de pesos abertos "
+"aloxado polo propio concello."
+
+msgid "Ocupación media"
+msgstr "Ocupación media"
+
+#, python-format
+msgid "%(b)s de %(a)s prazas-franxa"
+msgstr "%(b)s de %(a)s prazas-franxa"
+
+msgid "Reservas non usadas"
+msgstr "Reservas non usadas"
+
+#, python-format
+msgid "%(n)s non presentadas"
+msgstr "%(n)s non presentadas"
+
+msgid "Incidencias abertas"
+msgstr "Incidencias abertas"
+
+#, python-format
+msgid "%(h)s h de media ata resolver"
+msgstr "%(h)s h de media ata resolver"
+
+msgid "Ingresos netos"
+msgstr "Ingresos netos"
+
+msgid "Ocupación por instalación"
+msgstr "Ocupación por instalación"
+
+msgid "ocupación"
+msgstr "ocupación"
+
+msgid "Ocupación por instalación (%)"
+msgstr "Ocupación por instalación (%)"
+
+msgid "Ver datos en táboa"
+msgstr "Ver datos en táboa"
+
+msgid "Instalación"
+msgstr "Instalación"
+
+msgid "Ofertadas"
+msgstr "Ofertadas"
+
+msgid "Reservadas"
+msgstr "Reservadas"
+
+msgid "Reservas non usadas (non presentadas)"
+msgstr "Reservas non usadas (non presentadas)"
+
+msgid "Porcentaxe de non presentadas por instalación"
+msgstr "Porcentaxe de non presentadas por instalación"
+
+msgid "Non presentadas"
+msgstr "Non presentadas"
+
+msgid "Ocupación por franxa horaria"
+msgstr "Ocupación por franxa horaria"
+
+msgid "franxas"
+msgstr "franxas"
+
+msgid ""
+"Número de reservas por día da semana e hora (todas as instalacións). As "
+"cores reforzan o número, que sempre se mostra."
+msgstr ""
+"Número de reservas por día da semana e hora (todas as instalacións). As "
+"cores reforzan o número, que sempre se mostra."
+
+msgid "Reservas por día da semana e hora"
+msgstr "Reservas por día da semana e hora"
+
+msgid "Hora"
+msgstr "Hora"
+
+#, python-format
+msgid "Infrauso (menos do 20 %%)"
+msgstr "Infrauso (menos do 20 %%)"
+
+#, python-format
+msgid "Ningunha instalación por baixo do 20 %%."
+msgstr "Ningunha instalación por baixo do 20 %%."
+
+msgid "Incidencias por estado"
+msgstr "Incidencias por estado"
+
+msgid "Ingresos netos por semana"
+msgstr "Ingresos netos por semana"
+
+msgid "ingresos"
+msgstr "ingresos"
+
+msgid "Ingresos netos por semana (euros)"
+msgstr "Ingresos netos por semana (euros)"
+
+msgid "Ingresos"
+msgstr "Ingresos"
+
+msgid "Semana do"
+msgstr "Semana do"
+
+msgid "Cobrado"
+msgstr "Cobrado"
+
+msgid "Devolto"
+msgstr "Devolto"
+
+msgid "Neto"
+msgstr "Neto"
+
+#, python-format
+msgid ""
+"Ocupación das instalacións deportivas de %(n)s: número de reservas por "
+"instalación, día e hora nas últimas 8 semanas. Non contén ningún dato "
+"persoal."
+msgstr ""
+"Ocupación das instalacións deportivas de %(n)s: número de reservas por "
+"instalación, día e hora nas últimas 8 semanas. Non contén ningún dato "
+"persoal."
+
+msgid "Descargar CSV"
+msgstr "Descargar CSV"
+
+msgid "licenza CC BY 4.0"
+msgstr "licenza CC BY 4.0"
+
+msgid "Metadatos DCAT-AP (JSON-LD)"
+msgstr "Metadatos DCAT-AP (JSON-LD)"
+
+msgid "API aberta (OpenAPI 3.1)"
+msgstr "API aberta (OpenAPI 3.1)"
+
+msgid "Eira: reserva e acceso ás instalacións deportivas municipais."
+msgstr "Eira: reserva e acceso ás instalacións deportivas municipais."
+
+msgid "Saltar ao contido"
+msgstr "Saltar ao contido"
+
+msgid "Prototipo de demostración: datos ficticios e servizos simulados."
+msgstr "Prototipo de demostración: datos ficticios e servizos simulados."
+
+msgid "Cambiar de perfil"
+msgstr "Cambiar de perfil"
+
+msgid "Bandexa de correo"
+msgstr "Bandexa de correo"
+
+msgid "Simulador de pechadura"
+msgstr "Simulador de pechadura"
+
+msgid ""
+"Sen conexión. Estás a ver datos gardados; os cambios enviaranse ao recuperar"
+" a rede."
+msgstr ""
+"Sen conexión. Estás a ver datos gardados; os cambios enviaranse ao recuperar"
+" a rede."
+
+msgid "Deportes · Eira"
+msgstr "Deportes · Eira"
+
+msgid "Instalacións deportivas municipais"
+msgstr "Instalacións deportivas municipais"
+
+msgid "Menú"
+msgstr "Menú"
+
+msgid "Principal"
+msgstr "Principal"
+
+msgid "Instalacións"
+msgstr "Instalacións"
+
+msgid "As miñas reservas"
+msgstr "As miñas reservas"
+
+msgid "Avisos"
+msgstr "Avisos"
+
+msgid "sen ler"
+msgstr "sen ler"
+
+msgid "Avisar dunha avaría"
+msgstr "Avisar dunha avaría"
+
+msgid "Xestión"
+msgstr "Xestión"
+
+msgid "Operario"
+msgstr "Operario"
+
+msgid "Monitor"
+msgstr "Monitor"
+
+msgid "software libre baixo licenza"
+msgstr "software libre baixo licenza"
+
+msgid "Tel."
+msgstr "Tel."
+
+msgid "Accesibilidade"
+msgstr "Accesibilidade"
+
+msgid "Preferencias de lectura"
+msgstr "Preferencias de lectura"
+
+msgid "A miña saúde (só no dispositivo)"
+msgstr "A miña saúde (só no dispositivo)"
+
+msgid "Porta aberta"
+msgstr "Porta aberta"
+
+msgid "Acceso"
+msgstr "Acceso"
+
+msgid "O acceso aparecerá ao completar o pagamento."
+msgstr "O acceso aparecerá ao completar o pagamento."
+
+msgid ""
+"Instalación aberta. Ao chegar, escanea co móbil o QR da entrada para "
+"rexistrar o uso."
+msgstr ""
+"Instalación aberta. Ao chegar, escanea co móbil o QR da entrada para "
+"rexistrar o uso."
+
+#, python-format
+msgid "Entrada rexistrada ás %(t)s"
+msgstr "Entrada rexistrada ás %(t)s"
+
+msgid "Quen ten a chave"
+msgstr "Quen ten a chave"
+
+msgid "Onde"
+msgstr "Onde"
+
+msgid "Horario"
+msgstr "Horario"
+
+#, python-format
+msgid "Chave recollida ás %(t)s: lembra devolvela"
+msgstr "Chave recollida ás %(t)s: lembra devolvela"
+
+msgid "A custodia xa sabe da túa reserva"
+msgstr "A custodia xa sabe da túa reserva"
+
+msgid "Teclea este código na porta:"
+msgstr "Teclea este código na porta:"
+
+msgid "Código de acceso"
+msgstr "Código de acceso"
+
+#, python-format
+msgid ""
+"Válido só de <strong>%(a)s</strong> a <strong>%(b)s</strong> do día da "
+"reserva. Funciona aínda que a instalación non teña internet."
+msgstr ""
+"Válido só de <strong>%(a)s</strong> a <strong>%(b)s</strong> do día da "
+"reserva. Funciona aínda que a instalación non teña internet."
+
+msgid ""
+"Non o compartas fóra do teu grupo: calquera persoa co código pode entrar "
+"durante a túa franxa."
+msgstr ""
+"Non o compartas fóra do teu grupo: calquera persoa co código pode entrar "
+"durante a túa franxa."
+
+msgid "Probalo no simulador de pechadura"
+msgstr "Probalo no simulador de pechadura"
+
+msgid "Esta franxa non é compatible co teclado. Contacta co concello."
+msgstr "Esta franxa non é compatible co teclado. Contacta co concello."
+
+msgid "Abrir a porta"
+msgstr "Abrir a porta"
+
+#, python-format
+msgid "O botón «Abrir» aparecerá desde as %(t)s do día da reserva."
+msgstr "O botón «Abrir» aparecerá desde as %(t)s do día da reserva."
+
+#, python-format
+msgid "Luces acesas ata as %(t)s"
+msgstr "Luces acesas ata as %(t)s"
+
+msgid "As luces acéndense ao abrir e apáganse ao rematar a franxa."
+msgstr "As luces acéndense ao abrir e apáganse ao rematar a franxa."
+
+#, python-format
+msgid "Porta aberta ás %(t)s"
+msgstr "Porta aberta ás %(t)s"
+
+msgid "Pasos da reserva"
+msgstr "Pasos da reserva"
+
+msgid "Escolle franxa"
+msgstr "Escolle franxa"
+
+msgid "Normas e confirmación"
+msgstr "Normas e confirmación"
+
+msgid "Pagamento e acceso"
+msgstr "Pagamento e acceso"
+
+msgid "Tempo previsto"
+msgstr "Tempo previsto"
+
+msgid "Probabilidade de chuvia"
+msgstr "Probabilidade de chuvia"
+
+msgid "Vento"
+msgstr "Vento"
+
+msgid "Índice UV"
+msgstr "Índice UV"
+
+msgid ""
+"Previsión simulada para o prototipo (adaptador MeteoGalicia preparado)."
+msgstr ""
+"Previsión simulada para o prototipo (adaptador MeteoGalicia preparado)."
+
+msgid "Cancelar reserva"
+msgstr "Cancelar reserva"
+
+msgid "Cancelar a reserva"
+msgstr "Cancelar a reserva"
+
+#, python-format
+msgid "Quedan menos de %(h)s horas: aplicarase unha penalización de %(p)s."
+msgstr "Quedan menos de %(h)s horas: aplicarase unha penalización de %(p)s."
+
+#, python-format
+msgid "Devolveremos o importe íntegro (%(p)s)."
+msgstr "Devolveremos o importe íntegro (%(p)s)."
+
+msgid "Motivo (opcional)"
+msgstr "Motivo (opcional)"
+
+msgid "Si, cancelar"
+msgstr "Si, cancelar"
+
+msgid "Non, manter a reserva"
+msgstr "Non, manter a reserva"
+
+msgid "Antes de marchar"
+msgstr "Antes de marchar"
+
+msgid ""
+"Tres preguntas rápidas. Se algo non está ben, avisamos ao concello "
+"automaticamente."
+msgstr ""
+"Tres preguntas rápidas. Se algo non está ben, avisamos ao concello "
+"automaticamente."
+
+msgid "Enviar"
+msgstr "Enviar"
+
+msgid "Confirmar reserva"
+msgstr "Confirmar reserva"
+
+msgid "Revisa e confirma"
+msgstr "Revisa e confirma"
+
+msgid "Volver á grella"
+msgstr "Volver á grella"
+
+msgid "Día"
+msgstr "Día"
+
+msgid "Prezo"
+msgstr "Prezo"
+
+msgid "Gratuíta"
+msgstr "Gratuíta"
+
+msgid "Normas de uso, dereitos e deberes"
+msgstr "Normas de uso, dereitos e deberes"
+
+#, python-format
+msgid "versión %(v)s"
+msgstr "versión %(v)s"
+
+#, python-format
+msgid ""
+"Podes cancelar ou cambiar gratis ata %(h)s horas antes. Despois, a "
+"cancelación ten unha penalización do %(p)s %%."
+msgstr ""
+"Podes cancelar ou cambiar gratis ata %(h)s horas antes. Despois, a "
+"cancelación ten unha penalización do %(p)s %%."
+
+#, python-format
+msgid "Confirmar e pagar %(p)s"
+msgstr "Confirmar e pagar %(p)s"
+
+msgid "Escoller outra franxa"
+msgstr "Escoller outra franxa"
+
+msgid "Despois de reservar"
+msgstr "Despois de reservar"
+
+msgid "Escanea o QR da entrada ao chegar."
+msgstr "Escanea o QR da entrada ao chegar."
+
+msgid "Recolle a chave onde se indica e devólvea ao rematar."
+msgstr "Recolle a chave onde se indica e devólvea ao rematar."
+
+msgid "Recibirás un código que abre só na túa franxa."
+msgstr "Recibirás un código que abre só na túa franxa."
+
+msgid "Abrirás a porta desde o móbil."
+msgstr "Abrirás a porta desde o móbil."
+
+msgid "Reserva"
+msgstr "Reserva"
+
+msgid "Falta completar o pagamento. Gardamos a franxa uns minutos."
+msgstr "Falta completar o pagamento. Gardamos a franxa uns minutos."
+
+msgid "Pagar agora"
+msgstr "Pagar agora"
+
+msgid "Ao rematar:"
+msgstr "Ao rematar:"
+
+msgid "confirma que todo queda pechado e en orde."
+msgstr "confirma que todo queda pechado e en orde."
+
+msgid "Xestionar"
+msgstr "Xestionar"
+
+msgid "Descargar .ics"
+msgstr "Descargar .ics"
+
+msgid "Engadir a Google Calendar"
+msgstr "Engadir a Google Calendar"
+
+msgid "abre noutra xanela"
+msgstr "abre noutra xanela"
+
+msgid "Recibo"
+msgstr "Recibo"
+
+msgid "Cambiar hora"
+msgstr "Cambiar hora"
+
+#, python-format
+msgid "Se cancelas agora, a penalización é de %(p)s."
+msgstr "Se cancelas agora, a penalización é de %(p)s."
+
+#, python-format
+msgid "Cancelación gratuíta ata %(h)s h antes."
+msgstr "Cancelación gratuíta ata %(h)s h antes."
+
+msgid "Peche"
+msgstr "Peche"
+
+#, python-format
+msgid "Checklist enviado o %(t)s."
+msgstr "Checklist enviado o %(t)s."
+
+msgid "Resumo"
+msgstr "Resumo"
+
+msgid "Importe"
+msgstr "Importe"
+
+msgid "Normas aceptadas"
+msgstr "Normas aceptadas"
+
+msgid "Engadir todas ao meu calendario (.ics)"
+msgstr "Engadir todas ao meu calendario (.ics)"
+
+#, python-format
+msgid "Acabas de usar %(f)s. Confirma que todo quedou pechado."
+msgstr "Acabas de usar %(f)s. Confirma que todo quedou pechado."
+
+msgid "Próximas"
+msgstr "Próximas"
+
+msgid "Ref."
+msgstr "Ref."
+
+msgid "Non tes reservas próximas."
+msgstr "Non tes reservas próximas."
+
+msgid "Buscar instalación"
+msgstr "Buscar instalación"
+
+msgid "Historial"
+msgstr "Historial"
+
+msgid "Historial de reservas"
+msgstr "Historial de reservas"
+
+msgid "Data"
+msgstr "Data"
+
+msgid "Estado"
+msgstr "Estado"
+
+msgid "Ver"
+msgstr "Ver"
+
+msgid "Aínda non hai historial."
+msgstr "Aínda non hai historial."
+
+msgid "Cambiar reserva"
+msgstr "Cambiar reserva"
+
+msgid "Cambiar a hora da reserva"
+msgstr "Cambiar a hora da reserva"
+
+#, python-format
+msgid "Agora: %(f)s, %(d)s ás %(h)s."
+msgstr "Agora: %(f)s, %(d)s ás %(h)s."
+
+#, python-format
+msgid "Novo horario: <strong>%(d)s ás %(h)s</strong>"
+msgstr "Novo horario: <strong>%(d)s ás %(h)s</strong>"
+
+msgid "Confirmar o cambio"
+msgstr "Confirmar o cambio"
+
+msgid "Escoller outra"
+msgstr "Escoller outra"
+
+msgid "Escolle a nova franxa:"
+msgstr "Escolle a nova franxa:"
+
+msgid "Imprimir"
+msgstr "Imprimir"
+
+#, python-format
+msgid "Concello de %(n)s · Servizo municipal de deportes"
+msgstr "Concello de %(n)s · Servizo municipal de deportes"
+
+msgid "Referencia"
+msgstr "Referencia"
+
+msgid "Persoa"
+msgstr "Persoa"
+
+msgid "Data de uso"
+msgstr "Data de uso"
+
+msgid "Tarifa"
+msgstr "Tarifa"
+
+msgid "Pagado"
+msgstr "Pagado"
+
+msgid "Operación"
+msgstr "Operación"
+
+msgid "Emitido"
+msgstr "Emitido"
+
+msgid ""
+"Prezo público segundo a ordenanza fiscal municipal. Documento xerado por "
+"Eira."
+msgstr ""
+"Prezo público segundo a ordenanza fiscal municipal. Documento xerado por "
+"Eira."
+
+msgid "Declaración de accesibilidade"
+msgstr "Declaración de accesibilidade"
+
+#, python-format
+msgid ""
+"O Concello de %(n)s comprométese a facer accesible este sitio web, de "
+"conformidade co Real Decreto 1112/2018, do 7 de setembro, sobre "
+"accesibilidade dos sitios web e aplicacións para dispositivos móbiles do "
+"sector público."
+msgstr ""
+"O Concello de %(n)s comprométese a facer accesible este sitio web, de "
+"conformidade co Real Decreto 1112/2018, do 7 de setembro, sobre "
+"accesibilidade dos sitios web e aplicacións para dispositivos móbiles do "
+"sector público."
+
+msgid "Situación de cumprimento"
+msgstr "Situación de cumprimento"
+
+msgid ""
+"Este sitio web é parcialmente conforme co RD 1112/2018 debido ás excepcións "
+"e á falta de conformidade dos aspectos que se indican a continuación. O "
+"obxectivo é a conformidade co nivel AA das WCAG 2.1 (norma EN 301 549)."
+msgstr ""
+"Este sitio web é parcialmente conforme co RD 1112/2018 debido ás excepcións "
+"e á falta de conformidade dos aspectos que se indican a continuación. O "
+"obxectivo é a conformidade co nivel AA das WCAG 2.1 (norma EN 301 549)."
+
+msgid "Contido non accesible"
+msgstr "Contido non accesible"
+
+msgid ""
+"O mapa de instalacións é un complemento visual: toda a súa información está "
+"dispoñible na lista accesible e nos filtros."
+msgstr ""
+"O mapa de instalacións é un complemento visual: toda a súa información está "
+"dispoñible na lista accesible e nos filtros."
+
+msgid ""
+"As fotos subidas pola veciñanza nos avisos de avaría poden non ter texto "
+"alternativo descritivo."
+msgstr ""
+"As fotos subidas pola veciñanza nos avisos de avaría poden non ter texto "
+"alternativo descritivo."
+
+msgid "Preparación desta declaración"
+msgstr "Preparación desta declaración"
+
+msgid ""
+"Avaliación propia con probas automáticas (axe-core) en todas as páxinas "
+"principais, en móbil e escritorio, e revisión manual con teclado e lector de"
+" pantalla."
+msgstr ""
+"Avaliación propia con probas automáticas (axe-core) en todas as páxinas "
+"principais, en móbil e escritorio, e revisión manual con teclado e lector de"
+" pantalla."
+
+msgid "Observacións e contacto"
+msgstr "Observacións e contacto"
+
+msgid ""
+"Podes comunicar problemas de accesibilidade ou solicitar información en "
+"formato accesible:"
+msgstr ""
+"Podes comunicar problemas de accesibilidade ou solicitar información en "
+"formato accesible:"
+
+msgid "Procedemento de aplicación"
+msgstr "Procedemento de aplicación"
+
+msgid ""
+"Se unha vez realizada unha solicitude de información accesible ou queixa a "
+"resposta non é satisfactoria, podes presentar unha reclamación ante a "
+"unidade responsable de accesibilidade do concello."
+msgstr ""
+"Se unha vez realizada unha solicitude de información accesible ou queixa a "
+"resposta non é satisfactoria, podes presentar unha reclamación ante a "
+"unidade responsable de accesibilidade do concello."
+
+msgid "Axustes de lectura"
+msgstr "Axustes de lectura"
+
+msgid "Activa texto grande, alto contraste ou movemento reducido."
+msgstr "Activa texto grande, alto contraste ou movemento reducido."
+
+msgid "Erro"
+msgstr "Erro"
+
+msgid "Ir ao inicio"
+msgstr "Ir ao inicio"
+
+msgid "Só no teu dispositivo"
+msgstr "Só no teu dispositivo"
+
+msgid ""
+"Estes datos gárdanse só neste navegador. Nunca se envían ao concello nin a "
+"ningún servidor."
+msgstr ""
+"Estes datos gárdanse só neste navegador. Nunca se envían ao concello nin a "
+"ningún servidor."
+
+msgid "Idade (anos)"
+msgstr "Idade (anos)"
+
+msgid "Peso (kg)"
+msgstr "Peso (kg)"
+
+msgid "Minutos de actividade moderada esta semana"
+msgstr "Minutos de actividade moderada esta semana"
+
+msgid "Duración da próxima sesión (min)"
+msgstr "Duración da próxima sesión (min)"
+
+msgid "Gardar e ver consellos"
+msgstr "Gardar e ver consellos"
+
+msgid "Borrar os meus datos"
+msgstr "Borrar os meus datos"
+
+msgid "Consellos orientativos"
+msgstr "Consellos orientativos"
+
+msgid "Introduce os teus datos para ver consellos."
+msgstr "Introduce os teus datos para ver consellos."
+
+msgid "Aviso:"
+msgstr "Aviso:"
+
+msgid ""
+"Información educativa e xeral, non é consello clínico. Se tes unha "
+"enfermidade ou dúbidas, consulta co teu centro de saúde."
+msgstr ""
+"Información educativa e xeral, non é consello clínico. Se tes unha "
+"enfermidade ou dúbidas, consulta co teu centro de saúde."
+
+msgid "De onde saen os consellos"
+msgstr "De onde saen os consellos"
+
+msgid ""
+"Actividade física: OMS, Directrices sobre actividade física e comportamentos"
+" sedentarios (2020): 150–300 min/semana de actividade moderada para persoas "
+"adultas; media de 60 min/día para nenos e adolescentes."
+msgstr ""
+"Actividade física: OMS, Directrices sobre actividade física e comportamentos"
+" sedentarios (2020): 150–300 min/semana de actividade moderada para persoas "
+"adultas; media de 60 min/día para nenos e adolescentes."
+
+msgid ""
+"Hidratación antes do exercicio: American College of Sports Medicine, "
+"«Exercise and Fluid Replacement» (2007): uns 5–7 ml por kg de peso polo "
+"menos 4 horas antes."
+msgstr ""
+"Hidratación antes do exercicio: American College of Sports Medicine, "
+"«Exercise and Fluid Replacement» (2007): uns 5–7 ml por kg de peso polo "
+"menos 4 horas antes."
+
+msgid ""
+"Auga diaria total (bebida e alimentos): EFSA (2010), 2,0 l/día mulleres e "
+"2,5 l/día homes adultos, en condicións temperadas."
+msgstr ""
+"Auga diaria total (bebida e alimentos): EFSA (2010), 2,0 l/día mulleres e "
+"2,5 l/día homes adultos, en condicións temperadas."
+
+msgid "Detalle e límites en docs/health/recomendacions.md."
+msgstr "Detalle e límites en docs/health/recomendacions.md."
+
+#, python-format
+msgid "Antes de adestrar (4 h antes): arredor de %%s ml de auga."
+msgstr "Antes de adestrar (4 h antes): arredor de %%s ml de auga."
+
+msgid ""
+"Durante a sesión: bebe pequenos grolos a miúdo; en sesións de máis de 60 min"
+" ou con calor, repón tamén sales."
+msgstr ""
+"Durante a sesión: bebe pequenos grolos a miúdo; en sesións de máis de 60 min"
+" ou con calor, repón tamén sales."
+
+msgid "Sesión curta: chega con beber auga se tes sede e despois de rematar."
+msgstr "Sesión curta: chega con beber auga se tes sede e despois de rematar."
+
+#, python-format
+msgid "Levas %%s de 150 minutos semanais recomendados pola OMS."
+msgstr "Levas %%s de 150 minutos semanais recomendados pola OMS."
+
+msgid "Superas os 150 minutos semanais recomendados pola OMS. Moi ben!"
+msgstr "Superas os 150 minutos semanais recomendados pola OMS. Moi ben!"
+
+msgid ""
+"Para a túa idade, a OMS recomenda unha media de 60 minutos ao día de "
+"actividade."
+msgstr ""
+"Para a túa idade, a OMS recomenda unha media de 60 minutos ao día de "
+"actividade."
+
+msgid ""
+"Maiores de 65: engade exercicios de equilibrio e forza 3 días á semana."
+msgstr ""
+"Maiores de 65: engade exercicios de equilibrio e forza 3 días á semana."
+
+msgid "Gardado só neste dispositivo."
+msgstr "Gardado só neste dispositivo."
+
+msgid "Borrados os teus datos deste dispositivo."
+msgstr "Borrados os teus datos deste dispositivo."
+
+msgid "Inicio"
+msgstr "Inicio"
+
+msgid "Software libre para concellos"
+msgstr "Software libre para concellos"
+
+msgid "Reservar é o fácil. O difícil é abrir a porta."
+msgstr "Reservar é o fácil. O difícil é abrir a porta."
+
+msgid ""
+"Eira acompaña cada instalación deportiva municipal durante todo o seu ciclo,"
+" tamén nas parroquias sen conserxe: da reserva á chave, do aviso de avaría "
+"ao mantemento e aos datos de uso."
+msgstr ""
+"Eira acompaña cada instalación deportiva municipal durante todo o seu ciclo,"
+" tamén nas parroquias sen conserxe: da reserva á chave, do aviso de avaría "
+"ao mantemento e aos datos de uso."
+
+msgid "Ciclo completo"
+msgstr "Ciclo completo"
+
+msgid "atopar"
+msgstr "atopar"
+
+msgid "reservar"
+msgstr "reservar"
+
+msgid "pagar"
+msgstr "pagar"
+
+msgid "acceder"
+msgstr "acceder"
+
+msgid "usar"
+msgstr "usar"
+
+msgid "pechar e avisar"
+msgstr "pechar e avisar"
+
+msgid "manter"
+msgstr "manter"
+
+msgid "medir"
+msgstr "medir"
+
+msgid "Escolle o teu concello"
+msgstr "Escolle o teu concello"
+
+#, python-format
+msgid "%(n)s habitantes"
+msgstr "%(n)s habitantes"
+
+msgid ""
+"Aínda non hai concellos. Executa «make seed» para cargar os datos de "
+"demostración."
+msgstr ""
+"Aínda non hai concellos. Executa «make seed» para cargar os datos de "
+"demostración."
+
+msgid "Proba Eira cun perfil de demostración"
+msgstr "Proba Eira cun perfil de demostración"
+
+msgid ""
+"Persoas ficticias. Entra cun clic e segue o percorrido. Todos os servizos "
+"externos están simulados."
+msgstr ""
+"Persoas ficticias. Entra cun clic e segue o percorrido. Todos os servizos "
+"externos están simulados."
+
+#, python-format
+msgid "Entrar como %(n)s"
+msgstr "Entrar como %(n)s"
+
+msgid "Sen conexión"
+msgstr "Sen conexión"
+
+msgid "Non hai conexión"
+msgstr "Non hai conexión"
+
+msgid ""
+"Esta páxina aínda non estaba gardada no dispositivo. As túas reservas e as "
+"ordes de traballo que xa abriches si se poden consultar sen rede."
+msgstr ""
+"Esta páxina aínda non estaba gardada no dispositivo. As túas reservas e as "
+"ordes de traballo que xa abriches si se poden consultar sen rede."
+
+msgid "Cando volva a conexión, os cambios pendentes envíanse sós."
+msgstr "Cando volva a conexión, os cambios pendentes envíanse sós."
+
+msgid ""
+"Garda estas preferencias neste dispositivo. Non se asocian á túa conta nin "
+"se envían a ningún servizo."
+msgstr ""
+"Garda estas preferencias neste dispositivo. Non se asocian á túa conta nin "
+"se envían a ningún servizo."
+
+msgid "Axustes"
+msgstr "Axustes"
+
+msgid "Texto grande"
+msgstr "Texto grande"
+
+msgid "Alto contraste"
+msgstr "Alto contraste"
+
+msgid "Reducir o movemento"
+msgstr "Reducir o movemento"
+
+msgid "Gardar preferencias"
+msgstr "Gardar preferencias"
+
+msgid "Texto modelo"
+msgstr "Texto modelo"
+
+msgid "Responsable:"
+msgstr "Responsable:"
+
+#, python-format
+msgid "Concello de %(n)s."
+msgstr "Concello de %(n)s."
+
+msgid "Finalidade:"
+msgstr "Finalidade:"
+
+msgid ""
+"xestionar as reservas, o acceso e o mantemento das instalacións deportivas "
+"municipais e as inscricións en actividades."
+msgstr ""
+"xestionar as reservas, o acceso e o mantemento das instalacións deportivas "
+"municipais e as inscricións en actividades."
+
+msgid "Base xurídica:"
+msgstr "Base xurídica:"
+
+msgid ""
+"exercicio de poderes públicos e prestación do servizo público de deportes "
+"(art. 6.1.e RXPD; Lei 7/1985 de bases de réxime local, art. 25.2.l). O "
+"consentimento só se usa para o que é opcional (imaxe, rexistro de esforzo)."
+msgstr ""
+"exercicio de poderes públicos e prestación do servizo público de deportes "
+"(art. 6.1.e RXPD; Lei 7/1985 de bases de réxime local, art. 25.2.l). O "
+"consentimento só se usa para o que é opcional (imaxe, rexistro de esforzo)."
+
+msgid "Que datos:"
+msgstr "Que datos:"
+
+msgid ""
+"correo, nome para mostrar, teléfono opcional e ano de nacemento opcional "
+"(para tarifas). Non gardamos o DNI nin contrasinais. Dos menores, só nome e "
+"ano de nacemento, con consentimento da persoa responsable."
+msgstr ""
+"correo, nome para mostrar, teléfono opcional e ano de nacemento opcional "
+"(para tarifas). Non gardamos o DNI nin contrasinais. Dos menores, só nome e "
+"ano de nacemento, con consentimento da persoa responsable."
+
+msgid "Datos que non saen do teu dispositivo:"
+msgstr "Datos que non saen do teu dispositivo:"
+
+msgid ""
+"os da páxina «A miña saúde» (idade, peso, actividade) gárdanse só no "
+"navegador."
+msgstr ""
+"os da páxina «A miña saúde» (idade, peso, actividade) gárdanse só no "
+"navegador."
+
+msgid "Estatísticas:"
+msgstr "Estatísticas:"
+
+#, python-format
+msgid ""
+"os indicadores públicos e o observatorio só mostran datos agregados de "
+"grupos de polo menos %(n)s persoas."
+msgstr ""
+"os indicadores públicos e o observatorio só mostran datos agregados de "
+"grupos de polo menos %(n)s persoas."
+
+msgid "Conservación:"
+msgstr "Conservación:"
+
+msgid ""
+"as reservas consérvanse o tempo esixido pola normativa contable; ao eliminar"
+" a conta, as reservas quedan anonimizadas."
+msgstr ""
+"as reservas consérvanse o tempo esixido pola normativa contable; ao eliminar"
+" a conta, as reservas quedan anonimizadas."
+
+msgid "Os teus dereitos:"
+msgstr "Os teus dereitos:"
+
+msgid ""
+"acceso, rectificación, supresión, portabilidade, oposición e limitación. "
+"Podes descargar e borrar os teus datos desde «A miña conta». Tamén podes "
+"reclamar ante a Axencia Española de Protección de Datos."
+msgstr ""
+"acceso, rectificación, supresión, portabilidade, oposición e limitación. "
+"Podes descargar e borrar os teus datos desde «A miña conta». Tamén podes "
+"reclamar ante a Axencia Española de Protección de Datos."
+
+msgid "Cl@ve simulada"
+msgstr "Cl@ve simulada"
+
+msgid "Provedor de identidade simulado"
+msgstr "Provedor de identidade simulado"
+
+msgid "identificación de proba"
+msgstr "identificación de proba"
+
+msgid ""
+"No despregamento real, aquí estaría a pasarela Cl@ve (SAML 2.0) ou Chave365 "
+"(OpenID Connect). Escolle unha identidade ficticia:"
+msgstr ""
+"No despregamento real, aquí estaría a pasarela Cl@ve (SAML 2.0) ou Chave365 "
+"(OpenID Connect). Escolle unha identidade ficticia:"
+
+msgid "Identidade"
+msgstr "Identidade"
+
+msgid "Identificarme"
+msgstr "Identificarme"
+
+msgid "Pechadura sen conexión"
+msgstr "Pechadura sen conexión"
+
+msgid "Non hai ningún teclado de nivel 2. Executa «make seed»."
+msgstr "Non hai ningún teclado de nivel 2. Executa «make seed»."
+
+msgid "ABERTO"
+msgstr "ABERTO"
+
+#, python-format
+msgid "Código da franxa %(a)s–%(b)s"
+msgstr "Código da franxa %(a)s–%(b)s"
+
+#, python-format
+msgid "Xanela con tolerancia: %(a)s–%(b)s"
+msgstr "Xanela con tolerancia: %(a)s–%(b)s"
+
+#, python-format
+msgid "Reserva %(r)s"
+msgstr "Reserva %(r)s"
+
+msgid "uso rexistrado"
+msgstr "uso rexistrado"
+
+msgid "DENEGADO"
+msgstr "DENEGADO"
+
+msgid "Demasiados intentos: teclado bloqueado 5 minutos."
+msgstr "Demasiados intentos: teclado bloqueado 5 minutos."
+
+msgid "Código incorrecto ou fóra da súa franxa."
+msgstr "Código incorrecto ou fóra da súa franxa."
+
+msgid "BLOQUEADO"
+msgstr "BLOQUEADO"
+
+msgid "PECHADO"
+msgstr "PECHADO"
+
+msgid "Reloxo e dispositivo"
+msgstr "Reloxo e dispositivo"
+
+msgid "Dispositivo"
+msgstr "Dispositivo"
+
+msgid "Hora do reloxo da pechadura (simulada)"
+msgstr "Hora do reloxo da pechadura (simulada)"
+
+msgid "Mover o reloxo"
+msgstr "Mover o reloxo"
+
+msgid "Aplicar"
+msgstr "Aplicar"
+
+msgid "Código"
+msgstr "Código"
+
+msgid "Probar código"
+msgstr "Probar código"
+
+msgid "Como funciona"
+msgstr "Como funciona"
+
+msgid ""
+"A pechadura non ten internet. Comparte un segredo coa plataforma e calcula "
+"co seu propio reloxo se o código corresponde á franxa actual."
+msgstr ""
+"A pechadura non ten internet. Comparte un segredo coa plataforma e calcula "
+"co seu propio reloxo se o código corresponde á franxa actual."
+
+msgid "Reserva unha instalación de nivel 2 e copia o código."
+msgstr "Reserva unha instalación de nivel 2 e copia o código."
+
+msgid "Pon o reloxo na hora da reserva: ábrese."
+msgstr "Pon o reloxo na hora da reserva: ábrese."
+
+#, python-format
+msgid "Move o reloxo máis de %(t)s minutos fóra da franxa: denégase."
+msgstr "Move o reloxo máis de %(t)s minutos fóra da franxa: denégase."
+
+msgid "Bloque"
+msgstr "Bloque"
+
+msgid "Tolerancia"
+msgstr "Tolerancia"
+
+msgid "Díxitos"
+msgstr "Díxitos"
+
+msgid "Intentos fallidos"
+msgstr "Intentos fallidos"
+
+msgid ""
+"Algoritmo: HOTP (RFC 4226) cun contador ligado ao bloque horario e á "
+"duración da reserva. Ver docs/access/offline-codes.md."
+msgstr ""
+"Algoritmo: HOTP (RFC 4226) cun contador ligado ao bloque horario e á "
+"duración da reserva. Ver docs/access/offline-codes.md."
+
+msgid "Bandexa de correo simulada"
+msgstr "Bandexa de correo simulada"
+
+msgid "Ferramenta de demostración"
+msgstr "Ferramenta de demostración"
+
+msgid "En desenvolvemento ningún correo sae do servidor: aparecen aquí."
+msgstr "En desenvolvemento ningún correo sae do servidor: aparecen aquí."
+
+msgid "Outras canles (Telegram, push, MQTT)"
+msgstr "Outras canles (Telegram, push, MQTT)"
+
+msgid "Filtrar por destinatario"
+msgstr "Filtrar por destinatario"
+
+msgid "Filtrar"
+msgstr "Filtrar"
+
+msgid "Para:"
+msgstr "Para:"
+
+msgid "Bandexa baleira."
+msgstr "Bandexa baleira."
+
+msgid "Saída simulada"
+msgstr "Saída simulada"
+
+msgid "Mensaxes simuladas doutras canles"
+msgstr "Mensaxes simuladas doutras canles"
+
+msgid "Mensaxes"
+msgstr "Mensaxes"
+
+msgid "Destino"
+msgstr "Destino"
+
+msgid "Contido"
+msgstr "Contido"
+
+msgid "Sen mensaxes."
+msgstr "Sen mensaxes."
+
+msgid "TPV simulado"
+msgstr "TPV simulado"
+
+msgid "Pasarela de pagamento simulada (tipo Redsys)"
+msgstr "Pasarela de pagamento simulada (tipo Redsys)"
+
+msgid "Pagamento"
+msgstr "Pagamento"
+
+msgid "Concepto"
+msgstr "Concepto"
+
+msgid ""
+"Prototipo: non se pide ningunha tarxeta. No despregamento real, aquí "
+"apareceria o TPV da entidade bancaria do concello."
+msgstr ""
+"Prototipo: non se pide ningunha tarxeta. No despregamento real, aquí "
+"apareceria o TPV da entidade bancaria do concello."
+
+msgid "Pagar"
+msgstr "Pagar"
+
+msgid "Simular pagamento rexeitado"
+msgstr "Simular pagamento rexeitado"
+
+msgid "Pechado"
+msgstr "Pechado"
+
+#, python-format
+msgid "%(b)s de %(c)s prazas ocupadas"
+msgstr "%(b)s de %(c)s prazas ocupadas"
+
+msgid "Reservar"
+msgstr "Reservar"
+
+#, python-format
+msgid "Semana do %(d)s"
+msgstr "Semana do %(d)s"
+
+msgid "Semana anterior"
+msgstr "Semana anterior"
+
+#, python-format
+msgid "Semana do %(a)s"
+msgstr "Semana do %(a)s"
+
+msgid "Semana seguinte"
+msgstr "Semana seguinte"
+
+msgid "Lenda"
+msgstr "Lenda"
+
+msgid "Recomendada (pouca demanda)"
+msgstr "Recomendada (pouca demanda)"
+
+#, python-format
+msgid "Dispoñibilidade semanal de %(f)s. Filas: horas; columnas: días."
+msgstr "Dispoñibilidade semanal de %(f)s. Filas: horas; columnas: días."
+
+msgid "A instalación non abre esta semana."
+msgstr "A instalación non abre esta semana."
+
+#, python-format
+msgid "%(n)s franxa"
+msgid_plural "%(n)s franxas"
+msgstr[0] "%(n)s franxa"
+msgstr[1] "%(n)s franxas"
+
+msgid "Migas"
+msgstr "Migas"
+
+msgid "Dispoñibilidade"
+msgstr "Dispoñibilidade"
+
+msgid ""
+"Escolle unha franxa libre para reservala. As marcadas con ★ adoitan ter "
+"pouca demanda."
+msgstr ""
+"Escolle unha franxa libre para reservala. As marcadas con ★ adoitan ter "
+"pouca demanda."
+
+msgid "Información da instalación"
+msgstr "Información da instalación"
+
+msgid "Como se accede"
+msgstr "Como se accede"
+
+msgid ""
+"Instalación aberta. Ao chegar, escanea o QR da entrada para rexistrar o uso."
+msgstr ""
+"Instalación aberta. Ao chegar, escanea o QR da entrada para rexistrar o uso."
+
+#, python-format
+msgid ""
+"A chave tena <strong>%(who)s</strong> en %(where)s (%(when)s). Avisarémola "
+"da túa reserva."
+msgstr ""
+"A chave tena <strong>%(who)s</strong> en %(where)s (%(when)s). Avisarémola "
+"da túa reserva."
+
+msgid ""
+"Teclado con código. Ao reservar recibes un código que só abre durante a túa "
+"franxa, aínda que a instalación non teña internet."
+msgstr ""
+"Teclado con código. Ao reservar recibes un código que só abre durante a túa "
+"franxa, aínda que a instalación non teña internet."
+
+msgid ""
+"Pechadura conectada. Durante a túa franxa abres a porta desde o móbil e as "
+"luces acéndense soas."
+msgstr ""
+"Pechadura conectada. Durante a túa franxa abres a porta desde o móbil e as "
+"luces acéndense soas."
+
+msgid "Datos prácticos"
+msgstr "Datos prácticos"
+
+msgid "Enderezo"
+msgstr "Enderezo"
+
+msgid "Franxas"
+msgstr "Franxas"
+
+#, python-format
+msgid "%(m)s minutos"
+msgstr "%(m)s minutos"
+
+msgid "Prazas"
+msgstr "Prazas"
+
+msgid "Uso exclusivo"
+msgstr "Uso exclusivo"
+
+msgid "Si,Non"
+msgstr "Si,Non"
+
+msgid "Accesibilidade física"
+msgstr "Accesibilidade física"
+
+msgid "Sen información de accesibilidade."
+msgstr "Sen información de accesibilidade."
+
+msgid "Tarifas por franxa"
+msgstr "Tarifas por franxa"
+
+msgid "Tarifas"
+msgstr "Tarifas"
+
+msgid "Normas de uso"
+msgstr "Normas de uso"
+
+msgid "Instalacións deportivas"
+msgstr "Instalacións deportivas"
+
+msgid "Consulta sen rexistrarte. Para reservar só necesitas o teu correo."
+msgstr "Consulta sen rexistrarte. Para reservar só necesitas o teu correo."
+
+msgid "Modo de vista"
+msgstr "Modo de vista"
+
+msgid "Lista"
+msgstr "Lista"
+
+msgid "Mapa"
+msgstr "Mapa"
+
+msgid "Filtrar instalacións"
+msgstr "Filtrar instalacións"
+
+msgid "Características"
+msgstr "Características"
+
+msgid "Quitar filtros"
+msgstr "Quitar filtros"
+
+#, python-format
+msgid "%(n)s instalación"
+msgid_plural "%(n)s instalacións"
+msgstr[0] "%(n)s instalación"
+msgstr[1] "%(n)s instalacións"
+
+msgid "Mapa das instalacións (a mesma información está na lista de embaixo)"
+msgstr "Mapa das instalacións (a mesma información está na lista de embaixo)"
+
+msgid ""
+"Mapa: © OpenStreetMap. A lista seguinte contén a mesma información de forma "
+"accesible."
+msgstr ""
+"Mapa: © OpenStreetMap. A lista seguinte contén a mesma información de forma "
+"accesible."
+
+msgid "Sen chanzos"
+msgstr "Sen chanzos"
+
+msgid "Luz"
+msgstr "Luz"
+
+#, python-format
+msgid "%(c)s prazas"
+msgstr "%(c)s prazas"
+
+msgid "Non hai instalacións con eses filtros."
+msgstr "Non hai instalacións con eses filtros."
+
+msgid "Estado da incidencia"
+msgstr "Estado da incidencia"
+
+msgid "Foto enviada co aviso"
+msgstr "Foto enviada co aviso"
+
+msgid "Resposta do concello:"
+msgstr "Resposta do concello:"
+
+msgid "En 30 segundos: que instalación, que pasa e, se queres, unha foto."
+msgstr "En 30 segundos: que instalación, que pasa e, se queres, unha foto."
+
+msgid "Enviar aviso"
+msgstr "Enviar aviso"
+
+msgid "Os meus avisos"
+msgstr "Os meus avisos"
+
+msgid "Aínda non enviaches avisos."
+msgstr "Aínda non enviaches avisos."
+
+msgid "obrigatorio"
+msgstr "obrigatorio"
+
+msgid "Revisa os campos marcados."
+msgstr "Revisa os campos marcados."
+
+msgid "Os mesmos datos están na táboa que segue ao gráfico."
+msgstr "Os mesmos datos están na táboa que segue ao gráfico."
+
+msgid "Calendario de mantemento"
+msgstr "Calendario de mantemento"
+
+msgid "Cambiar mes"
+msgstr "Cambiar mes"
+
+msgid "Mes anterior"
+msgstr "Mes anterior"
+
+msgid "Mes seguinte"
+msgstr "Mes seguinte"
+
+msgid "As miñas ordes"
+msgstr "As miñas ordes"
+
+msgid "Ordes de traballo"
+msgstr "Ordes de traballo"
+
+msgid "Calendario"
+msgstr "Calendario"
+
+msgid "Cambios gardados sen conexión pendentes de enviar:"
+msgstr "Cambios gardados sen conexión pendentes de enviar:"
+
+msgid ""
+"Esta páxina funciona sen cobertura: as ordes que abras quedan gardadas e os "
+"peches envíanse ao recuperar a rede."
+msgstr ""
+"Esta páxina funciona sen cobertura: as ordes que abras quedan gardadas e os "
+"peches envíanse ao recuperar a rede."
+
+msgid "Atrasada"
+msgstr "Atrasada"
+
+msgid "Incidencia"
+msgstr "Incidencia"
+
+msgid "Todo feito por hoxe!"
+msgstr "Todo feito por hoxe!"
+
+msgid "Pechadas hoxe"
+msgstr "Pechadas hoxe"
+
+msgid "Ordes"
+msgstr "Ordes"
+
+msgid "Orixe: incidencia"
+msgstr "Orixe: incidencia"
+
+msgid "ver foto"
+msgstr "ver foto"
+
+msgid "Pendentes de enviar:"
+msgstr "Pendentes de enviar:"
+
+#, python-format
+msgid "Pechada o %(t)s."
+msgstr "Pechada o %(t)s."
+
+msgid "Foto do traballo"
+msgstr "Foto do traballo"
+
+msgid "Sen conexión: gardado no dispositivo, enviarase ao volver a rede."
+msgstr "Sen conexión: gardado no dispositivo, enviarase ao volver a rede."
+
+msgid "Checklist"
+msgstr "Checklist"
+
+msgid "Sen puntos de checklist."
+msgstr "Sen puntos de checklist."
+
+msgid "Foto do traballo feito (opcional)"
+msgstr "Foto do traballo feito (opcional)"
+
+msgid "Sen conexión, a foto gárdase no dispositivo e súbese despois."
+msgstr "Sen conexión, a foto gárdase no dispositivo e súbese despois."
+
+msgid "Gardar checklist"
+msgstr "Gardar checklist"
+
+msgid "Pechar orde"
+msgstr "Pechar orde"
+
+msgid "Ver ficha pública"
+msgstr "Ver ficha pública"
+
+msgid "Apartados da instalación"
+msgstr "Apartados da instalación"
+
+msgid "Datos"
+msgstr "Datos"
+
+msgid "Normas"
+msgstr "Normas"
+
+msgid "Pasos da alta"
+msgstr "Pasos da alta"
+
+msgid "Plantilla"
+msgstr "Plantilla"
+
+msgid "Revisar e publicar"
+msgstr "Revisar e publicar"
+
+msgid "Axenda"
+msgstr "Axenda"
+
+msgid "Cambiar día"
+msgstr "Cambiar día"
+
+msgid "Día anterior"
+msgstr "Día anterior"
+
+msgid "Día seguinte"
+msgstr "Día seguinte"
+
+msgid "Reservas do día"
+msgstr "Reservas do día"
+
+msgid "Accións"
+msgstr "Accións"
+
+msgid "Sen reservas."
+msgstr "Sen reservas."
+
+msgid "Xestión do concello"
+msgstr "Xestión do concello"
+
+msgid "Panel do día"
+msgstr "Panel do día"
+
+msgid "Reservar por alguén"
+msgstr "Reservar por alguén"
+
+msgid "Peches"
+msgstr "Peches"
+
+msgid "Persoal"
+msgstr "Persoal"
+
+msgid "Configuración"
+msgstr "Configuración"
+
+msgid "Peches e bloqueos"
+msgstr "Peches e bloqueos"
+
+msgid "Horarios especiais, festivos e bloqueos"
+msgstr "Horarios especiais, festivos e bloqueos"
+
+msgid "Peches programados"
+msgstr "Peches programados"
+
+msgid "Motivo"
+msgstr "Motivo"
+
+msgid "Desde"
+msgstr "Desde"
+
+msgid "Ata"
+msgstr "Ata"
+
+msgid "Eliminar"
+msgstr "Eliminar"
+
+msgid "Non hai peches."
+msgstr "Non hai peches."
+
+msgid "Novo peche"
+msgstr "Novo peche"
+
+msgid ""
+"As reservas afectadas cancélanse con devolución íntegra e a persoa recibe un"
+" aviso."
+msgstr ""
+"As reservas afectadas cancélanse con devolución íntegra e a persoa recibe un"
+" aviso."
+
+msgid "Gardar e avisar"
+msgstr "Gardar e avisar"
+
+msgid ""
+"Simula un aviso laranxa: pecha as instalacións descubertas as próximas 6 "
+"horas."
+msgstr ""
+"Simula un aviso laranxa: pecha as instalacións descubertas as próximas 6 "
+"horas."
+
+msgid "Simular alerta"
+msgstr "Simular alerta"
+
+msgid "Reservar en nome dun veciño"
+msgstr "Reservar en nome dun veciño"
+
+msgid "Reservas hoxe"
+msgstr "Reservas hoxe"
+
+msgid "Ocupación hoxe"
+msgstr "Ocupación hoxe"
+
+msgid "Incidencias novas"
+msgstr "Incidencias novas"
+
+msgid "Cobrado hoxe"
+msgstr "Cobrado hoxe"
+
+msgid "Reservas de hoxe"
+msgstr "Reservas de hoxe"
+
+msgid "Hoxe non hai reservas."
+msgstr "Hoxe non hai reservas."
+
+msgid "Chaves de hoxe"
+msgstr "Chaves de hoxe"
+
+msgid "Entregada"
+msgstr "Entregada"
+
+msgid "Devolta"
+msgstr "Devolta"
+
+msgid ""
+"Demo: simular aviso meteorolóxico que pecha as instalacións descubertas e "
+"avisa ás reservas."
+msgstr ""
+"Demo: simular aviso meteorolóxico que pecha as instalacións descubertas e "
+"avisa ás reservas."
+
+msgid "Simular alerta (6 h)"
+msgstr "Simular alerta (6 h)"
+
+msgid "Incidencias por validar"
+msgstr "Incidencias por validar"
+
+msgid "Ningunha."
+msgstr "Ningunha."
+
+msgid "Ordes de traballo pendentes"
+msgstr "Ordes de traballo pendentes"
+
+msgid "Alta asistida"
+msgstr "Alta asistida"
+
+msgid "Instalacións do concello"
+msgstr "Instalacións do concello"
+
+msgid "Nome"
+msgstr "Nome"
+
+msgid "QR"
+msgstr "QR"
+
+msgid "Publicada"
+msgstr "Publicada"
+
+msgid "Borrador"
+msgstr "Borrador"
+
+msgid "Cartel"
+msgstr "Cartel"
+
+msgid "Franxas de apertura"
+msgstr "Franxas de apertura"
+
+msgid "Abre"
+msgstr "Abre"
+
+msgid "Pecha"
+msgstr "Pecha"
+
+msgid "Tempada desde"
+msgstr "Tempada desde"
+
+msgid "Tempada ata"
+msgstr "Tempada ata"
+
+msgid "Gardar horario"
+msgstr "Gardar horario"
+
+msgid "Que tipo de instalación é?"
+msgstr "Que tipo de instalación é?"
+
+msgid ""
+"A plantilla precarga normas, horario, tarifas, plan de mantemento e o "
+"dispositivo de acceso. Podes cambialo todo despois."
+msgstr ""
+"A plantilla precarga normas, horario, tarifas, plan de mantemento e o "
+"dispositivo de acceso. Podes cambialo todo despois."
+
+#, python-format
+msgid "Franxas de %(m)s min"
+msgstr "Franxas de %(m)s min"
+
+msgid "Nivel"
+msgstr "Nivel"
+
+#, python-format
+msgid "%(n)s tarefa de mantemento"
+msgid_plural "%(n)s tarefas de mantemento"
+msgstr[0] "%(n)s tarefa de mantemento"
+msgstr[1] "%(n)s tarefas de mantemento"
+
+#, python-format
+msgid "Datos da instalación (%(t)s)"
+msgstr "Datos da instalación (%(t)s)"
+
+msgid "Continuar"
+msgstr "Continuar"
+
+msgid "Outra plantilla"
+msgstr "Outra plantilla"
+
+#, python-format
+msgid "Revisa «%(n)s»"
+msgstr "Revisa «%(n)s»"
+
+msgid "Editar horario"
+msgstr "Editar horario"
+
+msgid "Editar tarifas"
+msgstr "Editar tarifas"
+
+msgid "Editar normas"
+msgstr "Editar normas"
+
+msgid "Plan de mantemento"
+msgstr "Plan de mantemento"
+
+msgid "Imprimir o cartel QR"
+msgstr "Imprimir o cartel QR"
+
+msgid "Publicar instalación"
+msgstr "Publicar instalación"
+
+msgid "Gardar como borrador"
+msgstr "Gardar como borrador"
+
+msgid ""
+"Ao gardar créase unha versión nova. Cada reserva conserva a versión que se "
+"aceptou e a data."
+msgstr ""
+"Ao gardar créase unha versión nova. Cada reserva conserva a versión que se "
+"aceptou e a data."
+
+msgid "Publicar nova versión"
+msgstr "Publicar nova versión"
+
+msgid "Versións"
+msgstr "Versións"
+
+msgid "Gardar tarifas"
+msgstr "Gardar tarifas"
+
+msgid "Descrición"
+msgstr "Descrición"
+
+msgid "Foto da incidencia"
+msgstr "Foto da incidencia"
+
+msgid "Informou:"
+msgstr "Informou:"
+
+msgid "1. Validar"
+msgstr "1. Validar"
+
+msgid "Confirma que é un problema real. Avisamos a quen informou."
+msgstr "Confirma que é un problema real. Avisamos a quen informou."
+
+msgid "2. Crear orde de traballo"
+msgstr "2. Crear orde de traballo"
+
+msgid "Crear orde"
+msgstr "Crear orde"
+
+msgid "3. Resolver"
+msgstr "3. Resolver"
+
+msgid "Nota para a persoa"
+msgstr "Nota para a persoa"
+
+msgid "Marcar como resolta"
+msgstr "Marcar como resolta"
+
+msgid "Descartar"
+msgstr "Descartar"
+
+msgid "Orixe"
+msgstr "Orixe"
+
+msgid "Sen incidencias."
+msgstr "Sen incidencias."
+
+msgid ""
+"As tarefas periódicas xeran ordes de traballo no calendario compartido."
+msgstr ""
+"As tarefas periódicas xeran ordes de traballo no calendario compartido."
+
+msgid "Xerar ordes (14 días)"
+msgstr "Xerar ordes (14 días)"
+
+msgid "Engadir tarefa"
+msgstr "Engadir tarefa"
+
+msgid "Sen plans."
+msgstr "Sen plans."
+
+msgid "Reservar en nome dunha persoa"
+msgstr "Reservar en nome dunha persoa"
+
+msgid ""
+"Para chamadas ou atención no mostrador. Usa a mesma axenda que a reserva en "
+"liña."
+msgstr ""
+"Para chamadas ou atención no mostrador. Usa a mesma axenda que a reserva en "
+"liña."
+
+msgid "Escolle…"
+msgstr "Escolle…"
+
+msgid "Ver dispoñibilidade"
+msgstr "Ver dispoñibilidade"
+
+msgid "Prezo (non empadroada, se non se indica conta):"
+msgstr "Prezo (non empadroada, se non se indica conta):"
+
+msgid "Normas para ler á persoa"
+msgstr "Normas para ler á persoa"
+
+msgid "Facer a reserva"
+msgstr "Facer a reserva"
+
+msgid "Outra franxa"
+msgstr "Outra franxa"
+
+msgid "Portabilidade"
+msgstr "Portabilidade"
+
+msgid "Soberanía dos datos"
+msgstr "Soberanía dos datos"
+
+msgid "Exportación íntegra"
+msgstr "Exportación íntegra"
+
+msgid ""
+"Descarga todos os datos do concello nun ZIP con formatos abertos: JSON "
+"completo, CSV, iCalendar, GeoJSON e os ficheiros subidos. Pódese importar "
+"noutra instalación de Eira."
+msgstr ""
+"Descarga todos os datos do concello nun ZIP con formatos abertos: JSON "
+"completo, CSV, iCalendar, GeoJSON e os ficheiros subidos. Pódese importar "
+"noutra instalación de Eira."
+
+msgid ""
+"Contén datos persoais e os segredos das pechaduras: gárdao con seguridade."
+msgstr ""
+"Contén datos persoais e os segredos das pechaduras: gárdao con seguridade."
+
+msgid "Descargar ZIP"
+msgstr "Descargar ZIP"
+
+msgid "Importar un concello"
+msgstr "Importar un concello"
+
+msgid ""
+"Só para a administración da deputación: crea un concello novo a partir dunha"
+" exportación."
+msgstr ""
+"Só para a administración da deputación: crea un concello novo a partir dunha"
+" exportación."
+
+msgid "Importar"
+msgstr "Importar"
+
+msgid "Configuración do concello"
+msgstr "Configuración do concello"
+
+msgid "Exportar / importar datos"
+msgstr "Exportar / importar datos"
+
+msgid "Activa só o que o concello vaia usar. O resto non aparece."
+msgstr "Activa só o que o concello vaia usar. O resto non aparece."
+
+msgid "Persoal e empadroamento"
+msgstr "Persoal e empadroamento"
+
+msgid "Roles do persoal"
+msgstr "Roles do persoal"
+
+msgid "Asignar rol"
+msgstr "Asignar rol"
+
+msgid "Códigos de empadroamento"
+msgstr "Códigos de empadroamento"
+
+msgid ""
+"Entrega un código a cada persoa empadroada (no mostrador ou por carta). Ao "
+"introducilo na súa conta, aplícaselle a tarifa de empadroada. Non se garda "
+"ningún dato do padrón en Eira."
+msgstr ""
+"Entrega un código a cada persoa empadroada (no mostrador ou por carta). Ao "
+"introducilo na súa conta, aplícaselle a tarifa de empadroada. Non se garda "
+"ningún dato do padrón en Eira."
+
+msgid "Nota interna"
+msgstr "Nota interna"
+
+msgid "Nota interna (opcional)"
+msgstr "Nota interna (opcional)"
+
+msgid "Xerar código"
+msgstr "Xerar código"
+
+msgid "Usado"
+msgstr "Usado"
+
+msgid "Dispoñible"
+msgstr "Dispoñible"
+
+msgid "Caducado"
+msgstr "Caducado"
+
+msgid "Hoxe"
+msgstr "Hoxe"
+
+msgid "Marcar todo como lido"
+msgstr "Marcar todo como lido"
+
+msgid "Novo"
+msgstr "Novo"
+
+msgid "Canles:"
+msgstr "Canles:"
+
+msgid "Non tes avisos."
+msgstr "Non tes avisos."
+
+msgid "Comparativa dos concellos adheridos (últimas 4 semanas)."
+msgstr "Comparativa dos concellos adheridos (últimas 4 semanas)."
+
+msgid "Dar de alta un concello"
+msgstr "Dar de alta un concello"
+
+msgid "Indicadores por concello"
+msgstr "Indicadores por concello"
+
+msgid "Por 1.000 hab."
+msgstr "Por 1.000 hab."
+
+msgid "Ocupación"
+msgstr "Ocupación"
+
+msgid "Infrautilizadas"
+msgstr "Infrautilizadas"
+
+msgid "Aínda non hai concellos."
+msgstr "Aínda non hai concellos."
+
+msgid "Novo concello"
+msgstr "Novo concello"
+
+msgid "Datos básicos"
+msgstr "Datos básicos"
+
+msgid "Módulos e regras"
+msgstr "Módulos e regras"
+
+msgid "Administración e instalacións"
+msgstr "Administración e instalacións"
+
+msgid "Crear concello"
+msgstr "Crear concello"
+
+msgid "Atrás"
+msgstr "Atrás"

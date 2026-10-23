@@ -13,7 +13,7 @@
   <li><span class="swatch slot-closed" aria-hidden="true"></span>✕ {% translate "Pechada" %}</li>
   <li><span class="swatch slot-mine" aria-hidden="true"></span>✓ {% translate "A túa reserva" %}</li>
 </ul>
-<div class="week-scroll has-daylist">
+<div class="week-scroll has-daylist" tabindex="0">
 <table class="week">
   <caption class="visually-hidden">{% blocktranslate with f=facility.name %}Dispoñibilidade semanal de {{ f }}. Filas: horas; columnas: días.{% endblocktranslate %}</caption>
   <thead><tr><th scope="col"><span class="visually-hidden">{% translate "Hora" %}</span></th>{% for d in grid.days %}<th scope="col">{{ d|date:"D" }}<br><small>{{ d|date:"j/n" }}</small></th>{% endfor %}</tr></thead>

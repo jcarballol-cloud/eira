@@ -2,7 +2,7 @@
 {% block title %}{% translate "Instalacións" %}{% endblock %}
 {% block content %}
 <div class="page-head"><h1>{% translate "Instalacións" %}</h1><a class="btn" href="{% turl 'manage:facility_new' %}">{% translate "Alta asistida" %}</a></div>
-<div class="table-wrap"><table class="data">
+<div class="table-wrap" tabindex="0"><table class="data">
   <caption class="visually-hidden">{% translate "Instalacións do concello" %}</caption>
   <thead><tr><th scope="col">{% translate "Nome" %}</th><th scope="col">{% translate "Tipo" %}</th><th scope="col">{% translate "Parroquia" %}</th><th scope="col">{% translate "Acceso" %}</th><th scope="col">{% translate "Estado" %}</th><th scope="col">{% translate "QR" %}</th></tr></thead>
   <tbody>{% for f in facilities %}<tr>

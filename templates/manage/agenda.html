@@ -3,7 +3,7 @@
 {% block content %}
 <div class="page-head"><h1>{% translate "Axenda" %} · {{ day|date:"l j \d\e F" }}</h1>
   <nav class="row" aria-label="{% translate 'Cambiar día' %}"><a class="btn btn-secondary btn-sm" href="?dia={{ prev|date:'Y-m-d' }}">← {% translate "Día anterior" %}</a><a class="btn btn-secondary btn-sm" href="?dia={{ next|date:'Y-m-d' }}">{% translate "Día seguinte" %} →</a></nav></div>
-<div class="table-wrap"><table class="data">
+<div class="table-wrap" tabindex="0"><table class="data">
   <caption class="visually-hidden">{% translate "Reservas do día" %}</caption>
   <thead><tr><th scope="col">{% translate "Instalación" %}</th><th scope="col">{% translate "Hora" %}</th><th scope="col">{% translate "Persoa" %}</th><th scope="col">{% translate "Canle" %}</th><th scope="col">{% translate "Estado" %}</th><th scope="col"><span class="visually-hidden">{% translate "Accións" %}</span></th></tr></thead>
   <tbody>{% for b in bookings %}<tr><td>{{ b.facility.name }}</td><td>{{ b.start|hhmm }}–{{ b.end|hhmm }}</td><td>{{ b.holder_label|default:"—" }}{% if b.holder_phone %}<br><small>{{ b.holder_phone }}</small>{% endif %}</td><td>{{ b.get_channel_display }}</td><td>{{ b.get_status_display }}</td>

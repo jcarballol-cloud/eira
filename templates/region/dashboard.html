@@ -3,7 +3,7 @@
 {% block content %}
 <div class="page-head"><div><p class="eyebrow">{{ region.get_kind_display }}</p><h1>{{ region.name }}</h1><p>{% translate "Comparativa dos concellos adheridos (últimas 4 semanas)." %}</p></div>
   <a class="btn" href="{% url 'region:new_municipality' region.slug %}">{% translate "Dar de alta un concello" %}</a></div>
-<div class="table-wrap"><table class="data">
+<div class="table-wrap" tabindex="0"><table class="data">
   <caption>{% translate "Indicadores por concello" %}</caption>
   <thead><tr><th scope="col">{% translate "Concello" %}</th><th scope="col" class="num">{% translate "Instalacións" %}</th><th scope="col" class="num">{% translate "Reservas" %}</th><th scope="col" class="num">{% translate "Por 1.000 hab." %}</th><th scope="col">{% translate "Ocupación" %}</th><th scope="col" class="num">{% translate "Non presentadas" %}</th><th scope="col" class="num">{% translate "Infrautilizadas" %}</th><th scope="col" class="num">{% translate "Incidencias abertas" %}</th><th scope="col" class="num">{% translate "Ingresos" %}</th></tr></thead>
   <tbody>{% for r in rows %}<tr>

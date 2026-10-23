@@ -1,0 +1,73 @@
+# Rexistro de decisións
+
+Formato: data · decisión · motivo · alternativas descartadas.
+
+## 2026-10-23 · Python 3.13 no entorno local
+- **Decisión:** venv con Python 3.13 (a máquina ten 3.13 e 3.14). Docker usa `python:3.13-slim`.
+- **Motivo:** Django 5.2 LTS está probado en 3.13; 3.14 aínda é moi recente para todo o ecosistema.
+- **Descartado:** 3.14 (risco de rodas binarias inexistentes para Pillow/psycopg).
+
+## 2026-10-23 · Django 5.2 LTS
+- **Decisión:** Django 5.2 (LTS ata abril de 2028).
+- **Motivo:** o prompt pide Django 5; a LTS dálle viabilidade a un concello.
+
+## 2026-10-23 · Sen `make` nin gettext na máquina
+- **Decisión:** `tools/tasks.py` replica cada obxectivo do `Makefile` (o Makefile chámao). As traducións compílanse con `polib` (`tools/compile_messages.py`). A extracción con `makemessages` faise no contedor (a imaxe inclúe gettext).
+- **Motivo:** Windows sen make/gettext; non instalar software no sistema sen permiso.
+- **Descartado:** escribir un extractor propio de cadeas (fráxil con `blocktranslate`).
+
+## 2026-10-23 · Cadeas da interface en galego como msgid
+- **Decisión:** os textos da interface escríbense directamente en galego dentro de `{% translate %}`/`gettext`. O castelán tradúcese en `locale/es/`. O galego queda sempre completo por construción.
+- **Motivo:** o galego é o idioma por defecto e principal; evita que falten cadeas en galego e reduce á metade o traballo de tradución. O código e os nomes técnicos seguen en inglés.
+- **Descartado:** msgid en inglés con dúas traducións (máis traballo e risco de galego incompleto).
+
+## 2026-10-23 · Resolución do concello
+- **Decisión:** rutas `/c/<slug>/…` como canónicas; o subdominio `<slug>.EIRA_BASE_DOMAIN` ou o dominio propio reescriben internamente a ruta (`SubdomainTenantMiddleware`). O `TenantMiddleware` converte o kwarg `tenant` en `request.tenant` e carga os roles.
+- **Motivo:** un único enrutado para ambos modos; funciona en local sen DNS.
+- **Descartado:** esquemas de PostgreSQL por concello (django-tenants): máis complexo de operar para concellos pequenos e incompatible con SQLite en local. O illamento faise por chave foránea `municipality` + tests.
+
+## 2026-10-23 · Contas globais e roles por concello
+- **Decisión:** unha persoa ten unha única conta e roles (`Membership`) en cada concello; `region_admin` vén de `RegionMembership` e dá permisos de administración nos concellos da agrupación.
+- **Motivo:** unha veciña pode usar instalacións de varios concellos da mesma comarca.
+
+## 2026-10-23 · Empadroamento sen acceso ao padrón
+- **Decisión:** o concello entrega un código de invitación (mostrador ou carta) que a persoa introduce na súa conta. Eira só garda «empadroada en X, validada o día D, por método M».
+- **Motivo:** minimización; os concellos pequenos non teñen API de padrón. Preparado para validarse con identidade pública no futuro.
+
+## 2026-10-23 · Idade só por ano de nacemento
+- **Decisión:** gárdase `birth_year` (opcional), non a data completa.
+- **Motivo:** abonda para tarifas (mocidade/maiores) e minimiza datos.
+
+## 2026-10-23 · Esquema de códigos sen conexión (nivel 2)
+- **Decisión:** HOTP (RFC 4226) cun contador `C = bloque·16 + duración`, bloques de 30 min, tolerancia ±10 min, 6 díxitos, ata 8 bloques; bloqueo de 5 min tras 5 fallos. Detalle e análise en `docs/access/offline-codes.md`.
+- **Motivo:** a pechadura non necesita rede nin coñecer as reservas; só o segredo e a hora.
+- **Descartado:** TOTP puro (non liga o código á duración da franxa); códigos asinados longos (incómodos de teclear).
+
+## 2026-10-23 · Recomendación horaria
+- **Decisión:** «Recomendada» = como moito as 2 franxas libres por día con menor ocupación histórica (8 semanas) e por baixo do 30 %. Sen histórico suficiente (menos de 10 reservas) non se recomenda nada.
+- **Motivo:** se se recomendan moitas franxas o sinal perde valor (detectado ao revisar a grella).
+
+## 2026-10-23 · Peches: cancelación con devolución íntegra
+- **Decisión:** ao crear un peche ou alerta, as reservas afectadas cancélanse automaticamente con devolución íntegra e aviso.
+- **Motivo:** o prompt pide aviso automático; reubicar automaticamente sería opaco para a persoa.
+- **Alternativa futura:** ofrecer franxas alternativas no aviso.
+
+## 2026-10-23 · Gráficos SVG no servidor
+- **Decisión:** gráficos de barras SVG xerados no servidor, sempre con táboa alternativa e CSV.
+- **Motivo:** sen dependencias JS, compatibles coa CSP e accesibles.
+
+## 2026-10-23 · CSP estrita
+- **Decisión:** sen `unsafe-inline` (agás no `/admin/` de Django). Cor do concello servida como CSS dinámico (`/c/<slug>/tema.css`); anchos de barras con clases `.w-N`.
+
+## 2026-10-23 · Mapa
+- **Decisión:** Leaflet 1.9.4 vendorizado; teselas OSM por defecto e configurables (`EIRA_TILE_URL`) para que unha deputación poida usar o seu servidor. A lista accesible é a vista principal; o mapa é opcional (`?vista=mapa`).
+
+## 2026-10-23 · Nomes ficticios da demo
+- **Decisión:** concellos «Vilardeiras» (rural, 1.840 hab.) e «Pontedouro» (mediano, 14.250 hab.), «Deputación das Marismas». Códigos INE ficticios 99001/99002 e dominios `.example`.
+- **Motivo:** non coinciden con ningún concello galego real nin cos nomes doutra candidatura.
+
+## 2026-10-23 · Regra DJ008 de ruff desactivada
+- **Decisión:** non se esixe `__str__` en modelos internos (rexistros, táboas intermedias).
+
+## 2026-10-23 · Módulos chamados `manage.py` dentro das apps
+- **Decisión:** as vistas de xestión viven en `apps/<app>/manage.py`. Por iso `pytest` leva `django_find_project = false` (pytest-django confundíaos co `manage.py` do proxecto).

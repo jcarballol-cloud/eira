@@ -18,7 +18,7 @@
     <div class="row-between"><h2 id="occ-title">{% translate "Ocupación por instalación" %}</h2><a href="?semanas={{ weeks }}&amp;csv=ocupacion">{% icon 'download' %} CSV<span class="visually-hidden"> {% translate "ocupación" %}</span></a></div>
     {% include "includes/hbar.html" with chart=occ_chart cid="occ" title=_("Ocupación por instalación (%)") %}
     <details class="mt-1"><summary>{% translate "Ver datos en táboa" %}</summary>
-      <div class="table-wrap mt-1"><table class="data"><caption class="visually-hidden">{% translate "Ocupación por instalación" %}</caption>
+      <div class="table-wrap mt-1" tabindex="0"><table class="data"><caption class="visually-hidden">{% translate "Ocupación por instalación" %}</caption>
         <thead><tr><th scope="col">{% translate "Instalación" %}</th><th scope="col" class="num">{% translate "Ofertadas" %}</th><th scope="col" class="num">{% translate "Reservadas" %}</th><th scope="col" class="num">%</th></tr></thead>
         <tbody>{% for r in s.occupancy %}<tr><th scope="row">{{ r.facility }}</th><td class="num">{{ r.available }}</td><td class="num">{{ r.booked }}</td><td class="num">{{ r.pct }}</td></tr>{% endfor %}</tbody></table></div></details>
   </section>
@@ -26,7 +26,7 @@
     <h2 id="ns-title">{% translate "Reservas non usadas (non presentadas)" %}</h2>
     {% include "includes/hbar.html" with chart=ns_chart cid="ns" title=_("Porcentaxe de non presentadas por instalación") warn=True %}
     <details class="mt-1"><summary>{% translate "Ver datos en táboa" %}</summary>
-      <div class="table-wrap mt-1"><table class="data"><caption class="visually-hidden">{% translate "Non presentadas" %}</caption>
+      <div class="table-wrap mt-1" tabindex="0"><table class="data"><caption class="visually-hidden">{% translate "Non presentadas" %}</caption>
         <thead><tr><th scope="col">{% translate "Instalación" %}</th><th scope="col" class="num">{% translate "Non presentadas" %}</th><th scope="col" class="num">%</th></tr></thead>
         <tbody>{% for r in s.occupancy %}{% if r.booked %}<tr><th scope="row">{{ r.facility }}</th><td class="num">{{ r.no_shows }}</td><td class="num">{{ r.no_show_pct }}</td></tr>{% endif %}{% endfor %}</tbody></table></div></details>
   </section>
@@ -35,7 +35,7 @@
 <section class="card mt-2" aria-labelledby="heat-title">
   <div class="row-between"><h2 id="heat-title">{% translate "Ocupación por franxa horaria" %}</h2><a href="?semanas={{ weeks }}&amp;csv=franxas">{% icon 'download' %} CSV<span class="visually-hidden"> {% translate "franxas" %}</span></a></div>
   <p class="help">{% translate "Número de reservas por día da semana e hora (todas as instalacións). As cores reforzan o número, que sempre se mostra." %}</p>
-  <div class="table-wrap"><table class="data heat">
+  <div class="table-wrap" tabindex="0"><table class="data heat">
     <caption class="visually-hidden">{% translate "Reservas por día da semana e hora" %}</caption>
     <thead><tr><th scope="col">{% translate "Hora" %}</th>{% for d in weekdays %}<th scope="col" class="center">{{ d }}</th>{% endfor %}</tr></thead>
     <tbody>{% for row in s.heatmap %}<tr><th scope="row" class="mono">{{ row.hour|stringformat:"02d" }}:00</th>{% for c in row.cells %}<td class="h h{{ c.level }}">{{ c.value }}</td>{% endfor %}</tr>{% endfor %}</tbody>

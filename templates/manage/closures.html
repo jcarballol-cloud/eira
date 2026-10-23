@@ -5,7 +5,7 @@
 <div class="layout-aside">
   <section aria-labelledby="cl-list">
     <h2 id="cl-list">{% translate "Peches programados" %}</h2>
-    <div class="table-wrap"><table class="data">
+    <div class="table-wrap" tabindex="0"><table class="data">
       <caption class="visually-hidden">{% translate "Peches" %}</caption>
       <thead><tr><th scope="col">{% translate "Motivo" %}</th><th scope="col">{% translate "Instalación" %}</th><th scope="col">{% translate "Desde" %}</th><th scope="col">{% translate "Ata" %}</th><th scope="col"><span class="visually-hidden">{% translate "Accións" %}</span></th></tr></thead>
       <tbody>{% for c in closures %}<tr><td><span class="badge {% if c.kind == 'weather' %}badge-alert{% endif %}">{{ c.get_kind_display }}</span> {{ c.reason }}</td><td>{{ c.facility.name|default:_("Todas") }}</td><td>{{ c.starts_at|date:"d/m/Y H:i" }}</td><td>{{ c.ends_at|date:"d/m/Y H:i" }}</td>

@@ -3,6 +3,7 @@
 
 import pytest
 from axe_playwright_python.sync_playwright import Axe
+from django.utils import timezone
 
 from apps.accounts.models import AppRequest
 from apps.activities.models import Group, Session
@@ -41,6 +42,11 @@ def page_sets():
     signup = AppRequest.objects.filter(
         municipality__slug="vilardeiras", invitation__isnull=False
     ).first()
+    from apps.activities.services import sessions_for_day
+
+    kiosk_session = sessions_for_day(
+        [Group.objects.get(name="Grupo grande (40)")], timezone.localdate()
+    )[0]
     c = "/c/vilardeiras"
     return {
         None: [
@@ -114,6 +120,7 @@ def page_sets():
         "antia@demo.eira.example": [
             f"{c}/monitor/",
             f"{c}/monitor/sesion/{session.pk}/asistencia/",
+            f"{c}/monitor/sesion/{kiosk_session.pk}/rexistro/",
             f"{c}/monitor/sesion/{session.pk}/esforzo/",
             f"{c}/monitor/grupo/{group.pk}/probas/",
         ],

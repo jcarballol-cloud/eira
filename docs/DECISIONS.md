@@ -252,3 +252,22 @@ Formato: data · decisión · motivo · alternativas descartadas.
 - **A tableta da monitora** queda fóra (16 px e botóns grandes).
 - **Fallo previo atopado ao facer as capturas.** Na app sen marco, o shell medía `100dvh` e a barra de demo empuxaba a barra de pestanas fóra da pantalla. Agora o `body` mide 100dvh e o shell ocupa o que queda, tamén en pantallas estreitas cando a cookie do marco está activa.
 - Capturas antes e despois en móbil, tableta e escritorio: `docs/capturas/v3/densidade/`.
+
+## v3 · 6 — Tableta da monitora (patrón AFS +50)
+- **Referencia escollida:** `D:\AFS +50\src\modules\asistencia\kiosko\` (28/09, a máis recente) e os seus requisitos. Os HTML de `referencia/` (`asistencia_rpe_claro_v3.html` e `af50_asistencia_rpe_cloud.html`, do 22/09) son prototipos anteriores. Lín a carpeta só para coller a lóxica e o estilo; non copiei código nin datos.
+- **Fluxo:**
+  - Modo **Entrada / Saída** arriba.
+  - Abecedario A–Z con Ñ e contador por letra, e buscador global (desde 2 letras, sen acentos).
+  - Letra → nomes ordenados por apelido, con filtro se hai máis de 6 e icona de fotos.
+  - Entrada: rexistra, amosa unha confirmación breve e volve en 1,5 s.
+  - Saída: escala RPE da persoa (caras OMNI na infancia, etiquetas Borg CR-10 en adultos), cores OKLCH de verde a vermello, «¡Grazas, Nome!» e volta soa aos 3 s, con barra de progreso.
+  - Cabeceira: entraron X de N, esforzos rexistrados, «Faltan N» (despregable) e estado de sincronización.
+- **Inicial do primeiro apelido** (`apps/activities/names.py`): ignóranse as partículas (de, del, da, do, dos, das, la, las, los, van, von, mc, mac, y, e), normalízanse os acentos e a Ñ é letra propia.
+- **Minimización.** Os **apelidos son opcionais** (persoas adultas e menores). Engadínos porque, nun grupo de 40, a monitora non pode atopar a ninguén só polo nome. Sen apelidos úsase a inicial do nome.
+- **Regras:**
+  - Un toque de «saída» sen entrada previa conta como presente.
+  - Se se repite, vale o último RPE.
+  - Os menores sen consentimento de esforzo rexistran a saída sen RPE.
+- **Sen conexión.** Cada toque vai a unha cola en `localStorage` por sesión e envíase en lote a `…/rexistro/api/` (idempotente) ao volver a rede e cada 15 s. Ao abrir, os toques pendentes reaplícanse.
+- A lista rápida anterior queda como alternativa sen JavaScript.
+- **Demo:** grupo «Ximnasia activa · Grupo grande (40)» con 40 persoas ficticias (nomes e apelidos galegos combinados ao chou, con partículas, acentos e Ñ) e sesión todos os días.

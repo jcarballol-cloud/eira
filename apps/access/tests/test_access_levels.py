@@ -147,14 +147,19 @@ def test_simulator_lockout_uses_real_time_not_simulated_clock(client, gym_a, cit
     b = booking_now(gym_a, citizen)
     future = timezone.localtime(timezone.now() + dt.timedelta(hours=2)).strftime("%Y-%m-%dT%H:%M")
     for _ in range(LockDevice.MAX_FAILED):
-        client.post("/dev/lock-simulator/", {"device": gym_a.lock.pk, "at": future, "code": "000000"})
+        client.post(
+            "/dev/lock-simulator/", {"device": gym_a.lock.pk, "at": future, "code": "000000"}
+        )
     gym_a.lock.refresh_from_db()
-    assert gym_a.lock.locked_until <= timezone.now() + dt.timedelta(minutes=LockDevice.LOCKOUT_MINUTES, seconds=5)
+    assert gym_a.lock.locked_until <= timezone.now() + dt.timedelta(
+        minutes=LockDevice.LOCKOUT_MINUTES, seconds=5
+    )
     # Restablecer (só demo) desbloquea e a reserva abre á súa hora
     client.post("/dev/lock-simulator/", {"device": gym_a.lock.pk, "action": "reset"})
     at = timezone.localtime(b.start + dt.timedelta(minutes=1)).strftime("%Y-%m-%dT%H:%M")
     r = client.post(
-        "/dev/lock-simulator/", {"device": gym_a.lock.pk, "at": at, "code": gym_a.lock.code_for_booking(b)}
+        "/dev/lock-simulator/",
+        {"device": gym_a.lock.pk, "at": at, "code": gym_a.lock.code_for_booking(b)},
     )
     assert "ABERTO" in r.content.decode()
 

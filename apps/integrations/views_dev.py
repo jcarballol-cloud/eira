@@ -31,7 +31,10 @@ def mailbox(request):
 
 
 def outbox(request):
-    return render(request, "dev/outbox.html", {"messages_out": OutboundMessage.objects.all()[:100], "tool": "outbox"}
+    return render(
+        request,
+        "dev/outbox.html",
+        {"messages_out": OutboundMessage.objects.all()[:100], "tool": "outbox"},
     )
 
 

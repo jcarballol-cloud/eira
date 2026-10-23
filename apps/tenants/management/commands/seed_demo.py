@@ -26,6 +26,7 @@ from apps.accounts.models import (
     Role,
     User,
 )
+from apps.activities.demo import SURNAMES
 from apps.bookings.models import Booking
 from apps.bookings.services import slot_starts
 from apps.facilities.catalog import TEMPLATES, apply_template
@@ -286,6 +287,7 @@ class Command(BaseCommand):
             u = User.objects.create_user(
                 f"vecinanza{i:02d}@{DEMO_DOMAIN}",
                 display_name=name,
+                surnames=f"{self.rng.choice(SURNAMES)} {self.rng.choice(SURNAMES)}",
                 birth_year=self.rng.randint(1945, 2010),
                 photo_consent=i % 4 != 0,  # unha de cada catro non autoriza fotos
             )

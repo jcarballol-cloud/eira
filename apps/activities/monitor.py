@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
+from django.views.decorators.http import require_POST
 
 from apps.tenants.urlutils import module_required, role_required, treverse
 
@@ -124,6 +125,7 @@ def add_pending(request, pk):
                 municipality=request.tenant,
                 group=session.group,
                 first_name=name,
+                surnames=request.POST.get("surnames", "").strip()[:80],
                 birth_year=int(year) if year.isdigit() and 1900 < int(year) < 2100 else None,
                 guardian_email=request.POST.get("guardian_email", "").strip().lower()[:254],
                 added_by=request.user,
@@ -132,7 +134,8 @@ def add_pending(request, pk):
                 request,
                 _("%(n)s queda apuntado/a. O concello validará a inscrición.") % {"n": name},
             )
-    return redirect(treverse(request.tenant, "monitor:attendance", session.pk))
+    target = "monitor:kiosk" if request.POST.get("next") == "kiosk" else "monitor:attendance"
+    return redirect(treverse(request.tenant, target, session.pk))
 
 
 @module_required("monitor")
@@ -219,3 +222,61 @@ def fitness(request, pk):
 
 
 __all__ = ["today", "attendance", "effort", "fitness", "Attendance"]
+
+
+@module_required("monitor")
+@role_required("monitor")
+def kiosk(request, pk):
+    """Rexistro na tableta: abecedario → nomes → entrada ou saída con RPE → grazas."""
+    session = _session(request, pk)
+    group = session.group
+    return render(
+        request,
+        "monitor/kiosk.html",
+        {
+            "session": session,
+            "data": {
+                "session": session.pk,
+                "group": f"{group.activity.name} · {group.name}",
+                "scale": group.rpe_scale,
+                "api": treverse(request.tenant, "monitor:kiosk_api", session.pk),
+                "people": services.kiosk_people(session),
+                "points": [
+                    {"value": p["value"], "label": str(p["label"]), "face": p["face"]}
+                    for p in scale_points(group.rpe_scale)
+                ],
+            },
+            "pending": session.group.pending_participants.filter(
+                status=PendingParticipant.Status.PENDING
+            ),
+            "nav": "monitor",
+        },
+    )
+
+
+@module_required("monitor")
+@role_required("monitor")
+@require_POST
+def kiosk_api(request, pk):
+    """Recibe un lote de toques (a tableta acumúlaos se non hai rede) e devolve o estado."""
+    import json
+
+    from django.http import JsonResponse
+    from django.utils.dateparse import parse_datetime
+
+    session = _session(request, pk)
+    try:
+        events = json.loads(request.body or b"[]")
+    except ValueError:
+        return JsonResponse({"error": "json"}, status=400)
+    if isinstance(events, dict):
+        events = [events]
+    enrolled = {e.pk: e for e in session.group.enrolled().select_related("dependent", "user")}
+    done = []
+    for ev in events[:500]:
+        e = enrolled.get(int(ev.get("enrollment", 0) or 0))
+        if e is None or ev.get("action") not in ("in", "out"):
+            continue
+        at = parse_datetime(ev.get("at") or "") or None
+        done.append(services.kiosk_record(session, e, ev["action"], ev.get("value"), at=at))
+    return JsonResponse({"ok": True, "applied": done})

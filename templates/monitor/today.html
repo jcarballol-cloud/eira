@@ -10,7 +10,8 @@
     <div class="row-between"><h2 class="mb-0">{{ s.start_time|time:"H:i" }} · {{ s.group.activity.name }}</h2>{% if s.closed_at %}<span class="badge badge-ok">{% translate "Pechada" %}</span>{% endif %}</div>
     <p class="mb-0">{{ s.group.name }}{% if s.group.facility %} · {{ s.group.facility.name }}{% endif %}</p>
     <p class="mb-0">{% icon 'users' %} {% blocktranslate count n=s.group.enrolled.count %}{{ n }} inscrita{% plural %}{{ n }} inscritas{% endblocktranslate %} · {{ s.group.get_rpe_scale_display }}</p>
-    <div class="row"><a class="btn btn-lg" href="{% turl 'monitor:attendance' s.pk %}">{% translate "Pasar lista" %}<span class="visually-hidden"> {{ s.group }}</span></a>
+    <div class="row"><a class="btn btn-lg" href="{% turl 'monitor:kiosk' s.pk %}">{% translate "Abrir o rexistro" %}<span class="visually-hidden"> {{ s.group }}</span></a>
+      <a class="btn btn-secondary" href="{% turl 'monitor:attendance' s.pk %}">{% translate "Lista rápida" %}<span class="visually-hidden"> {{ s.group }}</span></a>
       <a class="btn btn-secondary" href="{% turl 'monitor:fitness' s.group.pk %}">{% translate "Probas físicas" %}<span class="visually-hidden"> {{ s.group }}</span></a></div>
   </li>
   {% empty %}<li class="alert">{% translate "Hoxe non tes sesións." %}</li>{% endfor %}

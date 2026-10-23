@@ -102,6 +102,12 @@ class Enrollment(TenantModel):
         ordering = ["created_at"]
 
     @property
+    def participant_surnames(self):
+        if self.dependent:
+            return self.dependent.surnames
+        return self.user.surnames if self.user else ""
+
+    @property
     def participant_name(self):
         if self.dependent:
             return self.dependent.first_name
@@ -130,6 +136,7 @@ class PendingParticipant(TenantModel):
 
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="pending_participants")
     first_name = models.CharField(_("nome"), max_length=60)
+    surnames = models.CharField(_("apelidos"), max_length=80, blank=True)
     birth_year = models.PositiveIntegerField(_("ano de nacemento"), null=True, blank=True)
     guardian_email = models.EmailField(_("correo da familia ou da persoa"), blank=True)
     added_by = models.ForeignKey(
@@ -170,6 +177,8 @@ class Attendance(models.Model):
     present = models.BooleanField(default=False)
     rpe = models.PositiveSmallIntegerField(null=True, blank=True)  # 0–10
     minutes = models.PositiveIntegerField(null=True, blank=True)
+    checked_in_at = models.DateTimeField(null=True, blank=True)
+    rpe_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         constraints = [

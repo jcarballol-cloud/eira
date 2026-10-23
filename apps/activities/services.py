@@ -90,6 +90,7 @@ def validate_pending(pending, email, actor):
                 dependent = Dependent.objects.create(
                     household=household,
                     first_name=pending.first_name,
+                    surnames=pending.surnames,
                     birth_year=pending.birth_year,
                 )
             if not dependent.has_consent(Consent.Kind.DATA):
@@ -218,3 +219,55 @@ def session_load_summary(session):
 
 def week_start(day):
     return day - dt.timedelta(days=day.weekday())
+
+
+# ---------------------------------------------------------------- tableta (quiosco)
+
+
+def kiosk_people(session):
+    """Participantes da sesión para a tableta: «Apelidos, Nome», inicial, fotos, esforzo e estado."""
+    from .names import display, initial, sort_key
+
+    marks = {a.enrollment_id: a for a in session.attendances.all()}
+    rows = []
+    for e in session.group.enrolled().select_related("dependent", "user"):
+        a = marks.get(e.pk)
+        surnames, name = e.participant_surnames or "", e.participant_name or ""
+        rows.append(
+            {
+                "id": e.pk,
+                "name": name,
+                "surnames": surnames,
+                "label": display(surnames, name),
+                "initial": initial(surnames, name),
+                "sort": " ".join(sort_key(surnames, name)),
+                "photo": e.can_appear_in_photos,
+                "effort": can_record_effort(e),
+                "minor": bool(e.dependent_id),
+                "in": bool(a and a.present),
+                "rpe": a.rpe if a else None,
+            }
+        )
+    rows.sort(key=lambda r: r["sort"])
+    return rows
+
+
+def kiosk_record(session, enrollment, action, value=None, at=None):
+    """Un toque na tableta. «in»: entrada; «out»: saída co RPE (0–10). Idempotente: vale o último.
+    Devolve o estado da persoa."""
+    at = at or timezone.now()
+    att, _c = Attendance.objects.get_or_create(session=session, enrollment=enrollment)
+    if not att.present:
+        att.present = True
+        att.minutes = session.duration_minutes
+        att.checked_in_at = at
+    if (
+        action == "out"
+        and value is not None
+        and 0 <= int(value) <= 10
+        and can_record_effort(enrollment)
+    ):
+        att.rpe = int(value)
+        att.rpe_at = at
+    att.save()
+    return {"id": enrollment.pk, "in": att.present, "rpe": att.rpe}

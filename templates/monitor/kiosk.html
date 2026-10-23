@@ -1,0 +1,79 @@
+{% extends "base.html" %}{% load i18n static eira %}
+{% block title %}{% translate "Rexistro" %} · {{ session.group }}{% endblock %}
+{% block head %}<script src="{% static 'js/kiosk.js' %}" defer></script>{% endblock %}
+{% block content %}
+<div class="kiosk" data-kiosk data-sprite="{% static 'img/icons.svg' %}">
+  <noscript><p class="alert">{% translate "O rexistro na tableta precisa JavaScript." %} <a href="{% turl 'monitor:attendance' session.pk %}">{% translate "Usar a lista rápida" %}</a></p></noscript>
+  <header class="kiosk__top">
+    <div class="kiosk__group">
+      <p class="eyebrow mb-0">{{ session.date|date:"l j" }} · {{ session.start_time|time:"H:i" }}</p>
+      <h1 class="kiosk__title">{{ session.group.activity.name }} · {{ session.group.name }}</h1>
+    </div>
+    <div class="kiosk__mode" role="group" aria-label="{% translate 'Modo' %}">
+      <button type="button" class="kiosk__modebtn" data-mode="in" aria-pressed="true">{% icon 'door' %} {% translate "Entrada" %}</button>
+      <button type="button" class="kiosk__modebtn" data-mode="out" aria-pressed="false">{% icon 'smile' %} {% translate "Saída" %}</button>
+    </div>
+    <div class="kiosk__stats" aria-live="polite">
+      <span class="kiosk__chip" data-stat-in></span>
+      <span class="kiosk__chip" data-stat-rpe></span>
+      <button type="button" class="kiosk__chip kiosk__chip--btn" data-missing-toggle aria-expanded="false" aria-controls="kiosk-missing"></button>
+      <span class="kiosk__chip kiosk__sync" data-sync role="status"></span>
+    </div>
+  </header>
+  <section id="kiosk-missing" class="kiosk__missing" data-missing hidden aria-label="{% translate 'Quen falta' %}"></section>
+  <main class="kiosk__view" data-view tabindex="-1"></main>
+
+  <details class="card-flat mt-2 add-pending">
+    <summary>{% icon 'plus' %} {% translate "Vén alguén a probar?" %}</summary>
+    <form method="post" action="{% turl 'monitor:add_pending' session.pk %}" class="mt-1">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="kiosk">
+      <div class="filters">
+        <div class="field"><label for="pp-name">{% translate "Nome" %}</label><input id="pp-name" name="first_name" type="text" required maxlength="60" autocomplete="off"></div>
+        <div class="field"><label for="pp-surnames">{% translate "Apelidos" %}</label><input id="pp-surnames" name="surnames" type="text" maxlength="80" autocomplete="off"></div>
+        <div class="field"><label for="pp-year">{% translate "Ano de nacemento" %}</label><input id="pp-year" name="birth_year" type="number" inputmode="numeric" min="1900" max="2100"></div>
+        <div class="field"><label for="pp-mail">{% translate "Correo da familia (opcional)" %}</label><input id="pp-mail" name="guardian_email" type="email" inputmode="email" autocomplete="off"></div>
+      </div>
+      <p class="help">{% translate "Queda pendente ata que o concello valide a inscrición." %}</p>
+      <button class="btn" type="submit">{% translate "Apuntar" %}</button>
+    </form>
+    {% if pending %}<p class="mb-0 mt-1"><strong>{% translate "Pendentes de validar:" %}</strong> {% for p in pending %}{{ p.first_name }} {{ p.surnames }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>{% endif %}
+  </details>
+  <p class="mt-1"><a href="{% turl 'monitor:today' %}">← {% translate "Sesións de hoxe" %}</a> · <a href="{% turl 'monitor:attendance' session.pk %}">{% translate "Lista rápida" %}</a></p>
+</div>
+{{ data|json_script:"kiosk-data" }}
+<div hidden id="kiosk-strings"
+  data-pick-letter="{% translate 'Toca a inicial do teu primeiro apelido' %}"
+  data-search="{% translate 'Ou escribe o teu apelido ou nome' %}"
+  data-search-label="{% translate 'Buscar por apelido ou nome' %}"
+  data-clear="{% translate 'Borrar' %}"
+  data-no-match="{% translate 'Ningún nome coincide. Proba coa letra do teu apelido.' %}"
+  data-no-people="{% translate 'Non hai ninguén con esta letra.' %}"
+  data-letter-title="{% translate 'Apelidos pola letra' %}"
+  data-filter="{% translate 'Filtrar esta lista' %}"
+  data-back="{% translate 'Volver' %}"
+  data-not-me="{% translate 'Non son eu' %}"
+  data-question="{% translate 'Como de duro foi hoxe?' %}"
+  data-saved-on-tap="{% translate 'Gárdase ao tocar o número.' %}"
+  data-thanks="{% translate 'Grazas, %1!' %}"
+  data-in-done="{% translate 'Entrada rexistrada ás %1' %}"
+  data-rpe-done="{% translate 'Esforzo %1' %}"
+  data-no-effort="{% translate 'Saída rexistrada (sen permiso para rexistrar o esforzo).' %}"
+  data-next="{% translate 'Seguinte persoa' %}"
+  data-entered="{% translate 'Entraron %1 de %2' %}"
+  data-rpe-count="{% translate 'Esforzo: %1' %}"
+  data-missing="{% translate 'Faltan %1' %}"
+  data-missing-in="{% translate 'Aínda non entraron' %}"
+  data-missing-out="{% translate 'Entraron e falta o esforzo' %}"
+  data-none-missing="{% translate 'Non falta ninguén.' %}"
+  data-in-mark="{% translate 'entrou' %}"
+  data-photo-ok="{% translate 'pode saír en fotos' %}"
+  data-photo-no="{% translate 'non pode saír en fotos' %}"
+  data-persons="{% translate '%1 persoas' %}"
+  data-person="{% translate '1 persoa' %}"
+  data-no-letter="{% translate 'sen persoas' %}"
+  data-sync-ok="{% translate 'Todo gardado' %}"
+  data-sync-pending="{% translate '%1 sen enviar' %}"
+  data-sync-offline="{% translate 'Sen conexión · %1 sen enviar' %}"
+  data-already="{% translate 'Xa ten un esforzo rexistrado hoxe (%1). Se tocas outro, vale o último.' %}"></div>
+{% endblock %}

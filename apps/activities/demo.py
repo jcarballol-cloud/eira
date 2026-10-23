@@ -48,6 +48,130 @@ SFT = (
         ("Levantarse, camiñar 2,44 m e volver", "s"),
     ],
 )
+# Apelidos ficticios para a demo (combinados ao chou: non corresponden a ningunha persoa).
+# Inclúen partículas (da, do, de), acentos e Ñ para probar o abecedario da tableta.
+SURNAMES = [
+    "Abelleira",
+    "Álvarez",
+    "Barreiro",
+    "Bouzas",
+    "Calvo",
+    "Castro",
+    "Couto",
+    "da Silva",
+    "de la Fuente",
+    "do Campo",
+    "Dopazo",
+    "Estévez",
+    "Fernández",
+    "Fraga",
+    "Gómez",
+    "Iglesias",
+    "Lago",
+    "López",
+    "Méndez",
+    "Mosquera",
+    "Núñez",
+    "Ñeiro",
+    "Otero",
+    "Pazos",
+    "Pereiro",
+    "Quintela",
+    "Rial",
+    "Rodríguez",
+    "Seoane",
+    "Souto",
+    "Taboada",
+    "Uzal",
+    "Varela",
+    "Vilar",
+    "Xestoso",
+    "Yáñez",
+    "Zas",
+]
+KIOSK_NAMES = [
+    "Alba",
+    "Antón",
+    "Carme",
+    "Celso",
+    "Dores",
+    "Elvira",
+    "Emilio",
+    "Estrela",
+    "Fermín",
+    "Fina",
+    "Gonzalo",
+    "Herminia",
+    "Hixinio",
+    "Inés",
+    "Isolina",
+    "Xosé",
+    "Leandro",
+    "Lucía",
+    "Manuela",
+    "Marcial",
+    "Maruxa",
+    "Nieves",
+    "Olimpia",
+    "Pastora",
+    "Perfecto",
+    "Pilar",
+    "Ramona",
+    "Remedios",
+    "Rosendo",
+    "Sara",
+    "Serafín",
+    "Sira",
+    "Tomasa",
+    "Ventura",
+    "Xulia",
+    "Xenaro",
+    "Xoán",
+    "Xuxo",
+    "Zoila",
+    "Adela",
+]
+
+
+def fake_surnames(rng):
+    return f"{rng.choice(SURNAMES)} {rng.choice(SURNAMES)}"
+
+
+def seed_kiosk_group(m, monitor, facility, rng):
+    """Grupo de 40 persoas ficticias con sesión todos os días (tableta e E2E)."""
+    act = Activity.objects.create(municipality=m, name="Ximnasia activa")
+    group = Group.objects.create(
+        municipality=m,
+        activity=act,
+        name="Grupo grande (40)",
+        facility=facility,
+        monitor=monitor,
+        min_age=18,
+        max_age=110,
+        places=45,
+        fee_cents=0,
+        weekdays="0,1,2,3,4,5,6",
+        start_time=dt.time(11),
+        rpe_scale=Group.RpeScale.BORG,
+    )
+    year = timezone.localdate().year
+    for i, name in enumerate(KIOSK_NAMES):
+        # Os 37 primeiros apelidos van cada un nunha persoa (para que haxa moitas letras); o resto, ao chou
+        first = SURNAMES[i] if i < len(SURNAMES) else rng.choice(SURNAMES)
+        u = User.objects.create_user(
+            f"grupo40-{i:02d}@demo.eira.example",
+            display_name=name,
+            surnames=f"{first} {rng.choice(SURNAMES)}",
+            birth_year=year - rng.randint(55, 82),
+            photo_consent=i % 5 != 0,
+        )
+        Membership.objects.create(user=u, municipality=m, role=Role.CITIZEN)
+        e = Enrollment.objects.create(municipality=m, group=group, user=u, status="active")
+        e.pseudonym = pseudonym(e.pk)
+        e.save(update_fields=["pseudonym"])
+    return group
+
+
 KIDS = [
     "Noa",
     "Breixo",
@@ -167,7 +291,12 @@ def seed(rng):
         hh, _c = Household.objects.get_or_create(responsible=parent)
         target = groups[0] if i % 2 == 0 else groups[1]
         age = rng.randint(target.min_age, target.max_age)
-        d = Dependent.objects.create(household=hh, first_name=name, birth_year=today.year - age)
+        d = Dependent.objects.create(
+            household=hh,
+            first_name=name,
+            surnames=parent.surnames or fake_surnames(rng),
+            birth_year=today.year - age,
+        )
         Consent.objects.create(dependent=d, kind="data", granted_by=parent)
         if rng.random() < 0.8:
             Consent.objects.create(dependent=d, kind="performance", granted_by=parent)
@@ -192,7 +321,8 @@ def seed(rng):
     for i in range(max(0, 12 - len(seniors))):
         u = User.objects.create_user(
             f"maior{i:02d}@demo.eira.example",
-            display_name=KIDS[i % len(KIDS)] + " (maior)",
+            display_name=KIDS[i % len(KIDS)],
+            surnames=fake_surnames(rng),
             birth_year=today.year - rng.randint(62, 84),
         )
         Membership.objects.create(user=u, municipality=m, role=Role.CITIZEN)
@@ -212,6 +342,8 @@ def seed(rng):
         Enrollment.objects.create(
             municipality=m, group=groups[3], user=others[12], status="waitlist", pseudonym=""
         )
+
+    seed_kiosk_group(m, monitor, hall, rng)
 
     # Unha nena apareceu no adestramento sen estar inscrita: pendente de validar
     from .models import PendingParticipant

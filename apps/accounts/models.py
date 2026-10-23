@@ -41,6 +41,12 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("correo electrónico"), unique=True)
     display_name = models.CharField(_("nome para mostrar"), max_length=80, blank=True)
+    surnames = models.CharField(
+        _("apelidos"),
+        max_length=80,
+        blank=True,
+        help_text=_("Opcional. Nas escolas, a monitora busca polo primeiro apelido."),
+    )
     phone = models.CharField(_("teléfono"), max_length=20, blank=True)
     birth_year = models.PositiveIntegerField(_("ano de nacemento"), null=True, blank=True)
     preferred_language = models.CharField(_("idioma preferido"), max_length=5, default="gl")
@@ -318,6 +324,12 @@ class Household(models.Model):
 class Dependent(models.Model):
     household = models.ForeignKey(Household, on_delete=models.CASCADE, related_name="dependents")
     first_name = models.CharField(_("nome"), max_length=60)
+    surnames = models.CharField(
+        _("apelidos"),
+        max_length=80,
+        blank=True,
+        help_text=_("Opcional. Na tableta da escola a monitora busca polo primeiro apelido."),
+    )
     birth_year = models.PositiveIntegerField(_("ano de nacemento"))
     created_at = models.DateTimeField(auto_now_add=True)
 

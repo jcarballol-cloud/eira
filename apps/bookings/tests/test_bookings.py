@@ -294,3 +294,13 @@ def test_closing_checklist_view(client, padel_a, citizen):
     r = client.post(f"/c/concello-a/reservas/{b.pk}/peche/", {"door_ok": "0", "all_ok": "1"})
     assert r.status_code == 302
     assert Incident.objects.filter(booking=b, source="checklist").exists()
+
+
+def test_started_slot_is_not_bookable(gym_a, citizen):
+    """Regresión: unha franxa que xa empezou non debe aparecer como libre na grella."""
+    now = timezone.now()
+    monday = timezone.localdate() - dt.timedelta(days=timezone.localdate().weekday())
+    slots = [s for _d, day in services.week_grid(gym_a, monday)["by_day"] for s in day]
+    for s in slots:
+        if s.start <= now:
+            assert not s.bookable, s.start

@@ -128,7 +128,7 @@ def week_grid(facility, monday, user=None, now=None):
                 status = "mine"
             elif closure:
                 status = "closed"
-            elif end <= now or day > max_day:
+            elif start <= now or day > max_day:  # unha franxa xa empezada non se pode reservar
                 status = "past"
             elif n >= facility.capacity:
                 status = "busy"

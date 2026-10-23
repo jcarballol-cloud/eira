@@ -61,6 +61,8 @@ def licenses():
 
 
 def openapi():
+    # O esquema depende do motor (límites de enteiros): xérase sempre igual, sen tocar a BD real.
+    ENV["DATABASE_URL"] = "sqlite:///:memory:"
     manage("spectacular", "--validate", "--fail-on-warn", "--file", "docs/api/openapi.yaml")
 
 

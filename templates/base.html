@@ -71,9 +71,11 @@
   <main id="main" tabindex="-1">
     <div class="wrap">
       {% if messages %}
-        <ul class="messages" role="status">
-          {% for message in messages %}<li class="alert {% if message.tags == 'error' %}alert-error{% elif message.tags == 'warning' %}alert-warn{% elif message.tags == 'success' %}alert-success{% endif %}">{{ message }}</li>{% endfor %}
-        </ul>
+        <div role="status">
+          <ul class="messages">
+            {% for message in messages %}<li class="alert {% if message.tags == 'error' %}alert-error{% elif message.tags == 'warning' %}alert-warn{% elif message.tags == 'success' %}alert-success{% endif %}">{{ message }}</li>{% endfor %}
+          </ul>
+        </div>
       {% endif %}
     </div>
     {% block hero %}{% endblock %}

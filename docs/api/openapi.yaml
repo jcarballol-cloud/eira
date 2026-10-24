@@ -357,12 +357,14 @@ components:
       - non_resident
       - youth
       - senior
+      - reduced
       type: string
       description: |-
         * `resident` - Persoas empadroadas
         * `non_resident` - Persoas non empadroadas
         * `youth` - Mocidade (ata 25 anos, empadroada)
         * `senior` - Maiores de 65 (empadroadas)
+        * `reduced` - Colectivos con tarifa reducida (validado polo concello)
     Booking:
       type: object
       properties:
@@ -433,6 +435,8 @@ components:
       enum:
       - pending_payment
       - confirmed
+      - rejected
+      - expired
       - cancelled
       - used
       - no_show
@@ -440,6 +444,8 @@ components:
       description: |-
         * `pending_payment` - Pendente de pagamento
         * `confirmed` - Confirmada
+        * `rejected` - Pagamento rexeitado
+        * `expired` - Caducada sen pagar
         * `cancelled` - Cancelada
         * `used` - Usada
         * `no_show` - Non presentada

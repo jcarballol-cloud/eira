@@ -13,3 +13,8 @@ test-results/
 playwright-report/
 *.log
 .coverage
+
+# Vídeos e outros binarios grandes: van como adxuntos dunha release, non ao git
+release-assets/
+*.webm
+*.mp4

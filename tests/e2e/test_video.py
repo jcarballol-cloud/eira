@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: EUPL-1.2
 """Vídeo do guión do pitch (docs/demo/guion-demo.md) en móbil e escritorio, con subtítulos.
 
-    python tools/tasks.py video     → docs/demo/eira-demo-{movil,escritorio}.webm + capturas numeradas
+    python tools/tasks.py video     → release-assets/eira-demo-{movil,escritorio}.webm + capturas numeradas
 
 Non forma parte da CI (marca `video`): tarda un par de minutos e xera ficheiros grandes.
 """
@@ -19,7 +19,8 @@ from apps.incidents.models import Incident
 from .conftest import DESKTOP, MOBILE, demo_url
 
 pytestmark = [pytest.mark.e2e, pytest.mark.video, pytest.mark.django_db(transaction=False)]
-OUT = Path(settings.BASE_DIR) / "docs" / "demo"
+# Os vídeos (> 10 MB) non van ao git: gárdanse en release-assets/ para adxuntalos a unha release
+OUT = Path(settings.BASE_DIR) / "release-assets"
 SHOTS = Path(settings.BASE_DIR) / "docs" / "capturas" / "v3"
 
 CAPTION_JS = """(text) => {
@@ -247,6 +248,7 @@ def test_record_pitch_video(browser, base, viewport, name, tmp_path):
     run_script(page, base, Director(page, shots))
     video = page.video
     ctx.close()
+    OUT.mkdir(exist_ok=True)
     target = OUT / f"eira-demo-{name}.webm"
     video.save_as(str(target))
     assert target.stat().st_size > 100_000

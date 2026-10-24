@@ -5,7 +5,7 @@
 
 No escritorio, a app da veciñanza e a do operario aparecen dentro dun **marco de teléfono**, e a do monitor nun de **tableta**. Na barra da demo está «Sen marco» para quitalo.
 
-O mesmo percorrido está gravado en `docs/demo/eira-demo-movil.webm` e `docs/demo/eira-demo-escritorio.webm`, con subtítulos. As capturas de cada paso están en `docs/capturas/v3/pitch-*/` e as novidades da v4 en `docs/capturas/v4/`. Regénerase con `pytest tests/e2e/test_video.py`.
+O mesmo percorrido está gravado, con subtítulos, en `eira-demo-movil.webm` e `eira-demo-escritorio.webm`. Pesan máis de 10 MB, así que non van ao git: distribúense como adxuntos da release (ver [VIDEOS.md](VIDEOS.md)). As capturas de cada paso están en `docs/capturas/v3/pitch-*/` e as novidades da v4 en `docs/capturas/v4/`. Regénerase con `pytest tests/e2e/test_video.py`.
 
 | Tempo | Pantalla | Que facer | Que dicir |
 |---|---|---|---|

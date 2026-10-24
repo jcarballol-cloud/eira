@@ -330,6 +330,31 @@
     });
   }
 
+  // v4.1: botón «Día / Noite» da demo. Cambia o tema ao momento (a ilustración fai crossfade)
+  // e gárdao na sesión en segundo plano; sen JS o formulario envíase e recarga.
+  document.addEventListener("submit", function (e) {
+    var form = e.target.closest ? e.target.closest("form[data-theme-toggle]") : null;
+    if (!form || !window.fetch) return;
+    e.preventDefault();
+    var root = document.documentElement;
+    var dark = !root.classList.contains("theme-dark");
+    root.setAttribute("data-theme", dark ? "dark" : "light");
+    if (window.eiraApplyTheme) window.eiraApplyTheme();
+    syncThemeToggles();
+    var data = new FormData(form);
+    data.set("tema", dark ? "dark" : "light");
+    fetch(form.action, { method: "POST", body: data, credentials: "same-origin", headers: { "X-Eira-Theme": "1" } });
+    var es = root.lang === "es";
+    announce(dark ? (es ? "Tema de noche activado" : "Tema de noite activado") : (es ? "Tema de día activado" : "Tema de día activado"));
+  });
+  function syncThemeToggles() {
+    var dark = document.documentElement.classList.contains("theme-dark");
+    document.querySelectorAll("form[data-theme-toggle]").forEach(function (f) {
+      f.querySelector("button").setAttribute("aria-pressed", dark ? "true" : "false");
+      f.querySelector("input[name=tema]").value = dark ? "light" : "dark";
+    });
+  }
+
   document.addEventListener("click", function (e) {
     if (e.target.closest("[data-print]")) { e.preventDefault(); window.print(); }
   });
@@ -337,6 +362,6 @@
   document.addEventListener("DOMContentLoaded", function () {
     var f = document.querySelector("[data-focus]");
     if (f) { f.setAttribute("tabindex", "-1"); f.focus(); }
-    setupMenu(); updateOnline(); setupOfflineForms(); setupKeypad(); setupToggles(); setupAutoSubmit();
+    setupMenu(); syncThemeToggles(); updateOnline(); setupOfflineForms(); setupKeypad(); setupToggles(); setupAutoSubmit();
   });
 })();

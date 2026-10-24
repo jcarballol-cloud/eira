@@ -166,6 +166,7 @@ def code_groups(code):
 ILLUSTRATIONS = {
     # nome: (anchos, alto/ancho)
     "cabecera-eira": ((480, 960, 1600), 724 / 2172),
+    "cabecera-eira-noite": ((480, 960, 1600), 724 / 2172),
     "eira-icono-baleiro": ((240, 480), 1),
     "baleiro-reservas": ((320, 640), 1086 / 1448),
     "baleiro-avisos": ((320, 640), 1086 / 1448),
@@ -175,8 +176,9 @@ ILLUSTRATIONS = {
 
 @register.inclusion_tag("includes/illustration.html")
 def illustration(name, sizes="100vw", css="", eager=False, night=False):
-    """Ilustración decorativa (alt="") en AVIF e WebP con varios anchos. Con `night`, en modo
-    escuro do sistema úsase a versión nocturna. Só a cabeceira da app debe ir `eager`."""
+    """Ilustración decorativa (alt="") en AVIF e WebP con varios anchos. Só a cabeceira da app
+    debe ir `eager`. v4.1: con `night` van as dúas versións superpostas e o tema (.theme-dark,
+    do sistema ou do botón «Día / Noite») escolle cal se ve, cun crossfade."""
     widths, ratio = ILLUSTRATIONS[name]
 
     def srcset(base, fmt):
@@ -189,6 +191,9 @@ def illustration(name, sizes="100vw", css="", eager=False, night=False):
         "night_avif": srcset(f"{name}-noite", "avif") if night else "",
         "night_webp": srcset(f"{name}-noite", "webp") if night else "",
         "src": static(f"img/ilustracions/{name}-{widths[len(widths) // 2]}.webp"),
+        "night_src": static(f"img/ilustracions/{name}-noite-{widths[len(widths) // 2]}.webp")
+        if night
+        else "",
         "width": big,
         "height": round(big * ratio),
         "sizes": sizes,

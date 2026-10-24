@@ -26,6 +26,9 @@ DEMO_TENANTS = [
     },
 ]
 
+# v4.1: veciño novo sen actividade (o seed créao ao final, para que non reciba nada)
+NEW_NEIGHBOUR = "brais.novo@demo.eira.example"
+
 # «sees»: a ferramenta que abre; «lands»: a pantalla de inicio; «thumb»: miniatura en static/img/demo/
 DEMO_PERSONAS = [
     {
@@ -57,6 +60,18 @@ DEMO_PERSONAS = [
         "role": _("Visitante non empadroada"),
         "sees": _("App da veciñanza"),
         "lands": _("Ve as tarifas de non empadroadas."),
+        "thumb": "app",
+    },
+    {
+        "email": NEW_NEIGHBOUR,
+        "name": "Brais",
+        "tenant": "vilardeiras",
+        "initials": "B",
+        "role": _("Veciño novo"),
+        "sees": _("App da veciñanza sen actividade"),
+        "lands": _(
+            "Acaba de darse de alta: sen reservas, avisos nin inscricións (estados baleiros)."
+        ),
         "thumb": "app",
     },
     {

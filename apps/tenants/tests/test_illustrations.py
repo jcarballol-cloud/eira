@@ -17,7 +17,9 @@ def test_header_has_avif_webp_three_widths_and_night_version():
     for w in (480, 960, 1600):
         assert f"cabecera-eira-{w}.avif {w}w" in html and f"cabecera-eira-{w}.webp {w}w" in html
         assert f"cabecera-eira-noite-{w}.avif" in html
-    assert 'alt=""' in html and 'loading="eager"' in html and "prefers-color-scheme: dark" in html
+    assert 'alt=""' in html and 'loading="eager"' in html
+    # v4.1: día e noite superpostos; o tema (.theme-dark) escolle cal se ve
+    assert "illus--day" in html and "illus--night" in html and html.count('loading="eager"') == 1
 
 
 def test_empty_states_are_lazy_and_decorative():

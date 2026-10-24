@@ -67,3 +67,28 @@ def test_shared_calendar(client, admin_a, padel_a):
     assert (
         client.get("/c/concello-a/operario/calendario/").status_code == 403
     )  # a app do operario é só súa
+
+
+def test_operator_day_filter_tomorrow(client, operator_a, padel_a):
+    """v4.1: filtro «Hoxe» / «Mañá»; sen ordes mañá vese o estado baleiro de mantemento."""
+    from django.utils import timezone
+
+    tomorrow = timezone.localdate() + dt.timedelta(days=1)
+    WorkOrder.objects.create(
+        municipality=padel_a.municipality,
+        facility=padel_a,
+        title="Revisar redes",
+        due_date=tomorrow,
+    )
+    client.force_login(operator_a)
+    html = client.get("/c/concello-a/operario/?dia=manha").content.decode()
+    assert (
+        "Revisar redes" in html
+        and "Mañá está todo ao día" not in html
+        and 'aria-current="page">Mañá' in html
+    )
+    WorkOrder.objects.filter(due_date=tomorrow).update(status=WorkOrder.Status.DONE)
+    html = client.get("/c/concello-a/operario/?dia=manha").content.decode()
+    assert "Mañá está todo ao día" in html and "baleiro-mantemento" in html
+    html = client.get("/c/concello-a/operario/").content.decode()
+    assert 'aria-current="page">Hoxe' in html and "Revisar redes" not in html

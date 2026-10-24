@@ -7,13 +7,19 @@ polo que funcionan sen JavaScript.
 
 COOKIE = "eira_prefs"
 KEYS = ("large_text", "high_contrast", "reduced_motion")
+# v4.1: tema escollido co botón «Día / Noite» da demo («light» | «dark»), gardado na sesión.
+# Sen valor, segue a preferencia do sistema.
+THEME_KEY = "eira_theme"
 
 
 def read_prefs(request):
     raw = request.COOKIES.get(COOKIE, "")
     active = {k for k in raw.split(".") if k in KEYS}
+    session = getattr(request, "session", None)
+    theme = session.get(THEME_KEY, "") if session is not None else ""
     return {k: (k in active) for k in KEYS} | {
-        "classes": " ".join(f"pref-{k.replace('_', '-')}" for k in sorted(active))
+        "classes": " ".join(f"pref-{k.replace('_', '-')}" for k in sorted(active)),
+        "theme": theme if theme in ("light", "dark") else "",
     }
 
 

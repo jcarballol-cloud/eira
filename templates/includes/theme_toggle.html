@@ -1,0 +1,8 @@
+{% load i18n eira %}{# v4.1: botón «Día / Noite» do simulador; sen JS, envía o formulario e volve á páxina #}
+<form method="post" action="{% url 'dev:theme' %}" class="theme-toggle{% if css %} {{ css }}{% endif %}" data-theme-toggle>{% csrf_token %}
+  <input type="hidden" name="tema" value="{% if prefs.theme == 'dark' %}light{% else %}dark{% endif %}">
+  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+  <button type="submit" class="theme-toggle__btn" aria-pressed="{% if prefs.theme == 'dark' %}true{% else %}false{% endif %}" title="{% translate 'Cambia entre o tema de día e o de noite' %}">
+    <span class="theme-toggle__day" aria-hidden="true">☀️</span> {% translate "Día" %} / <span class="theme-toggle__night" aria-hidden="true">🌙</span> {% translate "Noite" %}
+  </button>
+</form>

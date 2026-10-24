@@ -26,6 +26,7 @@
         <a href="{% url 'dev:telegram' %}" {% if tool == 'telegram' %}aria-current="page"{% endif %}>{% icon 'share' %} Telegram</a>
         <a href="{% url 'dev:outbox' %}" {% if tool == 'outbox' %}aria-current="page"{% endif %}>{% icon 'phone' %} {% translate "Outras canles" %}</a>
         <a href="{% url 'dev:lock_simulator' %}" {% if tool == 'lock' %}aria-current="page"{% endif %}>{% icon 'lock' %} {% translate "Pechadura" %}</a>
+        <a href="{% url 'dev:illustrations' %}" {% if tool == 'illustrations' %}aria-current="page"{% endif %}>{% icon 'image' %} {% translate "Ilustracións" %}</a>
       </nav>{% endblock %}
     </div>
   </header>

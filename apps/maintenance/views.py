@@ -32,20 +32,22 @@ def operator_orders(request):
 @role_required(*OPERATOR)
 def my_orders(request):
     today = timezone.localdate()
+    tomorrow = request.GET.get("dia") == "manha"  # v4.1: filtro «Hoxe» / «Mañá»
     qs = operator_orders(request).select_related("facility", "incident")
-    pending = (
-        qs.exclude(status=WorkOrder.Status.DONE)
-        .filter(due_date__lte=today + dt.timedelta(days=1))
-        .order_by("due_date")
-    )
+    pending = qs.exclude(status=WorkOrder.Status.DONE)
+    if tomorrow:
+        pending = pending.filter(due_date=today + dt.timedelta(days=1))
+    else:
+        pending = pending.filter(due_date__lte=today)
     done_today = qs.filter(status=WorkOrder.Status.DONE, closed_at__date=today)
     return render(
         request,
         "maintenance/my_orders.html",
         {
-            "pending": pending,
+            "pending": pending.order_by("due_date"),
             "done_today": done_today,
             "today": today,
+            "tomorrow": tomorrow,
             "nav": "operator",
         },
     )

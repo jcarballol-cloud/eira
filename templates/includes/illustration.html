@@ -1,7 +1,16 @@
-<picture class="illus{% if css %} {{ css }}{% endif %}">{% if night_avif %}
-  <source media="(prefers-color-scheme: dark)" type="image/avif" srcset="{{ night_avif }}" sizes="{{ sizes }}">
-  <source media="(prefers-color-scheme: dark)" type="image/webp" srcset="{{ night_webp }}" sizes="{{ sizes }}">{% endif %}
+{% if night_avif %}<span class="illus-swap{% if css %} {{ css }}{% endif %}">
+<picture class="illus illus--day">
   <source type="image/avif" srcset="{{ avif }}" sizes="{{ sizes }}">
   <source type="image/webp" srcset="{{ webp }}" sizes="{{ sizes }}">
   <img src="{{ src }}" alt="" width="{{ width }}" height="{{ height }}" decoding="async" {% if eager %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
 </picture>
+<picture class="illus illus--night">
+  <source type="image/avif" srcset="{{ night_avif }}" sizes="{{ sizes }}">
+  <source type="image/webp" srcset="{{ night_webp }}" sizes="{{ sizes }}">
+  <img src="{{ night_src }}" alt="" width="{{ width }}" height="{{ height }}" decoding="async" loading="lazy">
+</picture>
+</span>{% else %}<picture class="illus{% if css %} {{ css }}{% endif %}">
+  <source type="image/avif" srcset="{{ avif }}" sizes="{{ sizes }}">
+  <source type="image/webp" srcset="{{ webp }}" sizes="{{ sizes }}">
+  <img src="{{ src }}" alt="" width="{{ width }}" height="{{ height }}" decoding="async" {% if eager %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
+</picture>{% endif %}

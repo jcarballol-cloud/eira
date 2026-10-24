@@ -32,6 +32,7 @@ from apps.bookings.services import slot_starts
 from apps.facilities.catalog import TEMPLATES, apply_template
 from apps.facilities.models import Closure, Facility, Parish
 from apps.incidents.models import Incident
+from apps.integrations.demo import NEW_NEIGHBOUR
 from apps.integrations.models import DevMail, FakePayment, OutboundMessage
 from apps.maintenance.models import WorkOrder
 from apps.maintenance.services import generate_orders
@@ -270,6 +271,7 @@ class Command(BaseCommand):
             self.persona_bookings()
             self.seed_activities()
             self.seed_notices()
+            self.new_neighbour()
         self.stdout.write(
             self.style.SUCCESS(
                 f"Demo lista: {Municipality.objects.count()} concellos, {Facility.objects.count()} instalacións, "
@@ -721,6 +723,12 @@ class Command(BaseCommand):
             WorkOrder.objects.filter(municipality=m, due_date__gte=today).update(
                 assigned_to=staff.user
             )
+            if m.slug == "vilardeiras":
+                # v4.1: Brais adiantou hoxe as tarefas de mañá, así o filtro «Mañá» do operario
+                # mostra o estado baleiro «todo ao día» (o xerador non as volve crear).
+                WorkOrder.objects.filter(
+                    municipality=m, due_date=today + dt.timedelta(days=1)
+                ).update(status=WorkOrder.Status.DONE, closed_at=timezone.now())
         people = self.users["neighbours"]
         specs = [
             (
@@ -925,6 +933,14 @@ class Command(BaseCommand):
             d = Dependent.objects.create(household=hh, first_name=name, birth_year=year)
             Consent.objects.create(dependent=d, kind="data", granted_by=uxia)
             Consent.objects.create(dependent=d, kind="performance", granted_by=uxia)
+
+    def new_neighbour(self):
+        """v4.1: Brais, veciño novo de Vilardeiras, dado de alta despois de todo o demais: sen
+        reservas, avisos nin inscricións, para que se vexan os estados baleiros."""
+        m = Municipality.objects.get(slug="vilardeiras")
+        user = User.objects.create_user(NEW_NEIGHBOUR, display_name="Brais", birth_year=2001)
+        Membership.objects.create(user=user, municipality=m, role=Role.CITIZEN)
+        Residency.objects.create(user=user, municipality=m, method=Residency.Method.COUNTER)
 
     def seed_notices(self):
         """v4: avisos do concello, preferencias, bot de Telegram e correos coherentes coas reservas."""

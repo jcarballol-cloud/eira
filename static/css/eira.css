@@ -611,6 +611,7 @@ html.pref-reduced-motion *, html.pref-reduced-motion *::before, html.pref-reduce
   .framed-app .shell {
     width: 390px; height: min(844px, calc(100dvh - 90px)); flex: none; border-radius: 44px;
     border: 11px solid #1B2226; box-shadow: 0 30px 70px rgb(22 37 43 / 28%); overflow: hidden;
+    max-height: calc(100dvh - 140px);
   }
 }
 @media (min-width: 1100px) {
@@ -618,6 +619,7 @@ html.pref-reduced-motion *, html.pref-reduced-motion *::before, html.pref-reduce
   .framed-tablet .shell {
     width: 1024px; height: min(768px, calc(100dvh - 90px)); flex: none; border-radius: 32px;
     border: 14px solid #1B2226; box-shadow: 0 30px 70px rgb(22 37 43 / 28%); overflow: hidden;
+    max-height: calc(100dvh - 140px);
   }
 }
 .framed .site-footer { display: none; }
@@ -1341,15 +1343,23 @@ table.stats-table td.num, table.stats-table th.num { white-space: normal; }
 .filter-panel:not([open]) .filter-panel__body { display: none; }
 
 /* ---------- v4: configuración do concello en seccións ---------- */
+/* Columna de módulos fixa (280 px) e sticky; por debaixo de 1200 px vai debaixo do formulario.
+   As seccións emparéllanse por altura (ver DECISIONS: grella e non masonry) e as filas estíranse. */
 .settings-layout { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr); }
-@container pane (min-width: 980px) { .settings-layout { grid-template-columns: minmax(0, 1fr) 18rem; } .settings-side { position: sticky; top: 1rem; align-self: start; } }
-.settings-main { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr); align-content: start; align-items: start; }
-@container pane (min-width: 760px) { .settings-main { grid-template-columns: repeat(2, minmax(0, 1fr)); } .settings-section--wide { grid-column: 1 / -1; } }
+@media (min-width: 1200px) { .settings-layout { grid-template-columns: minmax(0, 1fr) 280px; } .settings-side { position: sticky; top: 1rem; align-self: start; max-height: calc(100dvh - 2rem); overflow-y: auto; } }
+.settings-side { min-width: 0; }
+.settings-side fieldset { min-width: 0; margin: 0; }
+.settings-main { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr); align-content: start; }
+@container pane (min-width: 640px) { .settings-main { grid-template-columns: repeat(2, minmax(0, 1fr)); } .settings-section--wide { grid-column: 1 / -1; } }
+.settings-section { min-width: 0; }
 .settings-section h2 { margin-top: 0; }
-.settings-section .form-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr)); }
-.settings-section--wide .form-grid { grid-template-columns: minmax(0, 1fr); }
+.settings-section .form-grid { grid-template-columns: minmax(0, 1fr); }
+.settings-section--mapa .form-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); }
+.settings-section--mapa .field:first-child { grid-column: 1 / -1; }
+.settings-section input:not([type=checkbox]):not([type=color]), .settings-section textarea { width: 100%; max-width: 100%; }
 .settings-section .field { margin-bottom: .6rem; }
 .settings-side .form-actions { margin-top: .5rem; }
+@media (max-width: 1199.98px) { .settings-side .form-actions { display: none; } } /* debaixo xa está o «Gardar» do formulario */
 
 /* ---------- v4: espazado (familia e consentimentos) ---------- */
 .card-compact { padding: .85rem 1rem; }
@@ -1377,25 +1387,32 @@ table.stats-table td.num, table.stats-table th.num { white-space: normal; }
    sobre un degradado de papel que garante contraste AA (granito sobre ≥ 85 % de papel). */
 .app-hello--art { position: relative; overflow: hidden; border-radius: var(--radius); min-height: clamp(7.5rem, 32cqi, 11rem); display: flex; align-items: center; background: #EDE8DA; }
 .app-hello--art .app-hello__art { position: absolute; inset: 0; }
+.app-hello--art .app-hello__art .illus { height: 100%; }
 .app-hello--art .app-hello__art img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 60%; }
 .app-hello--art::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(90deg, rgb(247 244 236 / 94%) 0%, rgb(247 244 236 / 86%) 34%, rgb(247 244 236 / 30%) 62%, rgb(247 244 236 / 0%) 78%); }
 .app-hello--art .app-hello__text { position: relative; z-index: 2; padding: .9rem 1rem; max-width: 62%; }
 .app-hello--art h1, .app-hello--art .eyebrow { color: var(--granito); }
 .app-hello--art .eyebrow { color: #2B4A3A; }
-@media (prefers-color-scheme: dark) {
-  .app-hello--art { background: #142130; }
-  .app-hello--art::before { background: linear-gradient(90deg, rgb(14 26 36 / 92%) 0%, rgb(14 26 36 / 80%) 36%, rgb(14 26 36 / 25%) 64%, rgb(14 26 36 / 0%) 80%); }
-  .app-hello--art h1 { color: #FFFFFF; }
-  .app-hello--art .eyebrow { color: #F2C46B; }
-}
+.theme-dark .app-hello--art { background: #142130; }
+.theme-dark .app-hello--art::before { background: linear-gradient(90deg, rgb(14 26 36 / 92%) 0%, rgb(14 26 36 / 80%) 36%, rgb(14 26 36 / 25%) 64%, rgb(14 26 36 / 0%) 80%); }
+.theme-dark .app-hello--art h1 { color: #FFFFFF; }
+.theme-dark .app-hello--art .eyebrow { color: #F2C46B; }
+/* v4.1: día e noite superpostos; o tema escolle cal se ve, cun crossfade suave */
+.illus-swap { position: relative; display: block; }
+.illus-swap > .illus { transition: opacity .6s ease; }
+.illus-swap > .illus--night { position: absolute; inset: 0; opacity: 0; }
+.theme-dark .illus-swap > .illus--day { opacity: 0; }
+.theme-dark .illus-swap > .illus--night { opacity: 1; }
 /* Texto grande: a ilustración pasa debaixo do saúdo, sen superposición */
 html.pref-large-text .app-hello--art { display: flex; flex-direction: column-reverse; align-items: stretch; min-height: 0; background: none; }
 html.pref-large-text .app-hello--art::before { content: none; }
 html.pref-large-text .app-hello--art .app-hello__text { max-width: none; padding: 0 0 .5rem; }
 html.pref-large-text .app-hello--art .app-hello__art { position: static; display: block; border-radius: var(--radius); overflow: hidden; }
 html.pref-large-text .app-hello--art .app-hello__art img { height: auto; aspect-ratio: 3 / 1; }
-@media (prefers-color-scheme: dark) { html.pref-large-text .app-hello--art h1 { color: var(--granito); } html.pref-large-text .app-hello--art .eyebrow { color: #2B4A3A; } }
+html.pref-large-text .app-hello--art .app-hello__art .illus { height: auto; }
+html.theme-dark.pref-large-text .app-hello--art h1 { color: var(--text); }
+html.theme-dark.pref-large-text .app-hello--art .eyebrow { color: #F2C46B; }
 /* Alto contraste: sen ilustración detrás do texto */
 html.pref-high-contrast .app-hello--art .app-hello__art, html.pref-high-contrast .hero--art .hero__art { display: none; }
 html.pref-high-contrast .app-hello--art::before { content: none; }
@@ -1408,8 +1425,84 @@ html.pref-high-contrast .app-hello--art { min-height: 0; background: none; }
 .empty-art { display: block; width: min(16rem, 80%); margin: 0 auto .75rem; }
 .empty-art img { border-radius: var(--radius); }
 /* Sen animacións: nada que respectar en prefers-reduced-motion, pero que ningún tema as engada */
-@media (prefers-reduced-motion: reduce) { .illus img { transition: none; animation: none; } }
+@media (prefers-reduced-motion: reduce) { .illus img, .illus-swap > .illus { transition: none; animation: none; } }
+html.pref-reduced-motion .illus-swap > .illus { transition: none; }
 .empty-state { text-align: center; padding: 1rem; list-style: none; }
 .empty-state--wide { grid-column: 1 / -1; }
 .empty-art--icon { width: 8rem; }
 .empty-art--icon img { border-radius: 50%; }
+
+/* ---------- v4.1: catálogo de ilustracións (ferramentas da demo) ---------- */
+.illus-catalog { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr)); padding: 0; margin: 0; }
+.illus-catalog__item { display: flex; flex-direction: column; gap: .35rem; }
+.illus-catalog__item h2 { margin: .5rem 0 0; }
+.illus-catalog__art img { border-radius: var(--radius-sm); aspect-ratio: 4 / 3; object-fit: cover; background: #E7E3D6; }
+.illus-catalog form { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-top: auto; }
+.illus-catalog__item > .btn { margin-top: auto; align-self: flex-start; }
+
+/* ---------- v4.1: botón «Día / Noite» da demo ---------- */
+.theme-toggle { margin: 0; display: inline-flex; }
+.theme-toggle__btn {
+  display: inline-flex; align-items: center; gap: .3rem; min-height: 32px; padding: .2rem .6rem; border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 35%); background: transparent; color: #fff; font: inherit; font-weight: 600; cursor: pointer;
+}
+.theme-toggle__btn:hover { background: rgb(255 255 255 / 12%); }
+.theme-toggle__btn[aria-pressed="true"] { background: #2B3D44; border-color: var(--millo); }
+.theme-toggle__btn[aria-pressed="false"] .theme-toggle__night, .theme-toggle__btn[aria-pressed="true"] .theme-toggle__day { opacity: .55; }
+.theme-toggle--frame { display: none; }
+@media (min-width: 700px) {
+  .framed-app .theme-toggle--frame { display: inline-flex; margin-bottom: 12px; }
+  .framed-app .theme-toggle--frame .theme-toggle__btn, .framed-tablet .theme-toggle--frame .theme-toggle__btn { background: var(--granito); color: #fff; border-color: var(--granito); min-height: 40px; padding: .35rem .9rem; box-shadow: var(--shadow-1); }
+}
+@media (min-width: 1100px) { .framed-tablet .theme-toggle--frame { display: inline-flex; margin-bottom: 12px; } }
+.framed .stage { flex-direction: column; }
+
+/* ---------- v4.1: tema escuro da app (veciñanza, operario e tableta) ----------
+   Mesmos nomes de token con valores de noite: o fondo (branco/papel) pasa a escuro, o texto
+   (granito) a claro e as cores de acción aclaran para levar texto escuro enriba.
+   Contrastes AA comprobados con axe (tests/e2e/test_dark_theme.py). */
+html.theme-dark body.themable {
+  --granito: #E9EFEC;
+  --granito-2: #C9D4CF;
+  --musgo: #7FC8A2;
+  --musgo-escuro: #9AD9B7;
+  --musgo-claro: #5FAE87;
+  --neboa: #1D3A2D;
+  --papel: #0F1A1F;
+  --branco: #172429;
+  --millo: #F0B652;
+  --millo-claro: #3B3016;
+  --arxila: #F08E74;
+  --arxila-texto: #F6A892;
+  --arxila-claro: #3E2219;
+  --pedra: #A7B3AE;
+  --liña: #3A4D55;
+  --bg: #0F1A1F;
+  --surface: #172429;
+  --surface-2: #1C2C32;
+  --text: #E9EFEC;
+  --text-muted: #AEBBB6;
+  --stage: #0A1215;
+  --hair: rgb(255 255 255 / 10%);
+  --shadow: 0 1px 2px rgb(0 0 0 / 40%), 0 4px 16px rgb(0 0 0 / 30%);
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 40%), 0 2px 10px rgb(0 0 0 / 30%);
+  color-scheme: dark;
+}
+/* D = html.theme-dark body.themable */
+html.theme-dark body.themable .demo-bar { background: #050B0D; }
+html.theme-dark body.themable .demo-bar a, html.theme-dark body.themable .theme-toggle__btn { color: #fff; }
+html.theme-dark body.themable .theme-toggle--frame .theme-toggle__btn { background: #2B3D44; border-color: var(--millo); }
+/* Código de acceso: millo sobre granito escuro, como de día */
+html.theme-dark body.themable .access-code { background: #0A1215; border: 1px solid var(--liña); }
+html.theme-dark body.themable .btn-accent, html.theme-dark body.themable .btn-accent:hover { color: #1A1406; }
+/* Fondos de cor clara fixa → tons escuros */
+html.theme-dark body.themable :is(.badge-ok, .alert-success, .slot-free, .slot-few, .heat .h1, .timeline li.done, .name-toggle[aria-pressed="true"], .result--ok .result__icon) { background: var(--neboa); color: #BFE8D2; border-color: #2F5A45; }
+html.theme-dark body.themable :is(.badge-warn, .slot-recommended, .app-alert, .kiosk__sync.is-warn, .consult-banner, .consult-banner a) { color: #F6D79A; border-color: #6B5320; }
+html.theme-dark body.themable .app-alert--family { color: #CFEBDC; }
+html.theme-dark body.themable :is(.badge-muted, .cal .day li.done) { background: #26343A; color: #C9D4CF; }
+/* Texto branco fixo sobre cores que de noite aclaran → texto escuro */
+html.theme-dark body.themable :is(.lg-mine, .pill-mine, .kiosk__count, .seg a[aria-current="page"], a.chip[aria-current="page"], .segmented a[aria-current="page"], .count-badge, .daychip[aria-selected="true"], a.pill[aria-current="true"], .picksum, .kiosk__modebtn[aria-pressed="true"], .crest--region, .cal-week thead th.is-today a) { color: var(--branco); }
+/* Tarxetas «escuras» de día (próxima reserva, desconto): de noite seguen escuras, cun bordo */
+html.theme-dark body.themable :is(.app-card--hero, .slot-discount) { background: #0A1215; }
+html.theme-dark body.themable .app-card--hero { color: var(--text); border: 1px solid var(--liña); }
+html.theme-dark body.themable .app-card--hero .btn { color: #1A1406; }

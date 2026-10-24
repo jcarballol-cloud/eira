@@ -498,3 +498,33 @@ Formato: data · decisión · motivo · alternativas descartadas.
 - **Portada da demo:** a mesma ilustración, `lazy`, como fondo ao 20 % detrás do granito.
 - **Estados baleiros:** reservas (inicio e «As miñas reservas»), avisos, «Todo feito por hoxe» do operario e busca de instalacións sen resultados (icona 1:1).
 - Créditos en `CREDITS.md`, `assets-originais/CREDITS.md` e a páxina `/creditos/`.
+
+## v4.1 · Axustes visuais rápidos (24/10)
+- **Configuración do concello: grella de dúas columnas con seccións emparelladas, non masonry.**
+  - Con `columns` de CSS a orde visual vai por columnas (abaixo e despois á dereita). Quen le ou navega co teclado salta da última sección da columna 1 á primeira da 2, e as tarxetas pódense partir entre columnas.
+  - Por iso reordénanse as seccións para que cada fila teña dúas de altura parecida: Identidade + Padrón e Contacto + Regras de reserva. Mapa e Textos legais ocupan as dúas columnas.
+  - As filas estíranse (`align-items: stretch`), así que non quedan ocos. A orde do DOM, a das pestanas (chips) e a do foco son a mesma ca a visual.
+  - **Columna de módulos:** 280 px fixos e `sticky` desde 1200 px de xanela. Por debaixo vai debaixo do formulario e sen o seu «Gardar», que sería duplicado. O `fieldset` ten `min-width: 0`: polo `min-content` por defecto do navegador era o que podía empurrar a columna fóra.
+  - **Campos que se cortaban:** Contacto vai nunha soa columna dentro da tarxeta, os campos ocupan o 100 % e o contacto do DPD é un `textarea` de 2 liñas. Só cambia o widget, sen migración.
+  - **Padrón:** a nota «as altas automáticas usan o padrón cargado en CSV» xa está na axuda do campo. Debaixo só queda a ligazón «Cargar o padrón».
+- **Tema escuro (botón «Día / Noite» da demo):**
+  - **Onde se garda:** `request.session["eira_theme"]` («light» | «dark»). O servidor pon `data-theme` no `<html>`; sen valor, segue a preferencia do sistema.
+  - **Unha soa clase:** o CSS só mira `.theme-dark`. Ponse un script síncrono e moi pequeno no `<head>` (`static/js/theme.js`, sen JS en liña polo CSP), que resolve «escolla da sesión ou sistema» antes de pintar e escoita os cambios do sistema. Así non hai que duplicar as regras nun `@media (prefers-color-scheme)`. Sen JS, o tema escollido segue funcionando porque o servidor tamén pon a clase.
+  - **Alcance:** só a app da veciñanza, a do operario e a tableta (`body.themable`). O escritorio do concello segue claro: non está auditado en escuro e non se pediu.
+  - **Paleta:** os mesmos tokens con valores de noite. O fondo (papel, branco) pasa a escuro, o texto (granito) a claro e as cores de acción (musgo, millo, arxila) aclaran e levan texto escuro enriba.
+    - As cores fixas que había no CSS (insignias, avisos, fondos claros de estado e texto branco sobre musgo ou granito) corríxense nun bloque final.
+    - O código de acceso e a tarxeta da próxima reserva seguen escuros, cun bordo.
+  - **Verificación:** axe sen violacións en 31 pantallas en escuro (`tests/e2e/test_dark_theme.py`).
+  - **O botón:** é un formulario POST a `/dev/tema/`, que sen JS recarga a páxina. Con JS cambia o tema ao momento, anúnciao por `aria-live` e gárdao con `fetch` (204). Leva `aria-pressed` (true = noite).
+  - Vai na barra de demo e enriba do marco do dispositivo. O cambio de perfil da demo conserva o tema.
+- **Ilustración día/noite con crossfade:** cando hai versión nocturna van as dúas `<picture>` superpostas. Só a de día é `eager`; a de noite é `lazy`.
+  - O tema cambia a opacidade cunha transición de 0,6 s, que se anula con `prefers-reduced-motion` ou coa preferencia «movemento reducido».
+  - Xa non se usa `<source media="(prefers-color-scheme: dark)">`, que non podería obedecer ao botón.
+- **Perfil «Brais · veciño novo» (`brais.novo@demo.eira.example`):**
+  - Mantense o nome pedido aínda que xa hai un Brais operario. O rol que se ve na barra e na portada («veciño novo» / «operario de mantemento») distíngueos.
+  - A seed créao ao final, despois dos avisos masivos, para que non teña reservas, avisos nin inscricións.
+- **Mantemento «todo ao día»:**
+  - O operario ten un filtro «Hoxe» (atrasadas e de hoxe, por defecto) / «Mañá».
+  - Na seed, Brais deixou feitas hoxe as ordes de mañá, así que «Mañá» mostra o estado baleiro. O xerador non as volve crear porque xa existen.
+  - **Cambio:** antes a lista por defecto incluía mañá; agora mañá vai no seu filtro.
+- **Catálogo de ilustracións** en `/dev/ilustracions/`, só con `EIRA_DEMO_TOOLS`. Cada ilustración ten un botón «Ir á pantalla» que entra co perfil axeitado: `entrar-como` acepta `next` (só local) e `tema`.

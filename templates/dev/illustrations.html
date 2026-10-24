@@ -1,0 +1,27 @@
+{% extends "dev/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Ilustracións" %}{% endblock %}
+{% block content %}
+<div class="devtool__head"><h1>{% translate "Ilustracións da app" %}</h1>
+  <p>{% translate "Todas as ilustracións propias, a pantalla onde aparece cada unha e un atallo para vela co perfil axeitado." %}</p></div>
+<ul class="illus-catalog" role="list">
+  {% for it in items %}
+  <li class="card illus-catalog__item">
+    {% illustration it.name sizes="(max-width: 700px) 100vw, 22rem" css="illus-catalog__art" %}
+    <h2 class="h3">{{ it.title }}</h2>
+    <p class="mono small mb-0">{{ it.name }}</p>
+    <p>{{ it.where }}</p>
+    {% if it.persona %}
+    <form method="post" action="{% url 'dev:login_as' %}">{% csrf_token %}
+      <input type="hidden" name="email" value="{{ it.persona }}">
+      <input type="hidden" name="next" value="{{ it.url }}">
+      {% if it.theme %}<input type="hidden" name="tema" value="{{ it.theme }}">{% endif %}
+      <button class="btn btn-secondary" type="submit">{% translate "Ir á pantalla" %}<span class="visually-hidden">: {{ it.title }}</span></button>
+      <span class="help">{% blocktranslate with who=it.persona_label %}Entra como {{ who }}{% endblocktranslate %}</span>
+    </form>
+    {% else %}
+    <a class="btn btn-secondary" href="{{ it.url }}">{% translate "Ir á pantalla" %}<span class="visually-hidden">: {{ it.title }}</span></a>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -13,4 +13,6 @@ urlpatterns = [
     path("clave/", views.clave, name="clave"),
     path("lock-simulator/", views.lock_simulator, name="lock_simulator"),
     path("entrar-como/", views.login_as, name="login_as"),
+    path("tema/", views.theme, name="theme"),
+    path("ilustracions/", views.illustrations, name="illustrations"),
 ]

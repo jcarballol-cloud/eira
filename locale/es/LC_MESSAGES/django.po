@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Eira 0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-24 02:57+0200\n"
-"PO-Revision-Date: 2026-10-24 02:10+0200\n"
+"PO-Revision-Date: 2026-10-24 02:57+0200\n"
 "Last-Translator: Equipo Eira\n"
 "Language-Team: Equipo Eira\n"
 "Language: es\n"
@@ -9765,3 +9765,77 @@ msgstr "Crear ayuntamiento"
 #: templates/region/new_municipality.html:36
 msgid "Atrás"
 msgstr "Atrás"
+
+msgid "Mañá está todo ao día!"
+msgstr "¡Mañana está todo al día!"
+
+msgid "Cambia entre o tema de día e o de noite"
+msgstr "Cambia entre el tema de día y el de noche"
+
+msgid "Noite"
+msgstr "Noche"
+
+msgid "Ilustracións da app"
+msgstr "Ilustraciones de la app"
+
+msgid ""
+"Todas as ilustracións propias, a pantalla onde aparece cada unha e un atallo"
+" para vela co perfil axeitado."
+msgstr ""
+"Todas las ilustraciones propias, la pantalla donde aparece cada una y un "
+"atajo para verla con el perfil adecuado."
+
+msgid "Ir á pantalla"
+msgstr "Ir a la pantalla"
+
+msgid "Entra como %(who)s"
+msgstr "Entra como %(who)s"
+
+msgid "Cabeceira da app · día"
+msgstr "Cabecera de la app · día"
+
+msgid "Inicio da app da veciñanza, co tema de día."
+msgstr "Inicio de la app vecinal, con el tema de día."
+
+msgid "Cabeceira da app · noite"
+msgstr "Cabecera de la app · noche"
+
+msgid "Inicio da app da veciñanza, co tema escuro (botón «Día / Noite»)."
+msgstr "Inicio de la app vecinal, con el tema oscuro (botón «Día / Noche»)."
+
+msgid "Sen reservas"
+msgstr "Sin reservas"
+
+msgid "«As miñas reservas» e o inicio da app dunha persoa sen reservas."
+msgstr "«Mis reservas» y el inicio de la app de una persona sin reservas."
+
+msgid "Sen avisos"
+msgstr "Sin avisos"
+
+msgid "Avisos dunha persoa que aínda non recibiu ningún."
+msgstr "Avisos de una persona que aún no ha recibido ninguno."
+
+msgid "Mantemento ao día"
+msgstr "Mantenimiento al día"
+
+msgid "App do operario, filtro «Mañá» sen ordes pendentes."
+msgstr "App del operario, filtro «Mañana» sin órdenes pendientes."
+
+msgid "Sen resultados"
+msgstr "Sin resultados"
+
+msgid "Instalacións cun filtro sen resultados (e páxina de créditos)."
+msgstr "Instalaciones con un filtro sin resultados (y página de créditos)."
+
+msgid "Veciño novo"
+msgstr "Vecino nuevo"
+
+msgid "App da veciñanza sen actividade"
+msgstr "App vecinal sin actividad"
+
+msgid ""
+"Acaba de darse de alta: sen reservas, avisos nin inscricións (estados "
+"baleiros)."
+msgstr ""
+"Acaba de darse de alta: sin reservas, avisos ni inscripciones (estados "
+"vacíos)."

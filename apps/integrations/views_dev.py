@@ -6,7 +6,7 @@ import datetime as dt
 import secrets
 
 from django.contrib.auth import login
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
@@ -16,9 +16,9 @@ from django.views.decorators.http import require_POST
 from apps.access.models import LockDevice
 from apps.access.services import validate_code
 from apps.accounts.models import User
-from apps.tenants.prefs import write_prefs
+from apps.tenants.prefs import THEME_KEY, write_prefs
 
-from .demo import DEMO_PERSONAS
+from .demo import DEMO_PERSONAS, NEW_NEIGHBOUR
 from .identity import FAKE_IDENTITIES
 from .models import DevMail, FakePayment, OutboundMessage
 
@@ -195,6 +195,13 @@ def lock_simulator(request):
     )
 
 
+def safe_next(request, fallback):
+    target = request.POST.get("next") or request.GET.get("next") or ""
+    if target and url_has_allowed_host_and_scheme(target, allowed_hosts={request.get_host()}):
+        return target
+    return fallback
+
+
 @require_POST
 def login_as(request):
     email = request.POST.get("email", "")
@@ -204,8 +211,85 @@ def login_as(request):
     user = User.objects.filter(email=email).first()
     if user is None:
         raise Http404("Executa `make seed` primeiro")
+    # login() baleira a sesión: o tema da demo mantense (ou cámbiase se vén do catálogo)
+    theme = request.POST.get("tema") or request.session.get(THEME_KEY)
     login(request, user, backend="django.contrib.auth.backends.ModelBackend")
+    if theme in ("light", "dark"):
+        request.session[THEME_KEY] = theme
     from apps.accounts.profiles import home_url
 
-    response = redirect(home_url(user))
+    response = redirect(safe_next(request, home_url(user)))
     return write_prefs(response, {persona.get("prefs"): True} if persona.get("prefs") else {})
+
+
+@require_POST
+def theme(request):
+    """v4.1: botón «Día / Noite» do simulador. Garda o tema na sesión; «system» volve á
+    preferencia do sistema. Con JS respóndese 204 (o cambio xa se fixo no navegador)."""
+    value = request.POST.get("tema", "")
+    if value in ("light", "dark"):
+        request.session[THEME_KEY] = value
+    else:
+        request.session.pop(THEME_KEY, None)
+    if request.headers.get("X-Eira-Theme"):
+        return HttpResponse(status=204)
+    return redirect(safe_next(request, request.headers.get("Referer") or "/"))
+
+
+def illustrations(request):
+    """v4.1: catálogo das ilustracións (día, noite e estados baleiros) coa pantalla onde aparece
+    cada unha e un atallo para ir a ela co perfil axeitado."""
+    from django.utils.translation import gettext as _
+
+    c = "/c/vilardeiras"
+    items = [
+        {
+            "name": "cabecera-eira",
+            "title": _("Cabeceira da app · día"),
+            "where": _("Inicio da app da veciñanza, co tema de día."),
+            "persona": "uxia@demo.eira.example",
+            "url": f"{c}/app/",
+            "theme": "light",
+        },
+        {
+            "name": "cabecera-eira-noite",
+            "title": _("Cabeceira da app · noite"),
+            "where": _("Inicio da app da veciñanza, co tema escuro (botón «Día / Noite»)."),
+            "persona": "uxia@demo.eira.example",
+            "url": f"{c}/app/",
+            "theme": "dark",
+            "night": True,
+        },
+        {
+            "name": "baleiro-reservas",
+            "title": _("Sen reservas"),
+            "where": _("«As miñas reservas» e o inicio da app dunha persoa sen reservas."),
+            "persona": NEW_NEIGHBOUR,
+            "url": f"{c}/reservas/",
+        },
+        {
+            "name": "baleiro-avisos",
+            "title": _("Sen avisos"),
+            "where": _("Avisos dunha persoa que aínda non recibiu ningún."),
+            "persona": NEW_NEIGHBOUR,
+            "url": f"{c}/avisos/",
+        },
+        {
+            "name": "baleiro-mantemento",
+            "title": _("Mantemento ao día"),
+            "where": _("App do operario, filtro «Mañá» sen ordes pendentes."),
+            "persona": "brais@demo.eira.example",
+            "url": f"{c}/operario/?dia=manha",
+        },
+        {
+            "name": "eira-icono-baleiro",
+            "title": _("Sen resultados"),
+            "where": _("Instalacións cun filtro sen resultados (e páxina de créditos)."),
+            "persona": None,
+            "url": f"{c}/?kind=pool",
+        },
+    ]
+    for item in items:
+        persona = next((p for p in DEMO_PERSONAS if p["email"] == item["persona"]), None)
+        item["persona_label"] = f"{persona['name']} ({persona['role']})" if persona else ""
+    return render(request, "dev/illustrations.html", {"items": items, "tool": "illustrations"})

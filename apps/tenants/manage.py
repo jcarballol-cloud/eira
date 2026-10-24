@@ -42,8 +42,11 @@ MODULE_LABELS = {
 }
 
 
+# Orde pensada para a grella de dúas columnas: as seccións curtas van emparelladas (Identidade e
+# Padrón; Contacto e Regras de reserva) e as de campos longos ocupan as dúas columnas.
 SETTINGS_SECTIONS = [
     ("identidade", gettext_lazy("Identidade"), ["name", "accent_color"], False),
+    ("padron", gettext_lazy("Padrón"), ["postcodes"], False),
     (
         "contacto",
         gettext_lazy("Contacto"),
@@ -62,8 +65,7 @@ SETTINGS_SECTIONS = [
         ],
         False,
     ),
-    ("padron", gettext_lazy("Padrón"), ["postcodes"], False),
-    ("mapa", gettext_lazy("Mapa"), ["tile_url", "tile_attribution", "tile_attribution_url"], False),
+    ("mapa", gettext_lazy("Mapa"), ["tile_url", "tile_attribution", "tile_attribution_url"], True),
     (
         "legal",
         gettext_lazy("Textos legais"),
@@ -102,6 +104,8 @@ class SettingsForm(forms.ModelForm):
             "privacy_text": forms.Textarea(attrs={"rows": 4}),
             "accessibility_statement": forms.Textarea(attrs={"rows": 4}),
             "legal_notice": forms.Textarea(attrs={"rows": 3}),
+            # Correo e enderezo xuntos: nunha caixa dunha liña cortábase
+            "dpo_contact": forms.Textarea(attrs={"rows": 2}),
         }
 
     def __init__(self, *args, **kwargs):

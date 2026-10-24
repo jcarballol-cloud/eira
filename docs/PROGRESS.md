@@ -96,3 +96,8 @@ guión de 3 min verificado cun test E2E, 44 capturas automáticas en `docs/captu
 - ✅ 2 busca compacta (unha liña, «Filtros (n)», chips, Lista/Mapa segmentado).
 - ✅ 4 padrón semiautomático (CSV → HMAC, alta automática, cola co motivo, rexistro de cargas, modelo CSV), RAT e capa informativa.
 - ✅ 9 apelidos obrigatorios ao inscribir menores.
+
+## v4.1 · Axustes visuais rápidos (24/10)
+- ✅ Configuración: módulos en columna fixa de 280 px (sticky; debaixo por baixo de 1200 px), seccións emparelladas sen ocos, nota do padrón unha vez, contacto e DPD sen cortes.
+- ✅ Botón «Día / Noite» (barra de demo e enriba do marco), tema na sesión ou do sistema, crossfade da cabeceira (sen animación con movemento reducido), tema escuro AA en veciñanza, operario e tableta.
+- ✅ Perfil «Brais · veciño novo» sen actividade, filtro «Mañá» do operario con estado baleiro e catálogo `/dev/ilustracions/`.

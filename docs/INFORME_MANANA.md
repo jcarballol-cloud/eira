@@ -3,6 +3,26 @@
 **Fecha:** 23/10/2026 · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
 
 
+## v4.1. Ajustes visuales rápidos (24/10)
+
+**Servidor:** <http://localhost:8000> (también en la LAN, `0.0.0.0:8000`) con `EIRA_DEBUG=1`, datos regenerados. Commit local, sin push.
+
+| Qué | Detalle | Verificado |
+|---|---|---|
+| Configuración | Módulos en una columna fija de 280 px, sticky; por debajo de 1200 px pasan bajo el formulario, sin un segundo «Gardar». Secciones emparejadas por altura (Identidade + Padrón, Contacto + Regras) y Mapa y Textos legais a dos columnas: sin huecos. Rejilla y no masonry, para conservar el orden de lectura y de foco (ver DECISIONS). La nota del padrón sale una vez. Correo y DPD sin cortes (el DPD es un `textarea`) | ✅ tests y capturas `v41-configuracion-1280/1100.png` |
+| Botón «Día / Noite» | En la barra de demo y encima del marco del móvil o la tableta. `data-theme` en `<html>`, guardado en la sesión; si no se toca, sigue al sistema. La cabecera hace crossfade día → noche (sin animación con movimiento reducido) | ✅ E2E: alterna, comprueba que la imagen visible pasa a `cabecera-eira-noite`, que persiste al recargar y que vuelve al día; otro E2E con el sistema en oscuro y movimiento reducido |
+| Tema oscuro AA | App de vecindario, operario y tableta (el escritorio del concello sigue claro) | ✅ axe sin violaciones en 31 pantallas en oscuro (`test_dark_theme.py`) |
+| Estados vacíos | Perfil «Brais · veciño novo» en Vilardeiras, sin reservas, avisos ni inscripciones. El operario tiene filtro «Hoxe / Mañá» y «Mañá» está «todo ao día». Catálogo `/dev/ilustracions/` con las 6 ilustraciones, dónde sale cada una y «Ir á pantalla» con el perfil adecuado | ✅ tests y capturas `v41-baleiro-*.png`, `v41-ilustracions-catalogo.png` |
+
+**Pruebas:** tests unitarios y de integración, y 48 E2E (axe en claro × 3 viewports y en oscuro), todo en verde. Ruff limpio. Las 11 capturas están en `docs/capturas/v4/v41-*.png`.
+
+**NO verificado o con límites:**
+- **Escritorio del concello en oscuro:** no tiene tema oscuro y sigue claro aunque el sistema esté en oscuro.
+- **Contraste en oscuro:** solo lo comprueba axe, que no mide bordes, iconos ni foco sobre fondo oscuro. Lo revisé visualmente en capturas de las pantallas principales, pero no una a una.
+- **Dos Brais:** el veciño novo se llama Brais, como el operario; los distingue el rol en la barra y en la portada. Si molesta, basta con cambiar el nombre en `apps/integrations/demo.py` y en la seed.
+- **Cambio en el operario:** la lista por defecto ya no incluye las órdenes de mañana, que ahora van en su propio filtro.
+- **Traducciones nuevas al castellano:** unas 25 cadenas, sin revisión externa.
+
 ## v4. Ajustes tras la revisión (24/10)
 
 **Servidor de demo:** <http://localhost:8000> · LAN `http://<IP do equipo>:8000`, en una ventana de PowerShell aparte («Eira demo · 0.0.0.0:8000», PID 43956), con los datos regenerados justo antes de arrancar. Sin ningún modelo de IA cargado.

@@ -10,6 +10,7 @@ from apps.activities.models import Group, Session
 from apps.bookings.models import Booking
 from apps.facilities.models import Facility
 from apps.incidents.models import Incident
+from apps.integrations.demo import NEW_NEIGHBOUR
 from apps.integrations.models import DevMail
 from apps.maintenance.models import WorkOrder
 from apps.notifications.models import Notice
@@ -70,6 +71,7 @@ def page_sets():
             f"/dev/mailbox/{mail.pk}/",
             "/dev/telegram/",
             "/dev/saida/",
+            "/dev/ilustracions/",
             "/offline/",
             f"{c}/app/solicitar/",
             f"{c}/app/instalar/?codigo=ABCD-2345",
@@ -130,7 +132,9 @@ def page_sets():
             f"{c}/operario/",
             f"{c}/operario/orde/{order.pk}/",
             f"{c}/operario/calendario/",
+            f"{c}/operario/?dia=manha",
         ],
+        NEW_NEIGHBOUR: [f"{c}/app/", f"{c}/reservas/", f"{c}/avisos/"],
         "antia@demo.eira.example": [
             f"{c}/monitor/",
             f"{c}/monitor/sesion/{session.pk}/asistencia/",

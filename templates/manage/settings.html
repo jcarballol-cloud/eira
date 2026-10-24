@@ -13,10 +13,10 @@
   <div class="settings-layout">
     <div class="settings-main">
       {% for s in sections %}
-      <section class="card settings-section{% if s.wide %} settings-section--wide{% endif %}" id="cfg-{{ s.id }}" aria-labelledby="cfg-{{ s.id }}-t">
+      <section class="card settings-section settings-section--{{ s.id }}{% if s.wide %} settings-section--wide{% endif %}" id="cfg-{{ s.id }}" aria-labelledby="cfg-{{ s.id }}-t">
         <h2 class="h3" id="cfg-{{ s.id }}-t">{{ s.title }}</h2>
         <div class="form-grid">{% for field in s.fields %}{% include "includes/field.html" %}{% endfor %}</div>
-        {% if s.id == "padron" %}<p class="help mb-0">{% translate "As altas automáticas usan o padrón cargado en CSV." %} <a href="{% turl 'manage:padron' %}">{% translate "Cargar o padrón" %}</a></p>{% endif %}
+        {% if s.id == "padron" %}<p class="mb-0"><a href="{% turl 'manage:padron' %}">{% translate "Cargar o padrón" %}</a></p>{% endif %}
       </section>
       {% endfor %}
     </div>

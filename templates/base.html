@@ -1,6 +1,6 @@
 {% load static i18n eira %}<!doctype html>
 {% get_current_language as LANG %}
-<html lang="{{ LANG }}" class="{{ prefs.classes }}">
+<html lang="{{ LANG }}" class="{{ prefs.classes }}{% if prefs.theme == 'dark' %} theme-dark{% endif %}"{% if prefs.theme %} data-theme="{{ prefs.theme }}"{% endif %}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -11,13 +11,14 @@
   <link rel="manifest" href="{% url 'manifest' %}">
   <link rel="icon" href="{% static 'img/eira.svg' %}" type="image/svg+xml">
   <link rel="apple-touch-icon" href="{% static 'img/eira-192.png' %}">
+  <script src="{% asset 'js/theme.js' %}"></script>
   <link rel="stylesheet" href="{% asset 'css/eira.css' %}">
   {% if tenant %}<link rel="stylesheet" href="{% turl 'theme_css' %}">{% endif %}
   {% block head %}{% endblock %}
   <script src="{% asset 'vendor/htmx/htmx.min.js' %}" defer></script>
   <script src="{% asset 'js/eira.js' %}" defer></script>
 </head>
-<body class="layout-{{ layout }} kind-{{ kind }}{% if region_consult %} region-consult{% endif %}{% if framed %} framed framed-{{ layout }}{% endif %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' {% block body_attrs %}{% endblock %}>
+<body class="layout-{{ layout }} kind-{{ kind }}{% if layout == 'app' or layout == 'tablet' %} themable{% endif %}{% if region_consult %} region-consult{% endif %}{% if framed %} framed framed-{{ layout }}{% endif %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' {% block body_attrs %}{% endblock %}>
   <a class="skip-link" href="#main">{% translate "Saltar ao contido" %}</a>
   {% if demo_tools %}
   <div class="demo-bar" role="note">
@@ -26,12 +27,13 @@
     <a href="{{ demo_change_url }}" class="demo-bar__change">{% icon 'users' %} {% if demo_persona %}{% translate "Cambiar" %}{% else %}{% translate "Escoller perfil" %}{% endif %}</a>
     <a href="{% url 'dev:mailbox' %}" target="_blank" rel="noopener">{% translate "Correo simulado" %}<span class="visually-hidden"> ({% translate "abre nunha pestana nova" %})</span></a>
     <a href="{% url 'dev:lock_simulator' %}" target="_blank" rel="noopener">{% translate "Pechadura" %}<span class="visually-hidden"> ({% translate "abre nunha pestana nova" %})</span></a>
-    {% if layout == 'app' or layout == 'tablet' %}<a href="?marco={% if framed %}0{% else %}1{% endif %}">{% if framed %}{% translate "Sen marco" %}{% else %}{% translate "Ver en marco" %}{% endif %}</a>{% endif %}
+    {% if layout == 'app' or layout == 'tablet' %}{% include "includes/theme_toggle.html" %}<a href="?marco={% if framed %}0{% else %}1{% endif %}">{% if framed %}{% translate "Sen marco" %}{% else %}{% translate "Ver en marco" %}{% endif %}</a>{% endif %}
   </div>
   {% endif %}
   <div class="offline-banner" id="offline-banner" role="status" hidden>{% translate "Sen conexión. Estás a ver datos gardados; os cambios enviaranse ao recuperar a rede." %}</div>
 
   <div class="stage">
+  {% if framed and demo_tools %}{% include "includes/theme_toggle.html" with css="theme-toggle--frame" %}{% endif %}
   <div class="shell shell-{{ layout }}">
     {% if layout == 'desk' %}{% include "includes/shell_desk.html" %}
     {% elif layout == 'app' or layout == 'tablet' %}{% include "includes/shell_app_header.html" %}

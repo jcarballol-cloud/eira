@@ -3,6 +3,48 @@
 **Fecha:** 23/10/2026 · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
 
 
+## v4. Ajustes tras la revisión (24/10)
+
+**Servidor de demo:** <http://localhost:8000> · LAN `http://<IP do equipo>:8000`, en una ventana de PowerShell aparte («Eira demo · 0.0.0.0:8000», PID 43956), con los datos regenerados justo antes de arrancar. Sin ningún modelo de IA cargado.
+
+**Commits locales**, sin push: `5fb33a9` (1, 2, 3, 4, 6, 7, 9 y 10) y `8fc4c0d` (5 y 8). Antes de corregir, reproduje cada problema con un test o una captura.
+
+| # | Qué | Causa / detalle | Verificado |
+|---|---|---|---|
+| 1 | Cero scroll horizontal en vecindario, operario y tableta | Desbordaban la tabla del historial, los `.kv` con insignias `nowrap` (confirmar, detalle, privacidad), las tarjetas de instalación (insignias largas en una columna `auto`) y la tableta estrecha | ✅ E2E nuevo a 360 y 390 px, texto normal y grande, y dentro del marco (≈ 25 pantallas). Mide: página, panel, elementos fuera y texto que desborda |
+| 1 | Historial en tarjetas compactas en el móvil (fecha · instalación · estado · importe); tabla en escritorio | — | ✅ captura y E2E |
+| 1 | Código de acceso con `clamp()`, siempre en 3+3 («842 261»), lectura dígito a dígito | Un `aria-label` en `<p>` lo marca axe como prohibido, así que va como texto oculto | ✅ captura de Manuel con texto grande a 360 px y axe |
+| 3 | «Cerrada» en la sesión de hoy | Guardar el esfuerzo (formulario al que lleva «Lista rápida») ponía `closed_at` aunque la sesión no hubiera empezado. Además, la seed cerraba las sesiones a las 00:49 de ese mismo día | ✅ tests de estado por hora: Por empezar → Abierta → Terminada → Cerrada |
+| 3 | Salida: tocar el nombre abre el RPE; si no tenía entrada, se marca sola y la monitora ve un aviso discreto (línea gris, chip «marcadas en la salida» y nota en la lista rápida) | — | ✅ tests de la API y del aviso |
+| 3 | Estadísticas de la monitora (solo sus grupos, 8 semanas): asistencia por sesión y media, 3+ faltas seguidas, RPE medio, carga semanal sRPE y pruebas físicas agregadas; cada gráfica con su tabla | — | ✅ 5 tests y axe |
+| 6 | Barras: porcentajes de 0 a 100, satisfacción de 0 a 100, absolutos al máximo con aviso visible; «▼ −42» con signo menos tipográfico, también en el resumen | Todo escalaba al máximo de la serie: 23 % llenaba la barra | ✅ 10 tests de ancho y formato; capturas `docs/capturas/v4/graficas-antes/despois-*` |
+| 7 | Cabecera «Ferramentas da demo» con concello y perfil, «← Volver á demo» a la última página vista y sin «Acceder» | — | ✅ 2 E2E |
+| 10 | Avisos del concello: redacción con vista previa por canal (app, push, correo, Telegram) y estimación; segmentación por toda la vecindad, instalación, descubiertas, actividad o parroquia; programación; cancelación de reservas afectadas | — | ✅ 19 tests (segmentación, preferencias, programación, vinculación del bot, nada sin consentimiento, conservación) y 2 E2E |
+| 10 | Telegram: canal público, bot personal con código de un solo uso, adaptador real (Bot API) con el token **solo en el entorno** y simulador tipo chat | — | ✅ test del adaptador con `urlopen` simulado. **No probado contra Telegram real** |
+| 10 | App: Avisos con chips de categoría y tablón; preferencias con interruptor de consentimiento y canales por categoría; correo de la demo como bandeja real | — | ✅ E2E y axe |
+| 10 | Seed: 18 avisos enviados y 1 programado (Navidad); alerta de viento que cancela 6 reservas exteriores; correos y Telegram coherentes con las reservas | — | ✅ bandeja y Telegram nunca vacíos tras regenerar |
+| 2 | Búsqueda compacta: una línea, «Filtros (n)» desplegable, características como chips, filtros activos quitables, Lista/Mapa segmentado | — | ✅ test y E2E sin scroll |
+| 4 | Padrón semiautomático: CSV → solo HMAC-SHA256 con secreto de instancia; alta automática por DNI/NIE + fecha; cola con el motivo; registro de cargas; plantilla; `PadronAdapter` (CSV por defecto, API futura) | El nombre nunca se usa (la interfaz ni lo recibe) | ✅ 25 tests: coincidencia, sin coincidencia, minúsculas y espacios, formatos de fecha, recarga, CSV no guardado y borrado al resolver |
+| 9 | Apellidos obligatorios al inscribir a un menor en una escuela | — | ✅ test |
+| 5 | Configuración en secciones (Identidade, Contacto, Regras de reserva, Padrón, Mapa, Textos legais) en rejilla, con los módulos en la columna lateral | — | ✅ captura `configuracion-seccions.png` y axe |
+| 8 | Espaciado: familia con interruptores de consentimiento y formulario «Engadir menor» compacto | — | ✅ capturas `espazado-antes/despois-*` |
+
+**Números:** 406 tests unitarios y de integración, y 44 E2E (más los 2 de vídeo, que no se regrabaron), en verde. axe sin violaciones en ≈ 85 páginas × 3 viewports.
+
+**NO verificado o con límites:**
+- **Telegram real:** no se usó ningún bot ni token reales. El adaptador `BotApiTelegramAdapter` sigue la documentación de `sendMessage` y el webhook, pero solo está probado con una respuesta simulada.
+- **Padrón real:** no probé el CSV de ningún padrón real; solo ficticios con distintos separadores y formatos. Un padrón grande (más de 200.000 filas) se corta.
+- **Envío de avisos programados:** depende de que el despliegue llame a `manage.py send_notices` (cron o temporizador de systemd); en la demo no hay cron.
+- **Vídeos de la demo:** no se regrabaron. Las capturas de `docs/capturas/v3/pantallas` sí se regeneraron con la interfaz actual.
+- **Traducciones v4:** las escribí a mano (≈ 190 cadenas) sin revisión externa.
+
+**Decisiones que conviene revisar** (detalle en `docs/DECISIONS.md`, secciones «v4 ·»):
+- **Actividades e inscripciones como «informativos».** Requieren consentimiento aunque vayan solo a las personas inscritas. Es la opción prudente; podrían considerarse de servicio.
+- **Tablón del concello.** En la pantalla Avisos se ven los avisos generales aunque no haya consentimiento, porque consultar no es un envío.
+- **Canales de la demo.** Se llaman `@eira_demo_*`, para no coincidir con canales reales de Telegram.
+- **Secreto del HMAC.** Si no se define `EIRA_PADRON_SECRET`, se deriva de `SECRET_KEY`. Cambiar cualquiera de los dos obliga a recargar el padrón.
+
+
 ## v3. Pulido fino (23–24/10)
 
 **Servidor de demo:** <http://localhost:8000> · LAN `http://<IP do equipo>:8000`.

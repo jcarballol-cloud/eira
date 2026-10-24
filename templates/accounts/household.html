@@ -1,20 +1,22 @@
 {% extends "base.html" %}{% load i18n %}
 {% block title %}{% translate "Unidade familiar" %}{% endblock %}
 {% block content %}
-<div class="page-head"><div><h1>{% translate "Unidade familiar" %}</h1><p>{% translate "Inscribe aos menores ao teu cargo nas escolas deportivas. Os consentimentos son explícitos, revogables e quedan rexistrados con data." %}</p></div></div>
+<div class="page-head"><div><h1>{% translate "Unidade familiar" %}</h1><p class="mb-0">{% translate "Inscribe aos menores ao teu cargo nas escolas deportivas. Os consentimentos son explícitos, revogables e quedan rexistrados con data." %}</p></div></div>
 <div class="layout-aside">
-  <section aria-labelledby="hh-list">
-    <h2 id="hh-list">{% translate "Menores ao teu cargo" %}</h2>
+  <section aria-labelledby="hh-list" class="stack-sm">
+    <h2 id="hh-list" class="h3">{% translate "Menores ao teu cargo" %}</h2>
     {% for d, consents in dependents %}
-      <article class="card mb-2" aria-labelledby="dep-{{ d.pk }}">
-        <h3 id="dep-{{ d.pk }}">{{ d.first_name }} <small>({% blocktranslate with a=d.age %}{{ a }} anos{% endblocktranslate %})</small></h3>
-        <ul class="list">
+      <article class="card card-compact" aria-labelledby="dep-{{ d.pk }}">
+        <h3 id="dep-{{ d.pk }}" class="h4 mb-0">{{ d.first_name }} <small class="muted">({% blocktranslate with a=d.age %}{{ a }} anos{% endblocktranslate %})</small></h3>
+        {# v4: cada consentimento é un interruptor (role=switch) que envía o formulario de sempre #}
+        <ul class="consent-list" role="list">
           {% for value, label, consent in consents %}
-            <li class="row-between">
-              <span>{{ label }}<br>{% if consent %}<span class="badge badge-ok">{% translate "Outorgado" %} {{ consent.granted_at|date:"d/m/Y" }}</span>{% else %}<span class="badge badge-muted">{% translate "Sen consentimento" %}</span>{% endif %}</span>
+            <li class="consent-row">
+              <span class="consent-row__text"><span id="c-{{ d.pk }}-{{ value }}">{{ label }}</span>
+                <small class="muted">{% if consent %}{% blocktranslate with d=consent.granted_at|date:"d/m/Y" %}Outorgado o {{ d }}{% endblocktranslate %}{% else %}{% translate "Sen consentimento" %}{% endif %}</small></span>
               <form method="post" action="{% url 'account:consent_toggle' d.pk value %}">
                 {% csrf_token %}
-                <button class="btn btn-sm btn-secondary" type="submit">{% if consent %}{% translate "Retirar" %}{% else %}{% translate "Outorgar" %}{% endif %}<span class="visually-hidden">: {{ label }} ({{ d.first_name }})</span></button>
+                <button class="switch-btn" type="submit" role="switch" aria-checked="{% if consent %}true{% else %}false{% endif %}" aria-labelledby="c-{{ d.pk }}-{{ value }}" aria-describedby="sw-help"><span class="switch-btn__track" aria-hidden="true"></span></button>
               </form>
             </li>
           {% endfor %}
@@ -23,12 +25,25 @@
     {% empty %}
       <p class="muted">{% translate "Aínda non engadiches ningún menor." %}</p>
     {% endfor %}
+    <p class="help mb-0" id="sw-help">{% translate "Ao tocar o interruptor, outorgas ou retiras ese consentimento ao momento." %}</p>
   </section>
-  <section class="card" aria-labelledby="hh-add">
-    <h2 id="hh-add">{% translate "Engadir menor" %}</h2>
+  <section class="card card-compact" aria-labelledby="hh-add">
+    <h2 id="hh-add" class="h3">{% translate "Engadir menor" %}</h2>
     <form method="post" novalidate>
       {% csrf_token %}
-      {% include "includes/form.html" %}
+      {% if form.errors %}<div class="alert alert-error" role="alert" tabindex="-1" data-focus>{% translate "Revisa os campos marcados." %}</div>{% endif %}
+      <div class="form-grid form-grid--2">
+        {% with field=form.first_name %}{% include "includes/field.html" %}{% endwith %}
+        {% with field=form.birth_year %}{% include "includes/field.html" %}{% endwith %}
+      </div>
+      <fieldset class="consent-fieldset">
+        <legend>{% translate "Consentimentos" %}</legend>
+        {% with field=form.consent_data %}{% include "includes/field.html" %}{% endwith %}
+        {% with field=form.consent_image %}{% include "includes/field.html" %}{% endwith %}
+        {% with field=form.consent_performance %}{% include "includes/field.html" %}{% endwith %}
+        {% with field=form.minor_agrees %}{% include "includes/field.html" %}{% endwith %}
+      </fieldset>
+      <p class="help">{% translate "Os apelidos pídense ao inscribilo/a nunha escola." %}</p>
       <button class="btn" type="submit">{% translate "Engadir" %}</button>
     </form>
   </section>

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Eira 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-24 01:54+0200\n"
+"POT-Creation-Date: 2026-10-24 02:10+0200\n"
 "PO-Revision-Date: 2026-10-23 03:37+0200\n"
 "Last-Translator: Equipo Eira\n"
 "Language-Team: Equipo Eira\n"
@@ -2816,7 +2816,7 @@ msgstr "Tarea añadida."
 msgid "App e push"
 msgstr "App y push"
 
-#: apps/notifications/manage.py:23 apps/tenants/manage.py:114
+#: apps/notifications/manage.py:23 apps/tenants/manage.py:150
 #: apps/tenants/templatetags/eira.py:141
 #: templates/manage/_notice_preview.html:6
 #: templates/notifications/preferences.html:24
@@ -3085,70 +3085,95 @@ msgstr "Resumen semanal con IA autoalojada"
 msgid "Datos abertos"
 msgstr "Datos abiertos"
 
-#: apps/tenants/manage.py:96
+#: apps/tenants/manage.py:46 templates/dev/clave.html:13
+msgid "Identidade"
+msgstr "Identidad"
+
+#: apps/tenants/manage.py:49
+msgid "Contacto"
+msgstr "Contacto"
+
+#: apps/tenants/manage.py:55
+msgid "Regras de reserva"
+msgstr "Reglas de reserva"
+
+#: apps/tenants/manage.py:65 templates/manage/padron.html:2
+#: templates/manage/signups.html:6
+msgid "Padrón"
+msgstr "Padrón"
+
+#: apps/tenants/manage.py:66 templates/facilities/home.html:10
+msgid "Mapa"
+msgstr "Mapa"
+
+#: apps/tenants/manage.py:69
+msgid "Textos legais"
+msgstr "Textos legales"
+
+#: apps/tenants/manage.py:128
 msgid "Configuración gardada."
 msgstr "Configuración guardada."
 
-#: apps/tenants/manage.py:115
+#: apps/tenants/manage.py:151
 msgid "Rol"
 msgstr "Rol"
 
-#: apps/tenants/manage.py:119
+#: apps/tenants/manage.py:155
 msgid "Correo da persoa"
 msgstr "Correo de la persona"
 
-#: apps/tenants/manage.py:120
+#: apps/tenants/manage.py:156
 msgid "Colectivo"
 msgstr "Colectivo"
 
-#: apps/tenants/manage.py:122
+#: apps/tenants/manage.py:158
 msgid "Válido ata"
 msgstr "Válido hasta"
 
-#: apps/tenants/manage.py:144
+#: apps/tenants/manage.py:180
 msgid "Non hai ningunha conta con ese correo."
 msgstr "No hay ninguna cuenta con ese correo."
 
-#: apps/tenants/manage.py:155
+#: apps/tenants/manage.py:191
 #, python-format
 msgid "Tarifa reducida validada para %(e)s."
 msgstr "Tarifa reducida validada para %(e)s."
 
-#: apps/tenants/manage.py:163
+#: apps/tenants/manage.py:199
 msgid "Rol retirado."
 msgstr "Rol retirado."
 
-#: apps/tenants/manage.py:177
+#: apps/tenants/manage.py:213
 msgid "Rol asignado."
 msgstr "Rol asignado."
 
-#: apps/tenants/manage.py:216 templates/manage/staff.html:35
+#: apps/tenants/manage.py:252 templates/manage/staff.html:35
 msgid "Este concello non pertence a ningunha deputación."
 msgstr "Este ayuntamiento no pertenece a ninguna diputación."
 
-#: apps/tenants/manage.py:221
+#: apps/tenants/manage.py:257
 msgid "Indica o motivo do acceso de soporte."
 msgstr "Indica el motivo del acceso de soporte."
 
-#: apps/tenants/manage.py:235
+#: apps/tenants/manage.py:271
 #, python-format
 msgid "Acceso de soporte autorizado ata o %(d)s."
 msgstr "Acceso de soporte autorizado hasta el %(d)s."
 
-#: apps/tenants/manage.py:243
+#: apps/tenants/manage.py:279
 msgid "Acceso de soporte retirado."
 msgstr "Acceso de soporte retirado."
 
-#: apps/tenants/manage.py:252
+#: apps/tenants/manage.py:288
 #, python-format
 msgid "Código de empadroamento xerado: %(c)s"
 msgstr "Código de empadronamiento generado: %(c)s"
 
-#: apps/tenants/manage.py:270
+#: apps/tenants/manage.py:306
 msgid "Aviso laranxa por vento e chuvia (simulado)"
 msgstr "Aviso naranja por viento y lluvia (simulado)"
 
-#: apps/tenants/manage.py:277
+#: apps/tenants/manage.py:313
 #, python-format
 msgid ""
 "Alerta aplicada ás instalacións descubertas. %(n)s reservas canceladas e "
@@ -3233,10 +3258,13 @@ msgstr "población"
 msgid "códigos postais do termo"
 msgstr "códigos postales del término"
 
-#: apps/tenants/models.py:90 apps/tenants/region.py:251
-msgid "Separados por comas. Úsanse para contrastar as solicitudes co padrón."
+#: apps/tenants/models.py:90
+msgid ""
+"Separados por comas. Informativo: as altas automáticas usan o padrón cargado"
+" en CSV."
 msgstr ""
-"Separados por comas. Se usan para contrastar las solicitudes con el padrón."
+"Separados por comas. Informativo: las altas automáticas usan el padrón "
+"cargado en CSV."
 
 #: apps/tenants/models.py:92
 msgid "texto de privacidade"
@@ -3418,6 +3446,11 @@ msgstr "Población"
 msgid "Códigos postais do termo"
 msgstr "Códigos postales del término"
 
+#: apps/tenants/region.py:251
+msgid "Separados por comas. Úsanse para contrastar as solicitudes co padrón."
+msgstr ""
+"Separados por comas. Se usan para contrastar las solicitudes con el padrón."
+
 #: apps/tenants/region.py:263
 msgid "Nome da persoa responsable"
 msgstr "Nombre de la persona responsable"
@@ -3438,7 +3471,7 @@ msgstr "Correo público del servicio de deportes"
 msgid "Aparece no pé das páxinas. Pode ser distinto do persoal."
 msgstr "Aparece en el pie de las páginas. Puede ser distinto del personal."
 
-#: apps/tenants/region.py:277 templates/manage/settings.html:11
+#: apps/tenants/region.py:277 templates/manage/settings.html:23
 msgid "Módulos activos"
 msgstr "Módulos activos"
 
@@ -3493,7 +3526,8 @@ msgstr "Enviar ahora la invitación a la persona responsable"
 msgid "Responsable"
 msgstr "Responsable"
 
-#: apps/tenants/region.py:355 templates/region/new_municipality.html:20
+#: apps/tenants/region.py:355 templates/manage/settings.html:8
+#: templates/region/new_municipality.html:20
 msgid "Módulos"
 msgstr "Módulos"
 
@@ -3751,31 +3785,43 @@ msgstr ""
 msgid "%(a)s anos"
 msgstr "%(a)s años"
 
-#: templates/accounts/household.html:14
-msgid "Outorgado"
-msgstr "Otorgado"
+#: templates/accounts/household.html:16
+#, python-format
+msgid "Outorgado o %(d)s"
+msgstr "Otorgado el %(d)s"
 
-#: templates/accounts/household.html:14
+#: templates/accounts/household.html:16
 msgid "Sen consentimento"
 msgstr "Sin consentimiento"
 
-#: templates/accounts/household.html:17 templates/manage/staff.html:9
-msgid "Retirar"
-msgstr "Retirar"
-
-#: templates/accounts/household.html:17
-msgid "Outorgar"
-msgstr "Otorgar"
-
-#: templates/accounts/household.html:24
+#: templates/accounts/household.html:26
 msgid "Aínda non engadiches ningún menor."
 msgstr "Todavía no has añadido ningún menor."
 
 #: templates/accounts/household.html:28
+msgid ""
+"Ao tocar o interruptor, outorgas ou retiras ese consentimento ao momento."
+msgstr ""
+"Al tocar el interruptor, otorgas o retiras ese consentimiento al momento."
+
+#: templates/accounts/household.html:31
 msgid "Engadir menor"
 msgstr "Añadir menor"
 
-#: templates/accounts/household.html:32
+#: templates/accounts/household.html:34 templates/includes/form.html:1
+#: templates/manage/facility_edit.html:7 templates/manage/settings.html:12
+msgid "Revisa os campos marcados."
+msgstr "Revisa los campos marcados."
+
+#: templates/accounts/household.html:40
+msgid "Consentimentos"
+msgstr "Consentimientos"
+
+#: templates/accounts/household.html:46
+msgid "Os apelidos pídense ao inscribilo/a nunha escola."
+msgstr "Los apellidos se piden al inscribirlo/a en una escuela."
+
+#: templates/accounts/household.html:47
 #: templates/manage/maintenance_plans.html:16
 msgid "Engadir"
 msgstr "Añadir"
@@ -3854,8 +3900,8 @@ msgstr "Imagen autorizada el %(d)s."
 
 #: templates/accounts/privacy.html:30 templates/accounts/profile.html:14
 #: templates/activities/manage_group.html:21
-#: templates/manage/facility_edit.html:39 templates/manage/settings.html:15
-#: templates/manage/work_order.html:16
+#: templates/manage/facility_edit.html:39 templates/manage/settings.html:26
+#: templates/manage/settings.html:29 templates/manage/work_order.html:16
 msgid "Gardar"
 msgstr "Guardar"
 
@@ -6332,10 +6378,6 @@ msgstr ""
 "En el despliegue real, aquí estaría la pasarela Cl@ve (SAML 2.0) o Chave365 "
 "(OpenID Connect). Elige una identidad ficticia:"
 
-#: templates/dev/clave.html:13
-msgid "Identidade"
-msgstr "Identidad"
-
 #: templates/dev/clave.html:16
 msgid "Identificarme"
 msgstr "Identificarme"
@@ -6878,10 +6920,6 @@ msgstr "Modo de vista"
 msgid "Lista"
 msgstr "Lista"
 
-#: templates/facilities/home.html:10
-msgid "Mapa"
-msgstr "Mapa"
-
 #: templates/facilities/home.html:14
 msgid "Buscar instalacións"
 msgstr "Buscar instalaciones"
@@ -7050,11 +7088,6 @@ msgstr "Foto de referencia"
 #: templates/includes/field.html:16
 msgid "obrigatorio"
 msgstr "obligatorio"
-
-#: templates/includes/form.html:1 templates/manage/facility_edit.html:7
-#: templates/manage/settings.html:8
-msgid "Revisa os campos marcados."
-msgstr "Revisa los campos marcados."
 
 #: templates/includes/hbar.html:10 templates/monitor/stats.html:33
 #: templates/monitor/stats.html:42 templates/monitor/stats.html:51
@@ -8379,10 +8412,6 @@ msgstr "Hacer la reserva"
 msgid "Outra franxa"
 msgstr "Otra franja"
 
-#: templates/manage/padron.html:2 templates/manage/signups.html:6
-msgid "Padrón"
-msgstr "Padrón"
-
 #: templates/manage/padron.html:5
 msgid "Padrón para as altas automáticas"
 msgstr "Padrón para las altas automáticas"
@@ -8444,7 +8473,7 @@ msgstr "Quién"
 msgid "Sen cargas."
 msgstr "Sin cargas."
 
-#: templates/manage/padron.html:31
+#: templates/manage/padron.html:31 templates/manage/settings.html:19
 msgid "Cargar o padrón"
 msgstr "Cargar el padrón"
 
@@ -8653,7 +8682,15 @@ msgstr "Configuración del ayuntamiento"
 msgid "Exportar / importar datos"
 msgstr "Exportar / importar datos"
 
-#: templates/manage/settings.html:12
+#: templates/manage/settings.html:6
+msgid "Seccións"
+msgstr "Secciones"
+
+#: templates/manage/settings.html:19
+msgid "As altas automáticas usan o padrón cargado en CSV."
+msgstr "Las altas automáticas usan el padrón cargado en CSV."
+
+#: templates/manage/settings.html:24
 msgid "Activa só o que o concello vaia usar. O resto non aparece."
 msgstr "Activa solo lo que el ayuntamiento vaya a usar. El resto no aparece."
 
@@ -8776,6 +8813,10 @@ msgstr "Personal y empadronamiento"
 #: templates/manage/staff.html:7
 msgid "Roles do persoal"
 msgstr "Roles del personal"
+
+#: templates/manage/staff.html:9
+msgid "Retirar"
+msgstr "Retirar"
 
 #: templates/manage/staff.html:10
 msgid "Asignar rol"

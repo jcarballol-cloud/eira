@@ -1339,3 +1339,34 @@ table.stats-table thead th { text-transform: none; letter-spacing: 0; font-size:
 table.stats-table th, table.stats-table td { padding: .35rem .4rem; overflow-wrap: anywhere; }
 table.stats-table td.num, table.stats-table th.num { white-space: normal; }
 .filter-panel:not([open]) .filter-panel__body { display: none; }
+
+/* ---------- v4: configuración do concello en seccións ---------- */
+.settings-layout { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr); }
+@container pane (min-width: 980px) { .settings-layout { grid-template-columns: minmax(0, 1fr) 18rem; } .settings-side { position: sticky; top: 1rem; align-self: start; } }
+.settings-main { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr); align-content: start; align-items: start; }
+@container pane (min-width: 760px) { .settings-main { grid-template-columns: repeat(2, minmax(0, 1fr)); } .settings-section--wide { grid-column: 1 / -1; } }
+.settings-section h2 { margin-top: 0; }
+.settings-section .form-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr)); }
+.settings-section--wide .form-grid { grid-template-columns: minmax(0, 1fr); }
+.settings-section .field { margin-bottom: .6rem; }
+.settings-side .form-actions { margin-top: .5rem; }
+
+/* ---------- v4: espazado (familia e consentimentos) ---------- */
+.card-compact { padding: .85rem 1rem; }
+.form-grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr)); }
+.consent-list { list-style: none; margin: .4rem 0 0; padding: 0; }
+.consent-row { display: flex; gap: .75rem; align-items: center; justify-content: space-between; padding: .45rem 0; border-top: 1px solid var(--liña); }
+.consent-row:first-child { border-top: 0; }
+.consent-row__text { display: grid; gap: .05rem; min-width: 0; line-height: 1.3; }
+.consent-row__text small { font-size: .8rem; }
+.consent-row form { margin: 0; flex: none; }
+.switch-btn { appearance: none; border: 0; background: none; padding: 0; margin: 0; cursor: pointer; min-width: 44px; min-height: 44px; display: grid; place-items: center; }
+.switch-btn__track { width: 2.9rem; height: 1.65rem; border-radius: 999px; background: #8A9590; position: relative; display: block; transition: background .15s; }
+.switch-btn__track::after { content: ""; position: absolute; top: .18rem; left: .18rem; width: 1.29rem; height: 1.29rem; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / 25%); transition: transform .15s; }
+.switch-btn[aria-checked="true"] .switch-btn__track { background: var(--musgo); }
+.switch-btn[aria-checked="true"] .switch-btn__track::after { transform: translateX(1.25rem); }
+.switch-btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 999px; }
+@media (prefers-reduced-motion: reduce) { .switch-btn__track, .switch-btn__track::after { transition: none; } }
+.consent-fieldset { border: 0; padding: 0; margin: .2rem 0 .4rem; }
+.consent-fieldset legend { font-weight: 700; margin-bottom: .2rem; }
+.consent-fieldset .field { margin-bottom: .25rem; }

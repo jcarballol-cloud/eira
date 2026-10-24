@@ -3,14 +3,28 @@
 {% block content %}
 <div class="page-head"><h1>{% translate "Configuración do concello" %}</h1>
   <a class="btn btn-secondary" href="{% turl 'manage:portability' %}">{% translate "Exportar / importar datos" %}</a></div>
+<nav class="chips" aria-label="{% translate 'Seccións' %}">
+  {% for s in sections %}<a class="chip" href="#cfg-{{ s.id }}">{{ s.title }}</a>{% endfor %}
+  <a class="chip" href="#cfg-modulos">{% translate "Módulos" %}</a>
+</nav>
 <form method="post" novalidate>
   {% csrf_token %}
   {% if form.errors %}<div class="alert alert-error" role="alert" tabindex="-1" data-focus>{% translate "Revisa os campos marcados." %}</div>{% endif %}
-  <div class="layout-aside">
-    <section class="card">{% for field in base_fields %}{% include "includes/field.html" %}{% endfor %}</section>
-    <aside class="card"><fieldset><legend>{% translate "Módulos activos" %}</legend>
+  <div class="settings-layout">
+    <div class="settings-main">
+      {% for s in sections %}
+      <section class="card settings-section{% if s.wide %} settings-section--wide{% endif %}" id="cfg-{{ s.id }}" aria-labelledby="cfg-{{ s.id }}-t">
+        <h2 class="h3" id="cfg-{{ s.id }}-t">{{ s.title }}</h2>
+        <div class="form-grid">{% for field in s.fields %}{% include "includes/field.html" %}{% endfor %}</div>
+        {% if s.id == "padron" %}<p class="help mb-0">{% translate "As altas automáticas usan o padrón cargado en CSV." %} <a href="{% turl 'manage:padron' %}">{% translate "Cargar o padrón" %}</a></p>{% endif %}
+      </section>
+      {% endfor %}
+    </div>
+    <aside class="card settings-side" id="cfg-modulos"><fieldset><legend class="h3">{% translate "Módulos activos" %}</legend>
       <p class="help">{% translate "Activa só o que o concello vaia usar. O resto non aparece." %}</p>
-      {% for field in module_fields %}{% include "includes/field.html" %}{% endfor %}</fieldset></aside>
+      {% for field in module_fields %}{% include "includes/field.html" %}{% endfor %}</fieldset>
+      <div class="form-actions"><button class="btn" type="submit">{% translate "Gardar" %}</button></div>
+    </aside>
   </div>
   <div class="form-actions"><button class="btn" type="submit">{% translate "Gardar" %}</button></div>
 </form>

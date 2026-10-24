@@ -87,7 +87,9 @@ class Municipality(models.Model):
         _("códigos postais do termo"),
         max_length=120,
         blank=True,
-        help_text=_("Separados por comas. Úsanse para contrastar as solicitudes co padrón."),
+        help_text=_(
+            "Separados por comas. Informativo: as altas automáticas usan o padrón cargado en CSV."
+        ),
     )
     privacy_text = models.TextField(_("texto de privacidade"), blank=True)
     dpo_contact = models.CharField(

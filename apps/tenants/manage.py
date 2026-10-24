@@ -42,6 +42,37 @@ MODULE_LABELS = {
 }
 
 
+SETTINGS_SECTIONS = [
+    ("identidade", gettext_lazy("Identidade"), ["name", "accent_color"], False),
+    (
+        "contacto",
+        gettext_lazy("Contacto"),
+        ["contact_email", "contact_phone", "address", "telegram_channel", "dpo_contact"],
+        False,
+    ),
+    (
+        "reservas",
+        gettext_lazy("Regras de reserva"),
+        [
+            "max_advance_days",
+            "max_active_bookings",
+            "cancellation_hours",
+            "late_cancel_penalty_pct",
+            "no_show_grace_minutes",
+        ],
+        False,
+    ),
+    ("padron", gettext_lazy("Padrón"), ["postcodes"], False),
+    ("mapa", gettext_lazy("Mapa"), ["tile_url", "tile_attribution", "tile_attribution_url"], False),
+    (
+        "legal",
+        gettext_lazy("Textos legais"),
+        ["privacy_text", "accessibility_statement", "legal_notice"],
+        True,
+    ),
+]
+
+
 class SettingsForm(forms.ModelForm):
     class Meta:
         model = Municipality
@@ -51,6 +82,7 @@ class SettingsForm(forms.ModelForm):
             "contact_email",
             "contact_phone",
             "address",
+            "telegram_channel",
             "cancellation_hours",
             "late_cancel_penalty_pct",
             "max_advance_days",
@@ -96,14 +128,18 @@ def settings_view(request):
         messages.success(request, _("Configuración gardada."))
         return redirect(treverse(request.tenant, "manage:settings"))
     module_fields = [form[f"module_{k}"] for k in MODULE_LABELS]
-    base_fields = [form[f] for f in SettingsForm.Meta.fields]
+    # v4: formulario por seccións, en grella
+    sections = [
+        {"id": sid, "title": title, "fields": [form[f] for f in names], "wide": wide}
+        for sid, title, names, wide in SETTINGS_SECTIONS
+    ]
     return render(
         request,
         "manage/settings.html",
         {
             "form": form,
             "module_fields": module_fields,
-            "base_fields": base_fields,
+            "sections": sections,
             "nav": "manage",
             "sub": "settings",
         },

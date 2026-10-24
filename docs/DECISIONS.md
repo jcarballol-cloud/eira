@@ -443,3 +443,13 @@ Formato: data · decisión · motivo · alternativas descartadas.
 ## v4 · Apelidos ao inscribir menores
 - Ao inscribir un/unha menor nunha escola, os **apelidos son obrigatorios** e gárdanse como dato da inscrición (`Enrollment.surnames`, decisión v3). Para a propia persoa adulta son opcionais.
 - O formulario explica por que: «como no padrón; a monitora só verá o primeiro apelido».
+
+## v4 · Configuración do concello en seccións
+- Seis tarxetas nunha grella de dúas columnas: Identidade, Contacto (coa canle pública de Telegram), Regras de reserva, Padrón (coa ligazón á carga do CSV), Mapa e Textos legais (a ancho completo). Dentro de cada tarxeta, os campos van en grella.
+- Os módulos van na columna lateral, que queda fixa ao desprazar e ten o seu propio «Gardar». Arriba hai chips para saltar a cada sección.
+- O texto de axuda dos códigos postais xa non di que serven para o padrón (agora é o CSV).
+
+## v4 · Pase de espazado
+- **Familia:** cada consentimento é unha fila compacta (texto, data e interruptor `role="switch"` con `aria-checked`) no canto dun botón «Outorgar/Retirar» en liña propia. Úsase o mesmo formulario POST de sempre, así que non fai falta JS.
+- **«Engadir menor»:** nome e ano en dúas columnas e consentimentos agrupados nun `fieldset`. Explica que os apelidos se piden ao inscribir nunha escola.
+- Capturas antes/despois en `docs/capturas/v4/espazado-*`.

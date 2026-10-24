@@ -260,6 +260,8 @@ fieldset { border: 1px solid var(--liña); border-radius: var(--radius-sm); padd
 .kv dt { font-weight: 700; color: var(--text-muted); overflow-wrap: anywhere; }
 .kv dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
 .kv dd .badge { white-space: normal; }
+/* O nivel de acceso pode ser longo («Código temporal sen conexión…»): parte en varias liñas en vez de desbordar (con fontes máis anchas, p. ex. DejaVu en Linux) */
+.badge-level { white-space: normal; max-width: 100%; overflow-wrap: anywhere; border-radius: 12px; }
 
 .map { height: 22rem; border-radius: var(--radius); border: 1px solid var(--liña); background: var(--neboa); z-index: 0; }
 .map-hint { font-size: .88rem; color: var(--text-muted); }

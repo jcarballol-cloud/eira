@@ -151,7 +151,8 @@ MEDIA_ROOT = Path(env("EIRA_MEDIA_ROOT", BASE_DIR / "media"))
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"
+        # v4.1: nomes con hash en produción (o navegador e o service worker nunca serven un CSS vello)
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
         if not DEBUG
         else "django.contrib.staticfiles.storage.StaticFilesStorage"
     },
@@ -218,9 +219,17 @@ EIRA_AI_BASE_URL = env("EIRA_AI_BASE_URL", "http://localhost:11434/v1")
 EIRA_AI_MODEL = env("EIRA_AI_MODEL", "llama3.1")
 EIRA_AI_TIMEOUT = int(env("EIRA_AI_TIMEOUT", 180))  # segundos (modelos locais en CPU poden tardar)
 EIRA_METEOSIX_API_KEY = env("EIRA_METEOSIX_API_KEY", "")
-# Padrón (v4): segredo do HMAC das entradas do padrón. Se non se define, derívase de SECRET_KEY;
-# cambialo obriga a volver cargar o padrón.
+# Padrón (v4): segredo do HMAC das entradas do padrón; cambialo obriga a volver cargar o padrón.
+# En produción é obrigatorio (non se deriva de SECRET_KEY, que se pode rotar por outros motivos).
+# En desenvolvemento (EIRA_DEBUG=1) e na demo con datos ficticios (EIRA_DEMO_TOOLS=1) derívase.
 EIRA_PADRON_SECRET = env("EIRA_PADRON_SECRET", "")
+if not EIRA_PADRON_SECRET and not DEBUG and not EIRA_DEMO_TOOLS:
+    raise RuntimeError(
+        "Falta EIRA_PADRON_SECRET. En produción é obrigatorio: é o segredo co que se gardan os "
+        "resumos (HMAC) do padrón. Xérao unha vez, por exemplo con "
+        'python -c "import secrets;print(secrets.token_urlsafe(48))", '
+        "e gárdao no contorno do servidor. Se o cambias, terás que volver cargar o padrón."
+    )
 # Telegram (v4). O token SÓ no contorno; nunca no repositorio nin na documentación.
 EIRA_TELEGRAM_TOKEN = env("EIRA_TELEGRAM_TOKEN", "")
 EIRA_TELEGRAM_BOT = env("EIRA_TELEGRAM_BOT", "")

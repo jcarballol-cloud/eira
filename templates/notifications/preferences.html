@@ -10,7 +10,7 @@
       <input type="checkbox" id="consent" name="consent" value="1" class="switch" {% if pref.comms_consent_at %}checked{% endif %} aria-describedby="consent-h">
       <label for="consent">{% translate "Quero recibir horarios, actividades, festas e novidades do concello" %}</label>
     </div>
-    <p class="help" id="consent-h">{% translate "É voluntario e podes retiralo cando queiras. Os peches e alertas que afectan ás túas reservas chéganche sempre na app, porque son parte do servizo." %}{% if pref.comms_consent_at %} {% blocktranslate with d=pref.comms_consent_at|date:"d/m/Y" %}Aceptado o {{ d }}.{% endblocktranslate %}{% endif %}</p>
+    <p class="help" id="consent-h">{% translate "É voluntario e podes retiralo cando queiras. Os peches, alertas e cambios que afectan ás túas reservas ou ás túas actividades chéganche sempre na app, porque son parte do servizo." %}{% if pref.comms_consent_at %} {% blocktranslate with d=pref.comms_consent_at|date:"d/m/Y" %}Aceptado o {{ d }}.{% endblocktranslate %}{% endif %}</p>
   </section>
 
   <section class="card stack-sm" aria-labelledby="matrix-t">
@@ -25,7 +25,7 @@
       </div>
     </fieldset>
     {% endfor %}
-    <p class="help mb-0" id="always-app">{% translate "Os avisos de servizo (peches e alertas) chegan sempre á app." %}</p>
+    <p class="help mb-0" id="always-app">{% translate "Os avisos de servizo (peches, alertas e cambios nas túas actividades) chegan sempre á app." %}</p>
   </section>
   <div><button class="btn" type="submit">{% translate "Gardar preferencias" %}</button></div>
 </form>

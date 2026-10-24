@@ -1,6 +1,6 @@
-{% extends "base.html" %}{% load i18n static %}
+{% extends "base.html" %}{% load i18n static eira %}
 {% block title %}{% translate "A miña saúde" %}{% endblock %}
-{% block head %}<script src="{% static 'js/health-engine.js' %}" defer></script><script src="{% static 'js/health.js' %}" defer></script>{% endblock %}
+{% block head %}<script src="{% asset 'js/health-engine.js' %}" defer></script><script src="{% asset 'js/health.js' %}" defer></script>{% endblock %}
 {% block content %}
 <div class="layout-aside">
   <div class="stack">

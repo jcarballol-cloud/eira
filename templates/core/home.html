@@ -1,7 +1,8 @@
 {% extends "base.html" %}{% load i18n static eira %}
 {% block title %}{% translate "Inicio" %}{% endblock %}
 {% block hero %}
-<section class="hero hero--compact" aria-labelledby="hero-title">
+<section class="hero hero--compact hero--art" aria-labelledby="hero-title">
+  {% illustration "cabecera-eira" sizes="100vw" css="hero__art" %}
   <div class="wrap">
     <h1 id="hero-title">{% translate "Eira · Software libre para a xestión deportiva municipal" %}</h1>
     <p class="hero__sub">{% translate "Reservas, acceso ás instalacións, mantemento e actividades deportivas do concello, nunha soa plataforma." %}</p>
@@ -45,7 +46,7 @@
   <ul class="demo-personas" role="list">
     {% for p in personas %}
     <li class="demo-persona">
-      <img class="demo-persona__thumb" src="{% static 'img/demo/' %}{{ p.thumb }}.webp" alt="" width="320" height="200" loading="lazy" decoding="async">
+      <img class="demo-persona__thumb" src="{{ 'img/demo/'|add:p.thumb|add:'.webp'|static_file }}" alt="" width="320" height="200" loading="lazy" decoding="async">
       <div class="demo-persona__body">
         <p class="demo-persona__sees">{{ p.sees }}</p>
         <h3 class="mb-0">{{ p.name }} <small class="muted">· {{ p.role }}</small></h3>

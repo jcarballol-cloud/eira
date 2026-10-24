@@ -28,6 +28,21 @@ As versións modificadas das fotos CC BY-SA distribúense baixo a mesma licenza 
 | `outdoor_court-2-*.webp` | [Basketball going into a basketball hoop with sunset in background.jpg](https://commons.wikimedia.org/wiki/File:Basketball_going_into_a_basketball_hoop_with_sunset_in_background.jpg) | Shixart1985 | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) |
 | `outdoor_court-3-*.webp` | [Kai Chuen Court Basketball Court.jpg](https://commons.wikimedia.org/wiki/File:Kai_Chuen_Court_Basketball_Court.jpg) | Knowledge Era | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
 
+## Ilustracións (`static/img/ilustracions/`)
+
+Ilustración xerada con IA para o proxecto Eira, licenza **CC BY-SA 4.0** ([texto da licenza](https://creativecommons.org/licenses/by-sa/4.0/)). Non inclúe obras de terceiros nin persoas reais nin marcas. Autoría: Equipo Eira.
+
+| Ficheiro | Contido | Onde se usa |
+|---|---|---|
+| `cabecera-eira-*` | Eira de pedra, pista, pavillón, hórreo e ría ao amencer | Cabeceira de inicio da app da veciñanza e fondo suave da portada da demo |
+| `cabecera-eira-noite-*` | A mesma escena de noite, coas farolas da pista acesas | Cabeceira da app co modo escuro do sistema |
+| `eira-icono-baleiro-*` | Só a eira de pedra coa pista e o sol (1:1) | Icona de pantalla baleira (busca sen resultados) |
+| `baleiro-reservas-*` | Tableta, botella e balón sobre a eira (4:3) | «Aínda sen reservas» |
+| `baleiro-avisos-*` | Taboleiro de anuncios baleiro (4:3) | «Sen avisos» |
+| `baleiro-mantemento-*` | Persoa de mantemento coa tableta e a pista en orde (4:3) | «Mantemento ao día» |
+
+Os orixinais PNG están en `assets-originais/` e non se serven. `tools/build_illustrations.py` xera as versións AVIF e WebP en varios anchos, sen metadatos.
+
 ## Outros recursos
 
 - Iconas (`static/img/icons.svg`) e logotipo (`static/img/eira.svg`): debuxo propio do Equipo Eira, EUPL-1.2.

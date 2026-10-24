@@ -1,6 +1,6 @@
 {% extends "base.html" %}{% load i18n static eira %}
 {% block title %}{% translate "Instalacións" %}{% endblock %}
-{% block head %}{% if view == "mapa" %}<link rel="stylesheet" href="{% static 'vendor/leaflet/leaflet.css' %}"><script src="{% static 'vendor/leaflet/leaflet.js' %}" defer></script><script src="{% static 'js/map.js' %}" defer></script>{% endif %}{% endblock %}
+{% block head %}{% if view == "mapa" %}<link rel="stylesheet" href="{% asset 'vendor/leaflet/leaflet.css' %}"><script src="{% asset 'vendor/leaflet/leaflet.js' %}" defer></script><script src="{% asset 'js/map.js' %}" defer></script>{% endif %}{% endblock %}
 {% block content %}
 {# v4: busca compacta. Unha liña con busca + «Filtros (n)», resultados de inmediato e Lista/Mapa xunto ao título #}
 <div class="search-head">
@@ -67,7 +67,7 @@
       </div>
     </li>
   {% empty %}
-    <li class="alert">{% translate "Non hai instalacións con eses filtros." %}</li>
+    <li class="card empty-state empty-state--wide">{% illustration "eira-icono-baleiro" sizes="8rem" css="empty-art empty-art--icon" %}<p class="mb-0"><strong>{% translate "Non hai instalacións con eses filtros." %}</strong><br><a href="?vista={{ view }}">{% translate "Quitar filtros" %}</a></p></li>
   {% endfor %}
 </ul>
 

@@ -312,3 +312,74 @@ def test_purge_applies_retention(muni_a, citizen):
     assert notices.purge() == 1
     assert list(Notification.objects.values_list("title", flat=True)) == ["Novo"]
     assert not TelegramLink.objects.exists()
+
+
+# ---------- v4.1: cambios en actividades (servizo) fronte a informativos ----------
+@pytest.fixture
+def enrolled(muni_a, citizen):
+    act = Activity.objects.create(municipality=muni_a, name="Escola de fútbol")
+    g = Group.objects.create(
+        municipality=muni_a,
+        activity=act,
+        name="Benxamín",
+        min_age=0,
+        max_age=110,
+        places=10,
+        fee_cents=0,
+        weekdays="4",
+        start_time=dt.time(17),
+    )
+    Enrollment.objects.create(municipality=muni_a, group=g, user=citizen, status="active")
+    return act
+
+
+def test_activity_change_reaches_enrolled_without_consent(muni_a, citizen, enrolled):
+    """Suspensión ou cambio de horario dunha actividade na que xa estás inscrito/a: servizo."""
+    n = notice(
+        muni_a,
+        category="activity_change",
+        audience="activity",
+        activity=enrolled,
+        title="Adestramento suspendido",
+    )
+    assert n.basis == "service"
+    notices.send(n)
+    assert Notification.objects.filter(user=citizen, notice=n).exists()
+    assert DevMail.objects.filter(to=citizen.email).exists()  # canles por defecto
+
+
+def test_new_enrollments_notice_to_same_people_needs_consent(muni_a, citizen, enrolled):
+    """Novas inscricións ou novidades, aínda que vaian ás mesmas persoas: informativo."""
+    n = notice(
+        muni_a,
+        category="activity",
+        audience="activity",
+        activity=enrolled,
+        title="Abertas as inscricións da tempada",
+    )
+    assert n.basis == "info"
+    notices.send(n)
+    assert not Notification.objects.filter(user=citizen, notice=n).exists()
+
+
+def test_activity_change_to_other_audience_is_informative(muni_a, citizen):
+    n = notice(muni_a, category="activity_change", audience="all")
+    assert n.basis == "info" and notices.channels_for(citizen, n) == set()
+
+
+def test_form_limits_activity_change_to_enrolled(client, muni_a, admin_a, enrolled):
+    client.force_login(admin_a)
+    base = {
+        "category": "activity_change",
+        "title": "Cambio",
+        "body": "Sala 2",
+        "channels": ["app"],
+        "action": "preview",
+    }
+    r = client.post("/c/concello-a/xestion/avisos/novo/", {**base, "audience": "all"})
+    assert r.context["form"].errors.get("audience")
+    r = client.post(
+        "/c/concello-a/xestion/avisos/novo/",
+        {**base, "audience": "activity", "activity": enrolled.pk},
+    )
+    assert not r.context["form"].errors and r.context["preview"]["estimate"]["people"] == 1

@@ -13,7 +13,7 @@
       <p class="mb-0">{% icon 'map' %} {{ o.facility.name }} · {{ o.due_date|date:"d/m" }}{% if o.incident %} · <span class="badge badge-warn">{% translate "Incidencia" %} #{{ o.incident.pk }}</span>{% endif %}</p>
     </li>
   {% empty %}
-    <li class="alert alert-success">{% translate "Todo feito por hoxe!" %}</li>
+    <li class="card empty-state">{% illustration "baleiro-mantemento" sizes="16rem" css="empty-art" %}<p class="mb-0"><strong>{% translate "Todo feito por hoxe!" %}</strong><br><span class="muted">{% translate "O mantemento está ao día." %}</span></p></li>
   {% endfor %}
 </ul>
 {% if done_today %}<h2 class="mt-3">{% translate "Pechadas hoxe" %}</h2><ul class="list">{% for o in done_today %}<li>{% icon 'check' %} {{ o.title }} · {{ o.facility.name }}</li>{% endfor %}</ul>{% endif %}

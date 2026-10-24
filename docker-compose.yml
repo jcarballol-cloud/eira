@@ -34,6 +34,20 @@ services:
     volumes:
       - media:/app/media
 
+  # Envía os avisos programados do concello cada 5 minutos (`manage.py send_notices`)
+  notices:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://eira:eira-local-only@db:5432/eira
+      EIRA_DEBUG: "0"
+      EIRA_SECRET_KEY: ${EIRA_SECRET_KEY:-local-demo-key-change-me-in-production-xxxxxxxxxxxxxxxx}
+      EIRA_DEMO_TOOLS: "1"
+      EIRA_CACHE_DIR: /tmp/eira-cache
+    entrypoint: ["sh", "/app/tools/send-notices-loop.sh"]
+
 volumes:
   pgdata:
   media:

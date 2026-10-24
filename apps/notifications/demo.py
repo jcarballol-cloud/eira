@@ -62,7 +62,15 @@ def preferences(m, users, rng):
                 if not u.email.startswith("manuel")
                 else {
                     c: ["app", "email"]
-                    for c in ("closure", "alert", "schedule", "activity", "event", "news")
+                    for c in (
+                        "closure",
+                        "alert",
+                        "schedule",
+                        "activity",
+                        "activity_change",
+                        "event",
+                        "news",
+                    )
                 },
             },
         )
@@ -165,6 +173,7 @@ def seed(rng):
 
     multi = Activity.objects.filter(municipality=vil, name__icontains="Ximnasia activa").first()
     senior = Activity.objects.filter(municipality=vil, name__icontains="mantemento").first()
+    football = Activity.objects.filter(municipality=vil, name__icontains="fútbol").first()
 
     plan = [
         (
@@ -272,11 +281,21 @@ def seed(rng):
         (
             -2,
             dict(
-                category="activity",
+                category="activity_change",
                 title="Ximnasia de mantemento: cambio de sala o xoves",
                 body="Esta semana a sesión do xoves faise na sala 2 do pavillón.",
                 audience="activity",
                 activity=senior,
+            ),
+        ),
+        (
+            -1,
+            dict(
+                category="activity_change",
+                title="Escola de fútbol: adestramento do venres suspendido",
+                body="Polo torneo no campo, o venres non hai adestramento. Recupérase o luns á mesma hora.",
+                audience="activity",
+                activity=football,
             ),
         ),
         (

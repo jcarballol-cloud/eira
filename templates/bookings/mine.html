@@ -16,7 +16,7 @@
         <small>{% translate "Ref." %} {{ b.reference }} · {{ b.facility.get_access_level_display }}</small>
       </li>
     {% empty %}
-      <li class="alert">{% translate "Non tes reservas próximas." %} <a href="{% turl 'tenant_home' %}">{% translate "Buscar instalación" %}</a></li>
+      <li class="card empty-state">{% illustration "baleiro-reservas" sizes="16rem" css="empty-art" %}<p class="mb-0"><strong>{% translate "Non tes reservas próximas." %}</strong><br><a href="{% turl 'tenant_home' %}">{% translate "Buscar instalación" %}</a></p></li>
     {% endfor %}
   </ul>
 </section>

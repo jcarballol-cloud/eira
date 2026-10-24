@@ -10,7 +10,8 @@ Non é asesoramento xurídico: cada concello debe revisalo co seu DPD.
 | **Peches** | Peche do pavillón por obras, piscina pechada pola mañá | Art. 6.1.e RXPD (servizo público deportivo, Lei 7/1985 art. 25.2.l). Se cancela unha reserva, tamén 6.1.b (relación co servizo) | Quen ten reserva afectada; ou toda a veciñanza se é xeral | **Non**. Chega sempre na app a quen lle afecta; correo e Telegram segundo as súas preferencias |
 | **Alertas** | Alerta amarela por vento con cancelación das pistas exteriores | 6.1.e e, se hai cancelación, 6.1.b. Interese vital (6.1.d) só en emerxencias reais | Quen ten reserva afectada (exteriores, unha instalación ou unha parroquia) | **Non** |
 | **Horarios** | Horario de Nadal, horario de outono | Consentimento, 6.1.a | Quen aceptou as comunicacións informativas | **Si** |
-| **Actividades e inscricións** | Abertas as inscricións de multideporte; cambio de sala | Consentimento, 6.1.a. Se só van ás persoas inscritas e son da súa actividade (cambio de sala), poden entenderse como servizo (6.1.e); en Eira tratámolas como informativas por prudencia | Quen aceptou e, se se segmenta, as persoas inscritas | **Si** |
+| **Cambios nas túas actividades** | Adestramento suspendido, cambio de horario ou de sala dunha actividade na que xa estás inscrito/a | Art. 6.1.b (execución do servizo no que a persoa se inscribiu) e 6.1.e | **Só as persoas inscritas nesa actividade** (o formulario non deixa outro público) | **Non**. Chega sempre na app; correo e Telegram segundo as preferencias |
+| **Actividades e inscricións** | Abertas as inscricións de multideporte; quedan prazas; actividade nova | Consentimento, 6.1.a: é promoción dunha inscrición nova, aínda que vaia ás mesmas persoas | Quen aceptou e, se se segmenta, as persoas inscritas | **Si** |
 | **Festas e eventos** | Festas patronais, carreira popular | Consentimento, 6.1.a | Quen aceptou | **Si** |
 | **Novidades** | Nova pista de pádel | Consentimento, 6.1.a | Quen aceptou | **Si** |
 
@@ -19,7 +20,9 @@ Non é asesoramento xurídico: cada concello debe revisalo co seu DPD.
 1. **Sen consentimento, ningún informativo.** Se a persoa non aceptou as comunicacións informativas, non se lle envía nada destas categorías: nin na app, nin correo, nin Telegram, nin push.
    - Pode velos ela mesma no **Taboleiro do concello** da pantalla Avisos. Consultar non é un envío.
    - Test: `test_informative_notice_is_not_sent_without_consent`.
-2. **Os de servizo chegan sempre á app de quen lle afecta**, aínda que silenciase a categoría.
+2. **Os de servizo chegan sempre á app de quen lle afecta**, aínda que silenciase a categoría. Son peches, alertas e cambios nas túas actividades.
+   - «Cambios nas túas actividades» só é de servizo cando vai ás persoas inscritas. Se algún día se usa con outro público, trátase como informativo e pide consentimento (`Notice.basis`).
+   - Tests: `test_activity_change_reaches_enrolled_without_consent`, `test_new_enrollments_notice_to_same_people_needs_consent` e `test_activity_change_to_other_audience_is_informative`.
    - As outras canles seguen as súas preferencias.
    - Tests: `test_service_notice_reaches_affected_people_without_consent` e `test_service_notice_keeps_app_even_if_muted`.
 3. **Matriz categoría × canle.** A persoa escolle por onde recibe cada categoría (app, correo, Telegram, push).

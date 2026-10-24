@@ -15,6 +15,7 @@ Ficheiros: [`deploy/demo/docker-compose.yml`](../deploy/demo/docker-compose.yml)
 | `caddy` | `caddy:2-alpine` | HTTPS (Let's Encrypt), compresión, ficheiros públicos de `/media/` | 128 MB |
 | `app` | Dockerfile do proxecto | Django + gunicorn (2 workers, non root), migra e carga a demo no primeiro arranque | 512 MB |
 | `reseed` | a mesma imaxe | Bucle sen cron: rexenera a demo ás 04:00 UTC e executa as tarefas periódicas cada 15 min | 256 MB |
+| `notices` | a mesma imaxe | Bucle sen cron: `send_notices` cada 5 min (avisos programados e conservación) | 192 MB |
 | `db` | `postgres:16-alpine` | Base de datos | 256 MB |
 
 ## Consumo medido (sen IA)

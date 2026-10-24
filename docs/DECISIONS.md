@@ -453,3 +453,48 @@ Formato: data · decisión · motivo · alternativas descartadas.
 - **Familia:** cada consentimento é unha fila compacta (texto, data e interruptor `role="switch"` con `aria-checked`) no canto dun botón «Outorgar/Retirar» en liña propia. Úsase o mesmo formulario POST de sempre, así que non fai falta JS.
 - **«Engadir menor»:** nome e ano en dúas columnas e consentimentos agrupados nun `fieldset`. Explica que os apelidos se piden ao inscribir nunha escola.
 - Capturas antes/despois en `docs/capturas/v4/espazado-*`.
+
+## v4.1 · Avisos de actividade: servizo fronte a informativos
+- Nova categoría **«Cambios nas túas actividades»** (`activity_change`), de **servizo** (art. 6.1.b): suspensións e cambios de horario ou de sala dunha actividade na que a persoa xa está inscrita. Non precisa consentimento e chega sempre á app.
+- **«Actividades e inscricións»** segue sendo **informativa** (consentimento): novas inscricións, prazas libres, actividades novas. Aínda que vaia ás mesmas persoas, é promoción.
+- Garantías: o formulario só deixa enviar cambios ás persoas inscritas nesa actividade. Se un aviso desta categoría tivese outro público, `Notice.basis` trátao como informativo.
+- Na seed, «cambio de sala o xoves» pasa a esta categoría e engádese «Escola de fútbol: adestramento do venres suspendido». Substitúe a decisión v4 de tratar todos os avisos de actividade como informativos.
+
+## v4.1 · Segredo do padrón obrigatorio en produción e avisos programados en Docker
+- `EIRA_PADRON_SECRET` é **obrigatorio en produción**. Se falta, `settings.py` detén o arranque cunha mensaxe que explica que é, como xeralo e que cambialo obriga a volver cargar o padrón.
+  - Non se deriva de `SECRET_KEY`, que se pode rotar por outros motivos e invalidaría o padrón sen avisar.
+  - Defino «produción» como `EIRA_DEBUG=0` **e** `EIRA_DEMO_TOOLS=0`. Os dous `docker-compose` da demo corren con `DEBUG=0`, pero teñen datos ficticios e as ferramentas de demo activas: neles e en desenvolvemento mantense a derivación. Se se pedise só con `DEBUG=0`, a demo pública deixaría de arrancar.
+  - Hai un test que arranca Django nun subproceso nos tres casos.
+- **Avisos programados:** novo servizo `notices` en `docker-compose.yml` e `deploy/demo/docker-compose.yml`. É un bucle sen cron (`tools/send-notices-loop.sh`) que agarda ás migracións e executa `send_notices` cada 5 min (`EIRA_NOTICES_INTERVAL`).
+  - En produción sen Docker, liña de cron en `docs/despregamento.md`.
+
+## v4.1 · Portada sen estilos: caché do service worker
+- **Causa:** a versión do service worker era fixa (`eira-v1`). Os estáticos servíanse primeiro da caché e cun URL sen versión (`/static/css/eira.css`), e `caches.match()` buscaba en todas as cachés. Despois de cambiar o CSS, o navegador seguía usando o vello ata forzar a recarga.
+  - Comprobouse que non era o CSS: nun navegador limpo a portada vese ben.
+- **Corrección:**
+  - **Produción:** `CompressedManifestStaticFilesStorage` (nomes con hash).
+  - **Desenvolvemento:** `{% asset %}` engade `?v=<hash do contido>`, que se recalcula ao cambiar o ficheiro.
+  - **Service worker:** a versión deriva destes hashes; no `activate` bórranse todas as cachés doutras versións. Só se busca nas cachés propias; o CSS (e, en desenvolvemento, todos os estáticos) vai á rede primeiro; o HTML sempre á rede primeiro.
+  - `sw.js` sérvese con `Cache-Control: no-cache` e rexístrase con `updateViaCache: "none"`.
+- **Efecto secundario descuberto:** co manifesto, `collectstatic` fallaba polo `sourceMappingURL` de Leaflet, que apuntaba a un `.map` que non distribuímos. Quitouse esa liña do ficheiro vendorizado.
+  - Un test fai `collectstatic` co manifesto e debuxa as páxinas principais.
+  - `{% static 'img/demo/' %}` (un directorio) substituíuse polo filtro `static_file`.
+- **E2E (`tests/e2e/test_service_worker.py`):**
+  - Un service worker «anterior» coa caché envelenada actualízase, borra as cachés vellas e a portada ten estilo (`display: grid`, sen viñetas).
+  - Un CSS vello na caché do service worker activo non se serve. Este test falla co `sw.js` anterior.
+
+## v4.1 · Ilustración propia
+- Seis ilustracións xeradas con IA para Eira (CC BY-SA 4.0, sen obras de terceiros), con nomes segundo o contido:
+  - `cabecera-eira` e `cabecera-eira-noite` (modo escuro);
+  - `eira-icono-baleiro` (1:1);
+  - `baleiro-reservas`, `baleiro-avisos` e `baleiro-mantemento` (4:3).
+- Os orixinais PNG (1,9–2,4 MB) quedan en `assets-originais/` e non se serven. `tools/build_illustrations.py` xera AVIF e WebP sen metadatos, de 5 a 63 KB: cabeceiras en 480, 960 e 1600 px e estados baleiros en 2 anchos.
+- **Cabeceira da app:** `<picture>` `eager` con `fetchpriority=high`. É a única imaxe `eager` da pantalla (comprobado nun E2E).
+  - O saúdo vai superposto na zona despexada da esquerda, cun degradado de papel ao 86–94 % baixo o texto (contraste AA de granito).
+  - Co modo escuro do sistema úsase a versión nocturna, con texto branco sobre degradado escuro.
+  - **Texto grande:** a ilustración pasa debaixo do saúdo, sen superposición.
+  - **Alto contraste:** sen ilustración.
+  - Non hai animacións.
+- **Portada da demo:** a mesma ilustración, `lazy`, como fondo ao 20 % detrás do granito.
+- **Estados baleiros:** reservas (inicio e «As miñas reservas»), avisos, «Todo feito por hoxe» do operario e busca de instalacións sen resultados (icona 1:1).
+- Créditos en `CREDITS.md`, `assets-originais/CREDITS.md` e a páxina `/creditos/`.

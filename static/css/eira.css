@@ -1370,3 +1370,46 @@ table.stats-table td.num, table.stats-table th.num { white-space: normal; }
 .consent-fieldset { border: 0; padding: 0; margin: .2rem 0 .4rem; }
 .consent-fieldset legend { font-weight: 700; margin-bottom: .2rem; }
 .consent-fieldset .field { margin-bottom: .25rem; }
+
+/* ---------- v4.1: ilustración propia ---------- */
+.illus img { display: block; width: 100%; height: auto; }
+/* Cabeceira da app: a ilustración ocupa o alto do saúdo; o texto vai na zona despexada (esquerda),
+   sobre un degradado de papel que garante contraste AA (granito sobre ≥ 85 % de papel). */
+.app-hello--art { position: relative; overflow: hidden; border-radius: var(--radius); min-height: clamp(7.5rem, 32cqi, 11rem); display: flex; align-items: center; background: #EDE8DA; }
+.app-hello--art .app-hello__art { position: absolute; inset: 0; }
+.app-hello--art .app-hello__art img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 60%; }
+.app-hello--art::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(90deg, rgb(247 244 236 / 94%) 0%, rgb(247 244 236 / 86%) 34%, rgb(247 244 236 / 30%) 62%, rgb(247 244 236 / 0%) 78%); }
+.app-hello--art .app-hello__text { position: relative; z-index: 2; padding: .9rem 1rem; max-width: 62%; }
+.app-hello--art h1, .app-hello--art .eyebrow { color: var(--granito); }
+.app-hello--art .eyebrow { color: #2B4A3A; }
+@media (prefers-color-scheme: dark) {
+  .app-hello--art { background: #142130; }
+  .app-hello--art::before { background: linear-gradient(90deg, rgb(14 26 36 / 92%) 0%, rgb(14 26 36 / 80%) 36%, rgb(14 26 36 / 25%) 64%, rgb(14 26 36 / 0%) 80%); }
+  .app-hello--art h1 { color: #FFFFFF; }
+  .app-hello--art .eyebrow { color: #F2C46B; }
+}
+/* Texto grande: a ilustración pasa debaixo do saúdo, sen superposición */
+html.pref-large-text .app-hello--art { display: flex; flex-direction: column-reverse; align-items: stretch; min-height: 0; background: none; }
+html.pref-large-text .app-hello--art::before { content: none; }
+html.pref-large-text .app-hello--art .app-hello__text { max-width: none; padding: 0 0 .5rem; }
+html.pref-large-text .app-hello--art .app-hello__art { position: static; display: block; border-radius: var(--radius); overflow: hidden; }
+html.pref-large-text .app-hello--art .app-hello__art img { height: auto; aspect-ratio: 3 / 1; }
+@media (prefers-color-scheme: dark) { html.pref-large-text .app-hello--art h1 { color: var(--granito); } html.pref-large-text .app-hello--art .eyebrow { color: #2B4A3A; } }
+/* Alto contraste: sen ilustración detrás do texto */
+html.pref-high-contrast .app-hello--art .app-hello__art, html.pref-high-contrast .hero--art .hero__art { display: none; }
+html.pref-high-contrast .app-hello--art::before { content: none; }
+html.pref-high-contrast .app-hello--art { min-height: 0; background: none; }
+/* Portada da demo: fondo suave detrás do granito */
+.hero--art .hero__art { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.hero--art .hero__art img { width: 100%; height: 100%; object-fit: cover; object-position: 70% 55%; opacity: .2; }
+.hero--art > .wrap { position: relative; z-index: 1; }
+/* Estados baleiros con ilustración */
+.empty-art { display: block; width: min(16rem, 80%); margin: 0 auto .75rem; }
+.empty-art img { border-radius: var(--radius); }
+/* Sen animacións: nada que respectar en prefers-reduced-motion, pero que ningún tema as engada */
+@media (prefers-reduced-motion: reduce) { .illus img { transition: none; animation: none; } }
+.empty-state { text-align: center; padding: 1rem; list-style: none; }
+.empty-state--wide { grid-column: 1 / -1; }
+.empty-art--icon { width: 8rem; }
+.empty-art--icon img { border-radius: 50%; }

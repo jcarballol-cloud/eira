@@ -1,4 +1,4 @@
-{% load i18n static %}{% if booking.end > now %}
+{% load i18n static eira %}{% if booking.end > now %}
 {# Consellos breves para a franxa: tempo real da instalación + perfil no dispositivo. `compact` = dentro da tarxeta da próxima reserva. #}
 <section class="{% if compact %}tips-box tips-box--compact{% else %}card tips-box{% endif %}" aria-labelledby="hb-title-{{ booking.pk }}" data-health-booking
   data-start="{{ booking.start.isoformat }}" data-duration="{{ booking.duration_minutes }}"
@@ -13,6 +13,6 @@
 {% if not health_assets_loaded %}
 {% include "includes/health_strings.html" %}
 {% if account_health %}{{ account_health|json_script:"h-account" }}{% endif %}
-<script src="{% static 'js/health-engine.js' %}" defer></script>
+<script src="{% asset 'js/health-engine.js' %}" defer></script>
 {% endif %}
 {% endif %}

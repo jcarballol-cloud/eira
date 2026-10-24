@@ -11,11 +11,11 @@
   <link rel="manifest" href="{% url 'manifest' %}">
   <link rel="icon" href="{% static 'img/eira.svg' %}" type="image/svg+xml">
   <link rel="apple-touch-icon" href="{% static 'img/eira-192.png' %}">
-  <link rel="stylesheet" href="{% static 'css/eira.css' %}">
+  <link rel="stylesheet" href="{% asset 'css/eira.css' %}">
   {% if tenant %}<link rel="stylesheet" href="{% turl 'theme_css' %}">{% endif %}
   {% block head %}{% endblock %}
-  <script src="{% static 'vendor/htmx/htmx.min.js' %}" defer></script>
-  <script src="{% static 'js/eira.js' %}" defer></script>
+  <script src="{% asset 'vendor/htmx/htmx.min.js' %}" defer></script>
+  <script src="{% asset 'js/eira.js' %}" defer></script>
 </head>
 <body class="layout-{{ layout }} kind-{{ kind }}{% if region_consult %} region-consult{% endif %}{% if framed %} framed framed-{{ layout }}{% endif %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' {% block body_attrs %}{% endblock %}>
   <a class="skip-link" href="#main">{% translate "Saltar ao contido" %}</a>

@@ -18,7 +18,8 @@ cp .env.example .env
 # Edita .env: EIRA_DEBUG=0, EIRA_SECRET_KEY (longa e aleatoria), EIRA_ALLOWED_HOSTS,
 # EIRA_CSRF_TRUSTED_ORIGINS=https://deportes.deputacion.example, EIRA_DEMO_TOOLS=0,
 # EIRA_SECURE_COOKIES=1, EIRA_BEHIND_PROXY=1, EIRA_HSTS_SECONDS=31536000,
-# DATABASE_URL=postgres://… (contrasinal propio)
+# DATABASE_URL=postgres://… (contrasinal propio),
+# EIRA_PADRON_SECRET (obrigatorio: sen el a app non arranca; se o cambias, volve cargar o padrón)
 docker compose up -d --build
 docker compose exec app python manage.py createsuperuser   # admin técnico
 ```
@@ -37,6 +38,7 @@ asignarlle unha persoa con `RegionMembership`.
 
 ```cron
 */15 * * * *  docker compose exec -T app python manage.py booking_maintenance
+*/5 * * * *   docker compose exec -T app python manage.py send_notices   # avisos programados
 0 5 * * *     docker compose exec -T app python manage.py generate_work_orders --days 14
 0 6 * * 1     docker compose exec -T app python manage.py ai_weekly_summary   # só se a IA está activada
 ```

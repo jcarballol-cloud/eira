@@ -7,8 +7,8 @@
   <meta name="robots" content="noindex">
   <title>{% block title %}{% endblock %} · {% translate "Ferramenta de demostración" %} · Eira</title>
   <link rel="icon" href="{% static 'img/eira.svg' %}" type="image/svg+xml">
-  <link rel="stylesheet" href="{% static 'css/eira.css' %}">
-  <script src="{% static 'js/eira.js' %}" defer></script>
+  <link rel="stylesheet" href="{% asset 'css/eira.css' %}">
+  <script src="{% asset 'js/eira.js' %}" defer></script>
 </head>
 {# Páxinas independentes: nunca herdan o marco, a barra de pestanas nin o menú do perfil activo. #}
 <body class="devtool {% block body_class %}{% endblock %}">

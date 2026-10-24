@@ -27,7 +27,7 @@ class Notification(models.Model):
     notice = models.ForeignKey(
         "Notice", null=True, blank=True, on_delete=models.CASCADE, related_name="deliveries"
     )
-    category = models.CharField(max_length=12, blank=True)
+    category = models.CharField(max_length=20, blank=True)
 
     class Meta:
         ordering = ["-created_at"]
@@ -50,19 +50,24 @@ class Category(models.TextChoices):
     ALERT = "alert", _("Alertas")
     SCHEDULE = "schedule", _("Horarios")
     ACTIVITY = "activity", _("Actividades e inscricións")
+    # v4.1: cambios dunha actividade na que a persoa xa está inscrita (servizo)
+    ACTIVITY_CHANGE = "activity_change", _("Cambios nas túas actividades")
     EVENT = "event", _("Festas e eventos")
     NEWS = "news", _("Novidades")
 
 
 # Base xurídica por categoría (docs/rxpd/avisos.md). «service»: información necesaria para o
-# servizo que a persoa usa (art. 6.1.e, e 6.1.b se afecta a unha reserva súa); «info»: comunicacións
-# informativas, só con consentimento (art. 6.1.a).
+# servizo que a persoa usa (art. 6.1.e, e 6.1.b se afecta a unha reserva ou inscrición súa);
+# «info»: comunicacións informativas, só con consentimento (art. 6.1.a).
+# «Cambios nas túas actividades» (suspensións, cambios de horario ou de sala) é de servizo só para
+# quen xa está inscrito/a: noutro público trátase como informativo (ver notices.basis_for).
 SERVICE, INFO = "service", "info"
 CATEGORY_BASIS = {
     Category.CLOSURE: SERVICE,
     Category.ALERT: SERVICE,
     Category.SCHEDULE: INFO,
     Category.ACTIVITY: INFO,
+    Category.ACTIVITY_CHANGE: SERVICE,
     Category.EVENT: INFO,
     Category.NEWS: INFO,
 }
@@ -71,6 +76,7 @@ CATEGORY_ICON = {
     Category.ALERT: "alert",
     Category.SCHEDULE: "clock",
     Category.ACTIVITY: "users",
+    Category.ACTIVITY_CHANGE: "calendar",
     Category.EVENT: "star",
     Category.NEWS: "bell",
 }
@@ -88,7 +94,7 @@ class Notice(models.Model):
         PARISH = "parish", _("Quen reserva nunha parroquia")
 
     municipality = models.ForeignKey(Municipality, on_delete=models.CASCADE, related_name="notices")
-    category = models.CharField(_("categoría"), max_length=12, choices=Category.choices)
+    category = models.CharField(_("categoría"), max_length=20, choices=Category.choices)
     title = models.CharField(_("título"), max_length=120)
     body = models.TextField(_("texto"), max_length=1500)
     url = models.CharField(_("ligazón (opcional)"), max_length=300, blank=True)
@@ -140,6 +146,9 @@ class Notice(models.Model):
 
     @property
     def basis(self):
+        # Os cambios dunha actividade só son de servizo para as persoas inscritas nela
+        if self.category == Category.ACTIVITY_CHANGE and self.audience != self.Audience.ACTIVITY:
+            return INFO
         return CATEGORY_BASIS[self.category]
 
     @property

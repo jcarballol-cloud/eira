@@ -1,9 +1,13 @@
 {% extends "base.html" %}{% load i18n eira %}
 {% block title %}{% translate "Inicio" %}{% endblock %}
 {% block content %}
-<div class="app-hello">
+{# v4.1: ilustración propia (decorativa, alt="") co saúdo superposto na zona despexada #}
+<div class="app-hello app-hello--art">
+  {% illustration "cabecera-eira" sizes="(max-width: 760px) 100vw, 720px" css="app-hello__art" eager=True night=True %}
+  <div class="app-hello__text">
   <p class="eyebrow">{{ tenant.name }}</p>
   <h1>{% if user.display_name %}{% blocktranslate with n=user.display_name %}Ola, {{ n }}{% endblocktranslate %}{% else %}{% translate "Ola" %}{% endif %}</h1>
+  </div>
 </div>
 
 {% for b in pending_checklist %}
@@ -32,7 +36,7 @@
 </section>
 {% else %}
 <section class="app-card app-empty" aria-labelledby="empty-title">
-  {% icon 'calendar' 'empty-illus' %}
+  {% illustration "baleiro-reservas" sizes="16rem" css="empty-art" %}
   <h2 id="empty-title">{% translate "Non tes reservas próximas" %}</h2>
   <p class="muted">{% translate "Busca unha pista, o ximnasio ou a piscina e reserva en tres pasos." %}</p>
   <a class="btn" href="{% turl 'tenant_home' %}">{% translate "Reservar agora" %}</a>

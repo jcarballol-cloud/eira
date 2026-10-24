@@ -68,8 +68,8 @@ class NoticeForm(forms.ModelForm):
             ),
             "publish_at": gettext_lazy("Baleiro = enviar agora."),
             "category": gettext_lazy(
-                "Peches e alertas chegan a quen lle afectan. O resto só a quen deu o "
-                "consentimento para comunicacións."
+                "Peches, alertas e cambios nas actividades chegan a quen lle afectan. Novas "
+                "inscricións, horarios, festas e novidades, só a quen deu o consentimento."
             ),
         }
 
@@ -92,6 +92,11 @@ class NoticeForm(forms.ModelForm):
         }.get(aud)
         if needed and not data.get(needed):
             self.add_error(needed, _("Escolle a quen vai dirixido."))
+        if data.get("category") == "activity_change" and aud != Notice.Audience.ACTIVITY:
+            self.add_error(
+                "audience",
+                _("Os cambios dunha actividade envíanse só ás persoas inscritas nela."),
+            )
         if data.get("cancel_bookings"):
             if aud not in (
                 Notice.Audience.FACILITY,

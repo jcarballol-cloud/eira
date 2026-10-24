@@ -110,6 +110,20 @@ def facility_photo(facility, sizes="(min-width: 700px) 360px, 100vw", caption=Fa
     return {"p": photo_for(facility), "sizes": sizes, "caption": caption, "eager": eager}
 
 
+@register.simple_tag
+def asset(path):
+    """URL dun estático versionado: nome con hash en produción, `?v=<hash>` en desenvolvemento."""
+    from apps.tenants.assets import asset_url
+
+    return asset_url(path)
+
+
+@register.filter
+def static_file(path):
+    """`{{ "img/demo/"|add:nome|static_file }}`: estático cun nome calculado (válido co manifesto)."""
+    return static(path)
+
+
 @register.filter
 def signed(value):
     """Variación con signo explícito e menos tipográfico: +37, −2,9 (v4: mesmo formato en todas partes)."""
@@ -147,3 +161,37 @@ def code_groups(code):
     """Parte un código numérico en grupos de 3 («163120» → ["163", "120"]) para que caiba en móbil."""
     code = str(code or "")
     return [code[i : i + 3] for i in range(0, len(code), 3)]
+
+
+ILLUSTRATIONS = {
+    # nome: (anchos, alto/ancho)
+    "cabecera-eira": ((480, 960, 1600), 724 / 2172),
+    "eira-icono-baleiro": ((240, 480), 1),
+    "baleiro-reservas": ((320, 640), 1086 / 1448),
+    "baleiro-avisos": ((320, 640), 1086 / 1448),
+    "baleiro-mantemento": ((320, 640), 1086 / 1448),
+}
+
+
+@register.inclusion_tag("includes/illustration.html")
+def illustration(name, sizes="100vw", css="", eager=False, night=False):
+    """Ilustración decorativa (alt="") en AVIF e WebP con varios anchos. Con `night`, en modo
+    escuro do sistema úsase a versión nocturna. Só a cabeceira da app debe ir `eager`."""
+    widths, ratio = ILLUSTRATIONS[name]
+
+    def srcset(base, fmt):
+        return ", ".join(static(f"img/ilustracions/{base}-{w}.{fmt}") + f" {w}w" for w in widths)
+
+    big = widths[-1]
+    return {
+        "avif": srcset(name, "avif"),
+        "webp": srcset(name, "webp"),
+        "night_avif": srcset(f"{name}-noite", "avif") if night else "",
+        "night_webp": srcset(f"{name}-noite", "webp") if night else "",
+        "src": static(f"img/ilustracions/{name}-{widths[len(widths) // 2]}.webp"),
+        "width": big,
+        "height": round(big * ratio),
+        "sizes": sizes,
+        "css": css,
+        "eager": eager,
+    }

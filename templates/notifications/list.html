@@ -23,7 +23,7 @@
         <small class="muted">{% if n.category %}{% for c in categories %}{% if c.value == n.category %}{{ c.label }} · {% endif %}{% endfor %}{% endif %}{% translate "Canles:" %} {{ n.channels|channel_labels }}</small>
       </li>
     {% empty %}
-      <li class="muted">{% translate "Non tes avisos." %}</li>
+      <li class="card empty-state">{% illustration "baleiro-avisos" sizes="16rem" css="empty-art" %}<p class="mb-0"><strong>{% translate "Non tes avisos." %}</strong><br><span class="muted">{% translate "Cando o concello che envíe algo, aparecerá aquí." %}</span></p></li>
     {% endfor %}
   </ul>
 </section>

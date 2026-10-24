@@ -119,10 +119,27 @@ def offline(request):
 
 @cache_control(no_cache=True)
 def service_worker(request):
+    import json
+
+    from django.conf import settings
+
+    from . import assets
+
+    precache = ["/offline/", "/saude/"] + [assets.asset_url(p) for p in assets.PRECACHE]
     response = render(
-        request, "core/sw.js", {"version": "eira-v1"}, content_type="application/javascript"
+        request,
+        "core/sw.js",
+        {
+            "version": assets.version(),
+            "dev": settings.DEBUG,
+            "precache": json.dumps(precache),
+            "icon": static("img/eira-192.png"),
+        },
+        content_type="application/javascript",
     )
     response["Service-Worker-Allowed"] = "/"
+    # O navegador debe comprobar sempre se hai unha versión nova do service worker
+    response["Cache-Control"] = "no-cache"
     return response
 
 

@@ -1,6 +1,6 @@
 {% extends "base.html" %}{% load i18n static eira %}
 {% block title %}{% translate "Rexistro" %} · {{ session.group }}{% endblock %}
-{% block head %}<script src="{% static 'js/kiosk.js' %}" defer></script>{% endblock %}
+{% block head %}<script src="{% asset 'js/kiosk.js' %}" defer></script>{% endblock %}
 {% block content %}
 <div class="kiosk" data-kiosk data-sprite="{% static 'img/icons.svg' %}">
   <noscript><p class="alert">{% translate "O rexistro na tableta precisa JavaScript." %} <a href="{% turl 'monitor:attendance' session.pk %}">{% translate "Usar a lista rápida" %}</a></p></noscript>

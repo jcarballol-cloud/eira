@@ -206,7 +206,7 @@
 
   // Service worker (PWA)
   if ("serviceWorker" in navigator && window.isSecureContext) {
-    navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(function () {});
+    navigator.serviceWorker.register("/sw.js", { scope: "/", updateViaCache: "none" }).catch(function () {});
   }
 
   // ---------- Cola sen conexión (app do operario) ----------

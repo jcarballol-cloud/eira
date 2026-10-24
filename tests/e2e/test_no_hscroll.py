@@ -106,12 +106,28 @@ def pages():
     }
 
 
+# A fonte do sistema cambia o ancho do texto: en Linux (CI) é DejaVu Sans, máis ancha ca Segoe UI.
+# Fórzase DejaVu Sans ou Verdana (mesmas métricas en Windows) para que o resultado non dependa da
+# máquina e se mida o caso máis ancho.
+WIDE_FONT = """document.addEventListener('DOMContentLoaded', () => {
+  const s = document.createElement('style');
+  s.textContent = '*:not(code):not(kbd):not(.mono) { font-family: "DejaVu Sans", Verdana, sans-serif !important; }';
+  document.head.appendChild(s);
+});"""
+
+
+def wide_page(new_page, **kw):
+    page = new_page(bypass_csp=True, **kw)
+    page.context.add_init_script(WIDE_FONT)
+    return page
+
+
 @pytest.mark.parametrize("width", [360, 390])
 @pytest.mark.parametrize("large", [False, True], ids=["texto-normal", "texto-grande"])
 def test_no_horizontal_scroll(new_page, base, width, large):
     failures = []
     for persona, paths in pages().items():
-        page = new_page(viewport={"width": width, "height": 800}, persona=persona)
+        page = wide_page(new_page, viewport={"width": width, "height": 800}, persona=persona)
         page.context.add_cookies(
             [{"name": "eira_prefs", "value": "large_text" if large else "", "url": base}]
         )
@@ -131,7 +147,7 @@ def test_no_horizontal_scroll_inside_phone_frame(new_page, base):
         "manuel@demo.eira.example",
         "brais@demo.eira.example",
     ):
-        page = new_page(viewport={"width": 1280, "height": 900}, persona=persona)
+        page = wide_page(new_page, viewport={"width": 1280, "height": 900}, persona=persona)
         for path in pages()[persona]:
             page.goto(base + path + ("&" if "?" in path else "?") + "marco=1")
             page.wait_for_load_state("networkidle")

@@ -50,7 +50,7 @@ h1, h2, h3, h4 { line-height: 1.2; margin: 0 0 .6em; font-weight: 700; letter-sp
 h1 { font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.3rem); }
 h2 { font-size: clamp(1.25rem, 1.1rem + .6vw, 1.55rem); }
 h3 { font-size: 1.12rem; }
-p { margin: 0 0 1em; }
+p { margin: 0 0 1em; overflow-wrap: break-word; } /* rutas e enderezos longos non desbordan */
 [hidden] { display: none !important; }
 a { color: var(--musgo-escuro); text-underline-offset: .18em; }
 a:hover { color: var(--granito); }
@@ -530,13 +530,14 @@ html.pref-reduced-motion *, html.pref-reduced-motion *::before, html.pref-reduce
 
 /* Gráficos de barras en HTML */
 .hbars { margin-left: 0; margin-right: 0; }
-.hbars .list > li.hbar-row { display: grid; grid-template-columns: minmax(7rem, 38%) 1fr auto; gap: .6rem; align-items: center; padding: .35rem 0; border-bottom: 0; }
+.hbars .list > li.hbar-row { display: grid; grid-template-columns: minmax(min(7rem, 30%), 38%) minmax(1.5rem, 1fr) auto; gap: .6rem; align-items: center; padding: .35rem 0; border-bottom: 0; }
 .hbar-label { font-size: .92rem; overflow-wrap: anywhere; }
 .hbar-track { height: 1.1rem; background: var(--neboa); border-radius: 6px; overflow: hidden; }
 .hbar-fill { display: block; height: 100%; background: var(--musgo); border-radius: 6px; min-width: 2px; }
 .hbar-fill.warn { background: var(--arxila); }
 .hbar-scale { margin: .35rem 0 0; font-size: .82rem; color: var(--text-muted); }
 .hbar-value { font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+input[type="file"] { width: 100%; max-width: 100%; min-width: 0; } /* o texto do selector varía co navegador e a fonte */
 
 /* =====================================================================
    v2 · Disposicións por perfil (app móbil, tableta, escritorio, pública)
@@ -854,7 +855,8 @@ del { color: var(--text-muted); }
 .data-counts li { display: flex; flex-direction: column; padding: .6rem .8rem; border-radius: var(--radius-sm); background: var(--neboa); }
 .data-counts strong { font-size: 1.5rem; }
 .data-counts span { font-size: .85rem; color: var(--text-muted); }
-.toggle-list { display: grid; gap: .5rem; }
+.toggle-list { display: grid; gap: .5rem; grid-template-columns: minmax(0, 1fr); }
+.toggle-list label, .toggle-list .help { overflow-wrap: anywhere; }
 .toggle { position: relative; }
 .toggle input { position: absolute; opacity: 0; inset: 0; margin: 0; pointer-events: none; }
 .toggle label { display: flex; gap: 1rem; align-items: center; justify-content: space-between; padding: .75rem 1rem; border: 1.5px solid var(--liña); border-radius: var(--radius-sm); background: var(--branco); cursor: pointer; }

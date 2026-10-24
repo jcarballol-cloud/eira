@@ -7,6 +7,8 @@ No escritorio, a app da veciñanza e a do operario aparecen dentro dun **marco d
 
 O mesmo percorrido está gravado, con subtítulos, en `eira-demo-movil.webm` e `eira-demo-escritorio.webm`. Pesan máis de 10 MB, así que non van ao git: distribúense como adxuntos da release (ver [VIDEOS.md](VIDEOS.md)). As capturas de cada paso están en `docs/capturas/v3/pitch-*/` e as novidades da v4 en `docs/capturas/v4/`. Regénerase con `pytest tests/e2e/test_video.py`.
 
+**Vídeo final do pitch (≈ 2 min, 1920×1080):** versión curta deste guión (alta por padrón → franxa tranquila → pagamento rexeitado e reintento → código e pechadura → «Que tal foi?» e incidencia → orde do operario → tableta → avisos e Telegram → deputación). Grávase con `python tools/tasks.py pitch` en `docs/demo/eira-pitch.{mp4,webm,vtt}`, fóra do git.
+
 | Tempo | Pantalla | Que facer | Que dicir |
 |---|---|---|---|
 | 0:00 | Portada da demo: paso 1 «Escolle un concello» (Vilardeiras, rural pequeno) → portada de Vilardeiras | Botón **«Solicita a app de deportes»** | «Eira é software libre para a xestión deportiva municipal: reservas, acceso, mantemento e actividades nunha soa plataforma.» |

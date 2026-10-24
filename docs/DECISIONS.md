@@ -528,3 +528,11 @@ Formato: data · decisión · motivo · alternativas descartadas.
   - Na seed, Brais deixou feitas hoxe as ordes de mañá, así que «Mañá» mostra o estado baleiro. O xerador non as volve crear porque xa existen.
   - **Cambio:** antes a lista por defecto incluía mañá; agora mañá vai no seu filtro.
 - **Catálogo de ilustracións** en `/dev/ilustracions/`, só con `EIRA_DEMO_TOOLS`. Cada ilustración ten un botón «Ir á pantalla» que entra co perfil axeitado: `entrar-como` acepta `next` (só local) e `tema`.
+
+## v4.1 · Vídeo final do pitch (24/10)
+- **Captura por CDP (`Page.startScreencast`) e montaxe con ffmpeg**, non o gravador de Playwright: este comprime en VP8 a ~1 Mbit/s e a 1080p o texto vese borroso. Os fotogramas JPEG (calidade 92) colócanse nunha grella de 1/30 s polas súas marcas de tempo para que a duración e os subtítulos non deriven.
+- **1280×720 CSS con escala 1,5** (saída 1920×1080): a 1920 px CSS o marco do teléfono ocupaba un cuarto da pantalla e non se lía.
+- Subtítulos **queimados** (lense en calquera reprodutor e en redes) e, ademais, `.vtt` e pista `mov_text` (gl) no MP4 para quen os queira desactivar ou traducir. A pausa de cada un depende do número de palabras (≥ 2,2 s, ~0,28 s/palabra).
+- Datos rexenerados (`seed_demo`) ao comezo da gravación e **IA desactivada** (`EIRA_AI_ENABLED=0`). O aviso por vento usa como franxa a próxima reserva nunha instalación descuberta (de Uxía se hai), para que a vista previa chegue a alguén aínda que se grave de noite.
+- Recorte fronte ao guión longo: fóra saúde, consellos da sesión, valoracións e observatorio, para quedar en ≈ 2 min.
+- MP4, WebM e `.vtt` quedan en `docs/demo/` e ignorados polo git; van a unha release privada en borrador (ver `docs/demo/VIDEOS.md`).

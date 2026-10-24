@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: EUPL-1.2
 """Tarefas do proxecto, equivalentes ao Makefile, para sistemas sen `make` (p. ex. Windows).
 
-python tools/tasks.py dev | seed | test | e2e | lint | licenses | i18n | openapi | screenshots
+python tools/tasks.py dev | seed | test | e2e | lint | licenses | i18n | openapi | screenshots | video | pitch
 """
 
 import os
@@ -56,6 +56,23 @@ def video():
     run(PY, "-m", "pytest", "tests/e2e/test_video.py", "-m", "video", "-p", "no:cacheprovider")
 
 
+def pitch():
+    # Vídeo final do pitch: 1920×1080, MP4 + WebM + .vtt en docs/demo/ (ignorados polo git)
+    i18n()
+    ENV["EIRA_AI_ENABLED"] = "0"
+    run(
+        PY,
+        "-m",
+        "pytest",
+        "tests/e2e/test_pitch_video.py",
+        "-m",
+        "video",
+        "-s",
+        "-p",
+        "no:cacheprovider",
+    )
+
+
 def lint():
     run(PY, "-m", "ruff", "check", ".")
     run(PY, "-m", "ruff", "format", "--check", ".")
@@ -94,7 +111,20 @@ def screenshots():
 
 TASKS = {
     f.__name__: f
-    for f in (dev, seed, test, e2e, lint, licenses, i18n, openapi, publiccode, screenshots, video)
+    for f in (
+        dev,
+        seed,
+        test,
+        e2e,
+        lint,
+        licenses,
+        i18n,
+        openapi,
+        publiccode,
+        screenshots,
+        video,
+        pitch,
+    )
 }
 
 if __name__ == "__main__":

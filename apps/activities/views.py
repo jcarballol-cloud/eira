@@ -48,8 +48,29 @@ def enroll(request, pk):
             if dependent is None:
                 messages.error(request, _("Escolle unha persoa válida."))
                 return redirect(request.path)
+        # v4: os apelidos do/a menor son obrigatorios ao inscribilo/a nunha escola (dato da
+        # inscrición, como no padrón); para a propia persoa adulta son opcionais
+        surnames = request.POST.get("surnames", "").strip()
+        if dependent is not None and not surnames:
+            messages.error(
+                request,
+                _("Indica os apelidos de %(n)s, como figuran no padrón.")
+                % {"n": dependent.first_name},
+            )
+            return render(
+                request,
+                "activities/enroll.html",
+                {
+                    "group": group,
+                    "dependents": dependents,
+                    "nav": "activities",
+                    "selected": who,
+                    "surnames_error": True,
+                },
+                status=400,
+            )
         try:
-            e = services.enroll(group, request.user, dependent)
+            e = services.enroll(group, request.user, dependent, surnames=surnames)
         except services.EnrollmentError as exc:
             messages.error(request, str(exc))
             return redirect(request.path)
@@ -171,8 +192,8 @@ def observatory_view(request):
             "weeks": weeks,
             "activities": activities,
             "activity": activity,
-            "who_chart": hbar(shown, "who_pct", "band", suffix=" %"),
-            "att_chart": hbar(shown, "attendance_pct", "band", suffix=" %"),
+            "who_chart": hbar(shown, "who_pct", "band", suffix=" %", scale="percent"),
+            "att_chart": hbar(shown, "attendance_pct", "band", suffix=" %", scale="percent"),
             "line": observatory.line_chart(data["rows"]),
             "query": f"semanas={weeks}" + (f"&actividade={activity.pk}" if activity else ""),
             "nav": "activities",

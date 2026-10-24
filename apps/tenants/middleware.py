@@ -162,4 +162,23 @@ class DemoFrameMiddleware:
             response.set_cookie(
                 self.COOKIE, param, max_age=60 * 60 * 24 * 30, samesite="Lax", httponly=True
             )
+        self.remember_back(request, response)
         return response
+
+    BACK_KEY = "demo_back"
+    SKIP = ("/dev/", "/static/", "/media/", "/api/", "/sw.js", "/manifest", "/i18n/", "/acceso/")
+
+    def remember_back(self, request, response):
+        """v4: «← Volver á demo» nas ferramentas leva á última páxina vista co perfil activo."""
+        if not (
+            settings.EIRA_DEMO_TOOLS
+            and request.method == "GET"
+            and response.status_code == 200
+            and request.user.is_authenticated
+            and response.get("Content-Type", "").startswith("text/html")
+            and not request.headers.get("HX-Request")
+            and not request.path.startswith(self.SKIP)
+        ):
+            return
+        if request.session.get(self.BACK_KEY) != request.get_full_path():
+            request.session[self.BACK_KEY] = request.get_full_path()

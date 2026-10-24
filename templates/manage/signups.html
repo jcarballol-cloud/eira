@@ -2,15 +2,17 @@
 {% block title %}{% translate "Altas da app" %}{% endblock %}
 {% block content %}
 <div class="page-head"><div><h1>{% translate "Altas da app" %}</h1>
-<p>{% translate "Solicitudes en liña que o padrón non confirmou e altas no mostrador con folla imprimible." %}</p></div></div>
+<p>{% translate "Solicitudes en liña que o padrón non confirmou e altas no mostrador con folla imprimible." %}</p></div>
+  <a class="btn btn-secondary" href="{% turl 'manage:padron' %}">{% icon 'download' %} {% translate "Padrón" %}</a></div>
 <div class="layout-aside">
   <div class="stack">
     <section class="card" aria-labelledby="pend-title">
       <h2 id="pend-title">{% translate "Pendentes de revisar" %} <span class="badge">{{ pending|length }}</span></h2>
       {% if pending %}
       <ul class="list">{% for r in pending %}<li class="pending-row">
-        <div><strong>{{ r.name }}</strong> · {{ r.email }}<br>
-          <small class="muted">{% blocktranslate with cp=r.postcode y=r.birth_year d=r.created_at|date:"d/m H:i" %}C. P. {{ cp }} · nada en {{ y }} · recibida o {{ d }}{% endblocktranslate %}</small></div>
+        <div><strong>{{ r.name }} {{ r.surnames }}</strong> · {{ r.email }}<br>
+          {% if r.review_reason_label %}<span class="badge badge-warn">{{ r.review_reason_label }}</span>{% endif %}
+          <small class="muted">{% if r.id_number %}{{ r.id_number }} · {% endif %}{% if r.birth_date %}{{ r.birth_date|date:"d/m/Y" }} · {% elif r.birth_year %}{{ r.birth_year }} · {% endif %}{% if r.address %}{{ r.address }} · {% endif %}{% blocktranslate with d=r.created_at|date:"d/m H:i" %}recibida o {{ d }}{% endblocktranslate %}</small></div>
         <form method="post" action="{% turl 'manage:signup_resolve' r.pk %}" class="row">{% csrf_token %}
           <button class="btn btn-sm" name="action" value="approve" type="submit">{% translate "Empadroada: enviar código" %}<span class="visually-hidden"> · {{ r.name }}</span></button>
           <button class="btn btn-sm btn-secondary" name="action" value="reject" type="submit">{% translate "Non figura" %}<span class="visually-hidden"> · {{ r.name }}</span></button>

@@ -11,6 +11,7 @@ from apps.bookings import manage as bookings
 from apps.facilities import manage as facilities
 from apps.incidents import manage as incidents
 from apps.maintenance import views as maintenance
+from apps.notifications import manage as notices
 from apps.tenants import manage as tenant
 from apps.tenants import portability
 
@@ -36,6 +37,9 @@ urlpatterns = [
     path("peches/", facilities.closures, name="closures"),
     path("peches/<int:pk>/eliminar/", facilities.closure_delete, name="closure_delete"),
     path("peches/alerta/", tenant.weather_alert, name="weather_alert"),
+    path("avisos/", notices.notice_list, name="notices"),
+    path("avisos/novo/", notices.notice_new, name="notice_new"),
+    path("avisos/<int:pk>/", notices.notice_detail, name="notice"),
     path("incidencias/", incidents.incident_list, name="incidents"),
     path("incidencias/<int:pk>/", incidents.incident_detail, name="incident_detail"),
     path("mantemento/", maintenance.plans, name="maintenance_plans"),
@@ -50,6 +54,8 @@ urlpatterns = [
     path("altas/", signup.signups, name="signups"),
     path("altas/<int:pk>/resolver/", signup.signup_resolve, name="signup_resolve"),
     path("altas/<int:pk>/folla/", signup.signup_sheet, name="signup_sheet"),
+    path("altas/padron/", signup.padron_page, name="padron"),
+    path("altas/padron/modelo.csv", signup.padron_template, name="padron_template"),
     path("actividades/pendentes/<int:pk>/", activities.pending_resolve, name="pending_resolve"),
     path("persoal/empadroamento/", tenant.issue_invitation, name="issue_invitation"),
     path("portabilidade/", portability.page, name="portability"),

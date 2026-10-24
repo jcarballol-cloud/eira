@@ -80,7 +80,8 @@ def test_paid_group_goes_through_payment(client, kids_group, citizen):
     d = child(citizen)
     client.force_login(citizen)
     r = client.post(
-        f"/c/concello-a/actividades/grupo/{kids_group.pk}/inscribirse/", {"participant": d.pk}
+        f"/c/concello-a/actividades/grupo/{kids_group.pk}/inscribirse/",
+        {"participant": d.pk, "surnames": "Proba Exemplo"},
     )
     assert "/dev/tpv/" in r["Location"]
     r = client.post(r["Location"], {"result": "ok"})
@@ -110,7 +111,51 @@ def test_monitor_tablet_flow(client, kids_group, citizen, monitor):
     assert a1.rpe == 7 and a1.session_load == 7 * 60
     assert a2.rpe is None  # sen consentimento de rendemento non se garda o esforzo
     session.refresh_from_db()
-    assert session.closed_at
+    # só se pecha se xa rematou (v4: antes pechábase aínda que non empezara)
+    assert bool(session.closed_at) == (timezone.now() >= session.end_dt)
+
+
+@pytest.mark.parametrize(
+    "minutes_from_start, closed, expected",
+    [
+        (-60, False, "upcoming"),
+        (-10, False, "open"),
+        (30, False, "open"),
+        (30, True, "open"),
+        (120, False, "finished"),
+        (120, True, "closed"),
+    ],
+)
+def test_session_status_depends_on_time(kids_group, minutes_from_start, closed, expected):
+    now = timezone.now()
+    start = timezone.localtime(now - dt.timedelta(minutes=minutes_from_start))
+    s = Session(
+        group=kids_group,
+        municipality=kids_group.municipality,
+        date=start.date(),
+        start_time=start.time().replace(tzinfo=None),
+        duration_minutes=60,
+        closed_at=now if closed else None,
+    )
+    assert s.status_at(now) == expected
+
+
+def test_saving_effort_before_the_end_keeps_session_open(kids_group, citizen):
+    e = services.enroll(
+        kids_group, citizen, child(citizen, "Con", consents=("data", "performance"))
+    )
+    start = timezone.localtime(timezone.now() + dt.timedelta(minutes=30))
+    s = Session.objects.create(
+        group=kids_group,
+        municipality=kids_group.municipality,
+        date=start.date(),
+        start_time=start.time(),
+        duration_minutes=60,
+    )
+    services.record_attendance(s, {e.pk})
+    services.record_rpe(s, {e.pk: 6})
+    s.refresh_from_db()
+    assert s.closed_at is None and s.status != "closed"
 
 
 def test_monitor_only_sees_own_groups(client, kids_group, muni_a):
@@ -192,3 +237,15 @@ def test_microdata_is_pseudonymised_and_admin_only(client, kids_group, admin_a, 
     client.force_login(admin_a)
     body = client.get("/c/concello-a/actividades/observatorio/?csv=micro").content.decode()
     assert "Proba00xyz" not in body and "6–11" in body and len(body.splitlines()) == 4
+
+
+def test_minor_enrollment_requires_surnames(client, kids_group, citizen):
+    """v4: ao inscribir un/unha menor nunha escola, os apelidos son obrigatorios (dato da inscrición)."""
+    kid = child(citizen, "Iria")
+    client.force_login(citizen)
+    url = f"/c/concello-a/actividades/grupo/{kids_group.pk}/inscribirse/"
+    r = client.post(url, {"participant": kid.pk})
+    assert r.status_code == 400 and not Enrollment.objects.exists()
+    assert "como figuran no padrón" in r.content.decode()
+    client.post(url, {"participant": kid.pk, "surnames": "Souto Pazos"})
+    assert Enrollment.objects.get().surnames == "Souto Pazos"

@@ -20,6 +20,7 @@ from apps.accounts.models import (
     Dependent,
     Household,
     Membership,
+    PadronImport,
     RegionMembership,
     Residency,
     ResidencyInvitation,
@@ -268,6 +269,7 @@ class Command(BaseCommand):
             RegionMembership.objects.create(user=dep, region=region)
             self.persona_bookings()
             self.seed_activities()
+            self.seed_notices()
         self.stdout.write(
             self.style.SUCCESS(
                 f"Demo lista: {Municipality.objects.count()} concellos, {Facility.objects.count()} instalacións, "
@@ -385,21 +387,69 @@ class Command(BaseCommand):
         self.closures(m, facilities)
         self.incidents_and_orders(m, facilities)
 
+    def padron(self, m):
+        """v4: padrón ficticio cargado por CSV (só se gardan os HMAC). DNI de proba con letra
+        correcta xerados a partir de números inventados; nunca datos reais."""
+        from django.core.files.uploadedfile import SimpleUploadedFile
+
+        from apps.accounts import padron
+
+        def dni(n):
+            return f"{n:08d}{padron.LETTERS[n % 23]}"
+
+        rows = ["dni_nie;data_nacemento"]
+        base = 70000000 if m.slug == "vilardeiras" else 71000000
+        rng = random.Random(f"padron-{m.slug}")  # propio, para non mover o resto da seed
+        for i in range(400):
+            born = dt.date(1940, 1, 1) + dt.timedelta(days=rng.randint(0, 365 * 75))
+            rows.append(f"{dni(base + i * 7)};{born:%d/%m/%Y}")
+        if m.slug == "vilardeiras":
+            # Persoa do guión do pitch: ao pedir a app con estes datos, alta automática
+            rows.append("12345678Z;14/05/1990")
+        admin = User.objects.filter(
+            memberships__municipality=m, memberships__role=Role.ADMIN
+        ).first()
+        padron.import_csv(m, SimpleUploadedFile("padron.csv", "\n".join(rows).encode()), by=admin)
+        PadronImport.objects.filter(municipality=m).update(
+            imported_at=timezone.now() - dt.timedelta(days=6)
+        )
+
     def app_requests(self, m):
-        """Solicitudes da app: dúas pendentes de revisar e algunhas xa enviadas (nomes ficticios)."""
+        """Solicitudes da app: pendentes de revisar co motivo e algunhas xa enviadas (ficticias)."""
+        self.padron(m)
         pending = [
-            ("Breixo Proba", "breixo.solicitude@example.org", 1987, "15990"),
-            ("Antía Exemplo", "antia.solicitude@example.org", 1992, "15997"),
+            # Non figura: DNI que non está no padrón cargado
+            (
+                "Breixo",
+                "Proba Souto",
+                "breixo.solicitude@example.org",
+                "00000002W",
+                dt.date(1987, 3, 9),
+                "Rúa do Exemplo, 4",
+            ),
+            # A data non coincide (un erro ao teclear ou un padrón desactualizado)
+            (
+                "Antía",
+                "Exemplo Rial",
+                "antia.solicitude@example.org",
+                "00000003A",
+                dt.date(1992, 11, 21),
+                "",
+            ),
         ]
         if m.slug != "vilardeiras":
             pending = pending[:1]
-        for name, email, year, cp in pending:
+        for name, surnames, email, id_number, born, address in pending:
             AppRequest.objects.create(
                 municipality=m,
                 name=name,
+                surnames=surnames,
                 email=email if m.slug == "vilardeiras" else f"{m.slug}.{email}",
-                birth_year=year,
-                postcode=cp,
+                id_number=id_number,
+                birth_date=born,
+                birth_year=born.year,
+                address=address,
+                review_reason="no_match",
             )
         for i, (name, channel) in enumerate(
             [("Persoa de mostrador 1", "counter"), ("Persoa en liña 1", "online")]
@@ -875,6 +925,12 @@ class Command(BaseCommand):
             d = Dependent.objects.create(household=hh, first_name=name, birth_year=year)
             Consent.objects.create(dependent=d, kind="data", granted_by=uxia)
             Consent.objects.create(dependent=d, kind="performance", granted_by=uxia)
+
+    def seed_notices(self):
+        """v4: avisos do concello, preferencias, bot de Telegram e correos coherentes coas reservas."""
+        from apps.notifications.demo import seed
+
+        seed(self.rng)
 
     def seed_activities(self):
         """Escolas deportivas (P3). Defínese en apps.activities.demo se existe."""

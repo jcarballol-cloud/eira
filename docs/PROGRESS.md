@@ -80,3 +80,19 @@ guión de 3 min verificado cun test E2E, 44 capturas automáticas en `docs/captu
     - Tests: as etiquetas e a coherencia da seed (devolucións só en canceladas, con motivo, < 5 % e nunca maiores ca o pagado).
 - ✅ v3: 5 ferramentas de demo e Cl@ve · 2 selector de franxas · 1 densidade · 6 tableta tipo AFS +50 · 4 portada da demo · 8 pé, menú e «Devolto» · 3 consellos co tempo · 7 axenda en calendario · 9 vídeos, capturas e castelán.
 - Números v3: 332 tests unitarios/integración + 35 E2E (+2 de vídeo); axe 72 páxinas × 3 viewports, 0 violacións.
+
+## v4 (24/10)
+- ✅ 1 cero scroll horizontal: test de desbordamento (360/390 px, texto normal e grande, e no marco). Historial en tarxetas en móbil, `.kv` e insignias que parten, tarxetas de instalación e tableta estreita. Código de acceso con `clamp()`, en 3+3 e lido díxito a díxito.
+- ✅ 3 tableta: estado da sesión pola hora (a causa de «Pechada» era que gardar o esforzo pechaba a sesión aínda que non empezara). Saída → RPE directo con aviso discreto se se marcou soa. Estatísticas da monitora.
+- ✅ 6 barras con escala honesta (porcentaxes de 0 a 100, satisfacción de 0 a 100, absolutos ao máximo e indicándoo), filtro `signed` («▼ −42») e variación tamén no resumo; capturas antes/despois.
+- ✅ 7 cabeceira «Ferramentas da demo» (concello e perfil), «← Volver á demo» á última páxina e sen «Acceder».
+- ✅ 10 avisos do concello:
+  - redacción con vista previa por canle, segmentación, programación e cancelación de reservas;
+  - Telegram: canle pública, bot con código, adaptador real co token só no contorno e simulador;
+  - preferencias por categoría e canle, con consentimento;
+  - bandexa de correo real;
+  - seed de 18+1 avisos;
+  - `docs/rxpd/avisos.md`.
+- ✅ 2 busca compacta (unha liña, «Filtros (n)», chips, Lista/Mapa segmentado).
+- ✅ 4 padrón semiautomático (CSV → HMAC, alta automática, cola co motivo, rexistro de cargas, modelo CSV), RAT e capa informativa.
+- ✅ 9 apelidos obrigatorios ao inscribir menores.

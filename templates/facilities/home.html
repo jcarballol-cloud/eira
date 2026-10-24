@@ -2,37 +2,47 @@
 {% block title %}{% translate "Instalacións" %}{% endblock %}
 {% block head %}{% if view == "mapa" %}<link rel="stylesheet" href="{% static 'vendor/leaflet/leaflet.css' %}"><script src="{% static 'vendor/leaflet/leaflet.js' %}" defer></script><script src="{% static 'js/map.js' %}" defer></script>{% endif %}{% endblock %}
 {% block content %}
-<div class="page-head">
-  <div><p class="eyebrow">{{ tenant.name }}</p><h1>{% translate "Instalacións deportivas" %}</h1>
-  <p>{% translate "Consulta sen rexistrarte. Para reservar só necesitas o teu correo." %}</p></div>
-  <nav aria-label="{% translate 'Modo de vista' %}" class="row">
-    <a class="btn {% if view != 'mapa' %}{% else %}btn-secondary{% endif %}" href="?{% if request.GET.urlencode %}{{ request.GET.urlencode }}&amp;{% endif %}vista=lista" {% if view != 'mapa' %}aria-current="page"{% endif %}>{% translate "Lista" %}</a>
-    <a class="btn {% if view == 'mapa' %}{% else %}btn-secondary{% endif %}" href="?{% if request.GET.urlencode %}{{ request.GET.urlencode }}&amp;{% endif %}vista=mapa" {% if view == 'mapa' %}aria-current="page"{% endif %}>{% icon 'map' %} {% translate "Mapa" %}</a>
+{# v4: busca compacta. Unha liña con busca + «Filtros (n)», resultados de inmediato e Lista/Mapa xunto ao título #}
+<div class="search-head">
+  <h1 class="mb-0">{% translate "Instalacións" %}</h1>
+  <nav class="segmented" aria-label="{% translate 'Modo de vista' %}">
+    <a href="?{% for k, v in request.GET.items %}{% if k != 'vista' %}{{ k }}={{ v|urlencode }}&amp;{% endif %}{% endfor %}vista=lista" {% if view != 'mapa' %}aria-current="page"{% endif %}>{% translate "Lista" %}</a>
+    <a href="?{% for k, v in request.GET.items %}{% if k != 'vista' %}{{ k }}={{ v|urlencode }}&amp;{% endif %}{% endfor %}vista=mapa" {% if view == 'mapa' %}aria-current="page"{% endif %}>{% icon 'map' %} {% translate "Mapa" %}</a>
   </nav>
 </div>
 
-{% if kind == 'public' %}
-<a class="app-cta mb-2" href="{% turl 'app:request' %}">{% icon 'phone' %}<span><strong>{% translate "Solicita a app de deportes" %}</strong><br>{% translate "Reservas, código de acceso e escolas no teu teléfono. Se estás empadroado/a, coa tarifa de veciñanza." %}</span>{% icon 'chevron' %}</a>
-{% endif %}
-<form method="get" class="card mb-2" role="search" aria-label="{% translate 'Filtrar instalacións' %}">
+<form method="get" class="searchbar" role="search" aria-label="{% translate 'Buscar instalacións' %}">
   <input type="hidden" name="vista" value="{{ view }}">
-  <div class="filters">
-    <div class="field"><label for="{{ form.q.auto_id }}">{{ form.q.label }}</label>{{ form.q }}</div>
-    <div class="field"><label for="{{ form.kind.auto_id }}">{{ form.kind.label }}</label>{{ form.kind }}</div>
-    <div class="field"><label for="{{ form.parish.auto_id }}">{{ form.parish.label }}</label>{{ form.parish }}</div>
+  <div class="searchbar__row">
+    <label for="{{ form.q.auto_id }}" class="visually-hidden">{% translate "Buscar instalación" %}</label>
+    <span class="searchbar__field">{% icon 'search' %}<input type="search" name="q" id="{{ form.q.auto_id }}" value="{{ form.q.value|default:'' }}" placeholder="{% translate 'Buscar: pádel, piscina…' %}" autocomplete="off" enterkeyhint="search"></span>
+    <button class="btn btn-sm" type="submit">{% translate "Buscar" %}</button>
   </div>
-  <fieldset class="mt-1 mb-0">
-    <legend>{% translate "Características" %}</legend>
-    <div class="row">
-      <div class="check">{{ form.accessible }}<label for="{{ form.accessible.auto_id }}">{% icon 'accessible' %} {{ form.accessible.label }}</label></div>
-      <div class="check">{{ form.lighting }}<label for="{{ form.lighting.auto_id }}">{% icon 'light' %} {{ form.lighting.label }}</label></div>
-      <div class="check">{{ form.indoor }}<label for="{{ form.indoor.auto_id }}">{{ form.indoor.label }}</label></div>
+  <details class="filter-panel"{% if form.errors %} open{% endif %}>
+    <summary class="btn btn-secondary btn-sm filter-panel__toggle">{% icon 'more' %} {% translate "Filtros" %}{% if active %} <span class="count-badge"><span aria-hidden="true">{{ active|length }}</span><span class="visually-hidden">{% blocktranslate count n=active|length %}{{ n }} activo{% plural %}{{ n }} activos{% endblocktranslate %}</span></span>{% endif %}</summary>
+    <div class="filter-panel__body">
+      <div class="filters">
+        <div class="field"><label for="{{ form.kind.auto_id }}">{{ form.kind.label }}</label>{{ form.kind }}</div>
+        <div class="field"><label for="{{ form.parish.auto_id }}">{{ form.parish.label }}</label>{{ form.parish }}</div>
+      </div>
+      <fieldset class="mb-0">
+        <legend>{% translate "Características" %}</legend>
+        <div class="chips mb-0">
+          <span class="chip">{{ form.accessible }}<label for="{{ form.accessible.auto_id }}">{% icon 'accessible' %} {{ form.accessible.label }}</label></span>
+          <span class="chip">{{ form.lighting }}<label for="{{ form.lighting.auto_id }}">{% icon 'light' %} {{ form.lighting.label }}</label></span>
+          <span class="chip">{{ form.indoor }}<label for="{{ form.indoor.auto_id }}">{{ form.indoor.label }}</label></span>
+        </div>
+      </fieldset>
+      <div class="form-actions"><button class="btn btn-sm" type="submit">{% translate "Ver resultados" %}</button>{% if active or request.GET.q %}<a class="btn btn-ghost btn-sm" href="?vista={{ view }}">{% translate "Quitar filtros" %}</a>{% endif %}</div>
     </div>
-  </fieldset>
-  <div class="form-actions"><button class="btn" type="submit">{% translate "Filtrar" %}</button>{% if request.GET.q or request.GET.kind or request.GET.parish or request.GET.accessible or request.GET.lighting or request.GET.indoor %}<a class="btn btn-ghost" href="?vista={{ view }}">{% translate "Quitar filtros" %}</a>{% endif %}</div>
+  </details>
 </form>
 
-<p role="status" class="muted">{% blocktranslate count n=facilities|length %}{{ n }} instalación{% plural %}{{ n }} instalacións{% endblocktranslate %}</p>
+<div class="results-bar">
+  <p role="status" class="muted mb-0">{% blocktranslate count n=facilities|length %}{{ n }} instalación{% plural %}{{ n }} instalacións{% endblocktranslate %}</p>
+  {% if active %}<ul class="active-filters" role="list" aria-label="{% translate 'Filtros activos' %}">{% for a in active %}
+    <li><a class="chip-remove" href="{{ a.remove }}">{{ a.label }} <span aria-hidden="true">×</span><span class="visually-hidden"> ({% translate "quitar filtro" %})</span></a></li>{% endfor %}</ul>{% endif %}
+</div>
 
 {% if view == "mapa" %}
   {{ geo|json_script:"facilities-geo" }}
@@ -60,4 +70,8 @@
     <li class="alert">{% translate "Non hai instalacións con eses filtros." %}</li>
   {% endfor %}
 </ul>
+
+{% if kind == 'public' %}
+<a class="app-cta mt-2" href="{% turl 'app:request' %}">{% icon 'phone' %}<span><strong>{% translate "Solicita a app de deportes" %}</strong><br>{% translate "Reservas, código de acceso e escolas no teu teléfono. Se estás empadroado/a, coa tarifa de veciñanza." %}</span>{% icon 'chevron' %}</a>
+{% endif %}
 {% endblock %}

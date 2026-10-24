@@ -12,4 +12,5 @@ urlpatterns = [
     path("sesion/<int:pk>/engadir/", monitor.add_pending, name="add_pending"),
     path("sesion/<int:pk>/esforzo/", monitor.effort, name="effort"),
     path("grupo/<int:pk>/probas/", monitor.fitness, name="fitness"),
+    path("estatisticas/", monitor.stats, name="stats"),
 ]

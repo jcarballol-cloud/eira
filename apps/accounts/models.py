@@ -193,6 +193,12 @@ class AppRequest(models.Model):
     channel = models.CharField(max_length=10, choices=Channel.choices, default=Channel.ONLINE)
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
     padron_match = models.BooleanField(_("figura no padrón"), default=False)
+    # v4: datos para o contraste co padrón. DNI/NIE, data e enderezo bórranse ao resolver a solicitude
+    surnames = models.CharField(_("apelidos"), max_length=120, blank=True)
+    id_number = models.CharField(_("DNI/NIE"), max_length=12, blank=True)
+    birth_date = models.DateField(_("data de nacemento"), null=True, blank=True)
+    address = models.CharField(_("enderezo (opcional)"), max_length=200, blank=True)
+    review_reason = models.CharField(_("motivo da revisión"), max_length=20, blank=True)
     invitation = models.ForeignKey(
         ResidencyInvitation, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
     )
@@ -209,6 +215,51 @@ class AppRequest(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.get_status_display()})"
+
+    REASONS = {
+        "no_match": _("Non figura no padrón cargado"),
+        "no_padron": _("Aínda non hai padrón cargado"),
+        "invalid": _("DNI/NIE ou data non válidos"),
+    }
+
+    @property
+    def review_reason_label(self):
+        return self.REASONS.get(self.review_reason, "")
+
+
+class PadronImport(models.Model):
+    """v4: rexistro de cada carga do padrón (CSV). Non garda o ficheiro nin ningún dato del:
+    só cando, cantas entradas válidas, cantas liñas rexeitadas e quen."""
+
+    municipality = models.ForeignKey(
+        Municipality, on_delete=models.CASCADE, related_name="padron_imports"
+    )
+    imported_at = models.DateTimeField(auto_now_add=True)
+    imported_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name="+")
+    count = models.PositiveIntegerField(default=0)
+    rejected = models.PositiveIntegerField(default=0)
+    source = models.CharField(max_length=20, default="csv")
+
+    class Meta:
+        ordering = ["-imported_at"]
+        verbose_name = _("carga do padrón")
+        verbose_name_plural = _("cargas do padrón")
+
+
+class PadronEntry(models.Model):
+    """Unha persoa empadroada, reducida a un HMAC-SHA256 (segredo da instancia) de
+    «concello · DNI/NIE normalizado · data de nacemento». Sen nome, sen DNI, sen data."""
+
+    municipality = models.ForeignKey(
+        Municipality, on_delete=models.CASCADE, related_name="padron_entries"
+    )
+    digest = models.CharField(max_length=64)
+    batch = models.ForeignKey(PadronImport, on_delete=models.CASCADE, related_name="entries")
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["municipality", "digest"], name="uniq_padron_digest")
+        ]
 
 
 class Residency(models.Model):

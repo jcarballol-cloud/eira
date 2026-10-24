@@ -327,3 +327,119 @@ Formato: data · decisión · motivo · alternativas descartadas.
   - A deputación pode **solicitalo** desde a páxina 403, o que avisa ao concello pero non dá acceso.
   - Mesmo con acceso, todo é só lectura. A exportación íntegra tamén precisa este acceso.
 - Tests en `apps/tenants/tests/test_support_access.py`: 403 → autorización → 200 con rexistro e aviso → 403 ao caducar; revogación; acceso por concello; solicitude; exportación.
+
+## v4 · Cero scroll horizontal
+- **Test:** `tests/e2e/test_no_hscroll.py` percorre as pantallas de veciñanza, operario e tableta a 360 e 390 px, con texto normal e grande, e dentro do marco de teléfono do escritorio. Falla se:
+  - a páxina ou o panel teñen `scrollWidth > clientWidth`;
+  - algún elemento sae do seu panel;
+  - algún bloque con texto desborda a súa propia caixa (así se detectou o importe cortado e os díxitos do código).
+- **Fallos reproducidos e corrixidos:**
+  - Historial de reservas: en móbil é unha **lista de tarxetas** (data · instalación · estado · importe); a táboa queda para escritorio (container query de 640 px).
+  - `.kv` (confirmación, detalle, privacidade): columnas `fit-content(45%) minmax(0,1fr)`, e as insignias dentro poden partir.
+  - Tarxetas de instalación: a columna da grella era `auto` e as insignias longas («Código temporal sen conexión») ensanchábana.
+  - Tableta estreita: os botóns Entrada/Saída repártense o ancho e a grella de letras baixa a 60 px.
+- **Código de acceso:** tamaño fluído `clamp(1.9rem, 1.2rem + 5cqi, 3.6rem)` e sempre en **dous grupos de 3** («842 261»). Se non caben nunha liña, o segundo grupo baixa.
+  - Os díxitos visibles van con `aria-hidden`, e o lector le un texto oculto díxito a díxito («Código de acceso: 8 4 2 2 6 1»).
+  - Non usamos `aria-label` nun `<p>`: axe considérao un atributo prohibido.
+
+## v4 · Tableta: estado da sesión, saída e estatísticas
+- **Por que saía «Pechada» (Cerrada) unha sesión de hoxe:**
+  - O estado era só «ten `closed_at`?».
+  - `record_rpe` (o formulario «Esforzo», ao que leva «Lista rápida») poñía `closed_at` ao gardar, aínda que a sesión non empezara ou estivese en curso. Por iso, despois de probar o fluxo, a sesión do día quedaba «Pechada».
+  - Ademais, a seed pechaba as sesións pasadas ás 00:49 dese mesmo día, antes de empezar.
+- **Agora o estado depende da hora**, cunha marxe de 15 min: «Por empezar» → «Aberta» → «Rematada» (sen pechar) → «Pechada».
+  - Gardar o esforzo antes do final non pecha a sesión.
+  - A seed pecha as sesións 10 min despois de rematar.
+  - Tests paramétricos de estado e de «gardar esforzo antes do final non pecha».
+- **Saída:** tocar o nome abre directamente a escala de esforzo; non hai pantallas extra. Se esa persoa non tocara «Entrada», a asistencia márcase soa (`Attendance.auto_in`) e a monitora ve un aviso discreto:
+  - unha liña gris na pantalla de grazas;
+  - un chip co número de «marcadas na saída»;
+  - «(marcada na saída)» na lista rápida.
+- **Estatísticas da monitora** (`/monitor/estatisticas/`): só os grupos onde ela é a monitora (tampouco a administración ve alí os doutros), últimas 8 semanas.
+  - Asistencia por sesión e media do grupo.
+  - Persoas con 3+ ausencias seguidas, contadas sobre as sesións con lista pasada e só con nome + primeiro apelido.
+  - Esforzo medio por sesión, en escala fixa 0–10.
+  - Carga semanal sRPE: media por persoa da suma de RPE × minutos na semana (Foster).
+  - Probas físicas agregadas: último valor de cada persoa, con n, media, mínimo e máximo. Sen baremos.
+  - Cada gráfica ten a súa táboa (`<details>`).
+
+## v4 · Gráficas de barras con escala honesta
+- **Antes:** todas as barras escalaban ao máximo da serie. 23 % enchía a barra e 12 % quedaba na metade; a satisfacción 84 e 85 /100 enchía as dúas.
+- **Agora** `hbar(..., scale="percent")` vai de 0 a 100 (ocupación, non presentadas, asistencia, % OMS); `maximum=100` para a satisfacción e `maximum=10` para o esforzo.
+  - Os valores absolutos (reservas por 1.000 hab., ingresos, carga) seguen relativos ao máximo, pero o gráfico **dío visiblemente**: «Barras relativas ao valor máis alto (606,5)».
+  - As de escala fixa din «Escala de 0 a 100 %».
+- **Variacións:** un único formato, «▼ −42» / «▲ +37», con menos tipográfico (U+2212) e decimais do idioma (filtro `signed`). Agora tamén aparecen nas tarxetas de resumo da deputación (reservas e ocupación).
+- Tests de ancho en `apps/analytics/tests/test_hbar.py`; capturas antes/despois en `docs/capturas/v4/graficas-*`.
+
+## v4 · Ferramentas da demo (correo, Telegram, pechadura)
+- **Cabeceira común «Ferramentas da demo»**, coa mesma estética ca barra de demo (granito e etiqueta en millo). Inclúe:
+  - o concello e o perfil activos («Vilardeiras · Uxía (veciña)»);
+  - as ligazóns ás ferramentas.
+- **«← Volver á demo»** leva á última páxina vista co perfil activo. `DemoFrameMiddleware` garda na sesión a última páxina HTML (GET 200, fóra de `/dev/`, `/static/`…) e, se non hai, a portada do perfil.
+- **Sen sesión** a cabeceira ofrece «Escoller perfil»; non hai ningún «Acceder». Hai un E2E que comproba as dúas cousas.
+- Na barra de demo, «Concello · Persoa (perfil)» deixa de ser un `inline-flex` (con texto grande partía en tres anacos). Agora parte coma texto.
+
+## v4 · Avisos do concello
+- **Modelo:**
+  - `Notice`: categoría, público, franxa, canles, data de envío programada e cancelación das reservas.
+  - `NoticePreference`: consentimento por concello e matriz categoría × canle.
+  - `TelegramLink`: código dun só uso.
+  - `Notification` gaña `notice` e `category` para poder filtrar.
+  - `Municipality.telegram_channel`.
+- **Base xurídica por categoría** (`CATEGORY_BASIS`, documentada en `docs/rxpd/avisos.md`):
+  - Peches e alertas son de **servizo** (6.1.e/6.1.b): chegan sempre á app de quen lle afectan.
+  - Horarios, actividades, festas e novidades son **informativos** e precisan consentimento (6.1.a). **Sen consentimento non se envían por ningunha canle**, pero pódense consultar no «Taboleiro do concello» da pantalla Avisos (consultar non é un envío).
+- **Público:** toda a veciñanza, reservas nunha instalación, reservas nas descubertas, inscritas nunha actividade, ou reservas nunha parroquia.
+  - As reservas contan na franxa «desde–ata» (por defecto, os próximos 30 días).
+  - Non se usan datos doutras fontes.
+- **Cancelación:** crea o peche (`Closure`) de cada instalación afectada e reutiliza `apply_closure`: devolución íntegra e o aviso de cancelación de sempre.
+- **Redacción:** formulario con «Vista previa» sen JavaScript. Mostra:
+  - a estimación de persoas por canle e de reservas que se cancelarían;
+  - o aviso tal como se ve na app, na notificación push (truncada a 120 caracteres), no correo (asunto e pé coas preferencias) e en Telegram (burbulla).
+  - Só a administración do concello pode enviar; a deputación ve, pero non envía.
+- **Programación:** sen Celery. A orde `send_notices` envía os que xa tocan e aplica a conservación (avisos 12 meses, códigos 1 día); o despregamento chámaa por cron ou un temporizador de systemd. O envío é idempotente.
+- **Telegram:**
+  - Canle pública por concello. Na demo, `@eira_demo_vilardeiras` e `@eira_demo_pontedouro`: nomes ficticios co prefixo `eira_demo_` para non pisar canles reais.
+  - Bot persoal con vinculación por ligazón `t.me/<bot>?start=<código>` ou `/start <código>`: un só uso, 30 min. `/stop` desvincula.
+  - `BotApiTelegramAdapter` real (`sendMessage` por HTTPS). O token **só** se le de `EIRA_TELEGRAM_TOKEN` no contorno: non está no repositorio, na documentación nin na base de datos.
+  - Webhook `/telegram/webhook/<EIRA_TELEGRAM_WEBHOOK_SECRET>/`, que dá 404 se o segredo non está configurado.
+  - Na demo, o simulador `/dev/telegram/` fai de cliente: escribir ao bot pasa polo mesmo código ca o webhook.
+- **App:**
+  - Pantalla Avisos con chips de categoría, «Para ti» e o taboleiro, e ligazón á canle pública.
+  - Preferencias: interruptor de consentimento e, por cada categoría, chips de canle (unha táboa de 5 columnas non collía en 360 px).
+  - Vinculación de Telegram.
+- **Correo da demo como bandexa real:** lista (destinatario, data, asunto e extracto) e vista da mensaxe (De, Para, Data). En móbil, lista ou mensaxe. Telegram sae de «Outras canles» e pasa ao seu simulador.
+- **Seed:** 18 avisos enviados (15 en Vilardeiras e 3 en Pontedouro) e un programado («Horario de Nadal», dentro de 5 días).
+  - Consentimento: Uxía, Manuel, Rosa e a metade da veciñanza. Uxía ten o bot vinculado.
+  - A alerta amarela por vento crea reservas pagadas nas pistas exteriores e cancélaas con devolución.
+  - Correos e mensaxes de «Reserva confirmada» das reservas próximas das persoas da demo.
+  - As datas axústanse ao día de cada aviso. A bandexa de correo e Telegram nunca quedan baleiros despois de rexenerar.
+
+## v4 · Busca compacta de instalacións
+- **Unha liña:** campo de busca (con lupa), «Buscar» e un botón «Filtros» co número de filtros activos (a busca non conta, porque xa se ve no campo).
+- **Filtros nun `<details>` despregable**, sen JS (a CSP non o precisa): tipo, parroquia e características como chips de casilla.
+  - Debaixo, o reconto e os filtros activos como chips con «×» para quitar cada un.
+  - Os resultados vense ao momento, sen a tarxeta grande de filtros.
+- «Lista / Mapa» é un control segmentado pequeno xunto ao título. A chamada «Solicita a app» (persoas sen sesión) baixa ao final.
+- **Por que `<details>` e non unha folla inferior:** funciona con teclado e lector sen código propio e non tapa os resultados. Nun móbil de 360 px a busca e «Filtros» collen nunha liña.
+
+## v4 · Padrón semiautomático
+- **Alta en liña:** nome, apelidos, DNI/NIE (con letra de control), data de nacemento e enderezo opcional.
+  - O contraste usa **só DNI/NIE + data de nacemento**; o nome nunca. A interface `PadronAdapter.check(municipality, *, id_number, birth_date)` nin sequera o recibe, e un test compróbao.
+- **Padrón:** o concello sobe un CSV (Xestión › Altas › Padrón; modelo descargable coas liñas de exemplo comentadas).
+  - Normalízase: maiúsculas, sen espazos, puntos nin guións, e recheo con ceros nos DNI curtos. As datas acéptanse como DD/MM/AAAA, AAAA-MM-DD, DD-MM-AAAA, DD.MM.AAAA ou DD/MM/AA. O separador, `;`, `,` ou tabulador.
+  - De cada liña gárdase só un `HMAC-SHA256(EIRA_PADRON_SECRET, «concello|DNI|AAAA-MM-DD»)`. Se o segredo non está definido, derívase de `SECRET_KEY`.
+  - O ficheiro procésase en memoria e non se garda. Cada carga substitúe a anterior e queda en `PadronImport` (data, válidas, rexeitadas, quen) e en AuditLog.
+- **Coincidencia exacta:** alta automática e correo coa ligazón e o código.
+- **Sen coincidencia:** vai á cola de «Altas da app» co motivo («Non figura no padrón cargado», «Aínda non hai padrón cargado», «DNI/NIE ou data non válidos»). O persoal aproba ou rexeita cun clic.
+- **Minimización:** ao resolver (ao momento se coincide), bórranse o DNI/NIE, a data e o enderezo. A alta no mostrador non pide DNI, porque o persoal compróbao en persoa.
+- **Adaptador:** `CsvPadronAdapter` por defecto; `SvdrPadronAdapter` é o esqueleto para unha API futura, coa mesma interface. `FakePadronAdapter` queda como alias para configuracións antigas.
+- **Demo:** padrón ficticio de 400 persoas por concello, xerado con números inventados e letra correcta. Inclúe a persoa do guión (DNI de exemplo `12345678Z`, nada o 14/05/1990), que recibe a alta automática.
+  - Hai dúas solicitudes pendentes co motivo.
+  - O padrón usa un xerador aleatorio propio para non mover o resto da seed.
+- RAT (actividade 10) e capa informativa do formulario actualizadas (art. 6.1.e).
+- Tests en `apps/accounts/tests/test_padron.py`: coincidencia exacta, sen coincidencia, minúsculas e espazos, formatos de data, recarga, que o CSV non se garda, que o nome non se usa, segredo e concello no HMAC, e borrado ao resolver.
+
+## v4 · Apelidos ao inscribir menores
+- Ao inscribir un/unha menor nunha escola, os **apelidos son obrigatorios** e gárdanse como dato da inscrición (`Enrollment.surnames`, decisión v3). Para a propia persoa adulta son opcionais.
+- O formulario explica por que: «como no padrón; a monitora só verá o primeiro apelido».

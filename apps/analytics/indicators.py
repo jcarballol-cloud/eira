@@ -168,19 +168,41 @@ def summary(tenant, weeks=4, today=None):
     }
 
 
-def hbar(items, value_key, label_key, suffix=""):
-    """Datos dun gráfico de barras horizontal en HTML (escala co texto; sen JS nin estilos en liña)."""
-    peak = max((i[value_key] for i in items), default=0) or 1
+PERCENT = "percent"  # porcentaxes: sempre de 0 a 100
+SERIES_MAX = "max"  # valores absolutos: relativos ao máximo da serie (indícase visiblemente)
+
+
+def hbar(items, value_key, label_key, suffix="", scale=SERIES_MAX, maximum=None):
+    """Datos dun gráfico de barras horizontal en HTML (escala co texto; sen JS nin estilos en liña).
+
+    v4: a escala xa non é sempre o máximo da serie (iso facía que 23 % enchese a barra):
+    - scale="percent": 0–100, o ancho é o propio valor;
+    - maximum=N: escala fixa 0–N (p. ex. satisfacción 0–100);
+    - por defecto, o máximo da serie, e o gráfico di cal é ese máximo.
+    """
+    values = [max(i[value_key] or 0, 0) for i in items]
+    if scale == PERCENT:
+        top = 100
+    elif maximum is not None:
+        top = maximum
+    else:
+        top = max(values, default=0) or 1
     bars = [
         {
             "label": item[label_key],
             "value": item[value_key],
-            "pct": 100 * max(item[value_key], 0) / peak,
+            "pct": min(100, 100 * v / top),
             "display": f"{number_format(item[value_key])}{suffix}",
         }
-        for item in items
+        for item, v in zip(items, values, strict=True)
     ]
-    return {"bars": bars}
+    chart = {
+        "bars": bars,
+        "scale": PERCENT if scale == PERCENT else ("fixed" if maximum is not None else SERIES_MAX),
+    }
+    # «/100» non se repite na escala («de 0 a 100», non «de 0 a 100/100»)
+    chart["top_display"] = f"{number_format(top)}{'' if suffix.startswith('/') else suffix}"
+    return chart
 
 
 def ai_aggregates(tenant):

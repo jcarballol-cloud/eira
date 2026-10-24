@@ -245,7 +245,10 @@ def test_full_booking_flow_through_views(client, padel_a, citizen):
     b = Booking.objects.get(user=citizen)
     assert b.status == Booking.Status.CONFIRMED and b.paid_cents == 400
     detail = client.get(f"/c/concello-a/reservas/{b.pk}/").content.decode()
-    assert b.facility.lock.code_for_booking(b) in detail  # nivel 2: o código móstrase
+    code = b.facility.lock.code_for_booking(b)
+    # nivel 2: o código móstrase en dous grupos de 3 e lese díxito a díxito
+    assert f'>{code[:3]}</span><span class="access-code__group">{code[3:]}<' in detail
+    assert " ".join(code) in detail
     assert client.get(f"/c/concello-a/reservas/{b.pk}/reserva.ics")["Content-Type"].startswith(
         "text/calendar"
     )

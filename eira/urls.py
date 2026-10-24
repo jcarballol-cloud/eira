@@ -5,6 +5,7 @@ from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView
 
 from apps.bookings.notifications_view import gateway_notification
+from apps.notifications.views import telegram_webhook
 from apps.tenants import views as core
 from apps.tenants.media import protected_serve
 
@@ -22,6 +23,7 @@ urlpatterns = [
     path("sw.js", core.service_worker, name="service_worker"),
     path("manifest.webmanifest", core.manifest, name="manifest"),
     path("pagamentos/notificacion/", gateway_notification, name="payment_notification"),
+    path("telegram/webhook/<str:secret>/", telegram_webhook, name="telegram_webhook"),
     path("api/v1/", include("eira.api_urls")),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("c/<slug:tenant>/", include("eira.tenant_urls")),

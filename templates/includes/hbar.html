@@ -9,4 +9,5 @@
     </li>
     {% empty %}<li class="muted">{% translate "Sen datos no período." %}</li>{% endfor %}
   </ul>
+  {% if chart.bars %}<p class="hbar-scale">{% if chart.scale == "max" %}{% blocktranslate with m=chart.top_display %}Barras relativas ao valor máis alto ({{ m }}).{% endblocktranslate %}{% else %}{% blocktranslate with m=chart.top_display %}Escala de 0 a {{ m }}.{% endblocktranslate %}{% endif %}</p>{% endif %}
 </figure>

@@ -1,0 +1,34 @@
+{% extends "dev/base.html" %}{% load i18n eira %}
+{% block title %}Telegram{% endblock %}
+{% block content %}
+<div class="devtool__head">
+  <h1>{% translate "Telegram simulado" %}</h1>
+  <p>{% translate "Canles públicas dos concellos e chats co bot persoal. Nada sae do servidor: con EIRA_TELEGRAM_TOKEN no contorno, o mesmo envío iría á Bot API." %}</p>
+</div>
+<div class="tg-app">
+  <nav class="tg-app__list" aria-label="{% translate 'Chats' %}">
+    <a class="tg-app__item" href="?start=" {% if not current %}aria-current="page"{% endif %}>{% icon 'plus' %} {% translate "Novo chat co bot" %}</a>
+    {% for c in chats %}
+      <a class="tg-app__item" href="?chat={{ c.id|urlencode }}" {% if c.id == current %}aria-current="page"{% endif %}>
+        <span class="tg-app__avatar" aria-hidden="true">{% if c.public %}{% icon 'bell' %}{% else %}{% icon 'user' %}{% endif %}</span>
+        <span class="tg-app__meta"><strong>{{ c.title }}</strong>{% if c.public %} <small>{% translate "canle" %}</small>{% endif %}<small class="tg-app__last">{{ c.last.payload.text|truncatechars:60 }}</small></span>
+      </a>
+    {% empty %}<p class="muted">{% translate "Aínda non hai mensaxes." %}</p>{% endfor %}
+  </nav>
+  <section class="tg-app__thread" aria-labelledby="tg-thread-t">
+    <h2 id="tg-thread-t" class="tg-app__title">{% if current_row %}{{ current_row.title }}{% elif current %}{{ current }}{% else %}{% translate "Bot de avisos de Eira" %}{% endif %}</h2>
+    <div class="tg-chat" role="log" aria-live="polite">
+      {% for m in thread %}
+        <div class="tg-bubble{% if m.payload.from == 'user' %} tg-bubble--user{% endif %}">{{ m.payload.text|tg_markdown }}<time datetime="{{ m.sent_at|date:'c' }}">{{ m.sent_at|date:"d/m H:i" }}</time></div>
+      {% empty %}<p class="muted mb-0">{% if start %}{% translate "Preme «Enviar» para mandarlle o código ao bot, como se abrises a ligazón da app." %}{% else %}{% translate "Escribe ao bot." %}{% endif %}</p>{% endfor %}
+    </div>
+    {% if not current_row.public %}
+    <form method="post" class="tg-app__compose">{% csrf_token %}
+      <input type="hidden" name="chat" value="{{ current }}">
+      <label class="visually-hidden" for="tg-text">{% translate "Mensaxe" %}</label>
+      <input id="tg-text" name="text" type="text" autocomplete="off" value="{% if start %}/start {{ start }}{% endif %}" placeholder="/start CÓDIGO">
+      <button class="btn btn-sm" type="submit">{% translate "Enviar" %}</button>
+    </form>{% endif %}
+  </section>
+</div>
+{% endblock %}

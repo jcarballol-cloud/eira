@@ -10,7 +10,9 @@ from apps.activities.models import Group, Session
 from apps.bookings.models import Booking
 from apps.facilities.models import Facility
 from apps.incidents.models import Incident
+from apps.integrations.models import DevMail
 from apps.maintenance.models import WorkOrder
+from apps.notifications.models import Notice
 
 from .conftest import DESKTOP, MOBILE, TABLET
 
@@ -48,6 +50,8 @@ def page_sets():
         [Group.objects.get(name="Grupo grande (40)")], timezone.localdate()
     )[0]
     c = "/c/vilardeiras"
+    mail = DevMail.objects.order_by("-pk").first()
+    notice = Notice.objects.filter(municipality__slug="vilardeiras", cancelled__gt=0).first()
     return {
         None: [
             "/",
@@ -63,6 +67,9 @@ def page_sets():
             f"{c}/datos-abertos/",
             "/dev/lock-simulator/",
             "/dev/mailbox/",
+            f"/dev/mailbox/{mail.pk}/",
+            "/dev/telegram/",
+            "/dev/saida/",
             "/offline/",
             f"{c}/app/solicitar/",
             f"{c}/app/instalar/?codigo=ABCD-2345",
@@ -76,6 +83,7 @@ def page_sets():
             f"{c}/reservas/{uxia_booking.pk}/valorar/",
             f"{c}/incidencias/nova/",
             f"{c}/avisos/",
+            f"{c}/avisos/preferencias/",
             "/conta/",
             "/conta/familia/",
             "/conta/privacidade/",
@@ -114,6 +122,9 @@ def page_sets():
             f"{c}/xestion/mantemento/calendario/",
             f"{c}/xestion/ordes/",
             f"{c}/xestion/actividades/",
+            f"{c}/xestion/avisos/",
+            f"{c}/xestion/avisos/novo/",
+            f"{c}/xestion/avisos/{notice.pk}/",
         ],
         "brais@demo.eira.example": [
             f"{c}/operario/",
@@ -126,6 +137,7 @@ def page_sets():
             f"{c}/monitor/sesion/{kiosk_session.pk}/rexistro/",
             f"{c}/monitor/sesion/{session.pk}/esforzo/",
             f"{c}/monitor/grupo/{group.pk}/probas/",
+            f"{c}/monitor/estatisticas/",
         ],
         "deputacion@demo.eira.example": [
             "/rexion/marismas/",

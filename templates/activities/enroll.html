@@ -10,9 +10,15 @@
   <form method="post" class="mt-2">
     {% csrf_token %}
     <fieldset><legend>{% translate "Quen se inscribe?" %}</legend>
-      <div class="check"><input type="radio" name="participant" id="p-self" value="self" checked><label for="p-self">{% translate "Eu" %}</label></div>
-      {% for d in dependents %}<div class="check"><input type="radio" name="participant" id="p-{{ d.pk }}" value="{{ d.pk }}"><label for="p-{{ d.pk }}">{{ d.first_name }} ({% blocktranslate with a=d.age %}{{ a }} anos{% endblocktranslate %}){% if not d.consents.all %} — <em>{% translate "sen consentimento" %}</em>{% endif %}</label></div>{% endfor %}
+      <div class="check"><input type="radio" name="participant" id="p-self" value="self" {% if not selected or selected == "self" %}checked{% endif %}><label for="p-self">{% translate "Eu" %}</label></div>
+      {% for d in dependents %}<div class="check"><input type="radio" name="participant" id="p-{{ d.pk }}" value="{{ d.pk }}" {% if selected == d.pk|stringformat:"s" %}checked{% endif %}><label for="p-{{ d.pk }}">{{ d.first_name }} ({% blocktranslate with a=d.age %}{{ a }} anos{% endblocktranslate %}){% if not d.consents.all %} — <em>{% translate "sen consentimento" %}</em>{% endif %}</label></div>{% endfor %}
     </fieldset>
+    <div class="field mt-1">
+      <label for="surnames">{% translate "Apelidos de quen se inscribe" %}</label>
+      <input id="surnames" name="surnames" type="text" maxlength="80" autocomplete="family-name" aria-describedby="surnames-help{% if surnames_error %} surnames-err{% endif %}"{% if surnames_error %} aria-invalid="true"{% endif %}>
+      <span class="help" id="surnames-help">{% translate "Obrigatorio se inscribes a un/unha menor (como no padrón). A monitora só verá o primeiro apelido." %}</span>
+      {% if surnames_error %}<ul class="errorlist" id="surnames-err"><li>{% translate "Obrigatorio para inscribir un/unha menor." %}</li></ul>{% endif %}
+    </div>
     <p class="help"><a href="{% url 'account:household' %}">{% translate "Engadir menores ou xestionar os consentimentos" %}</a></p>
     <div class="form-actions"><button class="btn btn-lg" type="submit">{% if group.free_places %}{% if group.fee_cents %}{% translate "Inscribirse e pagar" %}{% else %}{% translate "Inscribirse" %}{% endif %}{% else %}{% translate "Apuntarse á lista de espera" %}{% endif %}</button></div>
   </form>

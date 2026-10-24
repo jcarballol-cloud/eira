@@ -9,17 +9,29 @@
   <label for="para">{% translate "Destinatario" %}</label>
   <input id="para" name="para" type="email" value="{{ to }}" placeholder="persoa@example.org" autocomplete="off">
   <button class="btn btn-sm" type="submit">{% translate "Filtrar" %}</button>
+  {% if user.is_authenticated and to != user.email %}<a href="?para={{ user.email|urlencode }}">{% translate "Só os meus" %}</a>{% endif %}
   {% if to %}<a href="?">{% translate "Ver todos" %}</a>{% endif %}
 </form>
-<ul class="mail-list" role="list">
-  {% for m in mails %}
-    <li class="mail">
-      <div class="mail__head"><strong class="mail__subject">{{ m.subject }}</strong><time datetime="{{ m.sent_at|date:'c' }}">{{ m.sent_at|date:"d/m H:i:s" }}</time></div>
-      <p class="mail__to">{% translate "Para:" %} {{ m.to }}</p>
-      <div class="mail__body">{{ m.body|urlize }}</div>
-    </li>
-  {% empty %}
-    <li class="muted">{% translate "Bandexa baleira." %}</li>
-  {% endfor %}
-</ul>
+<div class="inbox{% if current %} has-current{% endif %}">
+  <ul class="inbox__list" role="list" aria-label="{% translate 'Mensaxes' %}">
+    {% for m in mails %}
+      <li><a class="inbox__row{% if current.pk == m.pk %} is-current{% endif %}" href="{% url 'dev:mail' m.pk %}{% if to %}?para={{ to|urlencode }}{% endif %}" {% if current.pk == m.pk %}aria-current="true"{% endif %}>
+        <span class="inbox__from">{{ m.to }}</span>
+        <time datetime="{{ m.sent_at|date:'c' }}">{{ m.sent_at|date:"d/m H:i" }}</time>
+        <strong class="inbox__subject">{{ m.subject }}</strong>
+        <span class="inbox__snippet">{{ m.body|truncatechars:90 }}</span>
+      </a></li>
+    {% empty %}
+      <li class="muted">{% translate "Bandexa baleira." %}</li>
+    {% endfor %}
+  </ul>
+  {% if current %}
+  <article class="inbox__view mail" aria-labelledby="mail-subject">
+    <p class="inbox__back"><a href="{% url 'dev:mailbox' %}?lista=1{% if to %}&amp;para={{ to|urlencode }}{% endif %}">← {% translate "Bandexa" %}</a></p>
+    <h2 id="mail-subject" class="mail__subject">{{ current.subject }}</h2>
+    <dl class="kv mail__meta"><dt>{% translate "De:" %}</dt><dd>{{ sender }}</dd><dt>{% translate "Para:" %}</dt><dd>{{ current.to }}</dd><dt>{% translate "Data:" %}</dt><dd>{{ current.sent_at|date:"d/m/Y H:i:s" }}</dd></dl>
+    <div class="mail__body">{{ current.body|urlize }}</div>
+  </article>
+  {% endif %}
+</div>
 {% endblock %}

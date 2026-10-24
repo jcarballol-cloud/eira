@@ -108,3 +108,42 @@ def facility_photo(facility, sizes="(min-width: 700px) 360px, 100vw", caption=Fa
     from apps.facilities.photos import photo_for
 
     return {"p": photo_for(facility), "sizes": sizes, "caption": caption, "eager": eager}
+
+
+@register.filter
+def signed(value):
+    """Variación con signo explícito e menos tipográfico: +37, −2,9 (v4: mesmo formato en todas partes)."""
+    if value is None:
+        return ""
+    from django.utils.formats import number_format
+
+    text = number_format(abs(value), use_l10n=True)
+    return ("+" if value > 0 else "−" if value < 0 else "") + text
+
+
+@register.filter
+def tg_markdown(text):
+    """Mínimo do Markdown de Telegram para o simulador: *negra* e saltos de liña (escapado)."""
+    import re
+
+    from django.utils.html import escape
+    from django.utils.safestring import mark_safe
+
+    html = re.sub(r"\*([^*\n]+)\*", r"<strong>\1</strong>", escape(text or ""))
+    return mark_safe(html.replace("\n", "<br>"))
+
+
+@register.filter
+def channel_labels(value):
+    """«app,email,telegram» → «App · Correo · Telegram»."""
+    from django.utils.translation import gettext as _
+
+    names = {"app": "App", "email": _("Correo"), "telegram": "Telegram", "push": "Push"}
+    return " · ".join(names.get(c, c) for c in (value or "").split(",") if c)
+
+
+@register.filter
+def code_groups(code):
+    """Parte un código numérico en grupos de 3 («163120» → ["163", "120"]) para que caiba en móbil."""
+    code = str(code or "")
+    return [code[i : i + 3] for i in range(0, len(code), 3)]

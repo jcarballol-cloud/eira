@@ -1,18 +1,44 @@
-{% extends "base.html" %}{% load i18n %}
+{% extends "base.html" %}{% load i18n eira %}
 {% block title %}{% translate "Avisos" %}{% endblock %}
 {% block content %}
-<div class="page-head"><h1>{% translate "Avisos" %}</h1>
-  {% if unread_notifications %}<form method="post" action="{% url 'notifications:mark_all_read' tenant.slug %}">{% csrf_token %}<button class="btn btn-secondary" type="submit">{% translate "Marcar todo como lido" %}</button></form>{% endif %}
+<div class="page-head"><div><h1>{% translate "Avisos" %}</h1></div>
+  <div class="row">
+    <a class="btn btn-secondary btn-sm" href="{% turl 'notifications:preferences' %}">{% icon 'star' %} {% translate "Preferencias" %}</a>
+    {% if unread_notifications %}<form method="post" action="{% turl 'notifications:mark_all_read' %}">{% csrf_token %}<button class="btn btn-ghost btn-sm" type="submit">{% translate "Marcar todo como lido" %}</button></form>{% endif %}
+  </div>
 </div>
-<ul class="list card">
-  {% for n in notifications %}
-    <li>
-      <div class="row-between"><strong>{% if not n.read_at %}<span class="badge badge-warn">{% translate "Novo" %}</span> {% endif %}{% if n.url %}<a href="{{ n.url }}">{{ n.title }}</a>{% else %}{{ n.title }}{% endif %}</strong><small>{{ n.created_at|date:"d/m H:i" }}</small></div>
-      {% if n.body %}<p class="mb-0">{{ n.body|linebreaksbr }}</p>{% endif %}
-      <small class="muted">{% translate "Canles:" %} {{ n.channels }}</small>
-    </li>
-  {% empty %}
-    <li class="muted">{% translate "Non tes avisos." %}</li>
-  {% endfor %}
-</ul>
+
+<nav class="chips" aria-label="{% translate 'Filtrar por categoría' %}">
+  <a class="chip" href="?" {% if not selected %}aria-current="page"{% endif %}>{% translate "Todos" %}</a>
+  {% for c in categories %}<a class="chip" href="?categoria={{ c.value }}" {% if c.current %}aria-current="page"{% endif %}>{% icon c.icon %} {{ c.label }}</a>{% endfor %}
+</nav>
+
+<section aria-labelledby="mine-t" class="mb-2">
+  <h2 id="mine-t" class="h3">{% translate "Para ti" %}</h2>
+  <ul class="notice-list" role="list">
+    {% for n in notifications %}
+      <li class="notice-item{% if not n.read_at %} is-new{% endif %}">
+        <div class="row-between"><strong>{% if not n.read_at %}<span class="badge badge-warn">{% translate "Novo" %}</span> {% endif %}{% if n.url %}<a href="{{ n.url }}">{{ n.title }}</a>{% else %}{{ n.title }}{% endif %}</strong><small class="muted nowrap">{{ n.created_at|date:"d/m H:i" }}</small></div>
+        {% if n.body %}<p class="mb-0">{{ n.body|linebreaksbr }}</p>{% endif %}
+        <small class="muted">{% if n.category %}{% for c in categories %}{% if c.value == n.category %}{{ c.label }} · {% endif %}{% endfor %}{% endif %}{% translate "Canles:" %} {{ n.channels|channel_labels }}</small>
+      </li>
+    {% empty %}
+      <li class="muted">{% translate "Non tes avisos." %}</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section aria-labelledby="board-t">
+  <h2 id="board-t" class="h3">{% translate "Taboleiro do concello" %}</h2>
+  {% if not has_consent %}<p class="help">{% translate "Non aceptaches recibir comunicacións informativas, así que non che enviamos festas, horarios nin novidades. Podes consultalas aquí cando queiras." %} <a href="{% turl 'notifications:preferences' %}">{% translate "Cambiar" %}</a></p>{% endif %}
+  <ul class="notice-list" role="list">
+    {% for n in board %}
+      <li class="notice-item notice-item--board"><div class="row-between"><strong>{% if n.url %}<a href="{{ n.url }}">{{ n.title }}</a>{% else %}{{ n.title }}{% endif %}</strong><small class="muted nowrap">{{ n.sent_at|date:"d/m" }}</small></div>
+        <p class="mb-0">{{ n.body|linebreaksbr }}</p><small class="muted">{{ n.get_category_display }}</small></li>
+    {% empty %}<li class="muted">{% translate "Nada no taboleiro." %}</li>{% endfor %}
+  </ul>
+</section>
+
+{% if telegram_channel %}<p class="mt-2">{% icon 'share' %} {% blocktranslate with c=telegram_channel %}Tamén na canle pública de Telegram <strong>{{ c }}</strong>.{% endblocktranslate %}
+  <a href="https://t.me/{{ telegram_channel|slice:'1:' }}" rel="noopener">{% translate "Abrir a canle" %}</a>{% if demo_tools %} · <a href="{% url 'dev:telegram' %}?chat={{ telegram_channel|urlencode }}">{% translate "Ver no simulador" %}</a>{% endif %}</p>{% endif %}
 {% endblock %}

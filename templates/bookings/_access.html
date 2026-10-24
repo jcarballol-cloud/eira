@@ -21,7 +21,7 @@
   {% elif access.level == 2 %}
     {% if access.code %}
       <p>{% translate "Teclea este código na porta:" %}</p>
-      <p class="access-code" aria-label="{% translate 'Código de acceso' %}: {{ access.code|make_list|join:' ' }}">{{ access.code }}</p>
+      {% include "includes/access_code.html" with code=access.code %}
       <p>{% blocktranslate trimmed with a=access.valid_from|hhmm b=access.valid_until|hhmm %}Válido só de <strong>{{ a }}</strong> a <strong>{{ b }}</strong> do día da reserva. Funciona aínda que a instalación non teña internet.{% endblocktranslate %}</p>
       <p class="help">{% translate "Non o compartas fóra do teu grupo: calquera persoa co código pode entrar durante a túa franxa." %}</p>
       {% if demo_tools %}<p><a class="btn btn-accent" href="{% url 'dev:lock_simulator' %}?device={{ booking.facility.lock.pk }}&amp;at={{ booking.start|date:'Y-m-d\TH:i' }}">{% icon 'lock' %} {% translate "Probalo no simulador de pechadura" %}</a></p>{% endif %}

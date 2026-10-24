@@ -52,6 +52,8 @@ def eira(request):
         "support_access": getattr(request, "support_access", None),
         "demo_persona": demo_persona,
         "demo_place": demo_place,
+        "demo_back": (request.session.get("demo_back") if hasattr(request, "session") else None)
+        or (home_url(user, tenant, roles) if user.is_authenticated else "/"),
         "demo_change_url": "/?concello=" + (demo_persona["tenant"] or "") + "#perfil"
         if demo_persona and demo_persona.get("tenant")
         else "/#concello",

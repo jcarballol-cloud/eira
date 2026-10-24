@@ -1,0 +1,27 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Novo aviso" %}{% endblock %}
+{% block content %}
+<p><a href="{% turl 'manage:notices' %}">← {% translate "Avisos" %}</a></p>
+<h1>{% translate "Novo aviso" %}</h1>
+<div class="layout-aside layout-aside--wide">
+  <form method="post" novalidate class="card stack-sm">{% csrf_token %}
+    {% include "includes/form.html" %}
+    <div class="form-actions">
+      <button class="btn btn-secondary" type="submit" name="action" value="preview">{% translate "Vista previa" %}</button>
+      <button class="btn" type="submit" name="action" value="send">{% translate "Enviar ou programar" %}</button>
+    </div>
+  </form>
+  <aside class="stack" aria-labelledby="pv-title">
+    <h2 id="pv-title">{% translate "Vista previa por canle" %}</h2>
+    {% if preview %}
+      <p class="alert" role="status">{% blocktranslate count n=preview.estimate.people %}Chegaríalle a {{ n }} persoa.{% plural %}Chegaríalle a {{ n }} persoas.{% endblocktranslate %}
+        {% translate "Por canle:" %} app {{ preview.estimate.counts.app }} · {% translate "correo" %} {{ preview.estimate.counts.email }} · Telegram {{ preview.estimate.counts.telegram }} · push {{ preview.estimate.counts.push }}{% if preview.estimate.public_channel %} · {% translate "e a canle pública" %}{% endif %}.
+        {% if preview.estimate.bookings %}<strong>{% blocktranslate count n=preview.estimate.bookings %}Cancelaríase {{ n }} reserva con devolución íntegra.{% plural %}Cancelaríanse {{ n }} reservas con devolución íntegra.{% endblocktranslate %}</strong>{% endif %}</p>
+      {% include "manage/_notice_preview.html" with content=preview.content %}
+    {% else %}
+      <p class="muted">{% translate "Escribe o aviso e preme «Vista previa» para velo como chegará en cada canle e a cantas persoas." %}</p>
+    {% endif %}
+    <p class="help">{% translate "Sen consentimento para comunicacións, os avisos de horarios, actividades, festas e novidades non se envían a ninguén. Os peches e alertas chegan a quen ten unha reserva afectada." %}</p>
+  </aside>
+</div>
+{% endblock %}

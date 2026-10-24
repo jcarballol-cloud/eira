@@ -96,6 +96,7 @@ def attendance(request, pk):
         services.record_attendance(session, present)
         return redirect(treverse(request.tenant, "monitor:effort", session.pk))
     marked = {a.enrollment_id for a in session.attendances.filter(present=True)}
+    auto_in = {a.enrollment_id for a in session.attendances.filter(present=True, auto_in=True)}
     return render(
         request,
         "monitor/attendance.html",
@@ -103,6 +104,7 @@ def attendance(request, pk):
             "session": session,
             "enrollments": enrollments,
             "marked": marked,
+            "auto_in": auto_in,
             "no_photo": sum(1 for e in enrollments if not e.can_appear_in_photos),
             "pending": session.group.pending_participants.filter(
                 status=PendingParticipant.Status.PENDING
@@ -154,10 +156,12 @@ def effort(request, pk):
                 values[a.enrollment_id] = int(raw)
         services.record_rpe(session, values)
         s = services.session_load_summary(session)
-        messages.success(
-            request,
-            _("Sesión pechada. Carga media: %(l)s (sRPE × minutos).") % {"l": s["avg_load"] or "—"},
+        msg = (
+            _("Sesión pechada. Carga media: %(l)s (sRPE × minutos).")
+            if session.closed_at
+            else _("Esforzo gardado. Carga media: %(l)s (sRPE × minutos).")
         )
+        messages.success(request, msg % {"l": s["avg_load"] or "—"})
         return redirect(treverse(request.tenant, "monitor:today"))
     rows = [{"att": a, "allowed": services.can_record_effort(a.enrollment)} for a in present]
     return render(
@@ -279,3 +283,28 @@ def kiosk_api(request, pk):
         at = parse_datetime(ev.get("at") or "") or None
         done.append(services.kiosk_record(session, e, ev["action"], ev.get("value"), at=at))
     return JsonResponse({"ok": True, "applied": done})
+
+
+@module_required("monitor")
+@role_required("monitor")
+def stats(request):
+    """v4: estatísticas da monitora (só os seus grupos), últimas 8 semanas."""
+    from apps.analytics.indicators import hbar
+
+    from . import stats as st
+
+    blocks = []
+    for g in _groups_for(request).filter(monitor=request.user):
+        data = st.group_stats(g)
+        data["cid"] = f"g{g.pk}"
+        data["att_chart"] = hbar(data["sessions"], "pct", "label", suffix=" %", scale="percent")
+        data["rpe_chart"] = hbar(
+            [r for r in data["sessions"] if r["rpe"] is not None], "rpe", "label", maximum=10
+        )
+        data["load_chart"] = hbar(data["weeks"], "load", "label")
+        blocks.append(data)
+    return render(
+        request,
+        "monitor/stats.html",
+        {"blocks": blocks, "weeks": st.WEEKS, "streak": st.ABSENCE_STREAK, "nav": "monitor"},
+    )

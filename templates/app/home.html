@@ -18,7 +18,7 @@
   {% if next_booking.status == 'pending_payment' %}
     <p class="badge badge-warn">{% translate "Pendente de pagamento" %}</p>
   {% elif access.code %}
-    <p class="access-code access-code--sm" aria-label="{% translate 'Código de acceso' %}: {{ access.code|make_list|join:' ' }}">{{ access.code }}</p>
+    {% include "includes/access_code.html" with code=access.code small=True %}
     <p class="muted mb-0">{% blocktranslate with a=access.valid_from|hhmm b=access.valid_until|hhmm %}Válido de {{ a }} a {{ b }}{% endblocktranslate %}</p>
   {% elif access.level == 1 %}
     <p class="mb-0">{% icon 'key' %} {% blocktranslate with w=next_booking.facility.key_holder_name %}Chave: {{ w }}{% endblocktranslate %}</p>

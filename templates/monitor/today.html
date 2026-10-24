@@ -3,11 +3,11 @@
 {% block content %}
 <div class="tablet">
 <div class="page-head"><div><p class="eyebrow">{% translate "Modo tableta" %}</p><h1>{{ day|date:"l j \d\e F" }}</h1></div>
-  <nav class="row" aria-label="{% translate 'Cambiar día' %}"><a class="btn btn-secondary" href="?dia={{ prev|date:'Y-m-d' }}">← {% translate "Onte" %}</a><a class="btn btn-secondary" href="?dia={{ next|date:'Y-m-d' }}">{% translate "Mañá" %} →</a></nav></div>
+  <nav class="row" aria-label="{% translate 'Cambiar día' %}"><a class="btn btn-ghost" href="{% turl 'monitor:stats' %}">{% icon 'chart' %} {% translate "Estatísticas" %}</a><a class="btn btn-secondary" href="?dia={{ prev|date:'Y-m-d' }}">← {% translate "Onte" %}</a><a class="btn btn-secondary" href="?dia={{ next|date:'Y-m-d' }}">{% translate "Mañá" %} →</a></nav></div>
 <ul class="grid grid-2 list" role="list">
   {% for s in sessions %}
   <li class="card stack-sm">
-    <div class="row-between"><h2 class="mb-0">{{ s.start_time|time:"H:i" }} · {{ s.group.activity.name }}</h2>{% if s.closed_at %}<span class="badge badge-ok">{% translate "Pechada" %}</span>{% endif %}</div>
+    <div class="row-between"><h2 class="mb-0">{{ s.start_time|time:"H:i" }} · {{ s.group.activity.name }}</h2><span class="badge {% if s.status == 'open' %}badge-ok{% elif s.status == 'finished' %}badge-warn{% else %}badge-muted{% endif %}">{{ s.status_label }}</span></div>
     <p class="mb-0">{{ s.group.name }}{% if s.group.facility %} · {{ s.group.facility.name }}{% endif %}</p>
     <p class="mb-0">{% icon 'users' %} {% blocktranslate count n=s.group.enrolled.count %}{{ n }} inscrita{% plural %}{{ n }} inscritas{% endblocktranslate %} · {{ s.group.get_rpe_scale_display }}</p>
     <div class="row"><a class="btn btn-lg" href="{% turl 'monitor:kiosk' s.pk %}">{% translate "Abrir o rexistro" %}<span class="visually-hidden"> {{ s.group }}</span></a>

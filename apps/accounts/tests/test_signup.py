@@ -16,18 +16,27 @@ pytestmark = pytest.mark.django_db
 
 @pytest.fixture
 def muni(muni_a):
+    from django.core.files.uploadedfile import SimpleUploadedFile
+
+    from apps.accounts import padron
+
     muni_a.postcodes = "15999"
     muni_a.contact_phone = "981 000 000"
     muni_a.save()
+    # v4: padrón cargado por CSV (ficticio): só esta persoa figura
+    padron.import_csv(
+        muni_a, SimpleUploadedFile("p.csv", b"dni_nie;data_nacemento\n12345678Z;14/05/1990\n")
+    )
     return muni_a
 
 
 def ask(client, **over):
     data = {
-        "name": "Persoa Proba",
+        "name": "Persoa",
+        "surnames": "Proba Exemplo",
         "email": "proba.app@example.org",
-        "birth_year": 1990,
-        "postcode": "15999",
+        "id_number": "12345678Z",
+        "birth_date": "1990-05-14",
         "resident": "on",
     }
     data.update(over)
@@ -57,20 +66,20 @@ def test_request_matching_padron_sends_link_and_code(client, muni):
 
 
 def test_request_not_in_padron_goes_to_review(client, muni, admin_a):
-    ask(client, postcode="15000")
+    ask(client, id_number="00000001R")
     req = AppRequest.objects.get()
     assert not req.padron_match and req.status == AppRequest.Status.PENDING
     assert req.invitation is None
     # O concello revisa e envía o código
     client.force_login(admin_a)
-    assert "Persoa Proba" in client.get("/c/concello-a/xestion/altas/").content.decode()
+    assert "Proba Exemplo" in client.get("/c/concello-a/xestion/altas/").content.decode()
     client.post(f"/c/concello-a/xestion/altas/{req.pk}/resolver/", {"action": "approve"})
     req.refresh_from_db()
     assert req.status == AppRequest.Status.SENT and req.invitation.code in last_mail(req.email).body
 
 
 def test_reject_notifies_and_issues_nothing(client, muni, admin_a):
-    ask(client, postcode="15000")
+    ask(client, id_number="00000001R")
     req = AppRequest.objects.get()
     client.force_login(admin_a)
     client.post(f"/c/concello-a/xestion/altas/{req.pk}/resolver/", {"action": "reject"})

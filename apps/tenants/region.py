@@ -154,6 +154,10 @@ def dashboard(request):
     rated = [r for r in rows if r["satisfaction"] is not None]
     network = {
         "bookings": total_bookings,
+        "bookings_delta": sum(r["bookings_delta"] for r in rows),
+        "occupancy_delta": round(sum(r["occupancy_delta"] for r in rows) / len(rows))
+        if rows
+        else 0,
         "per_1000": round(1000 * total_bookings / population, 1) if population else None,
         "occupancy": round(sum(r["occupancy"] for r in rows) / len(rows)) if rows else 0,
         "satisfaction": round(
@@ -180,8 +184,9 @@ def dashboard(request):
                 "satisfaction",
                 "label",
                 suffix="/100",
+                maximum=100,
             ),
-            "occ_chart": hbar(chart_rows, "occupancy", "label", suffix=" %"),
+            "occ_chart": hbar(chart_rows, "occupancy", "label", suffix=" %", scale="percent"),
             "nav": "region",
         },
     )

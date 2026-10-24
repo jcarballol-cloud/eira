@@ -13,9 +13,10 @@
         <summary>{% icon 'shield' %} {% translate "Que facemos con estes datos" %}</summary>
         <dl class="kv mt-1">
           <dt>{% translate "Responsable" %}</dt><dd>{{ tenant.name }}</dd>
-          <dt>{% translate "Para que" %}</dt><dd>{% translate "Comprobar o empadroamento e enviarche a app. O padrón non se copia: só se garda se figuras ou non." %}</dd>
-          <dt>{% translate "Base" %}</dt><dd>{% translate "Misión de interese público (servizo municipal de deportes)." %}</dd>
-          <dt>{% translate "Canto tempo" %}</dt><dd>{% translate "A solicitude bórrase aos 12 meses." %}</dd>
+          <dt>{% translate "Para que" %}</dt><dd>{% translate "Comprobar o empadroamento e enviarche a app. Contrastamos só o DNI/NIE e a data de nacemento cun resumo criptográfico (HMAC) do padrón que carga o concello: nin o padrón nin o teu DNI se gardan en claro, e o nome non se usa para comprobar." %}</dd>
+          <dt>{% translate "Base" %}</dt><dd>{% translate "Misión de interese público (art. 6.1.e RXPD): servizo municipal de deportes e tarifa de veciñanza da ordenanza." %}</dd>
+          <dt>{% translate "Canto tempo" %}</dt><dd>{% translate "O DNI/NIE, a data e o enderezo bórranse en canto se resolve a solicitude (ao momento se figuras). O resto da solicitude, aos 12 meses." %}</dd>
+          <dt>{% translate "Se non figuras" %}</dt><dd>{% translate "Unha persoa do concello revisa a solicitude e respóndeche por correo." %}</dd>
           <dt>{% translate "Dereitos" %}</dt><dd>{% translate "Acceso, rectificación, supresión e oposición desde a túa conta ou no concello." %} <a href="{% turl 'privacy' %}">{% translate "Máis información" %}</a></dd>
         </dl>
       </details>

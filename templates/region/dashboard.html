@@ -6,8 +6,8 @@
   <a class="btn" href="{% url 'region:new_municipality' region.slug %}">{% icon 'plus' %} {% translate "Dar de alta un concello" %}</a></div></div>
 
 <div class="grid grid-4 mb-2">
-  <div class="stat"><div class="label">{% translate "Reservas na rede" %}</div><div class="value">{{ network.bookings }}</div><div class="delta muted">{% if network.per_1000 %}{% blocktranslate with n=network.per_1000 %}{{ n }} por 1.000 hab.{% endblocktranslate %}{% endif %}</div></div>
-  <div class="stat"><div class="label">{% translate "Ocupación media" %}</div><div class="value">{{ network.occupancy }} %</div></div>
+  <div class="stat"><div class="label">{% translate "Reservas na rede" %}</div><div class="value">{{ network.bookings }} {% include "region/_delta.html" with d=network.bookings_delta %}</div><div class="delta muted">{% if network.per_1000 %}{% blocktranslate with n=network.per_1000 %}{{ n }} por 1.000 hab.{% endblocktranslate %}{% endif %}</div></div>
+  <div class="stat"><div class="label">{% translate "Ocupación media" %}</div><div class="value">{{ network.occupancy }} % {% include "region/_delta.html" with d=network.occupancy_delta unit=" p.p." %}</div></div>
   <div class="stat"><div class="label">{% translate "Satisfacción da veciñanza" %}</div><div class="value">{% if network.satisfaction is not None %}{{ network.satisfaction }}<small>/100</small>{% else %}—{% endif %}</div></div>
   <div class="stat"><div class="label">{% translate "Incidencias abertas" %}</div><div class="value">{{ network.open_incidents }}</div><div class="delta muted">{% blocktranslate with e=network.revenue|euros %}Ingresos netos: {{ e }}{% endblocktranslate %}</div></div>
 </div>

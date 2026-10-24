@@ -39,12 +39,15 @@ def test_mailbox_standalone_wraps_and_links(new_page, base, viewport, logged):
     page.goto(base + "/c/vilardeiras/app/solicitar/")
     page.fill("#id_name", "Proba Correo")
     page.fill("#id_email", email)
-    page.fill("#id_birth_year", "1990")
-    page.fill("#id_postcode", "15999")
+    page.fill("#id_surnames", "Proba Exemplo")
+    page.fill("#id_id_number", "12345678Z")
+    page.fill("#id_birth_date", "1990-05-14")
     page.check("#id_resident")
     page.click("main button[type=submit]")
     page.goto(f"{base}/dev/mailbox/?para={email}")
     assert_standalone(page)
+    # v4: bandexa tipo cliente de correo; filtrando por persoa ábrese a última mensaxe
+    assert page.locator(".inbox__row").count() >= 1 and page.locator(".inbox__view").count() == 1
     body = page.locator(".mail__body").first
     assert body.evaluate("e => getComputedStyle(e).whiteSpace") == "pre-wrap"
     link = body.locator("a[href*='/app/instalar/?codigo=']")
@@ -118,3 +121,44 @@ def test_clave_end_to_end_from_tenant_with_other_session(new_page, base):
     page.click("text=Identificarme")
     page.wait_for_load_state("networkidle")
     assert "/c/pontedouro/" in page.url, page.url
+
+
+def test_devtools_header_shows_profile_and_returns_where_you_were(new_page, base):
+    """v4: cabeceira «Ferramentas da demo» co concello e o perfil; «← Volver á demo» leva á última
+    páxina vista; con sesión non aparece ningún «Acceder»."""
+    page = new_page(viewport=MOBILE)
+    login_as(page, base, "uxia@demo.eira.example")
+    page.goto(base + "/c/vilardeiras/reservas/")
+    for tool in ("/dev/mailbox/", "/dev/lock-simulator/"):
+        page.goto(base + tool)
+        bar = page.locator(".devtool__bar")
+        assert "Ferramentas da demo" in bar.inner_text()
+        assert "Vilardeiras" in bar.inner_text() and "Uxía" in bar.inner_text()
+        assert page.get_by_text("Acceder", exact=True).count() == 0
+    page.locator(".devtool__back").click()
+    page.wait_for_load_state()
+    assert page.url.endswith("/c/vilardeiras/reservas/")
+
+
+def test_devtools_header_without_session_offers_profile_choice(new_page, base):
+    page = new_page(viewport=DESKTOP)
+    page.goto(base + "/dev/mailbox/")
+    assert page.locator(".devtool__bar").get_by_text("Escoller perfil").count() == 1
+    assert page.get_by_text("Acceder", exact=True).count() == 0
+
+
+def test_telegram_bot_linking_through_simulator(new_page, base):
+    """v4: Preferencias › Vincular Telegram › simulador (como abrir a ligazón t.me) › vinculado."""
+    page = new_page(viewport=MOBILE)
+    login_as(page, base, "manuel@demo.eira.example")
+    page.goto(base + "/c/vilardeiras/avisos/preferencias/")
+    page.get_by_role("button", name="Vincular Telegram").click()
+    page.wait_for_load_state()
+    page.locator("a[href*='/dev/telegram/?start=']").click()
+    page.wait_for_load_state()
+    assert page.locator("#tg-text").input_value().startswith("/start ")
+    page.get_by_role("button", name="Enviar").click()
+    page.wait_for_load_state()
+    assert "Listo!" in page.locator(".tg-chat").inner_text()
+    page.goto(base + "/c/vilardeiras/avisos/preferencias/")
+    assert page.get_by_role("button", name="Desvincular").count() == 1

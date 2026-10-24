@@ -16,6 +16,7 @@
     <p class="sidenav__group">{% translate "Servizo" %}</p>
     <a href="{% turl 'manage:facilities' %}" {% if sub == 'facilities' %}aria-current="page"{% endif %}>{% icon 'map' %} {% translate "Instalacións" %}</a>
     <a href="{% turl 'manage:closures' %}" {% if sub == 'closures' %}aria-current="page"{% endif %}>{% icon 'lock' %} {% translate "Peches" %}</a>
+    <a href="{% turl 'manage:notices' %}" {% if sub == 'notices' %}aria-current="page"{% endif %}>{% icon 'bell' %} {% translate "Avisos" %}</a>
     <a href="{% turl 'manage:maintenance_plans' %}" {% if sub == 'maintenance' %}aria-current="page"{% endif %}>{% icon 'check' %} {% translate "Mantemento" %}</a>
     <a href="{% turl 'manage:activities' %}" {% if sub == 'activities' %}aria-current="page"{% endif %}>{% icon 'users' %} {% translate "Escolas" %}</a>
     <p class="sidenav__group">{% translate "Datos" %}</p>

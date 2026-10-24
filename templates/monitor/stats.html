@@ -1,0 +1,68 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Estatísticas dos meus grupos" %}{% endblock %}
+{% block content %}
+<div class="tablet">
+<div class="page-head"><div><p class="eyebrow">{% translate "Modo tableta" %}</p><h1>{% translate "Estatísticas dos meus grupos" %}</h1>
+  <p class="muted mb-0">{% blocktranslate with w=weeks %}Últimas {{ w }} semanas. Só os grupos que levas ti.{% endblocktranslate %}</p></div>
+  <a class="btn btn-secondary" href="{% turl 'monitor:today' %}">← {% translate "Sesións de hoxe" %}</a></div>
+
+{% for b in blocks %}
+<section class="card stack-sm mb-2" aria-labelledby="g{{ b.group.pk }}">
+  <h2 id="g{{ b.group.pk }}">{{ b.group.activity.name }} · {{ b.group.name }}</h2>
+  <div class="grid grid-4">
+    <div class="stat"><div class="label">{% translate "Asistencia media" %}</div><div class="value">{% if b.avg_pct is not None %}{{ b.avg_pct }} %{% else %}—{% endif %}</div><div class="delta muted">{% blocktranslate count n=b.sessions|length %}{{ n }} sesión{% plural %}{{ n }} sesións{% endblocktranslate %}</div></div>
+    <div class="stat"><div class="label">{% translate "Esforzo medio" %}</div><div class="value">{% if b.avg_rpe is not None %}{{ b.avg_rpe }}<small>/10</small>{% else %}—{% endif %}</div><div class="delta muted">{{ b.group.get_rpe_scale_display }}</div></div>
+    <div class="stat"><div class="label">{% blocktranslate with n=streak %}Faltan {{ n }}+ sesións seguidas{% endblocktranslate %}</div><div class="value">{{ b.absences|length }}</div></div>
+    <div class="stat"><div class="label">{% translate "Carga da última semana" %}</div><div class="value">{% with last=b.weeks|last %}{% if last %}{{ last.load }}{% else %}—{% endif %}{% endwith %}</div><div class="delta muted">{% translate "sRPE × minutos, media por persoa" %}</div></div>
+  </div>
+
+  {% if b.absences %}
+  <div class="alert alert-warn">
+    <h3 class="h4 mb-0">{% blocktranslate with n=streak %}Levan {{ n }} ou máis sesións sen vir{% endblocktranslate %}</h3>
+    <ul class="mb-0">{% for a in b.absences %}<li>{{ a.label }} · {% blocktranslate count n=a.streak %}{{ n }} sesión{% plural %}{{ n }} sesións{% endblocktranslate %}</li>{% endfor %}</ul>
+  </div>
+  {% endif %}
+
+  <div class="grid grid-3">
+    <section aria-labelledby="att{{ b.group.pk }}">
+      <h3 id="att{{ b.group.pk }}" class="h4">{% translate "Asistencia por sesión" %}</h3>
+      {% include "includes/hbar.html" with chart=b.att_chart cid=b.cid|add:"-att" title=_("Porcentaxe de asistencia por sesión") %}
+      <details class="mt-1"><summary>{% translate "Ver os datos en táboa" %}</summary>
+        <div class="table-wrap" tabindex="0"><table class="data stats-table"><caption class="visually-hidden">{% translate "Asistencia por sesión" %}</caption>
+          <thead><tr><th scope="col">{% translate "Data" %}</th><th scope="col" class="num">{% translate "Presentes" %}</th><th scope="col" class="num">%</th></tr></thead>
+          <tbody>{% for r in b.sessions %}<tr><th scope="row">{{ r.label }}</th><td class="num">{{ r.present }}/{{ r.total }}</td><td class="num">{{ r.pct }} %</td></tr>{% empty %}<tr><td colspan="3">{% translate "Sen datos no período." %}</td></tr>{% endfor %}</tbody>
+        </table></div></details>
+    </section>
+    <section aria-labelledby="rpe{{ b.group.pk }}">
+      <h3 id="rpe{{ b.group.pk }}" class="h4">{% translate "Esforzo medio por sesión (0–10)" %}</h3>
+      {% include "includes/hbar.html" with chart=b.rpe_chart cid=b.cid|add:"-rpe" title=_("Esforzo medio por sesión") %}
+      <details class="mt-1"><summary>{% translate "Ver os datos en táboa" %}</summary>
+        <div class="table-wrap" tabindex="0"><table class="data stats-table"><caption class="visually-hidden">{% translate "Esforzo medio por sesión" %}</caption>
+          <thead><tr><th scope="col">{% translate "Data" %}</th><th scope="col" class="num">{% translate "Esforzo medio" %}</th></tr></thead>
+          <tbody>{% for r in b.sessions %}<tr><th scope="row">{{ r.label }}</th><td class="num">{{ r.rpe|default:"—" }}</td></tr>{% empty %}<tr><td colspan="2">{% translate "Sen datos no período." %}</td></tr>{% endfor %}</tbody>
+        </table></div></details>
+    </section>
+    <section aria-labelledby="load{{ b.group.pk }}">
+      <h3 id="load{{ b.group.pk }}" class="h4">{% translate "Carga semanal (sRPE)" %}</h3>
+      {% include "includes/hbar.html" with chart=b.load_chart cid=b.cid|add:"-load" title=_("Carga semanal media por persoa") %}
+      <details class="mt-1"><summary>{% translate "Ver os datos en táboa" %}</summary>
+        <div class="table-wrap" tabindex="0"><table class="data stats-table"><caption class="visually-hidden">{% translate "Carga semanal (sRPE)" %}</caption>
+          <thead><tr><th scope="col">{% translate "Semana do" %}</th><th scope="col" class="num">{% translate "Carga media" %}</th><th scope="col" class="num">{% translate "Persoas" %}</th></tr></thead>
+          <tbody>{% for w in b.weeks %}<tr><th scope="row">{{ w.label }}</th><td class="num">{{ w.load }}</td><td class="num">{{ w.people }}</td></tr>{% empty %}<tr><td colspan="3">{% translate "Sen datos no período." %}</td></tr>{% endfor %}</tbody>
+        </table></div></details>
+    </section>
+  </div>
+
+  <h3 class="h4 mt-1">{% translate "Probas físicas (agregado do grupo)" %}</h3>
+  {% if b.fitness %}
+  <ul class="fitness-list" role="list">{% for f in b.fitness %}
+    <li><strong>{{ f.test }}</strong> <span>{% blocktranslate with m=f.mean u=f.unit a=f.min z=f.max n=f.n %}media {{ m }} {{ u }} · de {{ a }} a {{ z }} · {{ n }} persoas{% endblocktranslate %}</span></li>{% endfor %}
+  </ul>
+  <p class="help">{% translate "Último resultado de cada persoa. Sen baremos: só para seguir a evolución do grupo." %}</p>
+  {% else %}<p class="muted">{% translate "Aínda non hai probas rexistradas neste grupo." %} <a href="{% turl 'monitor:fitness' b.group.pk %}">{% translate "Rexistrar probas" %}</a></p>{% endif %}
+</section>
+{% empty %}
+<p class="alert">{% translate "Non tes grupos asignados." %}</p>
+{% endfor %}
+</div>
+{% endblock %}

@@ -274,7 +274,10 @@ def test_enrollment_rejected_payment_frees_place(client, muni_a, citizen):
     )
     Consent.objects.create(dependent=d, kind="data", granted_by=citizen)
     client.force_login(citizen)
-    r = client.post(f"{C}/actividades/grupo/{g.pk}/inscribirse/", {"participant": d.pk})
+    r = client.post(
+        f"{C}/actividades/grupo/{g.pk}/inscribirse/",
+        {"participant": d.pk, "surnames": "Proba Exemplo"},
+    )
     client.post(r["Location"], {"result": "ko"})
     assert Enrollment.objects.get().status == Enrollment.Status.CANCELLED
 

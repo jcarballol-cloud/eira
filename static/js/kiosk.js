@@ -83,6 +83,7 @@
     function apply(ev) {
       var p = byId[ev.enrollment];
       if (!p) return;
+      if (!p["in"] && ev.action === "out") p.auto = true;
       p["in"] = true;
       if (ev.action === "out" && ev.value !== null && ev.value !== undefined && p.effort) p.rpe = ev.value;
     }
@@ -128,6 +129,9 @@
       var rpe = people.filter(function (p) { return p.rpe !== null; }).length;
       root.querySelector("[data-stat-in]").textContent = fill(T.entered, inside, n);
       root.querySelector("[data-stat-rpe]").textContent = fill(T.rpeCount, rpe);
+      var auto = people.filter(function (p) { return p.auto; }).length, autoChip = root.querySelector("[data-stat-auto]");
+      autoChip.hidden = !auto;
+      autoChip.textContent = fill(T.autoCount, auto);
       var pend = queue().length, sync = root.querySelector("[data-sync]");
       sync.textContent = !pend ? T.syncOk : (navigator.onLine ? fill(T.syncPending, pend) : fill(T.syncOffline, pend));
       sync.classList.toggle("is-warn", pend > 0);
@@ -213,8 +217,9 @@
         record(p, "in");
         thanks(p, fill(T.inDone, new Date().toTimeString().slice(0, 5)), BACK_IN_MS);
       } else if (!p.effort) {
+        var was = p["in"];
         record(p, "out", null);
-        thanks(p, T.noEffort, BACK_OUT_MS);
+        thanks(p, T.noEffort, BACK_OUT_MS, undefined, !was);
       } else {
         rpe(p);
       }
@@ -227,8 +232,9 @@
           "aria-label": pt.value + (pt.label ? ", " + pt.label : ""),
           on: { click: function (e) {
             e.currentTarget.classList.add("is-pressed");
+            var was = p["in"];
             record(p, "out", pt.value);
-            setTimeout(function () { thanks(p, fill(T.rpeDone, pt.value) + (pt.label ? " · " + pt.label : ""), BACK_OUT_MS, pt.value); }, 150);
+            setTimeout(function () { thanks(p, fill(T.rpeDone, pt.value) + (pt.label ? " · " + pt.label : ""), BACK_OUT_MS, pt.value, !was); }, 150);
           } }
         }, [omni ? icon(pt.face, "kiosk__face") : null, el("span", { class: "kiosk__rpenum", "aria-hidden": "true", text: String(pt.value) }),
             el("span", { class: "kiosk__rpelbl", "aria-hidden": "true", text: pt.label })]);
@@ -241,12 +247,14 @@
             grid,
             el("p", { class: "kiosk__help", text: T.savedOnTap })], ".kiosk__rpebtn");
     }
-    function thanks(p, detail, ms, value) {
+    function thanks(p, detail, ms, value, autoIn) {
       var bar = el("div", { class: "kiosk__progress", "aria-hidden": "true" }, [el("span")]);
       show([el("section", { class: "kiosk__thanks", role: "status" }, [
         icon("check", "kiosk__check"),
         el("h2", { class: "kiosk__thanks-title", text: fill(T.thanks, p.name) }),
         el("p", { class: "kiosk__thanks-detail" + (value !== undefined ? " rpe-v" + value : ""), text: detail }),
+        // aviso discreto para a monitora: non tocara «Entrada», a asistencia marcouse soa
+        autoIn ? el("p", { class: "kiosk__autonote", text: T.autoIn }) : null,
         el("button", { type: "button", class: "btn btn-lg", text: T.next, on: { click: home } }),
         bar])], ".kiosk__thanks .btn");
       bar.firstChild.style.transitionDuration = ms + "ms";

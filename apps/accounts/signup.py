@@ -29,6 +29,8 @@ ADMIN_ROLES = ("admin", "region_admin")
 
 
 class AppRequestForm(forms.ModelForm):
+    """v4: contraste automático co padrón por DNI/NIE + data de nacemento (nunca polo nome)."""
+
     resident = forms.BooleanField(
         label=gettext_lazy("Vivo no concello e estou empadroado/a"),
         required=False,
@@ -39,51 +41,84 @@ class AppRequestForm(forms.ModelForm):
 
     class Meta:
         model = AppRequest
-        fields = ["name", "email", "birth_year", "postcode"]
+        fields = ["name", "surnames", "email", "id_number", "birth_date", "address"]
         widgets = {
-            "name": forms.TextInput(attrs={"autocomplete": "name"}),
+            "name": forms.TextInput(attrs={"autocomplete": "given-name"}),
+            "surnames": forms.TextInput(attrs={"autocomplete": "family-name"}),
             "email": forms.EmailInput(attrs={"autocomplete": "email", "inputmode": "email"}),
-            "birth_year": forms.NumberInput(attrs={"inputmode": "numeric", "min": 1900}),
-            "postcode": forms.TextInput(
-                attrs={"autocomplete": "postal-code", "inputmode": "numeric", "pattern": "[0-9]{5}"}
+            "id_number": forms.TextInput(
+                attrs={"autocomplete": "off", "autocapitalize": "characters", "spellcheck": "false"}
             ),
+            "birth_date": forms.DateInput(attrs={"type": "date", "autocomplete": "bday"}),
+            "address": forms.TextInput(attrs={"autocomplete": "street-address"}),
         }
+        labels = {"name": gettext_lazy("Nome")}
         help_texts = {
-            "birth_year": gettext_lazy("Só para contrastar co padrón."),
+            "id_number": gettext_lazy(
+                "Co DNI/NIE e a data de nacemento comprobamos o padrón ao momento. "
+                "Despois borrámolos."
+            ),
+            "address": gettext_lazy("Só se o concello ten que revisar a solicitude."),
         }
 
     def __init__(self, *args, require_email=True, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["email"].required = require_email
-        self.fields["birth_year"].required = True
-        self.fields["postcode"].required = True
+        for name in ("surnames", "id_number", "birth_date"):
+            self.fields[name].required = True
 
-    def clean_postcode(self):
-        value = self.cleaned_data["postcode"].strip()
-        if not re.fullmatch(r"\d{5}", value):
-            raise forms.ValidationError(_("O código postal ten 5 números."))
+    def clean_id_number(self):
+        from .padron import normalize_id, valid_id
+
+        value = normalize_id(self.cleaned_data.get("id_number"))
+        if not valid_id(value):
+            raise forms.ValidationError(
+                _("Revisa o DNI/NIE: 8 números e letra (ou X/Y/Z, 7 números e letra).")
+            )
         return value
+
+    def clean_birth_date(self):
+        d = self.cleaned_data.get("birth_date")
+        today = timezone.localdate()
+        if d and not (today.replace(year=today.year - 110) <= d <= today):
+            raise forms.ValidationError(_("Revisa a data de nacemento."))
+        return d
 
     def clean_email(self):
         return (self.cleaned_data.get("email") or "").lower()
 
 
-class CounterSignupForm(AppRequestForm):
+class CounterSignupForm(forms.ModelForm):
+    """Alta no mostrador: o persoal comproba o empadroamento en persoa; non se pide o DNI."""
+
     checked = forms.BooleanField(
         label=gettext_lazy("Comprobei o empadroamento no mostrador"), required=True
     )
 
+    class Meta:
+        model = AppRequest
+        fields = ["name", "surnames", "email"]
+        labels = {"name": gettext_lazy("Nome")}
+
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, require_email=False, **kwargs)
-        del self.fields["resident"]
+        super().__init__(*args, **kwargs)
+        self.fields["email"].required = False
         self.fields["email"].help_text = _(
             "Opcional. Se non ten correo, entrégaselle a folla impresa co código."
         )
+
+    def clean_email(self):
+        return (self.cleaned_data.get("email") or "").lower()
 
 
 def install_url(request, tenant, code=""):
     url = request.build_absolute_uri(treverse(tenant, "app:install"))
     return f"{url}?codigo={code}" if code else url
+
+
+def forget_identity(app_request):
+    """Minimización: resolta a solicitude, xa non fan falta o DNI/NIE, a data nin o enderezo."""
+    app_request.id_number, app_request.birth_date, app_request.address = "", None, ""
 
 
 def send_app_code(request, app_request, actor=None):
@@ -98,6 +133,7 @@ def send_app_code(request, app_request, actor=None):
     app_request.status = AppRequest.Status.SENT
     app_request.resolved_at = timezone.now()
     app_request.resolved_by = actor
+    forget_identity(app_request)
     app_request.save()
     audit("app_request.sent", actor, tenant, app_request, channel=app_request.channel)
     if app_request.email:
@@ -139,14 +175,16 @@ def request_app(request):
         else:
             app_request = form.save(commit=False)
             app_request.municipality = request.tenant
+            app_request.birth_year = d["birth_date"].year
             if d["resident"]:
+                # O nome non entra no contraste: só DNI/NIE + data de nacemento
                 result = get_adapter("padron").check(
-                    request.tenant,
-                    name=d["name"],
-                    birth_year=d["birth_year"],
-                    postcode=d["postcode"],
+                    request.tenant, id_number=d["id_number"], birth_date=d["birth_date"]
                 )
                 app_request.padron_match = result.found
+                app_request.review_reason = result.reason
+            else:
+                forget_identity(app_request)  # sen padrón, a identidade non fai falta
             app_request.save()
             if app_request.padron_match:
                 send_app_code(request, app_request)
@@ -282,6 +320,7 @@ def signup_resolve(request, pk):
     else:
         app_request.status = AppRequest.Status.REJECTED
         app_request.resolved_at, app_request.resolved_by = timezone.now(), request.user
+        forget_identity(app_request)
         app_request.save()
         audit("app_request.rejected", request.user, request.tenant, app_request)
         if app_request.email:
@@ -316,3 +355,60 @@ def signup_sheet(request, pk):
             "sub": "signups",
         },
     )
+
+
+# ---------------------------------------------------------------- padrón (v4)
+
+
+class PadronUploadForm(forms.Form):
+    file = forms.FileField(
+        label=gettext_lazy("CSV do padrón"),
+        help_text=gettext_lazy(
+            "Columnas dni_nie e data_nacemento. Substitúe a carga anterior. O ficheiro non se garda."
+        ),
+        widget=forms.ClearableFileInput(attrs={"accept": ".csv,text/csv"}),
+    )
+
+
+@role_required("admin")
+def padron_page(request):
+    from . import padron
+
+    form = PadronUploadForm(request.POST or None, request.FILES or None)
+    if request.method == "POST" and form.is_valid():
+        batch = padron.import_csv(request.tenant, form.cleaned_data["file"], by=request.user)
+        messages.success(
+            request,
+            _("Padrón cargado: %(n)s persoas. Liñas rexeitadas: %(r)s.")
+            % {"n": batch.count, "r": batch.rejected},
+        )
+        return redirect(treverse(request.tenant, "manage:padron"))
+    from .models import PadronImport
+
+    return render(
+        request,
+        "manage/padron.html",
+        {
+            "form": form,
+            "imports": PadronImport.objects.filter(municipality=request.tenant).select_related(
+                "imported_by"
+            )[:20],
+            "current": padron.current(request.tenant),
+            "pending": AppRequest.objects.filter(
+                municipality=request.tenant, status=AppRequest.Status.PENDING
+            ).count(),
+            "nav": "manage",
+            "sub": "signups",
+        },
+    )
+
+
+@role_required("admin")
+def padron_template(request):
+    from django.http import HttpResponse
+
+    from .padron import TEMPLATE
+
+    resp = HttpResponse(TEMPLATE, content_type="text/csv; charset=utf-8")
+    resp["Content-Disposition"] = 'attachment; filename="padron-modelo.csv"'
+    return resp

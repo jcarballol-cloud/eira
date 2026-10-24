@@ -1,0 +1,45 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Padrón" %}{% endblock %}
+{% block content %}
+<p><a href="{% turl 'manage:signups' %}">← {% translate "Altas da app" %}</a></p>
+<div class="page-head"><div><h1>{% translate "Padrón para as altas automáticas" %}</h1>
+  <p class="muted mb-0">{% translate "Quen pide a app con DNI/NIE e data de nacemento que figuren no padrón recibe o código ao momento. O resto vai á cola de revisión." %}</p></div></div>
+<div class="layout-aside">
+  <div class="stack">
+    <section class="card stack-sm" aria-labelledby="cur-t">
+      <h2 id="cur-t" class="h3">{% translate "Carga actual" %}</h2>
+      {% if current %}
+        <p class="mb-0">{% blocktranslate with n=current.count d=current.imported_at|date:"d/m/Y H:i" %}<strong>{{ n }}</strong> persoas, cargado o {{ d }}.{% endblocktranslate %}
+          {% if current.rejected %}{% blocktranslate count r=current.rejected %}{{ r }} liña rexeitada (DNI/NIE ou data non válidos).{% plural %}{{ r }} liñas rexeitadas (DNI/NIE ou data non válidos).{% endblocktranslate %}{% endif %}</p>
+      {% else %}
+        <p class="alert alert-warn mb-0">{% translate "Aínda non hai padrón cargado: todas as solicitudes van á cola de revisión." %}</p>
+      {% endif %}
+      {% if pending %}<p class="mb-0"><a href="{% turl 'manage:signups' %}">{% blocktranslate count n=pending %}{{ n }} solicitude pendente de revisar{% plural %}{{ n }} solicitudes pendentes de revisar{% endblocktranslate %}</a></p>{% endif %}
+    </section>
+    <section class="card" aria-labelledby="log-t">
+      <h2 id="log-t" class="h3">{% translate "Rexistro de cargas" %}</h2>
+      <div class="table-wrap" tabindex="0"><table class="data">
+        <caption class="visually-hidden">{% translate "Cargas do padrón" %}</caption>
+        <thead><tr><th scope="col">{% translate "Data" %}</th><th scope="col" class="num">{% translate "Persoas" %}</th><th scope="col" class="num">{% translate "Rexeitadas" %}</th><th scope="col">{% translate "Quen" %}</th></tr></thead>
+        <tbody>{% for i in imports %}<tr><td>{{ i.imported_at|date:"d/m/Y H:i" }}</td><td class="num">{{ i.count }}</td><td class="num">{{ i.rejected }}</td><td>{{ i.imported_by.display_name|default:i.imported_by.email|default:"—" }}</td></tr>
+        {% empty %}<tr><td colspan="4">{% translate "Sen cargas." %}</td></tr>{% endfor %}</tbody>
+      </table></div>
+    </section>
+  </div>
+  <aside class="stack">
+    <section class="card stack-sm" aria-labelledby="up-t">
+      <h2 id="up-t" class="h3">{% translate "Cargar o padrón" %}</h2>
+      <form method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}
+        {% include "includes/form.html" %}
+        <div class="form-actions"><button class="btn" type="submit">{% icon 'download' %} {% translate "Cargar e substituír" %}</button></div>
+      </form>
+      <p class="mb-0"><a href="{% turl 'manage:padron_template' %}">{% icon 'download' %} {% translate "Descargar o modelo CSV" %}</a></p>
+    </section>
+    <section class="card-flat stack-sm">
+      <h2 class="h4">{% icon 'shield' %} {% translate "Que garda Eira" %}</h2>
+      <p class="mb-0">{% translate "De cada liña só garda un resumo HMAC-SHA256 de DNI/NIE + data de nacemento, cun segredo propio desta instalación. O ficheiro non se garda, e non se pode reconstruír o padrón a partir dos resumos." %}</p>
+      <p class="help mb-0">{% translate "O nome nunca se usa para comprobar. Cada carga substitúe a anterior e queda rexistrada. Base: art. 6.1.e RXPD." %}</p>
+    </section>
+  </aside>
+</div>
+{% endblock %}

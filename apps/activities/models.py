@@ -1,8 +1,11 @@
 # SPDX-License-Identifier: EUPL-1.2
 """Escolas e actividades municipais: grupos, inscricións, sesións, asistencia, RPE e probas."""
 
+import datetime as dt
+
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from apps.facilities.models import Facility
@@ -170,6 +173,42 @@ class Session(TenantModel):
         ordering = ["date", "start_time"]
         constraints = [models.UniqueConstraint(fields=["group", "date"], name="uniq_session_day")]
 
+    # v4: o estado depende da hora, non só de se se gardou o esforzo. Antes, gardar o esforzo
+    # (ou o seed da demo) marcaba «Pechada» unha sesión que aínda non empezara.
+    UPCOMING, OPEN, FINISHED, CLOSED = "upcoming", "open", "finished", "closed"
+    STATUS_LABELS = {
+        UPCOMING: _("Por empezar"),
+        OPEN: _("Aberta"),
+        FINISHED: _("Rematada"),
+        CLOSED: _("Pechada"),
+    }
+    # A tableta segue aberta un pouco antes e despois para quen chega cedo ou sae tarde.
+    MARGIN = dt.timedelta(minutes=15)
+
+    @property
+    def start_dt(self):
+        return timezone.make_aware(dt.datetime.combine(self.date, self.start_time))
+
+    @property
+    def end_dt(self):
+        return self.start_dt + dt.timedelta(minutes=self.duration_minutes)
+
+    def status_at(self, now=None):
+        now = now or timezone.now()
+        if now < self.start_dt - self.MARGIN:
+            return self.UPCOMING
+        if now <= self.end_dt + self.MARGIN:
+            return self.OPEN
+        return self.CLOSED if self.closed_at else self.FINISHED
+
+    @property
+    def status(self):
+        return self.status_at()
+
+    @property
+    def status_label(self):
+        return self.STATUS_LABELS[self.status]
+
 
 class Attendance(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE, related_name="attendances")
@@ -179,6 +218,8 @@ class Attendance(models.Model):
     minutes = models.PositiveIntegerField(null=True, blank=True)
     checked_in_at = models.DateTimeField(null=True, blank=True)
     rpe_at = models.DateTimeField(null=True, blank=True)
+    # v4: a asistencia marcouse soa ao rexistrar a saída (non tocara «Entrada»)
+    auto_in = models.BooleanField(default=False)
 
     class Meta:
         constraints = [

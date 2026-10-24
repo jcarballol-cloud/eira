@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Eira 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-24 00:41+0200\n"
+"POT-Creation-Date: 2026-10-24 01:54+0200\n"
 "PO-Revision-Date: 2026-10-23 03:37+0200\n"
 "Last-Translator: Equipo Eira\n"
 "Language-Team: Equipo Eira\n"
@@ -228,7 +228,7 @@ msgid "teléfono"
 msgstr "teléfono"
 
 #: apps/accounts/models.py:45 apps/accounts/models.py:191
-#: apps/accounts/models.py:321 apps/activities/models.py:140
+#: apps/accounts/models.py:372 apps/activities/models.py:143
 msgid "ano de nacemento"
 msgstr "año de nacimiento"
 
@@ -271,7 +271,7 @@ msgid "Administración do concello"
 msgstr "Administración del ayuntamiento"
 
 #: apps/accounts/models.py:87 templates/includes/brand.html:3
-#: templates/includes/shell_desk.html:19
+#: templates/includes/shell_desk.html:20
 msgid "Mantemento"
 msgstr "Mantenimiento"
 
@@ -311,13 +311,13 @@ msgstr "No figura en el padrón"
 msgid "En liña"
 msgstr "En línea"
 
-#: apps/accounts/models.py:184 apps/accounts/models.py:217
+#: apps/accounts/models.py:184 apps/accounts/models.py:268
 #: apps/bookings/manage.py:205 apps/bookings/models.py:49
 msgid "Mostrador"
 msgstr "Mostrador"
 
-#: apps/accounts/models.py:189 apps/accounts/models.py:320
-#: apps/activities/models.py:13 apps/activities/models.py:139
+#: apps/accounts/models.py:189 apps/accounts/models.py:371
+#: apps/activities/models.py:16 apps/activities/models.py:142
 #: apps/facilities/models.py:14 apps/facilities/models.py:48
 #: apps/maintenance/models.py:25 apps/tenants/models.py:38
 #: apps/tenants/models.py:52
@@ -332,91 +332,131 @@ msgstr "código postal"
 msgid "figura no padrón"
 msgstr "figura en el padrón"
 
-#: apps/accounts/models.py:206
+#: apps/accounts/models.py:197
+msgid "apelidos"
+msgstr "apellidos"
+
+#: apps/accounts/models.py:198
+msgid "DNI/NIE"
+msgstr "DNI/NIE"
+
+#: apps/accounts/models.py:199
+msgid "data de nacemento"
+msgstr "fecha de nacimiento"
+
+#: apps/accounts/models.py:200
+msgid "enderezo (opcional)"
+msgstr "dirección (opcional)"
+
+#: apps/accounts/models.py:201
+msgid "motivo da revisión"
+msgstr "motivo de la revisión"
+
+#: apps/accounts/models.py:212
 msgid "solicitude da app"
 msgstr "solicitud de la app"
 
-#: apps/accounts/models.py:207
+#: apps/accounts/models.py:213
 msgid "solicitudes da app"
 msgstr "solicitudes de la app"
 
-#: apps/accounts/models.py:216
+#: apps/accounts/models.py:220
+msgid "Non figura no padrón cargado"
+msgstr "No figura en el padrón cargado"
+
+#: apps/accounts/models.py:221
+msgid "Aínda non hai padrón cargado"
+msgstr "Aún no hay padrón cargado"
+
+#: apps/accounts/models.py:222
+msgid "DNI/NIE ou data non válidos"
+msgstr "DNI/NIE o fecha no válidos"
+
+#: apps/accounts/models.py:245
+msgid "carga do padrón"
+msgstr "carga del padrón"
+
+#: apps/accounts/models.py:246
+msgid "cargas do padrón"
+msgstr "cargas del padrón"
+
+#: apps/accounts/models.py:267
 msgid "Código de invitación"
 msgstr "Código de invitación"
 
-#: apps/accounts/models.py:218
+#: apps/accounts/models.py:269
 msgid "Identidade pública + padrón"
 msgstr "Identidad pública + padrón"
 
-#: apps/accounts/models.py:229
+#: apps/accounts/models.py:280
 msgid "empadroamento validado"
 msgstr "empadronamiento validado"
 
-#: apps/accounts/models.py:230
+#: apps/accounts/models.py:281
 msgid "empadroamentos validados"
 msgstr "empadronamientos validados"
 
-#: apps/accounts/models.py:286
+#: apps/accounts/models.py:337
 msgid "Persoa con discapacidade"
 msgstr "Persona con discapacidad"
 
-#: apps/accounts/models.py:287
+#: apps/accounts/models.py:338
 msgid "Persoa en desemprego"
 msgstr "Persona en desempleo"
 
-#: apps/accounts/models.py:288
+#: apps/accounts/models.py:339
 msgid "Familia numerosa ou monoparental"
 msgstr "Familia numerosa o monoparental"
 
-#: apps/accounts/models.py:294 apps/facilities/models.py:201
+#: apps/accounts/models.py:345 apps/facilities/models.py:201
 msgid "colectivo"
 msgstr "colectivo"
 
-#: apps/accounts/models.py:297
+#: apps/accounts/models.py:348
 msgid "válido ata"
 msgstr "válido hasta"
 
-#: apps/accounts/models.py:300
+#: apps/accounts/models.py:351
 msgid "tarifa reducida validada"
 msgstr "tarifa reducida validada"
 
-#: apps/accounts/models.py:301
+#: apps/accounts/models.py:352
 msgid "tarifas reducidas validadas"
 msgstr "tarifas reducidas validadas"
 
-#: apps/accounts/models.py:325
+#: apps/accounts/models.py:376
 msgid "menor ao cargo"
 msgstr "menor a cargo"
 
-#: apps/accounts/models.py:326
+#: apps/accounts/models.py:377
 msgid "menores ao cargo"
 msgstr "menores a cargo"
 
-#: apps/accounts/models.py:349
+#: apps/accounts/models.py:400
 msgid "Tratamento de datos para a actividade"
 msgstr "Tratamiento de datos para la actividad"
 
-#: apps/accounts/models.py:350
+#: apps/accounts/models.py:401
 msgid "Uso da imaxe en comunicacións municipais"
 msgstr "Uso de la imagen en comunicaciones municipales"
 
-#: apps/accounts/models.py:351
+#: apps/accounts/models.py:402
 msgid "Rexistro de esforzo e probas físicas"
 msgstr "Registro de esfuerzo y pruebas físicas"
 
-#: apps/accounts/models.py:361
+#: apps/accounts/models.py:412
 msgid "consentimento"
 msgstr "consentimiento"
 
-#: apps/accounts/models.py:362
+#: apps/accounts/models.py:413
 msgid "consentimentos"
 msgstr "consentimientos"
 
-#: apps/accounts/signup.py:33
+#: apps/accounts/signup.py:35
 msgid "Vivo no concello e estou empadroado/a"
 msgstr "Vivo en el ayuntamiento y estoy empadronado/a"
 
-#: apps/accounts/signup.py:36
+#: apps/accounts/signup.py:38
 msgid ""
 "Se non o estás, tamén podes usar a app: entra co teu correo e paga a tarifa "
 "xeral."
@@ -424,34 +464,52 @@ msgstr ""
 "Si no lo estás, también puedes usar la app: entra con tu correo y paga la "
 "tarifa general."
 
-#: apps/accounts/signup.py:52
-msgid "Só para contrastar co padrón."
-msgstr "Solo para contrastar con el padrón."
+#: apps/accounts/signup.py:55 apps/accounts/signup.py:101
+#: apps/tenants/region.py:332 templates/manage/facilities.html:7
+#: templates/monitor/attendance.html:36 templates/monitor/kiosk.html:33
+msgid "Nome"
+msgstr "Nombre"
 
-#: apps/accounts/signup.py:64
-msgid "O código postal ten 5 números."
-msgstr "El código postal tiene 5 números."
+#: apps/accounts/signup.py:58
+msgid ""
+"Co DNI/NIE e a data de nacemento comprobamos o padrón ao momento. Despois "
+"borrámolos."
+msgstr ""
+"Con el DNI/NIE y la fecha de nacimiento comprobamos el padrón al momento. "
+"Después los borramos."
 
-#: apps/accounts/signup.py:73
+#: apps/accounts/signup.py:61
+msgid "Só se o concello ten que revisar a solicitude."
+msgstr "Solo si el ayuntamiento tiene que revisar la solicitud."
+
+#: apps/accounts/signup.py:76
+msgid "Revisa o DNI/NIE: 8 números e letra (ou X/Y/Z, 7 números e letra)."
+msgstr "Revisa el DNI/NIE: 8 números y letra (o X/Y/Z, 7 números y letra)."
+
+#: apps/accounts/signup.py:84
+msgid "Revisa a data de nacemento."
+msgstr "Revisa la fecha de nacimiento."
+
+#: apps/accounts/signup.py:95
 msgid "Comprobei o empadroamento no mostrador"
 msgstr "He comprobado el empadronamiento en el mostrador"
 
-#: apps/accounts/signup.py:80
+#: apps/accounts/signup.py:107
 msgid "Opcional. Se non ten correo, entrégaselle a folla impresa co código."
 msgstr ""
 "Opcional. Si no tiene correo, se le entrega la hoja impresa con el código."
 
-#: apps/accounts/signup.py:94
+#: apps/accounts/signup.py:129
 #, python-format
 msgid "Solicitude da app · %(n)s"
 msgstr "Solicitud de la app · %(n)s"
 
-#: apps/accounts/signup.py:106 apps/accounts/signup.py:172
+#: apps/accounts/signup.py:142 apps/accounts/signup.py:210
 #, python-format
 msgid "A túa app de deportes de %(m)s"
 msgstr "Tu app de deportes de %(m)s"
 
-#: apps/accounts/signup.py:108
+#: apps/accounts/signup.py:144
 #, python-format
 msgid ""
 "Ola, %(n)s:\n"
@@ -486,16 +544,16 @@ msgstr ""
 "\n"
 "Si no has pedido esto, ignora este mensaje."
 
-#: apps/accounts/signup.py:138
+#: apps/accounts/signup.py:174
 msgid "Demasiadas solicitudes. Téntao de novo nun anaco."
 msgstr "Demasiadas solicitudes. Inténtalo de nuevo en un rato."
 
-#: apps/accounts/signup.py:158
+#: apps/accounts/signup.py:196
 #, python-format
 msgid "Recibimos a túa solicitude da app de %(m)s"
 msgstr "Hemos recibido tu solicitud de la app de %(m)s"
 
-#: apps/accounts/signup.py:160
+#: apps/accounts/signup.py:198
 #, python-format
 msgid ""
 "Non puidemos comprobar automaticamente o empadroamento. O concello revisará "
@@ -506,32 +564,32 @@ msgstr ""
 "ayuntamiento revisará la solicitud y te enviará el código. Mientras, puedes "
 "entrar en la app con tu correo: %(u)s"
 
-#: apps/accounts/signup.py:173
+#: apps/accounts/signup.py:211
 #, python-format
 msgid "Instala a app desde esta ligazón e entra co teu correo: %(u)s"
 msgstr "Instala la app desde este enlace y entra con tu correo: %(u)s"
 
-#: apps/accounts/signup.py:224
+#: apps/accounts/signup.py:262
 #, python-format
 msgid "Empadroamento validado: aplicaráseche a tarifa de veciñanza de %(m)s."
 msgstr ""
 "Empadronamiento validado: se te aplicará la tarifa de vecindario de %(m)s."
 
-#: apps/accounts/signup.py:231
+#: apps/accounts/signup.py:269
 msgid "O código non é válido, xa se usou ou foi enviado a outro correo."
 msgstr "El código no es válido, ya se ha usado o se envió a otro correo."
 
-#: apps/accounts/signup.py:281
+#: apps/accounts/signup.py:319
 #, python-format
 msgid "Código enviado a %(e)s."
 msgstr "Código enviado a %(e)s."
 
-#: apps/accounts/signup.py:290
+#: apps/accounts/signup.py:329
 #, python-format
 msgid "A túa solicitude da app de %(m)s"
 msgstr "Tu solicitud de la app de %(m)s"
 
-#: apps/accounts/signup.py:292
+#: apps/accounts/signup.py:331
 msgid ""
 "Non atopamos o empadroamento cos datos indicados. Podes usar a app coa "
 "tarifa xeral ou achegarte ao mostrador de deportes para revisalo."
@@ -540,9 +598,26 @@ msgstr ""
 "la app con la tarifa general o acercarte al mostrador de deportes para "
 "revisarlo."
 
-#: apps/accounts/signup.py:296
+#: apps/accounts/signup.py:335
 msgid "Solicitude marcada como non empadroada."
 msgstr "Solicitud marcada como no empadronada."
+
+#: apps/accounts/signup.py:365
+msgid "CSV do padrón"
+msgstr "CSV del padrón"
+
+#: apps/accounts/signup.py:367
+msgid ""
+"Columnas dni_nie e data_nacemento. Substitúe a carga anterior. O ficheiro "
+"non se garda."
+msgstr ""
+"Columnas dni_nie y data_nacemento. Sustituye la carga anterior. El fichero "
+"no se guarda."
+
+#: apps/accounts/signup.py:382
+#, python-format
+msgid "Padrón cargado: %(n)s persoas. Liñas rexeitadas: %(r)s."
+msgstr "Padrón cargado: %(n)s personas. Líneas rechazadas: %(r)s."
 
 #: apps/accounts/views.py:100
 msgid "Demasiados intentos. Agarda un pouco antes de pedir outro código."
@@ -623,7 +698,7 @@ msgstr "Reservas"
 msgid "Avisos de avaría"
 msgstr "Avisos de avería"
 
-#: apps/accounts/views.py:476 templates/includes/shell_desk.html:23
+#: apps/accounts/views.py:476 templates/includes/shell_desk.html:24
 #: templates/manage/ratings.html:2 templates/manage/ratings.html:22
 #: templates/manage/ratings.html:32
 msgid "Valoracións"
@@ -638,126 +713,143 @@ msgstr "Menores a tu cargo"
 msgid "Empadroamentos validados"
 msgstr "Empadronamientos validados"
 
-#: apps/activities/models.py:14 apps/facilities/models.py:53
+#: apps/activities/models.py:17 apps/facilities/models.py:53
 #: apps/facilities/models.py:178 apps/maintenance/models.py:89
 msgid "descrición"
 msgstr "descripción"
 
-#: apps/activities/models.py:15
+#: apps/activities/models.py:18
 msgid "tempada"
 msgstr "temporada"
 
-#: apps/activities/models.py:19
+#: apps/activities/models.py:22 apps/notifications/models.py:107
 msgid "actividade"
 msgstr "actividad"
 
-#: apps/activities/models.py:20
+#: apps/activities/models.py:23
 msgid "actividades"
 msgstr "actividades"
 
-#: apps/activities/models.py:29
+#: apps/activities/models.py:32
 msgid "OMNI 0–10 (infancia)"
 msgstr "OMNI 0–10 (infancia)"
 
-#: apps/activities/models.py:30
+#: apps/activities/models.py:33
 msgid "Borg CR-10 (persoas adultas)"
 msgstr "Borg CR-10 (personas adultas)"
 
-#: apps/activities/models.py:33 apps/activities/models.py:52
+#: apps/activities/models.py:36 apps/activities/models.py:55
 msgid "grupo"
 msgstr "grupo"
 
-#: apps/activities/models.py:42
+#: apps/activities/models.py:45
 msgid "idade mínima"
 msgstr "edad mínima"
 
-#: apps/activities/models.py:43
+#: apps/activities/models.py:46
 msgid "idade máxima"
 msgstr "edad máxima"
 
-#: apps/activities/models.py:44
+#: apps/activities/models.py:47
 msgid "prazas"
 msgstr "plazas"
 
-#: apps/activities/models.py:45
+#: apps/activities/models.py:48
 msgid "cota (céntimos)"
 msgstr "cuota (céntimos)"
 
-#: apps/activities/models.py:46
+#: apps/activities/models.py:49
 msgid "días (0=luns)"
 msgstr "días (0=lunes)"
 
-#: apps/activities/models.py:47
+#: apps/activities/models.py:50
 msgid "hora de inicio"
 msgstr "hora de inicio"
 
-#: apps/activities/models.py:48
+#: apps/activities/models.py:51
 msgid "duración (min)"
 msgstr "duración (min)"
 
-#: apps/activities/models.py:53
+#: apps/activities/models.py:56
 msgid "grupos"
 msgstr "grupos"
 
-#: apps/activities/models.py:72 apps/bookings/models.py:38
+#: apps/activities/models.py:75 apps/bookings/models.py:38
 #: templates/app/home.html:19
 msgid "Pendente de pagamento"
 msgstr "Pendiente de pago"
 
-#: apps/activities/models.py:73
+#: apps/activities/models.py:76
 msgid "Inscrita"
 msgstr "Inscrita"
 
-#: apps/activities/models.py:74
+#: apps/activities/models.py:77
 msgid "Lista de espera"
 msgstr "Lista de espera"
 
-#: apps/activities/models.py:75
+#: apps/activities/models.py:78
 msgid "Baixa"
 msgstr "Baja"
 
-#: apps/activities/models.py:95
+#: apps/activities/models.py:98
 msgid "apelidos (inscrición)"
 msgstr "apellidos (inscripción)"
 
-#: apps/activities/models.py:103
+#: apps/activities/models.py:106
 msgid "inscrición"
 msgstr "inscripción"
 
-#: apps/activities/models.py:104
+#: apps/activities/models.py:107
 msgid "inscricións"
 msgstr "inscripciones"
 
-#: apps/activities/models.py:134
+#: apps/activities/models.py:137
 msgid "Pendente de validar"
 msgstr "Pendiente de validar"
 
-#: apps/activities/models.py:135 apps/incidents/models.py:13
+#: apps/activities/models.py:138 apps/incidents/models.py:13
 msgid "Validada"
 msgstr "Validada"
 
-#: apps/activities/models.py:136 apps/incidents/models.py:16
+#: apps/activities/models.py:139 apps/incidents/models.py:16
 #: templates/incidents/_timeline.html:7
 msgid "Descartada"
 msgstr "Descartada"
 
-#: apps/activities/models.py:141
+#: apps/activities/models.py:144
 msgid "correo da familia ou da persoa"
 msgstr "correo de la familia o de la persona"
 
-#: apps/activities/models.py:153
+#: apps/activities/models.py:156
 msgid "persoa pendente de validar"
 msgstr "persona pendiente de validar"
 
-#: apps/activities/models.py:154
+#: apps/activities/models.py:157
 msgid "persoas pendentes de validar"
 msgstr "personas pendientes de validar"
 
-#: apps/activities/models.py:203
+#: apps/activities/models.py:180
+msgid "Por empezar"
+msgstr "Por empezar"
+
+#: apps/activities/models.py:181
+msgid "Aberta"
+msgstr "Abierta"
+
+#: apps/activities/models.py:182
+msgid "Rematada"
+msgstr "Terminada"
+
+#: apps/activities/models.py:183 apps/bookings/calendar.py:26
+#: apps/bookings/services.py:84 apps/maintenance/models.py:70
+msgid "Pechada"
+msgstr "Cerrada"
+
+#: apps/activities/models.py:244
 msgid "batería de probas"
 msgstr "batería de pruebas"
 
-#: apps/activities/models.py:204
+#: apps/activities/models.py:245
 msgid "baterías de probas"
 msgstr "baterías de pruebas"
 
@@ -817,17 +909,22 @@ msgstr "Muy duro"
 msgid "Máximo"
 msgstr "Máximo"
 
-#: apps/activities/monitor.py:134
+#: apps/activities/monitor.py:136
 #, python-format
 msgid "%(n)s queda apuntado/a. O concello validará a inscrición."
 msgstr "%(n)s queda apuntado/a. El ayuntamiento validará la inscripción."
 
-#: apps/activities/monitor.py:159
+#: apps/activities/monitor.py:160
 #, python-format
 msgid "Sesión pechada. Carga media: %(l)s (sRPE × minutos)."
 msgstr "Sesión cerrada. Carga media: %(l)s (sRPE × minutos)."
 
-#: apps/activities/monitor.py:208
+#: apps/activities/monitor.py:162
+#, python-format
+msgid "Esforzo gardado. Carga media: %(l)s (sRPE × minutos)."
+msgstr "Esfuerzo guardado. Carga media: %(l)s (sRPE × minutos)."
+
+#: apps/activities/monitor.py:212
 #, python-format
 msgid "Gardados %(n)s resultados."
 msgstr "Guardados %(n)s resultados."
@@ -848,21 +945,21 @@ msgstr "La edad no corresponde a este grupo."
 msgid "Xa hai unha inscrición para esta persoa neste grupo."
 msgstr "Ya hay una inscripción para esta persona en este grupo."
 
-#: apps/activities/services.py:127
+#: apps/activities/services.py:128
 #, python-format
 msgid "Inscrición confirmada: %(g)s"
 msgstr "Inscripción confirmada: %(g)s"
 
-#: apps/activities/services.py:152
+#: apps/activities/services.py:153
 #, python-format
 msgid "Quedou unha praza libre en %(g)s"
 msgstr "Ha quedado una plaza libre en %(g)s"
 
-#: apps/activities/services.py:153
+#: apps/activities/services.py:154
 msgid "Saíches da lista de espera."
 msgstr "Has salido de la lista de espera."
 
-#: apps/activities/services.py:154
+#: apps/activities/services.py:155
 msgid "Completa o pagamento para confirmala."
 msgstr "Completa el pago para confirmarla."
 
@@ -870,7 +967,12 @@ msgstr "Completa el pago para confirmarla."
 msgid "Escolle unha persoa válida."
 msgstr "Elige una persona válida."
 
-#: apps/activities/views.py:67
+#: apps/activities/views.py:57
+#, python-format
+msgid "Indica os apelidos de %(n)s, como figuran no padrón."
+msgstr "Indica los apellidos de %(n)s, como figuran en el padrón."
+
+#: apps/activities/views.py:88
 msgid ""
 "O grupo está completo: quedas na lista de espera. Avisarémoste se queda unha"
 " praza."
@@ -878,47 +980,47 @@ msgstr ""
 "El grupo está completo: quedas en la lista de espera. Te avisaremos si queda"
 " una plaza."
 
-#: apps/activities/views.py:71
+#: apps/activities/views.py:92
 msgid "Inscrición confirmada."
 msgstr "Inscripción confirmada."
 
-#: apps/activities/views.py:85
+#: apps/activities/views.py:106
 msgid "Pagamento recibido. Inscrición confirmada."
 msgstr "Pago recibido. Inscripción confirmada."
 
-#: apps/activities/views.py:87
+#: apps/activities/views.py:108
 msgid "Agardando a confirmación do banco."
 msgstr "Esperando la confirmación del banco."
 
-#: apps/activities/views.py:89
+#: apps/activities/views.py:110
 msgid "O pagamento non se completou. Non se fixo ningún cargo."
 msgstr "El pago no se ha completado. No se ha hecho ningún cargo."
 
-#: apps/activities/views.py:112
+#: apps/activities/views.py:133
 msgid "Baixa tramitada."
 msgstr "Baja tramitada."
 
-#: apps/activities/views.py:218
+#: apps/activities/views.py:239
 #, python-format
 msgid "%(n)s descartado/a."
 msgstr "%(n)s descartado/a."
 
-#: apps/activities/views.py:224
+#: apps/activities/views.py:245
 msgid "Indica un correo válido da familia ou da persoa."
 msgstr "Indica un correo válido de la familia o de la persona."
 
-#: apps/activities/views.py:229
+#: apps/activities/views.py:250
 msgid ""
 "Para un menor fai falta a autorización da familia (papel ou mostrador)."
 msgstr ""
 "Para un menor hace falta la autorización de la familia (papel o mostrador)."
 
-#: apps/activities/views.py:241
+#: apps/activities/views.py:262
 #, python-format
 msgid "Inscrición en %(g)s"
 msgstr "Inscripción en %(g)s"
 
-#: apps/activities/views.py:243
+#: apps/activities/views.py:264
 #, python-format
 msgid ""
 "%(n)s xa figura inscrito/a en %(g)s. Entra na app co teu correo para ver os "
@@ -927,48 +1029,48 @@ msgstr ""
 "%(n)s ya figura inscrito/a en %(g)s. Entra en la app con tu correo para ver "
 "los horarios y revisar los consentimientos."
 
-#: apps/activities/views.py:250
+#: apps/activities/views.py:271
 #, python-format
 msgid "%(n)s inscrito/a (%(s)s)."
 msgstr "%(n)s inscrito/a (%(s)s)."
 
-#: apps/activities/views.py:280
+#: apps/activities/views.py:301
 msgid "Apelidos gardados."
 msgstr "Apellidos guardados."
 
-#: apps/analytics/indicators.py:198
+#: apps/analytics/indicators.py:220
 msgid "semana"
 msgstr "semana"
 
-#: apps/analytics/views.py:96
+#: apps/analytics/views.py:100
 msgid "O asistente non está dispoñible agora."
 msgstr "El asistente no está disponible ahora."
 
-#: apps/analytics/views.py:112 templates/maintenance/_calendar_grid.html:4
+#: apps/analytics/views.py:116 templates/maintenance/_calendar_grid.html:4
 msgid "Lu"
 msgstr "Lu"
 
-#: apps/analytics/views.py:112 templates/maintenance/_calendar_grid.html:4
+#: apps/analytics/views.py:116 templates/maintenance/_calendar_grid.html:4
 msgid "Ma"
 msgstr "Ma"
 
-#: apps/analytics/views.py:112 templates/maintenance/_calendar_grid.html:4
+#: apps/analytics/views.py:116 templates/maintenance/_calendar_grid.html:4
 msgid "Mé"
 msgstr "Mi"
 
-#: apps/analytics/views.py:112 templates/maintenance/_calendar_grid.html:4
+#: apps/analytics/views.py:116 templates/maintenance/_calendar_grid.html:4
 msgid "Xo"
 msgstr "Ju"
 
-#: apps/analytics/views.py:112 templates/maintenance/_calendar_grid.html:4
+#: apps/analytics/views.py:116 templates/maintenance/_calendar_grid.html:4
 msgid "Ve"
 msgstr "Vi"
 
-#: apps/analytics/views.py:112 templates/maintenance/_calendar_grid.html:4
+#: apps/analytics/views.py:116 templates/maintenance/_calendar_grid.html:4
 msgid "Sá"
 msgstr "Sá"
 
-#: apps/analytics/views.py:112 templates/maintenance/_calendar_grid.html:4
+#: apps/analytics/views.py:116 templates/maintenance/_calendar_grid.html:4
 msgid "Do"
 msgstr "Do"
 
@@ -983,11 +1085,6 @@ msgstr "Reservada"
 #: apps/bookings/calendar.py:25 templates/includes/booking_status.html:1
 msgid "Pendente de pago"
 msgstr "Pendiente de pago"
-
-#: apps/bookings/calendar.py:26 apps/bookings/services.py:84
-#: apps/maintenance/models.py:70 templates/monitor/today.html:10
-msgid "Pechada"
-msgstr "Cerrada"
 
 #: apps/bookings/calendar.py:27
 msgid "Actividade municipal"
@@ -1121,7 +1218,7 @@ msgstr "fin"
 msgid "estado"
 msgstr "estado"
 
-#: apps/bookings/models.py:68
+#: apps/bookings/models.py:68 templates/dev/telegram.html:14
 msgid "canle"
 msgstr "canal"
 
@@ -1755,8 +1852,8 @@ msgstr "Cepillado del césped"
 msgid "Plan preventivo básico"
 msgstr "Plan preventivo básico"
 
-#: apps/facilities/manage.py:65 apps/tenants/region.py:348
-#: templates/includes/shell_desk.html:21
+#: apps/facilities/manage.py:65 apps/tenants/region.py:353
+#: templates/includes/shell_desk.html:22
 #: templates/manage/_facility_tabs.html:4
 #: templates/manage/_wizard_steps.html:3 templates/manage/booking.html:10
 msgid "Datos"
@@ -1825,7 +1922,7 @@ msgstr "Vacío = todas las instalaciones del ayuntamiento (p. ej. festivo)."
 msgid "Todas as instalacións"
 msgstr "Todas las instalaciones"
 
-#: apps/facilities/manage.py:384
+#: apps/facilities/manage.py:384 apps/notifications/manage.py:116
 msgid "O fin debe ser posterior ao inicio."
 msgstr "El fin debe ser posterior al inicio."
 
@@ -1843,6 +1940,7 @@ msgid "Peche eliminado."
 msgstr "Cierre eliminado."
 
 #: apps/facilities/models.py:17 apps/facilities/models.py:51
+#: apps/notifications/models.py:114
 msgid "parroquia"
 msgstr "parroquia"
 
@@ -1875,7 +1973,7 @@ msgstr "Cerradura conectada"
 msgid "tipo"
 msgstr "tipo"
 
-#: apps/facilities/models.py:54 apps/tenants/models.py:78
+#: apps/facilities/models.py:54 apps/tenants/models.py:84
 msgid "enderezo"
 msgstr "dirección"
 
@@ -1979,6 +2077,7 @@ msgstr "publicada"
 
 #: apps/facilities/models.py:95 apps/facilities/models.py:171
 #: apps/incidents/models.py:33 apps/maintenance/models.py:74
+#: apps/notifications/models.py:100
 msgid "instalación"
 msgstr "instalación"
 
@@ -2062,15 +2161,15 @@ msgstr "Alerta meteorológica"
 msgid "Outro"
 msgstr "Otro"
 
-#: apps/facilities/models.py:177 apps/tenants/models.py:226
+#: apps/facilities/models.py:177 apps/tenants/models.py:232
 msgid "motivo"
 msgstr "motivo"
 
-#: apps/facilities/models.py:179
+#: apps/facilities/models.py:179 apps/notifications/models.py:119
 msgid "desde"
 msgstr "desde"
 
-#: apps/facilities/models.py:180
+#: apps/facilities/models.py:180 apps/notifications/models.py:120
 msgid "ata"
 msgstr "hasta"
 
@@ -2190,7 +2289,7 @@ msgstr "Canasta de baloncesto descubierta con el balón en el aire"
 msgid "Pista polideportiva cuberta con chan verde e vermello"
 msgstr "Pista polideportiva cubierta con suelo verde y rojo"
 
-#: apps/facilities/views.py:18
+#: apps/facilities/views.py:18 templates/facilities/home.html:19
 msgid "Buscar"
 msgstr "Buscar"
 
@@ -2212,12 +2311,13 @@ msgid "Con iluminación"
 msgstr "Con iluminación"
 
 #: apps/facilities/views.py:23 templates/facilities/detail.html:38
-#: templates/facilities/home.html:54
+#: templates/facilities/home.html:64
 msgid "Cuberta"
 msgstr "Cubierta"
 
 #: apps/facilities/views.py:27 templates/manage/incidents.html:5
 #: templates/manage/payments.html:9 templates/manage/payments.html:10
+#: templates/notifications/list.html:12
 msgid "Todos"
 msgstr "Todos"
 
@@ -2654,7 +2754,7 @@ msgstr "tareas periódicas"
 msgid "En curso"
 msgstr "En curso"
 
-#: apps/maintenance/models.py:88
+#: apps/maintenance/models.py:88 apps/notifications/models.py:92
 msgid "título"
 msgstr "título"
 
@@ -2712,6 +2812,91 @@ msgstr "Generadas %(n)s órdenes nuevas."
 msgid "Tarefa engadida."
 msgstr "Tarea añadida."
 
+#: apps/notifications/manage.py:22
+msgid "App e push"
+msgstr "App y push"
+
+#: apps/notifications/manage.py:23 apps/tenants/manage.py:114
+#: apps/tenants/templatetags/eira.py:141
+#: templates/manage/_notice_preview.html:6
+#: templates/notifications/preferences.html:24
+msgid "Correo"
+msgstr "Correo"
+
+#: apps/notifications/manage.py:24
+msgid "Telegram (bot persoal)"
+msgstr "Telegram (bot personal)"
+
+#: apps/notifications/manage.py:25
+msgid "Canle pública de Telegram"
+msgstr "Canal público de Telegram"
+
+#: apps/notifications/manage.py:33
+msgid "Canles"
+msgstr "Canales"
+
+#: apps/notifications/manage.py:64
+msgid ""
+"As reservas contan na franxa «desde–ata» (por defecto, os próximos 30 días)."
+msgstr ""
+"Cuentan las reservas en la franja «desde–hasta» (por defecto, los próximos "
+"30 días)."
+
+#: apps/notifications/manage.py:67
+msgid "Peche ou alerta: cancela con devolución íntegra as reservas da franxa."
+msgstr ""
+"Cierre o alerta: cancela con devolución íntegra las reservas de la franja."
+
+#: apps/notifications/manage.py:69
+msgid "Baleiro = enviar agora."
+msgstr "Vacío = enviar ahora."
+
+#: apps/notifications/manage.py:71
+msgid ""
+"Peches e alertas chegan a quen lle afectan. O resto só a quen deu o "
+"consentimento para comunicacións."
+msgstr ""
+"Cierres y alertas llegan a quien le afectan. El resto, solo a quien dio su "
+"consentimiento para comunicaciones."
+
+#: apps/notifications/manage.py:94
+msgid "Escolle a quen vai dirixido."
+msgstr "Elige a quién va dirigido."
+
+#: apps/notifications/manage.py:104
+msgid ""
+"Só se poden cancelar reservas dunha instalación, das descubertas ou dunha "
+"parroquia."
+msgstr ""
+"Solo se pueden cancelar reservas de una instalación, de las descubiertas o "
+"de una parroquia."
+
+#: apps/notifications/manage.py:109
+msgid "Para cancelar reservas indica a franxa (desde e ata)."
+msgstr "Para cancelar reservas indica la franja (desde y hasta)."
+
+#: apps/notifications/manage.py:118
+msgid "A data de envío xa pasou."
+msgstr "La fecha de envío ya pasó."
+
+#: apps/notifications/manage.py:153
+#, python-format
+msgid "Aviso programado para o %(d)s."
+msgstr "Aviso programado para el %(d)s."
+
+#: apps/notifications/manage.py:161
+#, python-format
+msgid "Aviso enviado a %(n)s persoas. Reservas canceladas: %(c)s."
+msgstr "Aviso enviado a %(n)s personas. Reservas canceladas: %(c)s."
+
+#: apps/notifications/manage.py:187
+msgid "Aviso enviado."
+msgstr "Aviso enviado."
+
+#: apps/notifications/manage.py:190
+msgid "Aviso programado eliminado."
+msgstr "Aviso programado eliminado."
+
 #: apps/notifications/models.py:11
 msgid "Información"
 msgstr "Información"
@@ -2721,17 +2906,138 @@ msgid "Confirmación"
 msgstr "Confirmación"
 
 #: apps/notifications/models.py:13 templates/incidents/detail.html:2
-#: templates/incidents/detail.html:5
+#: templates/incidents/detail.html:5 templates/manage/notices.html:10
 msgid "Aviso"
 msgstr "Aviso"
 
-#: apps/notifications/models.py:29
+#: apps/notifications/models.py:34
 msgid "aviso"
 msgstr "aviso"
 
-#: apps/notifications/models.py:30
+#: apps/notifications/models.py:35
 msgid "avisos"
 msgstr "avisos"
+
+#: apps/notifications/models.py:49 templates/includes/shell_desk.html:18
+#: templates/manage/closures.html:9
+msgid "Peches"
+msgstr "Cierres"
+
+#: apps/notifications/models.py:50
+msgid "Alertas"
+msgstr "Alertas"
+
+#: apps/notifications/models.py:51
+msgid "Horarios"
+msgstr "Horarios"
+
+#: apps/notifications/models.py:52
+msgid "Actividades e inscricións"
+msgstr "Actividades e inscripciones"
+
+#: apps/notifications/models.py:53
+msgid "Festas e eventos"
+msgstr "Fiestas y eventos"
+
+#: apps/notifications/models.py:54
+msgid "Novidades"
+msgstr "Novedades"
+
+#: apps/notifications/models.py:84
+msgid "Toda a veciñanza"
+msgstr "Todo el vecindario"
+
+#: apps/notifications/models.py:85
+msgid "Quen ten reserva nunha instalación"
+msgstr "Quien tiene reserva en una instalación"
+
+#: apps/notifications/models.py:86
+msgid "Quen ten reserva nas instalacións descubertas"
+msgstr "Quien tiene reserva en las instalaciones descubiertas"
+
+#: apps/notifications/models.py:87
+msgid "Persoas inscritas nunha actividade"
+msgstr "Personas inscritas en una actividad"
+
+#: apps/notifications/models.py:88
+msgid "Quen reserva nunha parroquia"
+msgstr "Quien reserva en una parroquia"
+
+#: apps/notifications/models.py:91
+msgid "categoría"
+msgstr "categoría"
+
+#: apps/notifications/models.py:93
+msgid "texto"
+msgstr "texto"
+
+#: apps/notifications/models.py:94
+msgid "ligazón (opcional)"
+msgstr "enlace (opcional)"
+
+#: apps/notifications/models.py:96
+msgid "destinatarios"
+msgstr "destinatarios"
+
+#: apps/notifications/models.py:121
+msgid "cancelar as reservas afectadas"
+msgstr "cancelar las reservas afectadas"
+
+#: apps/notifications/models.py:122
+msgid "canles"
+msgstr "canales"
+
+#: apps/notifications/models.py:123
+msgid "enviar o"
+msgstr "enviar el"
+
+#: apps/notifications/models.py:135
+msgid "aviso do concello"
+msgstr "aviso del ayuntamiento"
+
+#: apps/notifications/models.py:136
+msgid "avisos do concello"
+msgstr "avisos del ayuntamiento"
+
+#: apps/notifications/notices.py:134
+#, python-format
+msgid ""
+"Recibes este aviso de %(m)s. Podes cambiar as túas preferencias na app."
+msgstr ""
+"Recibes este aviso de %(m)s. Puedes cambiar tus preferencias en la app."
+
+#: apps/notifications/notices.py:283
+msgid ""
+"Listo! Este chat queda vinculado á túa conta de Eira. Escribe /stop para "
+"desvincular."
+msgstr ""
+"¡Listo! Este chat queda vinculado a tu cuenta de Eira. Escribe /stop para "
+"desvincular."
+
+#: apps/notifications/notices.py:286
+msgid ""
+"Ese código non vale ou xa caducou. Xera outro en Avisos › Preferencias."
+msgstr "Ese código no vale o ya caducó. Genera otro en Avisos › Preferencias."
+
+#: apps/notifications/notices.py:292
+msgid "Desvinculado. Non recibirás máis avisos por aquí."
+msgstr "Desvinculado. No recibirás más avisos por aquí."
+
+#: apps/notifications/notices.py:295
+msgid ""
+"Son o bot de avisos de Eira. Para vincular a túa conta, abre a ligazón que "
+"che dá a app."
+msgstr ""
+"Soy el bot de avisos de Eira. Para vincular tu cuenta, abre el enlace que te"
+" da la app."
+
+#: apps/notifications/views.py:89
+msgid "Preferencias gardadas."
+msgstr "Preferencias guardadas."
+
+#: apps/notifications/views.py:127
+msgid "Telegram desvinculado."
+msgstr "Telegram desvinculado."
 
 #: apps/tenants/manage.py:32
 msgid "Acceso por niveis"
@@ -2782,10 +3088,6 @@ msgstr "Datos abiertos"
 #: apps/tenants/manage.py:96
 msgid "Configuración gardada."
 msgstr "Configuración guardada."
-
-#: apps/tenants/manage.py:114
-msgid "Correo"
-msgstr "Correo"
 
 #: apps/tenants/manage.py:115
 msgid "Rol"
@@ -2916,27 +3218,35 @@ msgid "correo de contacto"
 msgstr "correo de contacto"
 
 #: apps/tenants/models.py:79
+msgid "canle pública de Telegram"
+msgstr "canal público de Telegram"
+
+#: apps/tenants/models.py:82
+msgid "Nome da canle, p. ex. @deportesvilardeiras. Opcional."
+msgstr "Nombre del canal, p. ej. @deportesvilardeiras. Opcional."
+
+#: apps/tenants/models.py:85
 msgid "poboación"
 msgstr "población"
 
-#: apps/tenants/models.py:81
+#: apps/tenants/models.py:87
 msgid "códigos postais do termo"
 msgstr "códigos postales del término"
 
-#: apps/tenants/models.py:84 apps/tenants/region.py:246
+#: apps/tenants/models.py:90 apps/tenants/region.py:251
 msgid "Separados por comas. Úsanse para contrastar as solicitudes co padrón."
 msgstr ""
 "Separados por comas. Se usan para contrastar las solicitudes con el padrón."
 
-#: apps/tenants/models.py:86
+#: apps/tenants/models.py:92
 msgid "texto de privacidade"
 msgstr "texto de privacidad"
 
-#: apps/tenants/models.py:88
+#: apps/tenants/models.py:94
 msgid "contacto da persoa delegada de protección de datos"
 msgstr "contacto de la persona delegada de protección de datos"
 
-#: apps/tenants/models.py:92
+#: apps/tenants/models.py:98
 msgid ""
 "Correo ou enderezo do DPD do concello (ou da deputación que presta o "
 "servizo)."
@@ -2944,23 +3254,23 @@ msgstr ""
 "Correo o dirección del DPD del ayuntamiento (o de la diputación que presta "
 "el servicio)."
 
-#: apps/tenants/models.py:95
+#: apps/tenants/models.py:101
 msgid "declaración de accesibilidade"
 msgstr "declaración de accesibilidad"
 
-#: apps/tenants/models.py:96
+#: apps/tenants/models.py:102
 msgid "aviso legal"
 msgstr "aviso legal"
 
-#: apps/tenants/models.py:97
+#: apps/tenants/models.py:103
 msgid "módulos activos"
 msgstr "módulos activos"
 
-#: apps/tenants/models.py:99
+#: apps/tenants/models.py:105
 msgid "servidor de teselas do mapa"
 msgstr "servidor de teselas del mapa"
 
-#: apps/tenants/models.py:103
+#: apps/tenants/models.py:109
 msgid ""
 "Baleiro = o da instalación (EIRA_TILE_URL). P. ex. o servidor propio da "
 "deputación."
@@ -2968,59 +3278,59 @@ msgstr ""
 "Vacío = el de la instalación (EIRA_TILE_URL). P. ej. el servidor propio de "
 "la diputación."
 
-#: apps/tenants/models.py:106
+#: apps/tenants/models.py:112
 msgid "atribución do mapa"
 msgstr "atribución del mapa"
 
-#: apps/tenants/models.py:107
+#: apps/tenants/models.py:113
 msgid "ligazón da atribución"
 msgstr "enlace de la atribución"
 
-#: apps/tenants/models.py:111
+#: apps/tenants/models.py:117
 msgid "horas mínimas para cancelar sen penalización"
 msgstr "horas mínimas para cancelar sin penalización"
 
-#: apps/tenants/models.py:114
+#: apps/tenants/models.py:120
 msgid "penalización por cancelación tardía (%)"
 msgstr "penalización por cancelación tardía (%)"
 
-#: apps/tenants/models.py:116
+#: apps/tenants/models.py:122
 msgid "días máximos de antelación"
 msgstr "días máximos de antelación"
 
-#: apps/tenants/models.py:118
+#: apps/tenants/models.py:124
 msgid "reservas activas máximas por persoa"
 msgstr "reservas activas máximas por persona"
 
-#: apps/tenants/models.py:121
+#: apps/tenants/models.py:127
 msgid "desconto nas franxas de baixa demanda (%)"
 msgstr "descuento en las franjas de baja demanda (%)"
 
-#: apps/tenants/models.py:123
+#: apps/tenants/models.py:129
 msgid "Aplícase ás franxas recomendadas (★). 0 = sen desconto."
 msgstr "Se aplica a las franjas recomendadas (★). 0 = sin descuento."
 
-#: apps/tenants/models.py:126
+#: apps/tenants/models.py:132
 msgid "minutos de cortesía para non presentado"
 msgstr "minutos de cortesía para no presentado"
 
-#: apps/tenants/models.py:128 templates/manage/staff.html:39
+#: apps/tenants/models.py:134 templates/manage/staff.html:39
 msgid "activo"
 msgstr "activo"
 
-#: apps/tenants/models.py:132 apps/tenants/models.py:161
+#: apps/tenants/models.py:138 apps/tenants/models.py:167
 msgid "concello"
 msgstr "ayuntamiento"
 
-#: apps/tenants/models.py:133
+#: apps/tenants/models.py:139
 msgid "concellos"
 msgstr "ayuntamientos"
 
-#: apps/tenants/models.py:236
+#: apps/tenants/models.py:242
 msgid "acceso de soporte da deputación"
 msgstr "acceso de soporte de la diputación"
 
-#: apps/tenants/models.py:237
+#: apps/tenants/models.py:243
 msgid "accesos de soporte da deputación"
 msgstr "accesos de soporte de la diputación"
 
@@ -3032,7 +3342,7 @@ msgstr "Archivo ZIP de Eira"
 msgid "Identificador do novo concello"
 msgstr "Identificador del nuevo ayuntamiento"
 
-#: apps/tenants/portability.py:346 apps/tenants/region.py:253
+#: apps/tenants/portability.py:346 apps/tenants/region.py:258
 msgid "Xa existe un concello con ese identificador."
 msgstr "Ya existe un ayuntamiento con ese identificador."
 
@@ -3045,12 +3355,12 @@ msgstr "No se pudo importar: %(e)s"
 msgid "Concello importado."
 msgstr "Ayuntamiento importado."
 
-#: apps/tenants/region.py:196 templates/region/new_municipality.html:26
+#: apps/tenants/region.py:201 templates/region/new_municipality.html:26
 #, python-format
 msgid "Invitación para xestionar as instalacións deportivas de %(m)s"
 msgstr "Invitación para gestionar las instalaciones deportivas de %(m)s"
 
-#: apps/tenants/region.py:198
+#: apps/tenants/region.py:203
 #, python-format
 msgid ""
 "Ola%(n)s:\n"
@@ -3075,164 +3385,159 @@ msgstr ""
 "\n"
 "Si tienes dudas, responde a este correo."
 
-#: apps/tenants/region.py:223
+#: apps/tenants/region.py:228
 msgid "Este concello aínda non ten persoa responsable."
 msgstr "Este ayuntamiento aún no tiene persona responsable."
 
-#: apps/tenants/region.py:226
+#: apps/tenants/region.py:231
 #, python-format
 msgid "Invitación reenviada a %(e)s."
 msgstr "Invitación reenviada a %(e)s."
 
-#: apps/tenants/region.py:234
+#: apps/tenants/region.py:239
 msgid "Nome do concello"
 msgstr "Nombre del ayuntamiento"
 
-#: apps/tenants/region.py:236
+#: apps/tenants/region.py:241
 msgid "Identificador na URL"
 msgstr "Identificador en la URL"
 
-#: apps/tenants/region.py:237
+#: apps/tenants/region.py:242
 msgid "Só minúsculas, números e guións. Quedará en /c/identificador/."
 msgstr "Solo minúsculas, números y guiones. Quedará en /c/identificador/."
 
-#: apps/tenants/region.py:239
+#: apps/tenants/region.py:244
 msgid "Código INE"
 msgstr "Código INE"
 
-#: apps/tenants/region.py:240
+#: apps/tenants/region.py:245
 msgid "Poboación"
 msgstr "Población"
 
-#: apps/tenants/region.py:242
+#: apps/tenants/region.py:247
 msgid "Códigos postais do termo"
 msgstr "Códigos postales del término"
 
-#: apps/tenants/region.py:258
+#: apps/tenants/region.py:263
 msgid "Nome da persoa responsable"
 msgstr "Nombre de la persona responsable"
 
-#: apps/tenants/region.py:259
+#: apps/tenants/region.py:264
 msgid "Correo da persoa responsable"
 msgstr "Correo de la persona responsable"
 
-#: apps/tenants/region.py:261
+#: apps/tenants/region.py:266
 msgid "Teléfono de contacto do servizo"
 msgstr "Teléfono de contacto del servicio"
 
-#: apps/tenants/region.py:264
+#: apps/tenants/region.py:269
 msgid "Correo público do servizo de deportes"
 msgstr "Correo público del servicio de deportes"
 
-#: apps/tenants/region.py:266
+#: apps/tenants/region.py:271
 msgid "Aparece no pé das páxinas. Pode ser distinto do persoal."
 msgstr "Aparece en el pie de las páginas. Puede ser distinto del personal."
 
-#: apps/tenants/region.py:272 templates/manage/settings.html:11
+#: apps/tenants/region.py:277 templates/manage/settings.html:11
 msgid "Módulos activos"
 msgstr "Módulos activos"
 
-#: apps/tenants/region.py:278
+#: apps/tenants/region.py:283
 msgid "Horas para cancelar sen penalización"
 msgstr "Horas para cancelar sin penalización"
 
-#: apps/tenants/region.py:281
+#: apps/tenants/region.py:286
 msgid "Días máximos de antelación"
 msgstr "Días máximos de antelación"
 
-#: apps/tenants/region.py:294
+#: apps/tenants/region.py:299
 msgid "Cor de acento"
 msgstr "Color de acento"
 
-#: apps/tenants/region.py:297
+#: apps/tenants/region.py:302
 msgid "Compróbase o contraste co texto branco (WCAG AA)."
 msgstr "Se comprueba el contraste con el texto blanco (WCAG AA)."
 
-#: apps/tenants/region.py:300
+#: apps/tenants/region.py:305
 msgid "Escudo ou logotipo (opcional)"
 msgstr "Escudo o logotipo (opcional)"
 
-#: apps/tenants/region.py:311
+#: apps/tenants/region.py:316
 msgid ""
 "Esta cor ten pouco contraste co texto branco. Escolle unha máis escura."
 msgstr ""
 "Este color tiene poco contraste con el texto blanco. Elige uno más oscuro."
 
-#: apps/tenants/region.py:322
+#: apps/tenants/region.py:327
 msgid "Tipo da primeira instalación"
 msgstr "Tipo de la primera instalación"
 
-#: apps/tenants/region.py:323
+#: apps/tenants/region.py:328
 msgid "Ningunha polo momento"
 msgstr "Ninguna por el momento"
 
-#: apps/tenants/region.py:327 templates/manage/facilities.html:7
-#: templates/monitor/attendance.html:36 templates/monitor/kiosk.html:32
-msgid "Nome"
-msgstr "Nombre"
-
-#: apps/tenants/region.py:329
+#: apps/tenants/region.py:334
 msgid "Parroquia ou lugar"
 msgstr "Parroquia o lugar"
 
-#: apps/tenants/region.py:335
+#: apps/tenants/region.py:340
 msgid "Ponlle nome á instalación."
 msgstr "Ponle nombre a la instalación."
 
-#: apps/tenants/region.py:341
+#: apps/tenants/region.py:346
 msgid "Enviar agora a invitación á persoa responsable"
 msgstr "Enviar ahora la invitación a la persona responsable"
 
-#: apps/tenants/region.py:349 templates/app/request.html:15
+#: apps/tenants/region.py:354 templates/app/request.html:15
 #: templates/region/new_municipality.html:19
 msgid "Responsable"
 msgstr "Responsable"
 
-#: apps/tenants/region.py:350 templates/region/new_municipality.html:20
+#: apps/tenants/region.py:355 templates/region/new_municipality.html:20
 msgid "Módulos"
 msgstr "Módulos"
 
-#: apps/tenants/region.py:351 templates/region/new_municipality.html:21
+#: apps/tenants/region.py:356 templates/region/new_municipality.html:21
 msgid "Imaxe"
 msgstr "Imagen"
 
-#: apps/tenants/region.py:352 templates/region/new_municipality.html:22
+#: apps/tenants/region.py:357 templates/region/new_municipality.html:22
 msgid "Primeira instalación"
 msgstr "Primera instalación"
 
-#: apps/tenants/region.py:353
+#: apps/tenants/region.py:358
 msgid "Invitación"
 msgstr "Invitación"
 
-#: apps/tenants/region.py:398 templates/includes/shell_desk.html:25
+#: apps/tenants/region.py:403 templates/includes/shell_desk.html:26
 #: templates/region/dashboard.html:23
 #: templates/region/new_municipality.html:18
 msgid "Concello"
 msgstr "Ayuntamiento"
 
-#: apps/tenants/region.py:439
+#: apps/tenants/region.py:444
 #, python-format
 msgid "Concello %(n)s creado."
 msgstr "Ayuntamiento %(n)s creado."
 
-#: apps/tenants/region.py:441
+#: apps/tenants/region.py:446
 msgid "Enviouse a invitación á persoa responsable."
 msgstr "Se ha enviado la invitación a la persona responsable."
 
-#: apps/tenants/region.py:482
+#: apps/tenants/region.py:487
 msgid "Sen motivo indicado"
 msgstr "Sin motivo indicado"
 
-#: apps/tenants/region.py:486
+#: apps/tenants/region.py:491
 msgid "A deputación solicita acceso de soporte"
 msgstr "La diputación solicita acceso de soporte"
 
-#: apps/tenants/region.py:487
+#: apps/tenants/region.py:492
 #, python-format
 msgid "%(r)s pide acceso de soporte durante 24 horas. Motivo: %(m)s"
 msgstr "%(r)s pide acceso de soporte durante 24 horas. Motivo: %(m)s"
 
-#: apps/tenants/region.py:494
+#: apps/tenants/region.py:499
 #, python-format
 msgid "Solicitude enviada a %(m)s. Avisarémoste cando a autorice."
 msgstr "Solicitud enviada a %(m)s. Te avisaremos cuando la autorice."
@@ -3724,19 +4029,35 @@ msgstr "Yo"
 msgid "sen consentimento"
 msgstr "sin consentimiento"
 
-#: templates/activities/enroll.html:16
+#: templates/activities/enroll.html:17
+msgid "Apelidos de quen se inscribe"
+msgstr "Apellidos de quien se inscribe"
+
+#: templates/activities/enroll.html:19
+msgid ""
+"Obrigatorio se inscribes a un/unha menor (como no padrón). A monitora só "
+"verá o primeiro apelido."
+msgstr ""
+"Obligatorio si inscribes a un/una menor (como en el padrón). La monitora "
+"solo verá el primer apellido."
+
+#: templates/activities/enroll.html:20
+msgid "Obrigatorio para inscribir un/unha menor."
+msgstr "Obligatorio para inscribir a un/una menor."
+
+#: templates/activities/enroll.html:22
 msgid "Engadir menores ou xestionar os consentimentos"
 msgstr "Añadir menores o gestionar los consentimientos"
 
-#: templates/activities/enroll.html:17
+#: templates/activities/enroll.html:23
 msgid "Inscribirse e pagar"
 msgstr "Inscribirse y pagar"
 
-#: templates/activities/enroll.html:17 templates/activities/list.html:21
+#: templates/activities/enroll.html:23 templates/activities/list.html:21
 msgid "Inscribirse"
 msgstr "Inscribirse"
 
-#: templates/activities/enroll.html:17
+#: templates/activities/enroll.html:23
 msgid "Apuntarse á lista de espera"
 msgstr "Apuntarse a la lista de espera"
 
@@ -3749,7 +4070,7 @@ msgstr "Inscribe a personas adultas o a los menores de tu unidad familiar."
 msgid "As miñas inscricións"
 msgstr "Mis inscripciones"
 
-#: templates/activities/list.html:6 templates/includes/shell_desk.html:24
+#: templates/activities/list.html:6 templates/includes/shell_desk.html:25
 msgid "Observatorio"
 msgstr "Observatorio"
 
@@ -3810,10 +4131,11 @@ msgstr "Participantes y consentimientos"
 msgid "Participante"
 msgstr "Participante"
 
-#: templates/activities/manage_group.html:15 templates/bookings/mine.html:28
+#: templates/activities/manage_group.html:15 templates/bookings/mine.html:40
 #: templates/manage/agenda.html:9 templates/manage/booking.html:21
 #: templates/manage/dashboard.html:18 templates/manage/facilities.html:7
 #: templates/manage/incidents.html:5 templates/manage/incidents.html:8
+#: templates/manage/notice_detail.html:15 templates/manage/notices.html:10
 #: templates/manage/payments.html:9 templates/manage/payments.html:22
 #: templates/manage/work_orders.html:6 templates/manage/work_orders.html:9
 msgid "Estado"
@@ -4008,7 +4330,7 @@ msgstr "Personas en los datos"
 msgid "só grupos visibles"
 msgstr "solo grupos visibles"
 
-#: templates/activities/observatory.html:22
+#: templates/activities/observatory.html:22 templates/monitor/stats.html:13
 msgid "Asistencia media"
 msgstr "Asistencia media"
 
@@ -4077,6 +4399,8 @@ msgstr "Asistencia"
 
 #: templates/activities/observatory.html:41
 #: templates/activities/observatory.html:72
+#: templates/manage/notice_detail.html:16 templates/manage/notices.html:10
+#: templates/manage/padron.html:23 templates/monitor/stats.html:50
 msgid "Persoas"
 msgstr "Personas"
 
@@ -4146,7 +4470,7 @@ msgstr ""
 " min/día para menores (configurable)."
 
 #: templates/analytics/dashboard.html:2 templates/analytics/dashboard.html:4
-#: templates/includes/shell_desk.html:22
+#: templates/includes/shell_desk.html:23
 msgid "Indicadores"
 msgstr "Indicadores"
 
@@ -4228,7 +4552,7 @@ msgid "Ocupación por instalación (%)"
 msgstr "Ocupación por instalación (%)"
 
 #: templates/analytics/dashboard.html:22 templates/analytics/dashboard.html:30
-#: templates/bookings/confirm.html:10 templates/bookings/mine.html:28
+#: templates/bookings/confirm.html:10 templates/bookings/mine.html:40
 #: templates/bookings/receipt.html:10 templates/manage/_facility_tabs.html:1
 #: templates/manage/agenda.html:9 templates/manage/closures.html:10
 #: templates/manage/dashboard.html:18 templates/manage/incidents.html:8
@@ -4315,7 +4639,7 @@ msgstr "Ingresos netos por semana (euros)"
 msgid "Ingresos"
 msgstr "Ingresos"
 
-#: templates/analytics/dashboard.html:60
+#: templates/analytics/dashboard.html:60 templates/monitor/stats.html:50
 msgid "Semana do"
 msgstr "Semana del"
 
@@ -4381,10 +4705,6 @@ msgstr "Confirma que %(f)s ha quedado cerrada y en orden."
 msgid "A túa próxima reserva"
 msgstr "Tu próxima reserva"
 
-#: templates/app/home.html:21 templates/bookings/_access.html:24
-msgid "Código de acceso"
-msgstr "Código de acceso"
-
 #: templates/app/home.html:22
 #, python-format
 msgid "Válido de %(a)s a %(b)s"
@@ -4428,7 +4748,7 @@ msgstr "Atajos"
 msgid "Reservar"
 msgstr "Reservar"
 
-#: templates/app/home.html:44 templates/includes/shell_desk.html:20
+#: templates/app/home.html:44 templates/includes/shell_desk.html:21
 msgid "Escolas"
 msgstr "Escuelas"
 
@@ -4466,16 +4786,20 @@ msgid "Despois"
 msgstr "Después"
 
 #: templates/app/home.html:70 templates/includes/shell_app_header.html:5
-#: templates/includes/shell_tabbar.html:5 templates/notifications/list.html:2
+#: templates/includes/shell_desk.html:19
+#: templates/includes/shell_tabbar.html:5
+#: templates/manage/notice_detail.html:4 templates/manage/notice_new.html:4
+#: templates/manage/notices.html:9 templates/notifications/list.html:2
 #: templates/notifications/list.html:4
+#: templates/notifications/preferences.html:4
 msgid "Avisos"
 msgstr "Avisos"
 
-#: templates/app/home.html:70 templates/dev/mailbox.html:12
+#: templates/app/home.html:70 templates/dev/mailbox.html:13
 msgid "Ver todos"
 msgstr "Ver todos"
 
-#: templates/app/home.html:71 templates/notifications/list.html:10
+#: templates/app/home.html:71 templates/notifications/list.html:21
 msgid "Novo"
 msgstr "Nuevo"
 
@@ -4585,33 +4909,54 @@ msgstr "Para qué"
 
 #: templates/app/request.html:16
 msgid ""
-"Comprobar o empadroamento e enviarche a app. O padrón non se copia: só se "
-"garda se figuras ou non."
+"Comprobar o empadroamento e enviarche a app. Contrastamos só o DNI/NIE e a "
+"data de nacemento cun resumo criptográfico (HMAC) do padrón que carga o "
+"concello: nin o padrón nin o teu DNI se gardan en claro, e o nome non se usa"
+" para comprobar."
 msgstr ""
-"Comprobar el empadronamiento y enviarte la app. El padrón no se copia: solo "
-"se guarda si figuras o no."
+"Comprobar el empadronamiento y enviarte la app. Contrastamos solo el DNI/NIE"
+" y la fecha de nacimiento con un resumen criptográfico (HMAC) del padrón que"
+" carga el ayuntamiento: ni el padrón ni tu DNI se guardan en claro, y el "
+"nombre no se usa para comprobar."
 
 #: templates/app/request.html:17
 msgid "Base"
 msgstr "Base"
 
 #: templates/app/request.html:17
-msgid "Misión de interese público (servizo municipal de deportes)."
-msgstr "Misión de interés público (servicio municipal de deportes)."
+msgid ""
+"Misión de interese público (art. 6.1.e RXPD): servizo municipal de deportes "
+"e tarifa de veciñanza da ordenanza."
+msgstr ""
+"Misión de interés público (art. 6.1.e RGPD): servicio municipal de deportes "
+"y tarifa de vecindario de la ordenanza."
 
 #: templates/app/request.html:18
 msgid "Canto tempo"
 msgstr "Cuánto tiempo"
 
 #: templates/app/request.html:18
-msgid "A solicitude bórrase aos 12 meses."
-msgstr "La solicitud se borra a los 12 meses."
+msgid ""
+"O DNI/NIE, a data e o enderezo bórranse en canto se resolve a solicitude (ao"
+" momento se figuras). O resto da solicitude, aos 12 meses."
+msgstr ""
+"El DNI/NIE, la fecha y la dirección se borran en cuanto se resuelve la "
+"solicitud (al momento si figuras). El resto de la solicitud, a los 12 meses."
 
 #: templates/app/request.html:19
+msgid "Se non figuras"
+msgstr "Si no figuras"
+
+#: templates/app/request.html:19
+msgid "Unha persoa do concello revisa a solicitude e respóndeche por correo."
+msgstr ""
+"Una persona del ayuntamiento revisa la solicitud y te responde por correo."
+
+#: templates/app/request.html:20
 msgid "Dereitos"
 msgstr "Derechos"
 
-#: templates/app/request.html:19
+#: templates/app/request.html:20
 msgid ""
 "Acceso, rectificación, supresión e oposición desde a túa conta ou no "
 "concello."
@@ -4619,36 +4964,36 @@ msgstr ""
 "Acceso, rectificación, supresión y oposición desde tu cuenta o en el "
 "ayuntamiento."
 
-#: templates/app/request.html:19
+#: templates/app/request.html:20
 msgid "Máis información"
 msgstr "Más información"
 
-#: templates/app/request.html:22
+#: templates/app/request.html:23
 msgid "Enviarme a app"
 msgstr "Enviarme la app"
 
-#: templates/app/request.html:25 templates/app/request.html:27
+#: templates/app/request.html:26 templates/app/request.html:28
 #: templates/dev/lock_simulator.html:59
 msgid "Como funciona"
 msgstr "Cómo funciona"
 
-#: templates/app/request.html:29
+#: templates/app/request.html:30
 msgid "Recibes un correo coa ligazón e o teu código."
 msgstr "Recibes un correo con el enlace y tu código."
 
-#: templates/app/request.html:30
+#: templates/app/request.html:31
 msgid "Instalas a app no teléfono (Android ou iPhone)."
 msgstr "Instalas la app en el teléfono (Android o iPhone)."
 
-#: templates/app/request.html:31
+#: templates/app/request.html:32
 msgid "Ao abrila, entras co correo e introduces o código."
 msgstr "Al abrirla, entras con el correo e introduces el código."
 
-#: templates/app/request.html:35
+#: templates/app/request.html:36
 msgid "Sen teléfono intelixente?"
 msgstr "¿Sin teléfono inteligente?"
 
-#: templates/app/request.html:36
+#: templates/app/request.html:37
 #, python-format
 msgid ""
 "No mostrador de deportes dámosche de alta e reservamos por ti. Teléfono: "
@@ -4777,14 +5122,15 @@ msgid "Demo · datos ficticios"
 msgstr "Demo · datos ficticios"
 
 #: templates/base.html:26 templates/monitor/fitness.html:6
+#: templates/notifications/list.html:33
 msgid "Cambiar"
 msgstr "Cambiar"
 
-#: templates/base.html:26
+#: templates/base.html:26 templates/dev/base.html:23
 msgid "Escoller perfil"
 msgstr "Elegir perfil"
 
-#: templates/base.html:27 templates/dev/base.html:20
+#: templates/base.html:27 templates/dev/base.html:25
 msgid "Correo simulado"
 msgstr "Correo simulado"
 
@@ -4792,7 +5138,7 @@ msgstr "Correo simulado"
 msgid "abre nunha pestana nova"
 msgstr "se abre en una pestaña nueva"
 
-#: templates/base.html:28 templates/dev/base.html:22
+#: templates/base.html:28 templates/dev/base.html:28
 msgid "Pechadura"
 msgstr "Cerradura"
 
@@ -5084,7 +5430,7 @@ msgstr ""
 "Tres preguntas rápidas y, si quieres, tu valoración. Si algo no está bien, "
 "avisamos al ayuntamiento."
 
-#: templates/bookings/checklist.html:12
+#: templates/bookings/checklist.html:12 templates/dev/telegram.html:30
 msgid "Enviar"
 msgstr "Enviar"
 
@@ -5209,8 +5555,9 @@ msgstr "Añadir a Google Calendar"
 msgid "abre noutra xanela"
 msgstr "se abre en otra ventana"
 
-#: templates/bookings/detail.html:32 templates/bookings/mine.html:28
-#: templates/bookings/receipt.html:2 templates/bookings/receipt.html:5
+#: templates/bookings/detail.html:32 templates/bookings/mine.html:31
+#: templates/bookings/mine.html:40 templates/bookings/receipt.html:2
+#: templates/bookings/receipt.html:5
 msgid "Recibo"
 msgstr "Recibo"
 
@@ -5241,7 +5588,7 @@ msgstr "Checklist enviado el %(t)s."
 msgid "Resumo"
 msgstr "Resumen"
 
-#: templates/bookings/detail.html:47 templates/bookings/mine.html:28
+#: templates/bookings/detail.html:47 templates/bookings/mine.html:40
 #: templates/dev/tpv.html:11 templates/manage/booking.html:14
 #: templates/manage/booking.html:21 templates/manage/payments.html:22
 msgid "Importe"
@@ -5276,7 +5623,7 @@ msgstr "Ref."
 msgid "Non tes reservas próximas."
 msgstr "No tienes reservas próximas."
 
-#: templates/bookings/mine.html:19
+#: templates/bookings/mine.html:19 templates/facilities/home.html:17
 msgid "Buscar instalación"
 msgstr "Buscar instalación"
 
@@ -5284,23 +5631,25 @@ msgstr "Buscar instalación"
 msgid "Historial"
 msgstr "Historial"
 
-#: templates/bookings/mine.html:27
+#: templates/bookings/mine.html:34 templates/bookings/mine.html:45
+msgid "Aínda non hai historial."
+msgstr "Aún no hay historial."
+
+#: templates/bookings/mine.html:39
 msgid "Historial de reservas"
 msgstr "Historial de reservas"
 
-#: templates/bookings/mine.html:28 templates/dev/outbox.html:7
+#: templates/bookings/mine.html:40 templates/dev/outbox.html:7
 #: templates/manage/booking.html:21 templates/manage/incidents.html:8
-#: templates/manage/payments.html:22 templates/manage/work_orders.html:9
+#: templates/manage/padron.html:23 templates/manage/payments.html:22
+#: templates/manage/work_orders.html:9 templates/monitor/stats.html:32
+#: templates/monitor/stats.html:41
 msgid "Data"
 msgstr "Fecha"
 
-#: templates/bookings/mine.html:31
+#: templates/bookings/mine.html:43
 msgid "Ver"
 msgstr "Ver"
-
-#: templates/bookings/mine.html:33
-msgid "Aínda non hai historial."
-msgstr "Aún no hay historial."
 
 #: templates/bookings/modify.html:2
 msgid "Cambiar reserva"
@@ -5834,6 +6183,7 @@ msgid "Reducir o movemento"
 msgstr "Reducir el movimiento"
 
 #: templates/core/preferences.html:16
+#: templates/notifications/preferences.html:30
 msgid "Gardar preferencias"
 msgstr "Guardar preferencias"
 
@@ -5946,17 +6296,17 @@ msgstr ""
 msgid "Ferramenta de demostración"
 msgstr "Herramienta de demostración"
 
-#: templates/dev/base.html:18 templates/dev/base.html:19
-msgid "Ferramentas de demostración"
-msgstr "Herramientas de demostración"
-
-#: templates/dev/base.html:21
-msgid "Outras canles"
-msgstr "Otros canales"
-
-#: templates/dev/base.html:23
+#: templates/dev/base.html:20
 msgid "Volver á demo"
 msgstr "Volver a la demo"
+
+#: templates/dev/base.html:21 templates/dev/base.html:24
+msgid "Ferramentas da demo"
+msgstr "Herramientas de la demo"
+
+#: templates/dev/base.html:27
+msgid "Outras canles"
+msgstr "Otros canales"
 
 #: templates/dev/clave.html:2
 msgid "Cl@ve simulada"
@@ -6143,19 +6493,38 @@ msgstr "En desarrollo ningún correo sale del servidor: aparecen aquí."
 msgid "Destinatario"
 msgstr "Destinatario"
 
-#: templates/dev/mailbox.html:11 templates/facilities/home.html:32
-#: templates/manage/incidents.html:5 templates/manage/payments.html:12
-#: templates/manage/work_orders.html:6
+#: templates/dev/mailbox.html:11 templates/manage/incidents.html:5
+#: templates/manage/payments.html:12 templates/manage/work_orders.html:6
 msgid "Filtrar"
 msgstr "Filtrar"
 
-#: templates/dev/mailbox.html:18
+#: templates/dev/mailbox.html:12
+msgid "Só os meus"
+msgstr "Solo los míos"
+
+#: templates/dev/mailbox.html:16 templates/dev/outbox.html:6
+msgid "Mensaxes"
+msgstr "Mensajes"
+
+#: templates/dev/mailbox.html:25
+msgid "Bandexa baleira."
+msgstr "Bandeja vacía."
+
+#: templates/dev/mailbox.html:30
+msgid "Bandexa"
+msgstr "Bandeja"
+
+#: templates/dev/mailbox.html:32
+msgid "De:"
+msgstr "De:"
+
+#: templates/dev/mailbox.html:32
 msgid "Para:"
 msgstr "Para:"
 
-#: templates/dev/mailbox.html:22
-msgid "Bandexa baleira."
-msgstr "Bandeja vacía."
+#: templates/dev/mailbox.html:32
+msgid "Data:"
+msgstr "Fecha:"
 
 #: templates/dev/outbox.html:2
 msgid "Saída simulada"
@@ -6173,10 +6542,6 @@ msgstr ""
 "Telegram, notificaciones push y órdenes a las cerraduras conectadas: nada "
 "sale del servidor."
 
-#: templates/dev/outbox.html:6
-msgid "Mensaxes"
-msgstr "Mensajes"
-
 #: templates/dev/outbox.html:7
 msgid "Destino"
 msgstr "Destino"
@@ -6188,6 +6553,51 @@ msgstr "Contenido"
 #: templates/dev/outbox.html:8
 msgid "Sen mensaxes."
 msgstr "Sin mensajes."
+
+#: templates/dev/telegram.html:5
+msgid "Telegram simulado"
+msgstr "Telegram simulado"
+
+#: templates/dev/telegram.html:6
+msgid ""
+"Canles públicas dos concellos e chats co bot persoal. Nada sae do servidor: "
+"con EIRA_TELEGRAM_TOKEN no contorno, o mesmo envío iría á Bot API."
+msgstr ""
+"Canales públicos de los ayuntamientos y chats con el bot personal. Nada sale"
+" del servidor: con EIRA_TELEGRAM_TOKEN en el entorno, el mismo envío iría a "
+"la Bot API."
+
+#: templates/dev/telegram.html:9
+msgid "Chats"
+msgstr "Chats"
+
+#: templates/dev/telegram.html:10
+msgid "Novo chat co bot"
+msgstr "Nuevo chat con el bot"
+
+#: templates/dev/telegram.html:16
+msgid "Aínda non hai mensaxes."
+msgstr "Aún no hay mensajes."
+
+#: templates/dev/telegram.html:19
+msgid "Bot de avisos de Eira"
+msgstr "Bot de avisos de Eira"
+
+#: templates/dev/telegram.html:23
+msgid ""
+"Preme «Enviar» para mandarlle o código ao bot, como se abrises a ligazón da "
+"app."
+msgstr ""
+"Pulsa «Enviar» para mandar el código al bot, como si abrieras el enlace de "
+"la app."
+
+#: templates/dev/telegram.html:23
+msgid "Escribe ao bot."
+msgstr "Escribe al bot."
+
+#: templates/dev/telegram.html:28
+msgid "Mensaxe"
+msgstr "Mensaje"
 
 #: templates/dev/tpv.html:2
 msgid "TPV simulado"
@@ -6350,7 +6760,7 @@ msgid "Migas"
 msgstr "Migas"
 
 #: templates/facilities/detail.html:4 templates/facilities/home.html:2
-#: templates/includes/shell_desk.html:17
+#: templates/facilities/home.html:7 templates/includes/shell_desk.html:17
 #: templates/includes/shell_public.html:8
 #: templates/manage/agenda_calendar.html:11 templates/manage/facilities.html:2
 #: templates/manage/facilities.html:4
@@ -6460,14 +6870,6 @@ msgstr "Tarifas"
 msgid "Normas de uso"
 msgstr "Normas de uso"
 
-#: templates/facilities/home.html:6
-msgid "Instalacións deportivas"
-msgstr "Instalaciones deportivas"
-
-#: templates/facilities/home.html:7
-msgid "Consulta sen rexistrarte. Para reservar só necesitas o teu correo."
-msgstr "Consulta sin registrarte. Para reservar solo necesitas tu correo."
-
 #: templates/facilities/home.html:8
 msgid "Modo de vista"
 msgstr "Modo de vista"
@@ -6480,43 +6882,58 @@ msgstr "Lista"
 msgid "Mapa"
 msgstr "Mapa"
 
-#: templates/facilities/home.html:15
-msgid "Solicita a app de deportes"
-msgstr "Solicita la app de deportes"
+#: templates/facilities/home.html:14
+msgid "Buscar instalacións"
+msgstr "Buscar instalaciones"
 
-#: templates/facilities/home.html:15
-msgid ""
-"Reservas, código de acceso e escolas no teu teléfono. Se estás empadroado/a,"
-" coa tarifa de veciñanza."
-msgstr ""
-"Reservas, código de acceso y escuelas en tu teléfono. Si estás "
-"empadronado/a, con la tarifa de vecindario."
+#: templates/facilities/home.html:18
+msgid "Buscar: pádel, piscina…"
+msgstr "Buscar: pádel, piscina…"
 
-#: templates/facilities/home.html:17
-msgid "Filtrar instalacións"
-msgstr "Filtrar instalaciones"
+#: templates/facilities/home.html:22
+msgid "Filtros"
+msgstr "Filtros"
 
-#: templates/facilities/home.html:25 templates/facilities/home.html:50
+#: templates/facilities/home.html:22
+#, python-format
+msgid "%(n)s activo"
+msgid_plural "%(n)s activos"
+msgstr[0] "%(n)s activo"
+msgstr[1] "%(n)s activos"
+
+#: templates/facilities/home.html:29 templates/facilities/home.html:60
 msgid "Características"
 msgstr "Características"
 
-#: templates/facilities/home.html:32
+#: templates/facilities/home.html:36
+msgid "Ver resultados"
+msgstr "Ver resultados"
+
+#: templates/facilities/home.html:36
 msgid "Quitar filtros"
 msgstr "Quitar filtros"
 
-#: templates/facilities/home.html:35 templates/region/dashboard.html:25
+#: templates/facilities/home.html:42 templates/region/dashboard.html:25
 #, python-format
 msgid "%(n)s instalación"
 msgid_plural "%(n)s instalacións"
 msgstr[0] "%(n)s instalación"
 msgstr[1] "%(n)s instalaciones"
 
-#: templates/facilities/home.html:39
+#: templates/facilities/home.html:43
+msgid "Filtros activos"
+msgstr "Filtros activos"
+
+#: templates/facilities/home.html:44
+msgid "quitar filtro"
+msgstr "quitar filtro"
+
+#: templates/facilities/home.html:49
 msgid "Mapa das instalacións (a mesma información está na lista de embaixo)"
 msgstr ""
 "Mapa de las instalaciones (la misma información está en la lista de abajo)"
 
-#: templates/facilities/home.html:40
+#: templates/facilities/home.html:50
 msgid ""
 "Mapa: © OpenStreetMap. A lista seguinte contén a mesma información de forma "
 "accesible."
@@ -6524,22 +6941,34 @@ msgstr ""
 "Mapa: © OpenStreetMap. La lista siguiente contiene la misma información de "
 "forma accesible."
 
-#: templates/facilities/home.html:52
+#: templates/facilities/home.html:62
 msgid "Sen chanzos"
 msgstr "Sin escalones"
 
-#: templates/facilities/home.html:53
+#: templates/facilities/home.html:63
 msgid "Luz"
 msgstr "Luz"
 
-#: templates/facilities/home.html:55
+#: templates/facilities/home.html:65
 #, python-format
 msgid "%(c)s prazas"
 msgstr "%(c)s plazas"
 
-#: templates/facilities/home.html:60
+#: templates/facilities/home.html:70
 msgid "Non hai instalacións con eses filtros."
 msgstr "No hay instalaciones con esos filtros."
+
+#: templates/facilities/home.html:75
+msgid "Solicita a app de deportes"
+msgstr "Solicita la app de deportes"
+
+#: templates/facilities/home.html:75
+msgid ""
+"Reservas, código de acceso e escolas no teu teléfono. Se estás empadroado/a,"
+" coa tarifa de veciñanza."
+msgstr ""
+"Reservas, código de acceso y escuelas en tu teléfono. Si estás "
+"empadronado/a, con la tarifa de vecindario."
 
 #: templates/incidents/_timeline.html:2
 msgid "Estado da incidencia"
@@ -6568,6 +6997,10 @@ msgstr "Mis avisos"
 #: templates/incidents/new.html:16
 msgid "Aínda non enviaches avisos."
 msgstr "Aún no has enviado avisos."
+
+#: templates/includes/access_code.html:1
+msgid "Código de acceso"
+msgstr "Código de acceso"
 
 #: templates/includes/booking_status.html:1
 msgid "Importe devolto"
@@ -6598,7 +7031,7 @@ msgstr "Cancelada · sin devolución"
 msgid "Monitores"
 msgstr "Monitores"
 
-#: templates/includes/brand.html:3 templates/includes/shell_desk.html:31
+#: templates/includes/brand.html:3 templates/includes/shell_desk.html:32
 msgid "Rede de concellos"
 msgstr "Red de ayuntamientos"
 
@@ -6623,9 +7056,20 @@ msgstr "obligatorio"
 msgid "Revisa os campos marcados."
 msgstr "Revisa los campos marcados."
 
-#: templates/includes/hbar.html:10
+#: templates/includes/hbar.html:10 templates/monitor/stats.html:33
+#: templates/monitor/stats.html:42 templates/monitor/stats.html:51
 msgid "Sen datos no período."
 msgstr "Sin datos en el periodo."
+
+#: templates/includes/hbar.html:12
+#, python-format
+msgid "Barras relativas ao valor máis alto (%(m)s)."
+msgstr "Barras relativas al valor más alto (%(m)s)."
+
+#: templates/includes/hbar.html:12
+#, python-format
+msgid "Escala de 0 a %(m)s."
+msgstr "Escala de 0 a %(m)s."
 
 #: templates/includes/health_strings.html:2
 #, python-format
@@ -7056,33 +7500,30 @@ msgstr "Órdenes de trabajo"
 msgid "Servizo"
 msgstr "Servicio"
 
-#: templates/includes/shell_desk.html:18 templates/manage/closures.html:9
-msgid "Peches"
-msgstr "Cierres"
-
-#: templates/includes/shell_desk.html:26 templates/manage/signup_sheet.html:4
-#: templates/manage/signups.html:2 templates/manage/signups.html:4
+#: templates/includes/shell_desk.html:27 templates/manage/padron.html:4
+#: templates/manage/signup_sheet.html:4 templates/manage/signups.html:2
+#: templates/manage/signups.html:4
 msgid "Altas da app"
 msgstr "Altas de la app"
 
-#: templates/includes/shell_desk.html:27
+#: templates/includes/shell_desk.html:28
 msgid "Persoal e códigos"
 msgstr "Personal y códigos"
 
-#: templates/includes/shell_desk.html:28 templates/manage/settings.html:2
+#: templates/includes/shell_desk.html:29 templates/manage/settings.html:2
 msgid "Configuración"
 msgstr "Configuración"
 
-#: templates/includes/shell_desk.html:33
+#: templates/includes/shell_desk.html:34
 msgid "Rede"
 msgstr "Red"
 
-#: templates/includes/shell_desk.html:34
+#: templates/includes/shell_desk.html:35
 #: templates/region/new_municipality.html:2
 msgid "Novo concello"
 msgstr "Nuevo ayuntamiento"
 
-#: templates/includes/shell_desk.html:35
+#: templates/includes/shell_desk.html:36
 msgid "Concellos"
 msgstr "Ayuntamientos"
 
@@ -7266,6 +7707,18 @@ msgstr "Apartados de la instalación"
 msgid "Normas"
 msgstr "Normas"
 
+#: templates/manage/_notice_preview.html:2
+msgid "App"
+msgstr "App"
+
+#: templates/manage/_notice_preview.html:4
+msgid "Notificación push"
+msgstr "Notificación push"
+
+#: templates/manage/_notice_preview.html:7
+msgid "Asunto:"
+msgstr "Asunto:"
+
 #: templates/manage/_wizard_steps.html:1
 #: templates/region/new_municipality.html:4
 msgid "Pasos da alta"
@@ -7419,6 +7872,7 @@ msgstr "Hasta"
 
 #: templates/manage/closures.html:12 templates/manage/facility_hours.html:11
 #: templates/manage/facility_hours.html:19
+#: templates/manage/notice_detail.html:24
 msgid "Eliminar"
 msgstr "Eliminar"
 
@@ -7760,6 +8214,135 @@ msgstr "Añadir tarea"
 msgid "Sen plans."
 msgstr "Sin planes."
 
+#: templates/manage/notice_detail.html:8
+msgid "Como chega en cada canle"
+msgstr "Cómo llega en cada canal"
+
+#: templates/manage/notice_detail.html:13 templates/manage/notices.html:10
+msgid "Destinatarios"
+msgstr "Destinatarios"
+
+#: templates/manage/notice_detail.html:14
+msgid "Franxa"
+msgstr "Franja"
+
+#: templates/manage/notice_detail.html:15 templates/manage/notices.html:14
+#, python-format
+msgid "Enviado %(d)s"
+msgstr "Enviado %(d)s"
+
+#: templates/manage/notice_detail.html:15 templates/manage/notices.html:14
+#, python-format
+msgid "Programado %(d)s"
+msgstr "Programado %(d)s"
+
+#: templates/manage/notice_detail.html:17
+msgid "Por canle"
+msgstr "Por canal"
+
+#: templates/manage/notice_detail.html:18 templates/manage/notices.html:10
+msgid "Reservas canceladas"
+msgstr "Reservas canceladas"
+
+#: templates/manage/notice_detail.html:19
+msgid "Estimación"
+msgstr "Estimación"
+
+#: templates/manage/notice_detail.html:19
+#, python-format
+msgid "%(n)s persoa"
+msgid_plural "%(n)s persoas"
+msgstr[0] "%(n)s persona"
+msgstr[1] "%(n)s personas"
+
+#: templates/manage/notice_detail.html:23
+msgid "Enviar agora"
+msgstr "Enviar ahora"
+
+#: templates/manage/notice_new.html:2 templates/manage/notice_new.html:5
+#: templates/manage/notices.html:6
+msgid "Novo aviso"
+msgstr "Nuevo aviso"
+
+#: templates/manage/notice_new.html:10
+msgid "Vista previa"
+msgstr "Vista previa"
+
+#: templates/manage/notice_new.html:11
+msgid "Enviar ou programar"
+msgstr "Enviar o programar"
+
+#: templates/manage/notice_new.html:15
+msgid "Vista previa por canle"
+msgstr "Vista previa por canal"
+
+#: templates/manage/notice_new.html:17
+#, python-format
+msgid "Chegaríalle a %(n)s persoa."
+msgid_plural "Chegaríalle a %(n)s persoas."
+msgstr[0] "Le llegaría a %(n)s persona."
+msgstr[1] "Les llegaría a %(n)s personas."
+
+#: templates/manage/notice_new.html:18
+msgid "Por canle:"
+msgstr "Por canal:"
+
+#: templates/manage/notice_new.html:18
+msgid "correo"
+msgstr "correo"
+
+#: templates/manage/notice_new.html:18
+msgid "e a canle pública"
+msgstr "y al canal público"
+
+#: templates/manage/notice_new.html:19
+#, python-format
+msgid "Cancelaríase %(n)s reserva con devolución íntegra."
+msgid_plural "Cancelaríanse %(n)s reservas con devolución íntegra."
+msgstr[0] "Se cancelaría %(n)s reserva con devolución íntegra."
+msgstr[1] "Se cancelarían %(n)s reservas con devolución íntegra."
+
+#: templates/manage/notice_new.html:22
+msgid ""
+"Escribe o aviso e preme «Vista previa» para velo como chegará en cada canle "
+"e a cantas persoas."
+msgstr ""
+"Escribe el aviso y pulsa «Vista previa» para verlo como llegará en cada "
+"canal y a cuántas personas."
+
+#: templates/manage/notice_new.html:24
+msgid ""
+"Sen consentimento para comunicacións, os avisos de horarios, actividades, "
+"festas e novidades non se envían a ninguén. Os peches e alertas chegan a "
+"quen ten unha reserva afectada."
+msgstr ""
+"Sin consentimiento para comunicaciones, los avisos de horarios, actividades,"
+" fiestas y novedades no se envían a nadie. Los cierres y alertas llegan a "
+"quien tiene una reserva afectada."
+
+#: templates/manage/notices.html:2 templates/manage/notices.html:4
+msgid "Avisos á veciñanza"
+msgstr "Avisos al vecindario"
+
+#: templates/manage/notices.html:5
+msgid ""
+"Peches, alertas, horarios, actividades e festas: na app, por correo e por "
+"Telegram."
+msgstr ""
+"Cierres, alertas, horarios, actividades y fiestas: en la app, por correo y "
+"por Telegram."
+
+#: templates/manage/notices.html:7
+#, python-format
+msgid "%(n)s aviso programado."
+msgid_plural "%(n)s avisos programados."
+msgstr[0] "%(n)s aviso programado."
+msgstr[1] "%(n)s avisos programados."
+
+#: templates/manage/notices.html:17
+msgid "Aínda non hai avisos."
+msgstr "Aún no hay avisos."
+
 #: templates/manage/on_behalf.html:2 templates/manage/on_behalf.html:4
 msgid "Reservar en nome dunha persoa"
 msgstr "Reservar en nombre de una persona"
@@ -7795,6 +8378,105 @@ msgstr "Hacer la reserva"
 #: templates/manage/on_behalf.html:19
 msgid "Outra franxa"
 msgstr "Otra franja"
+
+#: templates/manage/padron.html:2 templates/manage/signups.html:6
+msgid "Padrón"
+msgstr "Padrón"
+
+#: templates/manage/padron.html:5
+msgid "Padrón para as altas automáticas"
+msgstr "Padrón para las altas automáticas"
+
+#: templates/manage/padron.html:6
+msgid ""
+"Quen pide a app con DNI/NIE e data de nacemento que figuren no padrón recibe"
+" o código ao momento. O resto vai á cola de revisión."
+msgstr ""
+"Quien pide la app con un DNI/NIE y fecha de nacimiento que figuran en el "
+"padrón recibe el código al momento. El resto va a la cola de revisión."
+
+#: templates/manage/padron.html:10
+msgid "Carga actual"
+msgstr "Carga actual"
+
+#: templates/manage/padron.html:12
+#, python-format
+msgid "<strong>%(n)s</strong> persoas, cargado o %(d)s."
+msgstr "<strong>%(n)s</strong> personas, cargado el %(d)s."
+
+#: templates/manage/padron.html:13
+#, python-format
+msgid "%(r)s liña rexeitada (DNI/NIE ou data non válidos)."
+msgid_plural "%(r)s liñas rexeitadas (DNI/NIE ou data non válidos)."
+msgstr[0] "%(r)s línea rechazada (DNI/NIE o fecha no válidos)."
+msgstr[1] "%(r)s líneas rechazadas (DNI/NIE o fecha no válidos)."
+
+#: templates/manage/padron.html:15
+msgid ""
+"Aínda non hai padrón cargado: todas as solicitudes van á cola de revisión."
+msgstr ""
+"Aún no hay padrón cargado: todas las solicitudes van a la cola de revisión."
+
+#: templates/manage/padron.html:17
+#, python-format
+msgid "%(n)s solicitude pendente de revisar"
+msgid_plural "%(n)s solicitudes pendentes de revisar"
+msgstr[0] "%(n)s solicitud pendiente de revisar"
+msgstr[1] "%(n)s solicitudes pendientes de revisar"
+
+#: templates/manage/padron.html:20
+msgid "Rexistro de cargas"
+msgstr "Registro de cargas"
+
+#: templates/manage/padron.html:22
+msgid "Cargas do padrón"
+msgstr "Cargas del padrón"
+
+#: templates/manage/padron.html:23
+msgid "Rexeitadas"
+msgstr "Rechazadas"
+
+#: templates/manage/padron.html:23
+msgid "Quen"
+msgstr "Quién"
+
+#: templates/manage/padron.html:25
+msgid "Sen cargas."
+msgstr "Sin cargas."
+
+#: templates/manage/padron.html:31
+msgid "Cargar o padrón"
+msgstr "Cargar el padrón"
+
+#: templates/manage/padron.html:34
+msgid "Cargar e substituír"
+msgstr "Cargar y sustituir"
+
+#: templates/manage/padron.html:36
+msgid "Descargar o modelo CSV"
+msgstr "Descargar la plantilla CSV"
+
+#: templates/manage/padron.html:39
+msgid "Que garda Eira"
+msgstr "Qué guarda Eira"
+
+#: templates/manage/padron.html:40
+msgid ""
+"De cada liña só garda un resumo HMAC-SHA256 de DNI/NIE + data de nacemento, "
+"cun segredo propio desta instalación. O ficheiro non se garda, e non se pode"
+" reconstruír o padrón a partir dos resumos."
+msgstr ""
+"De cada línea solo guarda un resumen HMAC-SHA256 de DNI/NIE + fecha de "
+"nacimiento, con un secreto propio de esta instalación. El fichero no se "
+"guarda y no se puede reconstruir el padrón a partir de los resúmenes."
+
+#: templates/manage/padron.html:41
+msgid ""
+"O nome nunca se usa para comprobar. Cada carga substitúe a anterior e queda "
+"rexistrada. Base: art. 6.1.e RXPD."
+msgstr ""
+"El nombre nunca se usa para comprobar. Cada carga sustituye a la anterior y "
+"queda registrada. Base: art. 6.1.e RGPD."
 
 #: templates/manage/payments.html:4
 msgid "Cobros e conciliación"
@@ -8038,44 +8720,44 @@ msgstr ""
 "Solicitudes en línea que el padrón no ha confirmado y altas en el mostrador "
 "con hoja imprimible."
 
-#: templates/manage/signups.html:9
+#: templates/manage/signups.html:10
 msgid "Pendentes de revisar"
 msgstr "Pendientes de revisar"
 
-#: templates/manage/signups.html:13
-#, python-format
-msgid "C. P. %(cp)s · nada en %(y)s · recibida o %(d)s"
-msgstr "C. P. %(cp)s · nacida en %(y)s · recibida el %(d)s"
-
 #: templates/manage/signups.html:15
+#, python-format
+msgid "recibida o %(d)s"
+msgstr "recibida el %(d)s"
+
+#: templates/manage/signups.html:17
 msgid "Empadroada: enviar código"
 msgstr "Empadronada: enviar código"
 
-#: templates/manage/signups.html:16
+#: templates/manage/signups.html:18
 msgid "Non figura"
 msgstr "No figura"
 
-#: templates/manage/signups.html:18
+#: templates/manage/signups.html:20
 msgid "Non hai solicitudes pendentes."
 msgstr "No hay solicitudes pendientes."
 
-#: templates/manage/signups.html:21
+#: templates/manage/signups.html:23
 msgid "Últimas altas"
 msgstr "Últimas altas"
 
-#: templates/manage/signups.html:23
+#: templates/manage/signups.html:25
 msgid "Folla"
 msgstr "Hoja"
 
-#: templates/manage/signups.html:24
+#: templates/manage/signups.html:26
 msgid "Aínda non hai altas."
 msgstr "Aún no hay altas."
 
-#: templates/manage/signups.html:28
+#: templates/manage/signups.html:30
 msgid "Alta no mostrador"
 msgstr "Alta en el mostrador"
 
-#: templates/manage/signups.html:29
+#: templates/manage/signups.html:31
 msgid ""
 "Para quen vén en persoa: comproba o empadroamento, xera o código e imprime a"
 " folla co QR de instalación."
@@ -8083,7 +8765,7 @@ msgstr ""
 "Para quien viene en persona: comprueba el empadronamiento, genera el código "
 "e imprime la hoja con el QR de instalación."
 
-#: templates/manage/signups.html:31
+#: templates/manage/signups.html:33
 msgid "Dar de alta e imprimir"
 msgstr "Dar de alta e imprimir"
 
@@ -8236,13 +8918,17 @@ msgstr "presentes"
 msgid "Só quen non pode saír en fotos"
 msgstr "Solo quien no puede salir en fotos"
 
-#: templates/monitor/attendance.html:19 templates/monitor/kiosk.html:69
+#: templates/monitor/attendance.html:19 templates/monitor/kiosk.html:72
 msgid "pode saír en fotos"
 msgstr "puede salir en fotos"
 
-#: templates/monitor/attendance.html:19 templates/monitor/kiosk.html:70
+#: templates/monitor/attendance.html:19 templates/monitor/kiosk.html:73
 msgid "non pode saír en fotos"
 msgstr "no puede salir en fotos"
+
+#: templates/monitor/attendance.html:19
+msgid "marcada na saída"
+msgstr "marcada en la salida"
 
 #: templates/monitor/attendance.html:22
 msgid "Non hai persoas inscritas."
@@ -8264,11 +8950,11 @@ msgstr "Guardar y pasar al esfuerzo"
 msgid "Hai alguén que non está na lista?"
 msgstr "¿Hay alguien que no está en la lista?"
 
-#: templates/monitor/attendance.html:37 templates/monitor/kiosk.html:33
+#: templates/monitor/attendance.html:37 templates/monitor/kiosk.html:34
 msgid "Ano de nacemento"
 msgstr "Año de nacimiento"
 
-#: templates/monitor/attendance.html:38 templates/monitor/kiosk.html:34
+#: templates/monitor/attendance.html:38 templates/monitor/kiosk.html:35
 msgid "Correo da familia (opcional)"
 msgstr "Correo de la familia (opcional)"
 
@@ -8280,7 +8966,7 @@ msgstr ""
 "Queda pendiente hasta que el ayuntamiento valide la inscripción. No se "
 "registra su esfuerzo mientras tanto."
 
-#: templates/monitor/attendance.html:41 templates/monitor/kiosk.html:37
+#: templates/monitor/attendance.html:41 templates/monitor/kiosk.html:38
 msgid "Apuntar"
 msgstr "Apuntar"
 
@@ -8382,173 +9068,290 @@ msgstr "Modo"
 msgid "Saída"
 msgstr "Salida"
 
-#: templates/monitor/kiosk.html:23
+#: templates/monitor/kiosk.html:24
 msgid "Quen falta"
 msgstr "Quién falta"
 
-#: templates/monitor/kiosk.html:27
+#: templates/monitor/kiosk.html:28
 msgid "Vén alguén a probar?"
 msgstr "¿Viene alguien a probar?"
 
-#: templates/monitor/kiosk.html:36
+#: templates/monitor/kiosk.html:37
 msgid "Queda pendente ata que o concello valide a inscrición."
 msgstr "Queda pendiente hasta que el ayuntamiento valide la inscripción."
 
-#: templates/monitor/kiosk.html:39
+#: templates/monitor/kiosk.html:40
 msgid "Pendentes de validar:"
 msgstr "Pendientes de validar:"
 
-#: templates/monitor/kiosk.html:41
+#: templates/monitor/kiosk.html:42 templates/monitor/stats.html:7
 msgid "Sesións de hoxe"
 msgstr "Sesiones de hoy"
 
-#: templates/monitor/kiosk.html:41 templates/monitor/today.html:14
+#: templates/monitor/kiosk.html:42 templates/monitor/today.html:14
 msgid "Lista rápida"
 msgstr "Lista rápida"
 
-#: templates/monitor/kiosk.html:45
+#: templates/monitor/kiosk.html:46
 msgid "Toca a inicial do teu primeiro apelido"
 msgstr "Toca la inicial de tu primer apellido"
 
-#: templates/monitor/kiosk.html:46
+#: templates/monitor/kiosk.html:47
 msgid "Ou escribe o teu apelido ou nome"
 msgstr "O escribe tu apellido o nombre"
 
-#: templates/monitor/kiosk.html:47
+#: templates/monitor/kiosk.html:48
 msgid "Buscar por apelido ou nome"
 msgstr "Buscar por apellido o nombre"
 
-#: templates/monitor/kiosk.html:48
+#: templates/monitor/kiosk.html:49
 msgid "Borrar"
 msgstr "Borrar"
 
-#: templates/monitor/kiosk.html:49
+#: templates/monitor/kiosk.html:50
 msgid "Ningún nome coincide. Proba coa letra do teu apelido."
 msgstr "Ningún nombre coincide. Prueba con la letra de tu apellido."
 
-#: templates/monitor/kiosk.html:50
+#: templates/monitor/kiosk.html:51
 msgid "Non hai ninguén con esta letra."
 msgstr "No hay nadie con esta letra."
 
-#: templates/monitor/kiosk.html:51
+#: templates/monitor/kiosk.html:52
 msgid "Apelidos pola letra"
 msgstr "Apellidos por la letra"
 
-#: templates/monitor/kiosk.html:52
+#: templates/monitor/kiosk.html:53
 msgid "Filtrar esta lista"
 msgstr "Filtrar esta lista"
 
-#: templates/monitor/kiosk.html:53
+#: templates/monitor/kiosk.html:54
 msgid "Volver"
 msgstr "Volver"
 
-#: templates/monitor/kiosk.html:54
+#: templates/monitor/kiosk.html:55
 msgid "Non son eu"
 msgstr "No soy yo"
 
-#: templates/monitor/kiosk.html:55
+#: templates/monitor/kiosk.html:56
 msgid "Como de duro foi hoxe?"
 msgstr "¿Cómo de duro ha sido hoy?"
 
-#: templates/monitor/kiosk.html:56
+#: templates/monitor/kiosk.html:57
 msgid "Gárdase ao tocar o número."
 msgstr "Se guarda al tocar el número."
 
-#: templates/monitor/kiosk.html:57
+#: templates/monitor/kiosk.html:58
 #, python-format
 msgid "Grazas, %%1!"
 msgstr "¡Gracias, %%1!"
 
-#: templates/monitor/kiosk.html:58
+#: templates/monitor/kiosk.html:59
 #, python-format
 msgid "Entrada rexistrada ás %%1"
 msgstr "Entrada registrada a las %%1"
 
-#: templates/monitor/kiosk.html:59
+#: templates/monitor/kiosk.html:60
 #, python-format
 msgid "Esforzo %%1"
 msgstr "Esfuerzo %%1"
 
-#: templates/monitor/kiosk.html:60
+#: templates/monitor/kiosk.html:61
 msgid "Saída rexistrada (sen permiso para rexistrar o esforzo)."
 msgstr "Salida registrada (sin permiso para registrar el esfuerzo)."
 
-#: templates/monitor/kiosk.html:61
+#: templates/monitor/kiosk.html:62
 msgid "Seguinte persoa"
 msgstr "Siguiente persona"
 
-#: templates/monitor/kiosk.html:62
+#: templates/monitor/kiosk.html:63
 #, python-format
 msgid "Entraron %%1 de %%2"
 msgstr "Han entrado %%1 de %%2"
 
-#: templates/monitor/kiosk.html:63
+#: templates/monitor/kiosk.html:64
+msgid "Asistencia marcada na saída (non rexistrara a entrada)."
+msgstr "Asistencia marcada en la salida (no había registrado la entrada)."
+
+#: templates/monitor/kiosk.html:65
+#, python-format
+msgid "%%1 marcadas na saída"
+msgstr "%%1 marcadas en la salida"
+
+#: templates/monitor/kiosk.html:66
 #, python-format
 msgid "Esforzo: %%1"
 msgstr "Esfuerzo: %%1"
 
-#: templates/monitor/kiosk.html:64
+#: templates/monitor/kiosk.html:67
 #, python-format
 msgid "Faltan %%1"
 msgstr "Faltan %%1"
 
-#: templates/monitor/kiosk.html:65
+#: templates/monitor/kiosk.html:68
 msgid "Aínda non entraron"
 msgstr "Aún no han entrado"
 
-#: templates/monitor/kiosk.html:66
+#: templates/monitor/kiosk.html:69
 msgid "Entraron e falta o esforzo"
 msgstr "Han entrado y falta el esfuerzo"
 
-#: templates/monitor/kiosk.html:67
+#: templates/monitor/kiosk.html:70
 msgid "Non falta ninguén."
 msgstr "No falta nadie."
 
-#: templates/monitor/kiosk.html:68
+#: templates/monitor/kiosk.html:71
 msgid "entrou"
 msgstr "ha entrado"
 
-#: templates/monitor/kiosk.html:71
+#: templates/monitor/kiosk.html:74
 #, python-format
 msgid "%%1 persoas"
 msgstr "%%1 personas"
 
-#: templates/monitor/kiosk.html:72
+#: templates/monitor/kiosk.html:75
 msgid "1 persoa"
 msgstr "1 persona"
 
-#: templates/monitor/kiosk.html:73
+#: templates/monitor/kiosk.html:76
 msgid "sen persoas"
 msgstr "sin personas"
 
-#: templates/monitor/kiosk.html:74
+#: templates/monitor/kiosk.html:77
 msgid "Todo gardado"
 msgstr "Todo guardado"
 
-#: templates/monitor/kiosk.html:75
+#: templates/monitor/kiosk.html:78
 #, python-format
 msgid "%%1 sen enviar"
 msgstr "%%1 sin enviar"
 
-#: templates/monitor/kiosk.html:76
+#: templates/monitor/kiosk.html:79
 #, python-format
 msgid "Sen conexión · %%1 sen enviar"
 msgstr "Sin conexión · %%1 sin enviar"
 
-#: templates/monitor/kiosk.html:77
+#: templates/monitor/kiosk.html:80
 #, python-format
 msgid ""
 "Xa ten un esforzo rexistrado hoxe (%%1). Se tocas outro, vale o último."
 msgstr ""
 "Ya tiene un esfuerzo registrado hoy (%%1). Si tocas otro, vale el último."
 
+#: templates/monitor/stats.html:2 templates/monitor/stats.html:5
+msgid "Estatísticas dos meus grupos"
+msgstr "Estadísticas de mis grupos"
+
+#: templates/monitor/stats.html:5 templates/monitor/today.html:5
+msgid "Modo tableta"
+msgstr "Modo tableta"
+
+#: templates/monitor/stats.html:6
+#, python-format
+msgid "Últimas %(w)s semanas. Só os grupos que levas ti."
+msgstr "Últimas %(w)s semanas. Solo los grupos que llevas tú."
+
+#: templates/monitor/stats.html:13 templates/monitor/stats.html:22
+#, python-format
+msgid "%(n)s sesión"
+msgid_plural "%(n)s sesións"
+msgstr[0] "%(n)s sesión"
+msgstr[1] "%(n)s sesiones"
+
+#: templates/monitor/stats.html:14 templates/monitor/stats.html:41
+msgid "Esforzo medio"
+msgstr "Esfuerzo medio"
+
+#: templates/monitor/stats.html:15
+#, python-format
+msgid "Faltan %(n)s+ sesións seguidas"
+msgstr "Faltan %(n)s+ sesiones seguidas"
+
+#: templates/monitor/stats.html:16
+msgid "Carga da última semana"
+msgstr "Carga de la última semana"
+
+#: templates/monitor/stats.html:16
+msgid "sRPE × minutos, media por persoa"
+msgstr "sRPE × minutos, media por persona"
+
+#: templates/monitor/stats.html:21
+#, python-format
+msgid "Levan %(n)s ou máis sesións sen vir"
+msgstr "Llevan %(n)s o más sesiones sin venir"
+
+#: templates/monitor/stats.html:28 templates/monitor/stats.html:31
+msgid "Asistencia por sesión"
+msgstr "Asistencia por sesión"
+
+#: templates/monitor/stats.html:29
+msgid "Porcentaxe de asistencia por sesión"
+msgstr "Porcentaje de asistencia por sesión"
+
+#: templates/monitor/stats.html:30 templates/monitor/stats.html:39
+#: templates/monitor/stats.html:48
+msgid "Ver os datos en táboa"
+msgstr "Ver los datos en tabla"
+
+#: templates/monitor/stats.html:32
+msgid "Presentes"
+msgstr "Presentes"
+
+#: templates/monitor/stats.html:37
+msgid "Esforzo medio por sesión (0–10)"
+msgstr "Esfuerzo medio por sesión (0–10)"
+
+#: templates/monitor/stats.html:38 templates/monitor/stats.html:40
+msgid "Esforzo medio por sesión"
+msgstr "Esfuerzo medio por sesión"
+
+#: templates/monitor/stats.html:46 templates/monitor/stats.html:49
+msgid "Carga semanal (sRPE)"
+msgstr "Carga semanal (sRPE)"
+
+#: templates/monitor/stats.html:47
+msgid "Carga semanal media por persoa"
+msgstr "Carga semanal media por persona"
+
+#: templates/monitor/stats.html:50
+msgid "Carga media"
+msgstr "Carga media"
+
+#: templates/monitor/stats.html:56
+msgid "Probas físicas (agregado do grupo)"
+msgstr "Pruebas físicas (agregado del grupo)"
+
+#: templates/monitor/stats.html:59
+#, python-format
+msgid "media %(m)s %(u)s · de %(a)s a %(z)s · %(n)s persoas"
+msgstr "media %(m)s %(u)s · de %(a)s a %(z)s · %(n)s personas"
+
+#: templates/monitor/stats.html:61
+msgid ""
+"Último resultado de cada persoa. Sen baremos: só para seguir a evolución do "
+"grupo."
+msgstr ""
+"Último resultado de cada persona. Sin baremos: solo para seguir la evolución"
+" del grupo."
+
+#: templates/monitor/stats.html:62
+msgid "Aínda non hai probas rexistradas neste grupo."
+msgstr "Aún no hay pruebas registradas en este grupo."
+
+#: templates/monitor/stats.html:62
+msgid "Rexistrar probas"
+msgstr "Registrar pruebas"
+
+#: templates/monitor/stats.html:65
+msgid "Non tes grupos asignados."
+msgstr "No tienes grupos asignados."
+
 #: templates/monitor/today.html:2
 msgid "Monitor"
 msgstr "Monitor"
 
-#: templates/monitor/today.html:5
-msgid "Modo tableta"
-msgstr "Modo tableta"
+#: templates/monitor/today.html:6
+msgid "Estatísticas"
+msgstr "Estadísticas"
 
 #: templates/monitor/today.html:6
 msgid "Onte"
@@ -8573,17 +9376,152 @@ msgstr "Abrir el registro"
 msgid "Hoxe non tes sesións."
 msgstr "Hoy no tienes sesiones."
 
-#: templates/notifications/list.html:5
+#: templates/notifications/list.html:6
+msgid "Preferencias"
+msgstr "Preferencias"
+
+#: templates/notifications/list.html:7
 msgid "Marcar todo como lido"
 msgstr "Marcar todo como leído"
 
-#: templates/notifications/list.html:12
+#: templates/notifications/list.html:11
+msgid "Filtrar por categoría"
+msgstr "Filtrar por categoría"
+
+#: templates/notifications/list.html:17
+msgid "Para ti"
+msgstr "Para ti"
+
+#: templates/notifications/list.html:23
 msgid "Canles:"
 msgstr "Canales:"
 
-#: templates/notifications/list.html:15
+#: templates/notifications/list.html:26
 msgid "Non tes avisos."
 msgstr "No tienes avisos."
+
+#: templates/notifications/list.html:32
+msgid "Taboleiro do concello"
+msgstr "Tablón del ayuntamiento"
+
+#: templates/notifications/list.html:33
+msgid ""
+"Non aceptaches recibir comunicacións informativas, así que non che enviamos "
+"festas, horarios nin novidades. Podes consultalas aquí cando queiras."
+msgstr ""
+"No aceptaste recibir comunicaciones informativas, así que no te enviamos "
+"fiestas, horarios ni novedades. Puedes consultarlas aquí cuando quieras."
+
+#: templates/notifications/list.html:38
+msgid "Nada no taboleiro."
+msgstr "Nada en el tablón."
+
+#: templates/notifications/list.html:42
+#, python-format
+msgid "Tamén na canle pública de Telegram <strong>%(c)s</strong>."
+msgstr "También en el canal público de Telegram <strong>%(c)s</strong>."
+
+#: templates/notifications/list.html:43
+msgid "Abrir a canle"
+msgstr "Abrir el canal"
+
+#: templates/notifications/list.html:43
+msgid "Ver no simulador"
+msgstr "Ver en el simulador"
+
+#: templates/notifications/preferences.html:2
+#: templates/notifications/preferences.html:5
+msgid "Preferencias de avisos"
+msgstr "Preferencias de avisos"
+
+#: templates/notifications/preferences.html:8
+msgid "Comunicacións informativas"
+msgstr "Comunicaciones informativas"
+
+#: templates/notifications/preferences.html:11
+msgid "Quero recibir horarios, actividades, festas e novidades do concello"
+msgstr ""
+"Quiero recibir horarios, actividades, fiestas y novedades del ayuntamiento"
+
+#: templates/notifications/preferences.html:13
+msgid ""
+"É voluntario e podes retiralo cando queiras. Os peches e alertas que afectan"
+" ás túas reservas chéganche sempre na app, porque son parte do servizo."
+msgstr ""
+"Es voluntario y puedes retirarlo cuando quieras. Los cierres y alertas que "
+"afectan a tus reservas te llegan siempre en la app, porque son parte del "
+"servicio."
+
+#: templates/notifications/preferences.html:13
+#, python-format
+msgid "Aceptado o %(d)s."
+msgstr "Aceptado el %(d)s."
+
+#: templates/notifications/preferences.html:17
+msgid "Que e por onde"
+msgstr "Qué y por dónde"
+
+#: templates/notifications/preferences.html:18
+msgid "Marca por onde queres recibir cada tipo de aviso."
+msgstr "Marca por dónde quieres recibir cada tipo de aviso."
+
+#: templates/notifications/preferences.html:21
+msgid "servizo"
+msgstr "servicio"
+
+#: templates/notifications/preferences.html:28
+msgid "Os avisos de servizo (peches e alertas) chegan sempre á app."
+msgstr "Los avisos de servicio (cierres y alertas) llegan siempre a la app."
+
+#: templates/notifications/preferences.html:36
+msgid ""
+"O teu bot persoal está vinculado: os avisos que marques con Telegram chegan "
+"por alí."
+msgstr ""
+"Tu bot personal está vinculado: los avisos que marques con Telegram llegan "
+"por ahí."
+
+#: templates/notifications/preferences.html:37
+msgid "Desvincular"
+msgstr "Desvincular"
+
+#: templates/notifications/preferences.html:39
+msgid ""
+"Abre esta ligazón no móbil para vincular o bot. Vale unha soa vez e caduca "
+"en 30 minutos."
+msgstr ""
+"Abre este enlace en el móvil para vincular el bot. Vale una sola vez y "
+"caduca en 30 minutos."
+
+#: templates/notifications/preferences.html:40
+msgid "Abrir o bot en Telegram"
+msgstr "Abrir el bot en Telegram"
+
+#: templates/notifications/preferences.html:41
+#, python-format
+msgid "Ou escribe ao bot: <code>/start %(c)s</code>"
+msgstr "O escribe al bot: <code>/start %(c)s</code>"
+
+#: templates/notifications/preferences.html:42
+msgid "Demo: abrir no simulador de Telegram"
+msgstr "Demo: abrir en el simulador de Telegram"
+
+#: templates/notifications/preferences.html:44
+msgid ""
+"Recibe os avisos nun chat de Telegram co bot do concello. Só gardamos o "
+"identificador do chat."
+msgstr ""
+"Recibe los avisos en un chat de Telegram con el bot del ayuntamiento. Solo "
+"guardamos el identificador del chat."
+
+#: templates/notifications/preferences.html:45
+msgid "Vincular Telegram"
+msgstr "Vincular Telegram"
+
+#: templates/notifications/preferences.html:47
+#, python-format
+msgid "Sen vincular nada, podes seguir a canle pública %(c)s."
+msgstr "Sin vincular nada, puedes seguir el canal público %(c)s."
 
 #: templates/region/_delta.html:1
 msgid "sobe"

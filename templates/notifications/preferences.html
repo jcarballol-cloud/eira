@@ -1,0 +1,49 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Preferencias de avisos" %}{% endblock %}
+{% block content %}
+<p><a href="{% turl 'notifications:list' %}">← {% translate "Avisos" %}</a></p>
+<h1>{% translate "Preferencias de avisos" %}</h1>
+<form method="post" class="stack">{% csrf_token %}
+  <section class="card stack-sm" aria-labelledby="consent-t">
+    <h2 id="consent-t" class="h3">{% translate "Comunicacións informativas" %}</h2>
+    <div class="toggle-row">
+      <input type="checkbox" id="consent" name="consent" value="1" class="switch" {% if pref.comms_consent_at %}checked{% endif %} aria-describedby="consent-h">
+      <label for="consent">{% translate "Quero recibir horarios, actividades, festas e novidades do concello" %}</label>
+    </div>
+    <p class="help" id="consent-h">{% translate "É voluntario e podes retiralo cando queiras. Os peches e alertas que afectan ás túas reservas chéganche sempre na app, porque son parte do servizo." %}{% if pref.comms_consent_at %} {% blocktranslate with d=pref.comms_consent_at|date:"d/m/Y" %}Aceptado o {{ d }}.{% endblocktranslate %}{% endif %}</p>
+  </section>
+
+  <section class="card stack-sm" aria-labelledby="matrix-t">
+    <h2 id="matrix-t" class="h3">{% translate "Que e por onde" %}</h2>
+    <p class="help">{% translate "Marca por onde queres recibir cada tipo de aviso." %}</p>
+    {% for r in rows %}
+    <fieldset class="pref-row">
+      <legend>{{ r.label }}{% if r.service %} <small class="muted">· {% translate "servizo" %}</small>{% endif %}</legend>
+      <div class="chips mb-0">{% for c in r.channels %}
+        <span class="chip"><input type="checkbox" id="p-{{ r.value }}-{{ c.name }}" name="{{ r.value }}:{{ c.name }}" value="1" {% if c.on or r.service and c.name == "app" %}checked{% endif %}{% if r.service and c.name == "app" %} disabled aria-describedby="always-app"{% endif %}>
+        <label for="p-{{ r.value }}-{{ c.name }}">{% if c.name == "app" %}App{% elif c.name == "email" %}{% translate "Correo" %}{% elif c.name == "telegram" %}Telegram{% else %}Push{% endif %}</label></span>{% endfor %}
+      </div>
+    </fieldset>
+    {% endfor %}
+    <p class="help mb-0" id="always-app">{% translate "Os avisos de servizo (peches e alertas) chegan sempre á app." %}</p>
+  </section>
+  <div><button class="btn" type="submit">{% translate "Gardar preferencias" %}</button></div>
+</form>
+
+<section class="card stack-sm mt-2" id="telegram" aria-labelledby="tg-t">
+  <h2 id="tg-t" class="h3">{% icon 'share' %} Telegram</h2>
+  {% if user.telegram_chat %}
+    <p class="mb-0">{% translate "O teu bot persoal está vinculado: os avisos que marques con Telegram chegan por alí." %}</p>
+    <form method="post" action="{% turl 'notifications:telegram_unlink' %}">{% csrf_token %}<button class="btn btn-secondary btn-sm" type="submit">{% translate "Desvincular" %}</button></form>
+  {% elif telegram_code %}
+    <p>{% translate "Abre esta ligazón no móbil para vincular o bot. Vale unha soa vez e caduca en 30 minutos." %}</p>
+    <p><a class="btn" href="{{ telegram_url }}" rel="noopener">{% translate "Abrir o bot en Telegram" %}</a></p>
+    <p class="help">{% blocktranslate with c=telegram_code %}Ou escribe ao bot: <code>/start {{ c }}</code>{% endblocktranslate %}</p>
+    {% if demo_tools %}<p><a href="{% url 'dev:telegram' %}?start={{ telegram_code }}">{% translate "Demo: abrir no simulador de Telegram" %}</a></p>{% endif %}
+  {% else %}
+    <p class="mb-0">{% translate "Recibe os avisos nun chat de Telegram co bot do concello. Só gardamos o identificador do chat." %}</p>
+    <form method="post" action="{% turl 'notifications:telegram_link' %}">{% csrf_token %}<button class="btn btn-secondary" type="submit">{% translate "Vincular Telegram" %}</button></form>
+  {% endif %}
+  {% if telegram_channel %}<p class="help mb-0">{% blocktranslate with c=telegram_channel %}Sen vincular nada, podes seguir a canle pública {{ c }}.{% endblocktranslate %}</p>{% endif %}
+</section>
+{% endblock %}

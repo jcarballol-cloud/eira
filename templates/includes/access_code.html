@@ -1,0 +1,1 @@
+{% load i18n eira %}<p class="access-code{% if small %} access-code--sm{% endif %}"><span class="visually-hidden">{% translate "Código de acceso" %}: {{ code|make_list|join:' ' }}</span><span class="access-code__digits" aria-hidden="true">{% for g in code|code_groups %}<span class="access-code__group">{{ g }}</span>{% endfor %}</span></p>

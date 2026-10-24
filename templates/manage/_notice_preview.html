@@ -1,0 +1,10 @@
+{% load i18n eira %}<div class="preview-grid">
+  <section class="preview" aria-labelledby="pv-app"><h3 id="pv-app" class="preview__label">{% icon 'bell' %} {% translate "App" %}</h3>
+    <div class="preview__app"><span class="badge">{{ content.app.category }}</span><p class="mb-0"><strong>{{ content.app.title }}</strong></p><p class="mb-0">{{ content.app.body|linebreaksbr }}</p></div></section>
+  <section class="preview" aria-labelledby="pv-push"><h3 id="pv-push" class="preview__label">{% icon 'phone' %} {% translate "Notificación push" %}</h3>
+    <div class="push-banner"><strong>{{ content.push.title }}</strong><span>{{ content.push.body }}</span></div></section>
+  <section class="preview" aria-labelledby="pv-mail"><h3 id="pv-mail" class="preview__label">{% icon 'mail' %} {% translate "Correo" %}</h3>
+    <div class="mail-preview"><p class="mb-0"><small class="muted">{% translate "Asunto:" %}</small> <strong>{{ content.email.subject }}</strong></p><div class="mail__body">{{ content.email.body }}</div></div></section>
+  <section class="preview" aria-labelledby="pv-tg"><h3 id="pv-tg" class="preview__label">{% icon 'share' %} Telegram</h3>
+    <div class="tg-chat tg-chat--mini"><div class="tg-bubble tg-bubble--bot">{{ content.telegram|tg_markdown }}</div></div></section>
+</div>

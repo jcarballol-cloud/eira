@@ -2,41 +2,46 @@
 """Consulta do padrón municipal detrás dun adaptador.
 
 Eira nunca garda o padrón: só pregunta «esta persoa figura empadroada?» e anota o resultado.
+O contraste faise só con DNI/NIE e data de nacemento; o nome **nunca** se usa para casar.
 
-- `FakePadronAdapter` (demo): figura quen indica un código postal do termo municipal
-  (campo «códigos postais» do concello) e un ano de nacemento plausible. Sen datos reais.
+- `CsvPadronAdapter` (por defecto, v4): compara co HMAC das entradas do CSV que sobe o concello
+  (apps/accounts/padron.py). O CSV non se garda.
 - `SvdrPadronAdapter` (esqueleto): Servizo de Verificación de Datos de Residencia da
-  Plataforma de Intermediación de Datos (ou o servizo web do padrón do propio concello),
-  con consentimento da persoa e finalidade rexistrada.
+  Plataforma de Intermediación de Datos, ou o servizo web do padrón do propio concello, coa
+  finalidade rexistrada. Mesma interface, para cando o concello teña API.
 """
 
 from dataclasses import dataclass
-
-from django.utils import timezone
 
 
 @dataclass
 class PadronResult:
     found: bool
-    reason: str = ""
+    reason: str = ""  # "", "no_padron" (aínda sen cargar), "no_match", "invalid"
 
 
 class PadronAdapter:
-    def check(self, municipality, *, name, birth_year, postcode):
+    def check(self, municipality, *, id_number, birth_date):
         raise NotImplementedError
 
 
-class FakePadronAdapter(PadronAdapter):
-    def check(self, municipality, *, name, birth_year, postcode):
-        postcodes = {p.strip() for p in (municipality.postcodes or "").split(",") if p.strip()}
-        year = timezone.localdate().year
-        if not birth_year or not (year - 110 <= birth_year <= year):
-            return PadronResult(False, "birth_year")
-        if postcode.strip() not in postcodes:
-            return PadronResult(False, "postcode")
-        return PadronResult(True)
+class CsvPadronAdapter(PadronAdapter):
+    def check(self, municipality, *, id_number, birth_date):
+        from apps.accounts import padron
+
+        if padron.digest(municipality, id_number, birth_date) is None:
+            return PadronResult(False, "invalid")
+        if padron.current(municipality) is None:
+            return PadronResult(False, "no_padron")
+        if padron.matches(municipality, id_number, birth_date):
+            return PadronResult(True)
+        return PadronResult(False, "no_match")
+
+
+# Compatibilidade coa configuración anterior (EIRA_PADRON_ADAPTER=…FakePadronAdapter)
+FakePadronAdapter = CsvPadronAdapter
 
 
 class SvdrPadronAdapter(PadronAdapter):
-    def check(self, municipality, *, name, birth_year, postcode):
+    def check(self, municipality, *, id_number, birth_date):
         raise NotImplementedError

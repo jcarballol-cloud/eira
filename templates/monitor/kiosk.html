@@ -16,6 +16,7 @@
     <div class="kiosk__stats" aria-live="polite">
       <span class="kiosk__chip" data-stat-in></span>
       <span class="kiosk__chip" data-stat-rpe></span>
+      <span class="kiosk__chip kiosk__chip--auto" data-stat-auto hidden></span>
       <button type="button" class="kiosk__chip kiosk__chip--btn" data-missing-toggle aria-expanded="false" aria-controls="kiosk-missing"></button>
       <span class="kiosk__chip kiosk__sync" data-sync role="status"></span>
     </div>
@@ -60,6 +61,8 @@
   data-no-effort="{% translate 'Saída rexistrada (sen permiso para rexistrar o esforzo).' %}"
   data-next="{% translate 'Seguinte persoa' %}"
   data-entered="{% translate 'Entraron %1 de %2' %}"
+  data-auto-in="{% translate 'Asistencia marcada na saída (non rexistrara a entrada).' %}"
+  data-auto-count="{% translate '%1 marcadas na saída' %}"
   data-rpe-count="{% translate 'Esforzo: %1' %}"
   data-missing="{% translate 'Faltan %1' %}"
   data-missing-in="{% translate 'Aínda non entraron' %}"

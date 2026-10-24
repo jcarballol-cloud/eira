@@ -55,6 +55,21 @@ def home(request):
             qs = qs.filter(indoor=True)
     facilities = list(qs)
     tiles = tile_settings(tenant)
+    # v4: filtros activos (sen contar a busca, que se ve no campo) con ligazón para quitar cada un
+    active = []
+    if form.is_valid():
+        d = form.cleaned_data
+        for name in ("kind", "parish", "accessible", "lighting", "indoor"):
+            if d.get(name):
+                field = form.fields[name]
+                label = (
+                    dict(field.choices).get(d[name], d[name])
+                    if isinstance(field, forms.ChoiceField)
+                    else field.label
+                )
+                rest = request.GET.copy()
+                rest.pop(name, None)
+                active.append({"name": name, "label": label, "remove": "?" + rest.urlencode()})
     geo = {
         "type": "FeatureCollection",
         "tiles": tiles["url"],
@@ -90,6 +105,7 @@ def home(request):
             "geo": geo,
             "nav": "facilities",
             "view": request.GET.get("vista", "lista"),
+            "active": active,
         },
     )
 

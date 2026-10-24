@@ -74,11 +74,13 @@ def run_script(page, base, d):
     page.wait_for_load_state("networkidle")
     page.fill("#id_name", "Sabela Proba")
     page.fill("#id_email", email)
-    page.fill("#id_birth_year", "1990")
-    page.fill("#id_postcode", "15999")
+    page.fill("#id_surnames", "Proba Exemplo")
+    page.fill("#id_id_number", "12345678Z")
+    page.fill("#id_birth_date", "1990-05-14")
     page.check("#id_resident")
     d.say(
-        "Sabela pide a app. O concello contrasta o padrón sen copialo: só «figura» ou «non».", 3.2
+        "Sabela pide a app co DNI e a data: coinciden co padrón do concello e a alta é automática.",
+        3.4,
     )
     page.click("main button[type=submit]")
     page.wait_for_load_state("networkidle")
@@ -145,7 +147,7 @@ def run_script(page, base, d):
     d.say("Só a notificación asinada da pasarela confirma o pagamento.", 2.8)
     page.click("text=Ver o acceso e a reserva")
     page.wait_for_load_state("networkidle")
-    code = page.locator(".access-code").first.inner_text().strip()
+    code = page.locator(".access-code__digits").first.text_content().replace(" ", "")
     page.locator("main [data-health-booking] .tip").first.wait_for()
     page.locator("main [data-health-booking]").first.scroll_into_view_if_needed()
     d.say(

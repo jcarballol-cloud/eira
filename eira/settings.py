@@ -211,13 +211,20 @@ EIRA_ADAPTERS = {
     "telegram": env("EIRA_TELEGRAM_ADAPTER", "apps.integrations.telegram.FakeTelegramAdapter"),
     "push": env("EIRA_PUSH_ADAPTER", "apps.integrations.push.FakeWebPushAdapter"),
     "ai": env("EIRA_AI_ADAPTER", "apps.integrations.ai.FakeAIAdapter"),
-    "padron": env("EIRA_PADRON_ADAPTER", "apps.integrations.padron.FakePadronAdapter"),
+    "padron": env("EIRA_PADRON_ADAPTER", "apps.integrations.padron.CsvPadronAdapter"),
 }
 EIRA_AI_ENABLED = env_bool("EIRA_AI_ENABLED", True)
 EIRA_AI_BASE_URL = env("EIRA_AI_BASE_URL", "http://localhost:11434/v1")
 EIRA_AI_MODEL = env("EIRA_AI_MODEL", "llama3.1")
 EIRA_AI_TIMEOUT = int(env("EIRA_AI_TIMEOUT", 180))  # segundos (modelos locais en CPU poden tardar)
 EIRA_METEOSIX_API_KEY = env("EIRA_METEOSIX_API_KEY", "")
+# Padrón (v4): segredo do HMAC das entradas do padrón. Se non se define, derívase de SECRET_KEY;
+# cambialo obriga a volver cargar o padrón.
+EIRA_PADRON_SECRET = env("EIRA_PADRON_SECRET", "")
+# Telegram (v4). O token SÓ no contorno; nunca no repositorio nin na documentación.
+EIRA_TELEGRAM_TOKEN = env("EIRA_TELEGRAM_TOKEN", "")
+EIRA_TELEGRAM_BOT = env("EIRA_TELEGRAM_BOT", "")
+EIRA_TELEGRAM_WEBHOOK_SECRET = env("EIRA_TELEGRAM_WEBHOOK_SECRET", "")
 # Clave do comercio do TPV (simulado: derívase da SECRET_KEY se non se define)
 EIRA_PAYMENT_SECRET = env("EIRA_PAYMENT_SECRET", "")
 EIRA_PAYMENT_HOLD_MINUTES = int(env("EIRA_PAYMENT_HOLD_MINUTES", 10))

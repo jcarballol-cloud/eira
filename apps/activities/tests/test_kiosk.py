@@ -124,6 +124,25 @@ def test_api_exit_without_entry_marks_present(client, setup):
     api(client, s, [{"enrollment": e.pk, "action": "out", "value": 7}])
     a = Attendance.objects.get(session=s, enrollment=e)
     assert a.present and a.rpe == 7
+    # v4: queda marcada como «na saída» para avisar discretamente á monitora
+    assert a.auto_in
+    r = client.get(f"/c/concello-a/monitor/sesion/{s.pk}/rexistro/")
+    assert {p["id"]: p for p in r.context["data"]["people"]}[e.pk]["auto"]
+    assert (
+        "marcada na saída"
+        in client.get(f"/c/concello-a/monitor/sesion/{s.pk}/asistencia/").content.decode()
+    )
+
+
+def test_api_normal_entry_is_not_auto(client, setup):
+    client.force_login(setup["monitor"])
+    s, e = setup["session"], setup["adult"]
+    api(
+        client,
+        s,
+        [{"enrollment": e.pk, "action": "in"}, {"enrollment": e.pk, "action": "out", "value": 5}],
+    )
+    assert not Attendance.objects.get(session=s, enrollment=e).auto_in
 
 
 def test_api_respects_effort_consent_of_minors(client, setup):

@@ -1,0 +1,19 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Avisos á veciñanza" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{% translate "Avisos á veciñanza" %}</h1>
+  <p class="muted mb-0">{% translate "Peches, alertas, horarios, actividades e festas: na app, por correo e por Telegram." %}</p></div>
+  {% if "admin" in roles %}<a class="btn" href="{% turl 'manage:notice_new' %}">{% icon 'plus' %} {% translate "Novo aviso" %}</a>{% endif %}</div>
+{% if scheduled %}<p class="alert">{% blocktranslate count n=scheduled|length %}{{ n }} aviso programado.{% plural %}{{ n }} avisos programados.{% endblocktranslate %}</p>{% endif %}
+<div class="table-wrap" tabindex="0"><table class="data">
+  <caption class="visually-hidden">{% translate "Avisos" %}</caption>
+  <thead><tr><th scope="col">{% translate "Aviso" %}</th><th scope="col">{% translate "Destinatarios" %}</th><th scope="col">{% translate "Estado" %}</th><th scope="col" class="num">{% translate "Persoas" %}</th><th scope="col" class="num">{% translate "Reservas canceladas" %}</th></tr></thead>
+  <tbody>{% for n in notices %}<tr>
+    <td><span class="badge">{{ n.get_category_display }}</span> <a href="{% turl 'manage:notice' n.pk %}">{{ n.title }}</a></td>
+    <td>{{ n.get_audience_display }}{% if n.facility %} · {{ n.facility.name }}{% elif n.activity %} · {{ n.activity.name }}{% elif n.parish %} · {{ n.parish.name }}{% endif %}</td>
+    <td>{% if n.sent_at %}{% blocktranslate with d=n.sent_at|date:"d/m H:i" %}Enviado {{ d }}{% endblocktranslate %}{% else %}<span class="badge badge-warn">{% blocktranslate with d=n.publish_at|date:"d/m H:i" %}Programado {{ d }}{% endblocktranslate %}</span>{% endif %}</td>
+    <td class="num">{% if n.sent_at %}{{ n.recipients }}{% else %}—{% endif %}</td>
+    <td class="num">{% if n.cancelled %}{{ n.cancelled }}{% else %}—{% endif %}</td>
+  </tr>{% empty %}<tr><td colspan="5">{% translate "Aínda non hai avisos." %}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}

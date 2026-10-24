@@ -392,7 +392,8 @@ def seed(rng):
                 date=day,
                 start_time=g.start_time,
                 duration_minutes=g.duration_minutes,
-                closed_at=timezone.now() - dt.timedelta(days=offset),
+                closed_at=timezone.make_aware(dt.datetime.combine(day, g.start_time))
+                + dt.timedelta(minutes=g.duration_minutes + 10),
             )
             rows = []
             for e in members:

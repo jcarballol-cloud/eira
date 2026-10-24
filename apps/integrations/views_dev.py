@@ -3,6 +3,7 @@
 simulados, simulador de pechadura e cambio rápido de perfil."""
 
 import datetime as dt
+import secrets
 
 from django.contrib.auth import login
 from django.http import Http404
@@ -22,19 +23,91 @@ from .identity import FAKE_IDENTITIES
 from .models import DevMail, FakePayment, OutboundMessage
 
 
-def mailbox(request):
+def mailbox(request, pk=None):
+    """v4: como unha bandexa real: lista (remitente, asunto, extracto, data) e vista da mensaxe."""
+    from django.conf import settings
+
     to = request.GET.get("para", "")
+    if not to and request.GET.get("min") == "1" and request.user.is_authenticated:
+        to = request.user.email
     mails = DevMail.objects.all()
     if to:
         mails = mails.filter(to__iexact=to)
-    return render(request, "dev/mailbox.html", {"mails": mails[:50], "to": to, "tool": "mail"})
+    current = get_object_or_404(DevMail, pk=pk) if pk else None
+    if current is None and to and not request.GET.get("lista"):
+        current = mails.first()  # filtrando por persoa, ábrese a última mensaxe
+    return render(
+        request,
+        "dev/mailbox.html",
+        {
+            "mails": mails[:80],
+            "to": to,
+            "current": current,
+            "sender": settings.EIRA_DEFAULT_FROM_EMAIL,
+            "tool": "mail",
+        },
+    )
 
 
 def outbox(request):
     return render(
         request,
         "dev/outbox.html",
-        {"messages_out": OutboundMessage.objects.all()[:100], "tool": "outbox"},
+        {
+            "messages_out": OutboundMessage.objects.exclude(channel="telegram")[:100],
+            "tool": "outbox",
+        },
+    )
+
+
+def telegram(request):
+    """v4: simulador de Telegram. Chats do bot persoal e canles públicas, con burbullas.
+    Escribir ao bot fai o mesmo ca o webhook real (p. ex. `/start CODIGO` vincula a conta)."""
+    from apps.notifications.notices import handle_bot_message
+    from apps.tenants.models import Municipality
+
+    start = request.GET.get("start", "")
+    if request.method == "POST":
+        chat = request.POST.get("chat") or f"sim-{secrets.randbelow(10**6):06d}"
+        text = (request.POST.get("text") or "").strip()[:500]
+        if text:
+            OutboundMessage.objects.create(
+                channel="telegram", target=chat, payload={"text": text, "from": "user"}
+            )
+            handle_bot_message(chat, text)
+        return redirect(f"{request.path}?chat={chat}")
+    msgs = OutboundMessage.objects.filter(channel="telegram")
+    chats = {}
+    for m in msgs.order_by("-sent_at"):
+        chats.setdefault(m.target, m)
+    users = {u.telegram_chat: u for u in User.objects.filter(telegram_chat__in=list(chats))}
+    channels = dict(
+        Municipality.objects.exclude(telegram_channel="").values_list("telegram_channel", "name")
+    )
+    rows = [
+        {
+            "id": cid,
+            "last": last,
+            "public": cid.startswith("@"),
+            "title": (channels.get(cid) or cid)
+            if cid.startswith("@")
+            else (users[cid].display_name or users[cid].email if cid in users else cid),
+        }
+        for cid, last in chats.items()
+    ]
+    current = request.GET.get("chat") or ("" if start else (rows[0]["id"] if rows else ""))
+    thread = list(msgs.filter(target=current).order_by("sent_at")[:200]) if current else []
+    return render(
+        request,
+        "dev/telegram.html",
+        {
+            "chats": rows,
+            "current": current,
+            "current_row": next((r for r in rows if r["id"] == current), None),
+            "thread": thread,
+            "start": start,
+            "tool": "telegram",
+        },
     )
 
 

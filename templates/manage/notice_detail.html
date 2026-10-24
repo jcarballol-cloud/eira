@@ -1,0 +1,28 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{{ notice.title }}{% endblock %}
+{% block content %}
+<p><a href="{% turl 'manage:notices' %}">← {% translate "Avisos" %}</a></p>
+<div class="page-head"><div><p class="eyebrow">{{ notice.get_category_display }}</p><h1>{{ notice.title }}</h1></div></div>
+<div class="layout-aside layout-aside--wide">
+  <section class="stack-sm" aria-labelledby="pv">
+    <h2 id="pv">{% translate "Como chega en cada canle" %}</h2>
+    {% include "manage/_notice_preview.html" %}
+  </section>
+  <aside class="card stack-sm">
+    <dl class="kv">
+      <dt>{% translate "Destinatarios" %}</dt><dd>{{ notice.get_audience_display }}{% if notice.facility %} · {{ notice.facility.name }}{% elif notice.activity %} · {{ notice.activity.name }}{% elif notice.parish %} · {{ notice.parish.name }}{% endif %}</dd>
+      {% if notice.window_start %}<dt>{% translate "Franxa" %}</dt><dd>{{ notice.window_start|date:"d/m H:i" }}–{{ notice.window_end|date:"d/m H:i" }}</dd>{% endif %}
+      <dt>{% translate "Estado" %}</dt><dd>{% if notice.sent_at %}{% blocktranslate with d=notice.sent_at|date:"d/m/Y H:i" %}Enviado {{ d }}{% endblocktranslate %}{% else %}{% blocktranslate with d=notice.publish_at|date:"d/m/Y H:i" %}Programado {{ d }}{% endblocktranslate %}{% endif %}</dd>
+      {% if notice.sent_at %}<dt>{% translate "Persoas" %}</dt><dd>{{ notice.recipients }}</dd>
+      <dt>{% translate "Por canle" %}</dt><dd>{% for k, v in notice.sent_counts.items %}{% if v %}{{ k }} {{ v }} {% endif %}{% endfor %}</dd>
+      <dt>{% translate "Reservas canceladas" %}</dt><dd>{{ notice.cancelled }}</dd>{% elif estimate %}
+      <dt>{% translate "Estimación" %}</dt><dd>{% blocktranslate count n=estimate.people %}{{ n }} persoa{% plural %}{{ n }} persoas{% endblocktranslate %}</dd>{% endif %}
+    </dl>
+    {% if not notice.sent_at and "admin" in roles %}
+    <form method="post" class="row">{% csrf_token %}
+      <button class="btn" type="submit" name="action" value="send_now">{% translate "Enviar agora" %}</button>
+      <button class="btn btn-secondary" type="submit" name="action" value="delete">{% translate "Eliminar" %}</button>
+    </form>{% endif %}
+  </aside>
+</div>
+{% endblock %}

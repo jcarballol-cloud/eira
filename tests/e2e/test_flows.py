@@ -50,7 +50,7 @@ def test_email_login_and_booking_with_offline_code(new_page, base):
     page.wait_for_load_state()
     page.click("text=Ver o acceso e a reserva")
     page.wait_for_load_state()
-    access_code = page.locator(".access-code").inner_text().strip()
+    access_code = page.locator(".access-code__digits").text_content().replace(" ", "")
     assert re.fullmatch(r"\d{6}", access_code)
     booking = Booking.objects.get(user__email="nova.vecina@example.org")
     assert booking.status == "confirmed"
@@ -145,7 +145,7 @@ def test_spanish_interface(new_page, base):
     page.click("button[lang=es]")
     page.wait_for_load_state()
     assert page.locator("html").get_attribute("lang") == "es"
-    assert page.locator("h1").inner_text() == "Instalaciones deportivas"
+    assert page.locator("h1").inner_text() == "Instalaciones"
 
 
 def test_pitch_script(new_page, base):
@@ -196,8 +196,9 @@ def test_request_app_by_email_install_and_first_open(new_page, base):
     page.click("text=Solicita a app de deportes")
     page.fill("#id_name", "Persoa E2E")
     page.fill("#id_email", email)
-    page.fill("#id_birth_year", "1991")
-    page.fill("#id_postcode", "15999")
+    page.fill("#id_surnames", "Proba Exemplo")
+    page.fill("#id_id_number", "12345678Z")
+    page.fill("#id_birth_date", "1990-05-14")
     page.check("#id_resident")
     page.click("main button[type=submit]")
     page.wait_for_selector("text=Mira o teu correo")

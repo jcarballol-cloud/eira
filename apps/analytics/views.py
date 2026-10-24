@@ -77,9 +77,13 @@ def dashboard(request):
             [[str(k), v] for k, v in s["incidents"]["by_status"]],
             ods=ods,
         )
-    occ_chart = indicators.hbar(s["occupancy"], "pct", "facility", suffix=" %")
+    occ_chart = indicators.hbar(s["occupancy"], "pct", "facility", suffix=" %", scale="percent")
     ns_chart = indicators.hbar(
-        [r for r in s["occupancy"] if r["booked"]], "no_show_pct", "facility", suffix=" %"
+        [r for r in s["occupancy"] if r["booked"]],
+        "no_show_pct",
+        "facility",
+        suffix=" %",
+        scale="percent",
     )
     rev_items = [
         {"label": r["week"].strftime("%d/%m"), "value": round(r["net"] / 100)}

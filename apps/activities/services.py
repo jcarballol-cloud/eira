@@ -26,7 +26,7 @@ def pseudonym(enrollment_id):
     return hmac.new(key, f"enrollment:{enrollment_id}".encode(), hashlib.sha256).hexdigest()[:12]
 
 
-def enroll(group, user, dependent=None):
+def enroll(group, user, dependent=None, surnames=""):
     if dependent is not None:
         if dependent.household.responsible_id != user.pk:
             raise EnrollmentError(_("Só podes inscribir menores da túa unidade familiar."))
@@ -60,6 +60,7 @@ def enroll(group, user, dependent=None):
             user=user,
             dependent=dependent,
             status=status,
+            surnames=(surnames or "").strip()[:80],
         )
         e.pseudonym = pseudonym(e.pk)
         e.save(update_fields=["pseudonym"])
@@ -196,14 +197,16 @@ def can_record_effort(enrollment):
 
 
 def record_rpe(session, values):
-    """values: {enrollment_id: rpe 0–10}. Pecha a sesión."""
+    """values: {enrollment_id: rpe 0–10}. Pecha a sesión se xa rematou."""
     for att in session.attendances.filter(present=True).select_related("enrollment__dependent"):
         v = values.get(att.enrollment_id)
         if v is not None and 0 <= v <= 10 and can_record_effort(att.enrollment):
             att.rpe = v
             att.save(update_fields=["rpe"])
-    session.closed_at = timezone.now()
-    session.save(update_fields=["closed_at"])
+    # Só se pecha se a sesión xa rematou; se non, segue aberta para quen sae máis tarde.
+    if timezone.now() >= session.end_dt:
+        session.closed_at = timezone.now()
+        session.save(update_fields=["closed_at"])
 
 
 def session_load_summary(session):
@@ -252,6 +255,7 @@ def kiosk_people(session):
                     "minor": bool(e.dependent_id),
                     "in": bool(a and a.present),
                     "rpe": a.rpe if a else None,
+                    "auto": bool(a and a.auto_in),
                 },
             )
         )
@@ -268,6 +272,7 @@ def kiosk_record(session, enrollment, action, value=None, at=None):
         att.present = True
         att.minutes = session.duration_minutes
         att.checked_in_at = at
+        att.auto_in = action == "out"
     if (
         action == "out"
         and value is not None
@@ -277,4 +282,4 @@ def kiosk_record(session, enrollment, action, value=None, at=None):
         att.rpe = int(value)
         att.rpe_at = at
     att.save()
-    return {"id": enrollment.pk, "in": att.present, "rpe": att.rpe}
+    return {"id": enrollment.pk, "in": att.present, "rpe": att.rpe, "auto": att.auto_in}

@@ -75,6 +75,12 @@ class Municipality(models.Model):
     )
     contact_email = models.EmailField(_("correo de contacto"), blank=True)
     contact_phone = models.CharField(_("teléfono de contacto"), max_length=20, blank=True)
+    telegram_channel = models.CharField(
+        _("canle pública de Telegram"),
+        max_length=60,
+        blank=True,
+        help_text=_("Nome da canle, p. ex. @deportesvilardeiras. Opcional."),
+    )
     address = models.CharField(_("enderezo"), max_length=200, blank=True)
     population = models.PositiveIntegerField(_("poboación"), null=True, blank=True)
     postcodes = models.CharField(

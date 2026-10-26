@@ -8,6 +8,7 @@
   <div class="qr" role="img" aria-label="{% translate 'Código QR de entrada' %}">{{ svg|safe }}</div>
   <p class="mono"><small>{{ url }}</small></p>
   <p>{% translate "Avarías: usa o botón «Avisar dunha avaría» na web do concello." %}</p>
-  <button class="btn no-print" type="button" data-print>{% translate "Imprimir cartel" %}</button>
+  <p class="no-print row center-row"><button class="btn" type="button" data-print>{% translate "Imprimir cartel" %}</button>
+  <a class="btn btn-secondary" href="{% turl 'manage:facility_poster' facility.pk %}">{% translate "Cartel completo en PDF (con normas, accidentes e 112)" %}</a></p>
 </article>
 {% endblock %}

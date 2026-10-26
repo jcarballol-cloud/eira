@@ -62,6 +62,14 @@ def euros(cents):
 
 
 @register.filter
+def booking_url(booking, name="bookings:detail"):
+    """URL dunha reserva no seu concello (v5: pode ser outro concello da rede)."""
+    from apps.tenants.urlutils import treverse
+
+    return treverse(booking.municipality, name, booking.pk)
+
+
+@register.filter
 def hhmm(dt):
     return localtime(dt).strftime("%H:%M") if dt else ""
 

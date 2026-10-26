@@ -22,6 +22,16 @@ def eira(request):
     kind = kind_in_tenant(user, roles) if tenant else kind_global(user)
     # Concello da app cando a páxina non ten concello (conta, saúde…): o principal da persoa
     app_tenant = tenant or (home_tenant(user) if user.is_authenticated else None)
+    # v5: persoa doutro concello da rede reservando aquí → a app segue sendo a do seu concello
+    network_visit = None
+    if kind == "neighbour" and tenant is not None and tenant.region_id and user.is_authenticated:
+        from apps.bookings.services import linked_home, linked_to
+
+        if not linked_to(tenant, user):
+            home = linked_home(user)
+            if home and home.pk != tenant.pk and home.region_id == tenant.region_id:
+                network_visit = {"home": home, "here": tenant}
+                app_tenant = home
     layout = LAYOUT[kind]
     if layout == "app" and app_tenant is None:
         layout = "public"
@@ -48,7 +58,13 @@ def eira(request):
                 if (tenant or app_tenant)
                 else None
             )
+    from .help import help_for
+
+    match = getattr(request, "resolver_match", None)
     return {
+        "help_topic": help_for(match.view_name if match else "", kind),
+        "network_visit": network_visit,
+        "desk_mode": getattr(user, "desk_mode", "basic") if user.is_authenticated else "basic",
         "support_access": getattr(request, "support_access", None),
         "demo_persona": demo_persona,
         "demo_place": demo_place,
@@ -68,7 +84,9 @@ def eira(request):
         "is_neighbour": kind in ("neighbour", "public"),
         "region_consult": bool(tenant and "region_admin" in roles and "admin" not in roles),
         "framed": getattr(request, "framed", False) and layout in ("app", "tablet"),
-        "is_staff_of_tenant": bool(roles & {"admin", "maintenance", "monitor", "region_admin"}),
+        "is_staff_of_tenant": bool(
+            roles & {"admin", "maintenance", "monitor", "region_admin", "dpo"}
+        ),
         "is_tenant_admin": bool(roles & {"admin", "region_admin"}),
         "demo_tools": settings.EIRA_DEMO_TOOLS,
         "unread_notifications": unread,

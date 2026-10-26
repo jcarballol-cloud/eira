@@ -6,7 +6,7 @@
 <div class="table-wrap" tabindex="0"><table class="data">
   <caption class="visually-hidden">{% translate "Incidencias" %}</caption>
   <thead><tr><th scope="col">#</th><th scope="col">{% translate "Data" %}</th><th scope="col">{% translate "Instalación" %}</th><th scope="col">{% translate "Tipo" %}</th><th scope="col">{% translate "Orixe" %}</th><th scope="col">{% translate "Estado" %}</th></tr></thead>
-  <tbody>{% for i in incidents %}<tr><td><a href="{% turl 'manage:incident_detail' i.pk %}">#{{ i.pk }}</a></td><td>{{ i.created_at|date:"d/m H:i" }}</td><td>{{ i.facility.name }}</td><td>{{ i.get_category_display }}</td><td>{{ i.get_source_display }}</td><td><span class="badge {% if i.status == 'received' %}badge-warn{% elif i.status == 'resolved' %}badge-ok{% endif %}">{{ i.get_status_display }}</span></td></tr>
+  <tbody>{% for i in incidents %}<tr><td><a href="{% turl 'manage:incident_detail' i.pk %}">#{{ i.pk }}</a></td><td>{{ i.created_at|date:"d/m H:i" }}</td><td>{{ i.facility.name }}</td><td>{% if i.priority == 'high' %}<span class="badge badge-alert">{% translate "Risco" %}</span> {% endif %}{{ i.get_category_display }}</td><td>{{ i.get_source_display }}</td><td><span class="badge {% if i.status == 'received' %}badge-warn{% elif i.status == 'resolved' %}badge-ok{% endif %}">{{ i.get_status_display }}</span></td></tr>
   {% empty %}<tr><td colspan="6">{% translate "Sen incidencias." %}</td></tr>{% endfor %}</tbody>
 </table></div>
 {% endblock %}

@@ -30,6 +30,8 @@ PASSTHROUGH_PREFIXES = (
     "/rexion/",
     "/saude/",
     "/offline/",
+    "/axuda/",
+    "/modo-xestion/",
 )
 
 

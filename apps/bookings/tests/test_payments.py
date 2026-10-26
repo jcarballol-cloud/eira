@@ -27,7 +27,7 @@ def book_and_go_to_tpv(client, facility, user, start=None):
     start = start or next_slot(facility)
     r = client.post(
         f"{C}/instalacions/{facility.pk}/reservar/",
-        {"inicio": start.isoformat(), "accept_rules": "on"},
+        {"inicio": start.isoformat(), "accept_rules": "on", "participants": "2"},
     )
     assert r.status_code == 302 and "/dev/tpv/" in r["Location"], r
     return Booking.objects.filter(user=user).latest("created_at"), r["Location"]
@@ -315,7 +315,10 @@ def test_demo_refunds_are_coherent(db):
     call_command("seed_demo", verbosity=0)
     total = Booking.objects.count()
     refunded = Booking.objects.filter(refunded_cents__gt=0)
-    assert set(refunded.values_list("status", flat=True)) <= {"cancelled"}
+    assert set(refunded.values_list("status", flat=True)) <= {
+        "cancelled",
+        "declined",
+    }  # v5: rexeitada polo concello → devolución
     assert refunded.count() < total * 0.05
     assert not refunded.filter(cancel_reason="").exists()
     assert not Booking.objects.filter(refunded_cents__gt=F("paid_cents")).exists()

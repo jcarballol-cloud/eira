@@ -11,6 +11,8 @@
     <dt>{% translate "Data de uso" %}</dt><dd>{{ booking.start|date:"d/m/Y" }} {{ booking.start|hhmm }}–{{ booking.end|hhmm }}</dd>
     <dt>{% translate "Tarifa" %}</dt><dd>{{ booking.tariff_audience }}</dd>
     {% if booking.discount_pct %}<dt>{% translate "Prezo habitual" %}</dt><dd><del>{{ booking.base_price_cents|euros }}</del> · −{{ booking.discount_pct }} % {% translate "franxa tranquila" %}</dd>{% endif %}
+    {% if booking.lighting_cents %}<dt>{% translate "Desglose" %}</dt><dd>{% include "bookings/_amount.html" with b=booking %}</dd>{% endif %}
+    <dt>{% translate "Forma de pagamento" %}</dt><dd>{{ booking.get_payment_method_display }}</dd>
     <dt>{% translate "Pagado" %}</dt><dd><strong>{{ booking.paid_cents|euros }}</strong></dd>
     {% if booking.refunded_cents %}<dt>{% translate "Devolto" %}</dt><dd>{{ booking.refunded_cents|euros }}</dd>{% endif %}
     <dt>{% translate "Operación" %}</dt><dd class="mono">{{ booking.payment_reference }}</dd>

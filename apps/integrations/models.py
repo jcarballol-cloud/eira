@@ -38,6 +38,8 @@ class FakePayment(models.Model):
     reference = models.CharField(max_length=40, unique=True)
     amount_cents = models.PositiveIntegerField()
     description = models.CharField(max_length=200)
+    # v5: comercio (TPV) do concello que cobra; nas reservas en concellos da rede, o do destino
+    merchant = models.CharField(max_length=160, blank=True)
     return_url = models.CharField(max_length=300)
     return_url_ko = models.CharField(max_length=300, blank=True)
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)

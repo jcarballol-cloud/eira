@@ -32,7 +32,7 @@ class AppRequestForm(forms.ModelForm):
     """v4: contraste automático co padrón por DNI/NIE + data de nacemento (nunca polo nome)."""
 
     resident = forms.BooleanField(
-        label=gettext_lazy("Vivo no concello e estou empadroado/a"),
+        label=gettext_lazy("Vivo no concello e teño o empadroamento aquí"),
         required=False,
         help_text=gettext_lazy(
             "Se non o estás, tamén podes usar a app: entra co teu correo e paga a tarifa xeral."

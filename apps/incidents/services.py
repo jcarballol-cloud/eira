@@ -23,6 +23,20 @@ def notify_staff_new_incident(incident):
     from apps.tenants.urlutils import treverse
 
     url = treverse(incident.municipality, "manage:incident_detail", incident.pk)
+    if incident.priority == Incident.Priority.HIGH:
+        # v5: risco → aviso inmediato á administración e a mantemento, tamén por correo
+        for user in _staff(incident.municipality, [Role.ADMIN, Role.MAINTENANCE]):
+            notify(
+                user,
+                _("RISCO: %(f)s") % {"f": incident.facility.name},
+                incident.description[:200],
+                url=url,
+                municipality=incident.municipality,
+                level="warning",
+                email=True,
+            )
+        audit("incident.risk", incident.reporter, incident.municipality, incident)
+        return
     for user in _staff(incident.municipality, [Role.ADMIN]):
         notify(
             user,

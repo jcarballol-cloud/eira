@@ -5,7 +5,7 @@
   <section class="card" aria-labelledby="req-title">
     <p class="eyebrow">{{ tenant.name }}</p>
     <h1 id="req-title">{% translate "Solicitar a app de deportes" %}</h1>
-    <p>{% translate "Enviarémosche ao correo a ligazón para instalala e, se estás empadroado/a, o teu código para a tarifa de veciñanza." %}</p>
+    <p>{% translate "Enviarémosche ao correo a ligazón para instalala e, se tes o empadroamento no concello, o teu código para a tarifa de veciñanza." %}</p>
     <form method="post" novalidate>
       {% csrf_token %}
       {% include "includes/form.html" %}

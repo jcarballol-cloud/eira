@@ -4,7 +4,7 @@
 <h1>{% translate "Escolas e grupos" %}</h1>
 {% if pending %}
 <section class="card mb-2" aria-labelledby="pp-title">
-  <h2 id="pp-title">{% translate "Apuntadas polo monitor, pendentes de validar" %} <span class="badge badge-warn">{{ pending|length }}</span></h2>
+  <h2 id="pp-title">{% translate "Apuntadas pola persoa monitora, pendentes de validar" %} <span class="badge badge-warn">{{ pending|length }}</span></h2>
   <ul class="list">{% for p in pending %}<li>
     <form method="post" action="{% turl 'manage:pending_resolve' p.pk %}" class="row-between">{% csrf_token %}
       <span><strong>{{ p.first_name }}</strong>{% if p.birth_year %} · {{ p.birth_year }}{% endif %}<br><small class="muted">{{ p.group.activity.name }} · {{ p.group.name }} · {% blocktranslate with d=p.created_at|date:"d/m" %}apuntada o {{ d }}{% endblocktranslate %}</small></span>
@@ -22,7 +22,7 @@
 {% endif %}
 <div class="table-wrap" tabindex="0"><table class="data">
   <caption class="visually-hidden">{% translate "Grupos" %}</caption>
-  <thead><tr><th scope="col">{% translate "Actividade" %}</th><th scope="col">{% translate "Grupo" %}</th><th scope="col">{% translate "Monitor/a" %}</th><th scope="col" class="num">{% translate "Inscritas" %}</th><th scope="col" class="num">{% translate "Espera" %}</th></tr></thead>
+  <thead><tr><th scope="col">{% translate "Actividade" %}</th><th scope="col">{% translate "Grupo" %}</th><th scope="col">{% translate "Persoa monitora" %}</th><th scope="col" class="num">{% translate "Inscritas" %}</th><th scope="col" class="num">{% translate "Espera" %}</th></tr></thead>
   <tbody>{% for g in groups %}<tr><td>{{ g.activity.name }}</td><td><a href="{% turl 'manage:group' g.pk %}">{{ g.name }}</a></td><td>{{ g.monitor|default:"—" }}</td><td class="num">{{ g.enrolled.count }}/{{ g.places }}</td><td class="num">{{ g.enrollments.all|length }}</td></tr>{% endfor %}</tbody>
 </table></div>
 <p class="mt-2"><a href="{% turl 'activities:observatory' %}">{% translate "Ver o observatorio anónimo" %}</a></p>

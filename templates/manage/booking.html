@@ -9,9 +9,13 @@
   <section class="card stack-sm">
     <h2>{% translate "Datos" %}</h2>
     <dl class="kv">
-      <dt>{% translate "Persoa" %}</dt><dd>{{ booking.holder_label|default:"—" }}{% if booking.holder_phone %} · {{ booking.holder_phone }}{% endif %}</dd>
+      <dt>{% translate "Persoa" %}</dt><dd>{{ booking.holder_label|default:"—" }}{% if booking.holder_phone %} · {{ booking.holder_phone }}{% endif %}{% if booking.network_origin %} <span class="badge">{% blocktranslate with c=booking.network_origin.name %}Da rede · {{ c }}{% endblocktranslate %}</span>{% endif %}</dd>
+      <dt>{% translate "Persoas" %}</dt><dd>{{ booking.participants }}{% with names=booking.participant_name_list %}{% if names %}<br><small>{{ names|join:", " }}</small>{% endif %}{% endwith %}</dd>
+      <dt>{% translate "Forma de pagamento" %}</dt><dd>{{ booking.get_payment_method_display }}{% if booking.voucher %} · {{ booking.voucher.type.name }} ({{ booking.voucher.uses_left }}/{{ booking.voucher.uses_total }}){% endif %}</dd>
       <dt>{% translate "Tarifa" %}</dt><dd>{{ booking.tariff_audience }}{% if booking.discount_pct %} · −{{ booking.discount_pct }} % {% translate "franxa tranquila" %}{% endif %}</dd>
-      <dt>{% translate "Importe" %}</dt><dd>{% if booking.price_cents %}{{ booking.price_cents|euros }}{% else %}{% translate "Gratuíta" %}{% endif %}</dd>
+      <dt>{% translate "Importe" %}</dt><dd>{% include "bookings/_amount.html" with b=booking %}</dd>
+      {% if booking.outstanding_cents %}<dt>{% translate "Pendente de cobro" %}</dt><dd>{{ booking.outstanding_cents|euros }}{% if booking.status == 'pending_office' %} · {% blocktranslate with d=booking.hold_expires_at|date:"d/m H:i" %}prazo ata o {{ d }}{% endblocktranslate %}{% endif %}</dd>{% endif %}
+      {% if booking.decision_reason %}<dt>{% translate "Motivo do concello" %}</dt><dd>{{ booking.decision_reason }}</dd>{% endif %}
       <dt>{% translate "Pagado" %}</dt><dd>{{ booking.paid_cents|euros }}{% if booking.refunded_cents %} · {% translate "devolto" %} {{ booking.refunded_cents|euros }}{% endif %}</dd>
       <dt>{% translate "Normas" %}</dt><dd>v{{ booking.rules_version.version }} · {{ booking.rules_accepted_at|date:"d/m/Y H:i" }}</dd>
       {% if booking.created_by and booking.created_by != booking.user %}<dt>{% translate "Feita por" %}</dt><dd>{{ booking.created_by }}</dd>{% endif %}
@@ -20,14 +24,27 @@
     <div class="table-wrap" tabindex="0"><table class="data"><caption class="visually-hidden">{% translate "Cobros da reserva" %}</caption>
       <thead><tr><th scope="col">{% translate "Data" %}</th><th scope="col">{% translate "Referencia" %}</th><th scope="col">{% translate "Método" %}</th><th scope="col">{% translate "Estado" %}</th><th scope="col" class="num">{% translate "Importe" %}</th></tr></thead>
       <tbody>{% for p in payments %}<tr><td>{{ p.created_at|date:"d/m H:i" }}</td><td class="mono">{{ p.reference }}</td><td>{{ p.get_method_display }}</td><td>{{ p.get_status_display }}</td><td class="num">{{ p.amount_cents|euros }}</td></tr>{% empty %}<tr><td colspan="5">{% translate "Sen cobros." %}</td></tr>{% endfor %}</tbody></table></div>
+    <h3 class="mt-2">{% translate "Estado ao entrar e ao saír" %}</h3>
+    {% include "bookings/_states.html" with b=booking %}
   </section>
   <aside class="stack">
-    {% if booking.status == 'pending_payment' %}
+    {% if can_act and booking.status == 'pending_approval' or can_act and booking.requested_start %}
+    <section class="card" aria-labelledby="appr-title">
+      <h2 id="appr-title">{% if booking.requested_start %}{% translate "Cambio para aprobar" %}{% else %}{% translate "Reserva para aprobar" %}{% endif %}</h2>
+      {% if booking.requested_start %}<p>{% blocktranslate trimmed with d=booking.requested_start|date:"l j \d\e F" h=booking.requested_start|hhmm %}Pide pasala ao {{ d }} ás {{ h }}.{% endblocktranslate %}</p>{% endif %}
+      {% if booking.paid_cents %}<p class="help">{% blocktranslate with p=booking.paid_cents|euros %}Xa pagou {{ p }}. Se a rexeitas, devólvese automaticamente.{% endblocktranslate %}</p>{% endif %}
+      <form method="post" class="mb-1">{% csrf_token %}<input type="hidden" name="action" value="approve"><button class="btn" type="submit">{% icon 'check' %} {% translate "Aprobar" %}</button></form>
+      <form method="post" novalidate>{% csrf_token %}<input type="hidden" name="action" value="decline">
+        <div class="field"><label for="decline-reason">{% translate "Motivo para rexeitar" %}</label><textarea id="decline-reason" name="reason" rows="2" required aria-required="true"></textarea></div>
+        <button class="btn btn-danger" type="submit">{% translate "Rexeitar" %}</button></form>
+    </section>
+    {% endif %}
+    {% if can_act and booking.status == 'pending_payment' or can_act and booking.outstanding_cents and booking.status != 'pending_approval' %}
     <form method="post" class="card" novalidate>{% csrf_token %}<input type="hidden" name="action" value="counter_pay">
-      <h2>{% translate "Cobrar no mostrador" %}</h2><p>{% blocktranslate with p=booking.price_cents|euros %}Importe: {{ p }}{% endblocktranslate %}</p>
+      <h2>{% translate "Cobrar no mostrador" %}</h2><p>{% blocktranslate with p=booking.outstanding_cents|default:booking.price_cents|euros %}Importe: {{ p }}{% endblocktranslate %}</p>
       {% include "includes/form.html" %}<button class="btn" type="submit">{% translate "Marcar como pagada" %}</button></form>
     {% endif %}
-    {% if booking.status == 'confirmed' or booking.status == 'pending_payment' %}
+    {% if can_act and booking.status == 'confirmed' or can_act and booking.status == 'pending_payment' or can_act and booking.status == 'pending_office' %}
     <form method="post" action="{% turl 'manage:staff_cancel' booking.pk %}" class="card">{% csrf_token %}<h2>{% translate "Cancelar" %}</h2><p class="help">{% translate "Cancelación polo concello: devolución íntegra e aviso á persoa." %}</p><button class="btn btn-danger" type="submit">{% translate "Cancelar a reserva" %}</button></form>
     {% endif %}
   </aside>

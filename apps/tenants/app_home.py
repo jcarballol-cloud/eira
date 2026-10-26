@@ -14,10 +14,14 @@ from .urlutils import neighbour_required
 @neighbour_required
 def home(request):
     now = timezone.now()
-    mine = (
-        Booking.objects.for_tenant(request.tenant)
-        .filter(user=request.user)
-        .select_related("facility")
+    # v5: tamén as reservas nos concellos próximos da rede (cada unha co seu concello)
+    from django.db.models import Q
+
+    towns = Q(municipality=request.tenant)
+    if request.tenant.region_id:
+        towns |= Q(municipality__region_id=request.tenant.region_id)
+    mine = Booking.objects.filter(towns, user=request.user).select_related(
+        "facility", "municipality"
     )
     upcoming = list(
         mine.filter(
@@ -26,6 +30,8 @@ def home(request):
                 Booking.Status.CONFIRMED,
                 Booking.Status.PENDING_PAYMENT,
                 Booking.Status.USED,
+                Booking.Status.PENDING_APPROVAL,
+                Booking.Status.PENDING_OFFICE,
             ],
         ).order_by("start")[:4]
     )
@@ -60,6 +66,7 @@ def home(request):
             )[:3],
             "dependents": list(household.dependents.all()) if household else [],
             "is_resident": request.user.is_resident(request.tenant),
+            "nearby": request.tenant.region_id is not None,
             "nav": "app_home",
         },
     )

@@ -94,7 +94,7 @@ def test_staff_cannot_book_or_enroll_as_neighbour(client, people, padel_a, objec
         client.force_login(people[who])
         r = client.post(
             f"{C}/instalacions/{padel_a.pk}/reservar/",
-            {"inicio": start.isoformat(), "accept_rules": "on"},
+            {"inicio": start.isoformat(), "accept_rules": "on", "participants": "2"},
         )
         assert r.status_code == 403, who
         r = client.post(

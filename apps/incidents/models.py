@@ -19,6 +19,12 @@ class Incident(TenantModel):
         CITIZEN = "citizen", _("Veciñanza")
         CHECKLIST = "checklist", _("Checklist de peche")
         STAFF = "staff", _("Persoal municipal")
+        START_STATE = "start_state", _("Estado ao entrar (xa estaba antes da reserva)")
+        RISK = "risk", _("Aviso de risco")
+
+    class Priority(models.TextChoices):
+        NORMAL = "normal", _("Normal")
+        HIGH = "high", _("Alta")
 
     class Category(models.TextChoices):
         DAMAGE = "damage", _("Desperfecto")
@@ -55,6 +61,20 @@ class Incident(TenantModel):
     validated_at = models.DateTimeField(null=True, blank=True)
     resolved_at = models.DateTimeField(null=True, blank=True)
     resolution_note = models.TextField(_("nota de resolución"), blank=True)
+    # v5
+    priority = models.CharField(
+        _("prioridade"), max_length=10, choices=Priority.choices, default=Priority.NORMAL
+    )
+    prior_to_booking = models.ForeignKey(
+        "bookings.Booking",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="found_on_start",
+        help_text=_(
+            "Detectada ao comezar esta reserva: xa estaba antes e non é responsabilidade súa."
+        ),
+    )
 
     class Meta:
         verbose_name = _("incidencia")

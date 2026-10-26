@@ -69,6 +69,24 @@ def dashboard(request):
         .select_related("facility", "assigned_to")[:10]
     )
     key_bookings = [b for b in bookings if b.facility.access_level == AccessLevel.CUSTODIAN]
+    # v5: reservas e cambios para aprobar e pagamentos pendentes na oficina
+    from django.db.models import Q
+
+    to_approve = (
+        Booking.objects.for_tenant(tenant)
+        .filter(
+            Q(status=Booking.Status.PENDING_APPROVAL) | Q(requested_start__isnull=False),
+            end__gt=timezone.now(),
+        )
+        .select_related("facility", "user")
+        .order_by("start")[:10]
+    )
+    office = (
+        Booking.objects.for_tenant(tenant)
+        .filter(status=Booking.Status.PENDING_OFFICE, hold_expires_at__gt=timezone.now())
+        .select_related("facility", "user")
+        .order_by("hold_expires_at")[:10]
+    )
     forecast = tips = None
     first = next((f for f in facilities if f.latitude is not None), None)
     if first and tenant.module_enabled("weather"):
@@ -88,6 +106,9 @@ def dashboard(request):
             "incidents_new": incidents_new,
             "orders_today": orders_today,
             "key_bookings": key_bookings,
+            "to_approve": to_approve,
+            "office": office,
+            "vitality": _vitality(tenant),
             "forecast": forecast,
             "tips": tips,
             "nav": "manage",
@@ -95,6 +116,28 @@ def dashboard(request):
             "now": timezone.now(),
         },
     )
+
+
+def _vitality(tenant):
+    """v5 · G: índice de vida activa por instalación (gárdase 10 min en caché)."""
+    from django.core.cache import cache
+
+    from apps.analytics.vitality import municipality_indices
+
+    key = f"eira:vitality:{tenant.pk}:{timezone.localdate().isoformat()}"
+    rows = cache.get(key)
+    if rows is None:
+        rows = [
+            {
+                "pk": i["facility"].pk,
+                "name": i["facility"].name,
+                "value": i["value"],
+                "level": i["level"],
+            }
+            for i in municipality_indices(tenant)
+        ]
+        cache.set(key, rows, 600)
+    return rows
 
 
 @role_required(*ADMIN_ROLES)
@@ -338,21 +381,48 @@ class CounterPaymentForm(forms.Form):
     )
 
 
-@role_required(*ADMIN_ROLES)
+@role_required(*ADMIN_ROLES, "maintenance")
 def booking_detail(request, pk):
-    """Ficha da reserva para o persoal: estado, cobros, acceso e accións (cobrar, cancelar)."""
+    """Ficha da reserva para o persoal: estado, cobros, acceso e accións (cobrar, aprobar,
+    cancelar). O persoal de mantemento vea só para consulta (estado ao entrar e ao saír)."""
     booking = get_object_or_404(
-        Booking.objects.select_related("facility", "user", "rules_version", "created_by"),
+        Booking.objects.select_related(
+            "facility", "user", "rules_version", "created_by", "voucher__type", "network_origin"
+        ),
         municipality=request.tenant,
         pk=pk,
     )
+    can_act = bool(request.roles & {"admin"})
     form = CounterPaymentForm(request.POST or None)
-    if request.method == "POST" and request.POST.get("action") == "counter_pay" and form.is_valid():
-        if booking.status != Booking.Status.PENDING_PAYMENT:
+    action = request.POST.get("action") if request.method == "POST" else None
+    if action and not can_act:
+        from django.core.exceptions import PermissionDenied
+
+        raise PermissionDenied
+    if action == "counter_pay" and form.is_valid():
+        if booking.status != Booking.Status.PENDING_PAYMENT and not booking.outstanding_cents:
             messages.error(request, _("Esta reserva non está pendente de pagamento."))
         else:
             record_counter_payment(booking, form.cleaned_data["method"], request.user)
-            messages.success(request, _("Cobro rexistrado. A reserva está pagada e confirmada."))
+            messages.success(request, _("Cobro rexistrado."))
+        return redirect(treverse(request.tenant, "manage:booking", booking.pk))
+    if action in ("approve", "decline"):
+        try:
+            if action == "approve":
+                services.approve_booking(booking, request.user)
+                messages.success(request, _("Aprobada. Avisamos á persoa."))
+            else:
+                _b, refund = services.decline_booking(
+                    booking, request.user, request.POST.get("reason", "")
+                )
+                msg = _("Rexeitada. Avisamos á persoa co motivo.")
+                if refund:
+                    msg += " " + _("Devolución automática: %(r)s €.") % {
+                        "r": f"{refund / 100:.2f}".replace(".", ",")
+                    }
+                messages.success(request, msg)
+        except services.BookingError as exc:
+            messages.error(request, str(exc))
         return redirect(treverse(request.tenant, "manage:booking", booking.pk))
     return render(
         request,
@@ -361,6 +431,7 @@ def booking_detail(request, pk):
             "booking": booking,
             "payments": booking.payments.all(),
             "form": form,
+            "can_act": can_act,
             "nav": "manage",
             "sub": "agenda",
         },
@@ -438,12 +509,14 @@ def payments_list(request):
         "rejected": sum(1 for p in qs if p.status == Payment.Status.REJECTED),
     }
     totals["net"] = totals["paid"] - totals["refunded"]
+    by_method = _by_payment_method(request)
     return render(
         request,
         "manage/payments.html",
         {
             "payments": qs[:500],
             "totals": totals,
+            "by_method": by_method,
             "statuses": Payment.Status.choices,
             "methods": Payment.Method.choices,
             "facilities": Facility.objects.for_tenant(request.tenant),
@@ -452,6 +525,66 @@ def payments_list(request):
             "sub": "payments",
         },
     )
+
+
+def _by_payment_method(request):
+    """v5 · Conciliación por forma de pagamento (reservas do período): TPV, oficina, gratuíta,
+    bono e aprazado, co cobrado e o pendente de cada unha. E os bonos vendidos."""
+    from apps.tenants.models import PaymentMethod
+
+    from .models import Voucher
+
+    qs = Booking.objects.for_tenant(request.tenant).exclude(
+        status__in=[Booking.Status.EXPIRED, Booking.Status.REJECTED]
+    )
+    vouchers = Voucher.objects.for_tenant(request.tenant).exclude(status=Voucher.Status.PENDING)
+    g = request.GET
+    try:
+        if g.get("desde"):
+            day = dt.date.fromisoformat(g["desde"])
+            qs, vouchers = (
+                qs.filter(created_at__date__gte=day),
+                vouchers.filter(created_at__date__gte=day),
+            )
+        if g.get("ata"):
+            day = dt.date.fromisoformat(g["ata"])
+            qs, vouchers = (
+                qs.filter(created_at__date__lte=day),
+                vouchers.filter(created_at__date__lte=day),
+            )
+    except ValueError:
+        pass
+    if g.get("instalacion", "").isdigit():
+        qs = qs.filter(facility_id=int(g["instalacion"]))
+    rows = []
+    for value, label in PaymentMethod.choices:
+        items = [
+            b
+            for b in qs.filter(payment_method=value).only(
+                "price_cents",
+                "paid_cents",
+                "refunded_cents",
+                "status",
+                "payment_method",
+                "lighting_cents",
+            )
+        ]
+        rows.append(
+            {
+                "method": value,
+                "label": label,
+                "bookings": len(items),
+                "charged": sum(b.paid_cents - b.refunded_cents for b in items),
+                "pending": sum(b.outstanding_cents for b in items),
+                "lighting": sum(b.lighting_cents for b in items if b.paid_cents),
+            }
+        )
+    return {
+        "rows": rows,
+        "vouchers_sold": vouchers.count(),
+        "voucher_income": sum(v.price_cents for v in vouchers),
+        "voucher_uses": qs.filter(payment_method=PaymentMethod.VOUCHER).count(),
+    }
 
 
 @role_required(*ADMIN_ROLES)

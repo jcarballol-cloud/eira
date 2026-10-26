@@ -34,17 +34,25 @@ def new_reference():
     return "EI" + "".join(secrets.choice(alphabet) for _ in range(10))
 
 
-def start_online_payment(*, booking=None, enrollment=None, url_ok, url_ko):
-    """Crea un pagamento pendente e devolve a URL da pasarela."""
-    target = booking or enrollment
+def start_online_payment(*, booking=None, enrollment=None, voucher=None, url_ok, url_ko):
+    """Crea un pagamento pendente e devolve a URL da pasarela (TPV do concello do destino)."""
+    target = booking or enrollment or voucher
     pending = Payment.objects.filter(status=Payment.Status.PENDING)
-    pending = pending.filter(booking=booking) if booking else pending.filter(enrollment=enrollment)
+    if booking:
+        pending = pending.filter(booking=booking)
+    elif enrollment:
+        pending = pending.filter(enrollment=enrollment)
+    else:
+        pending = pending.filter(voucher=voucher)
     pending.update(
         status=Payment.Status.EXPIRED, resolved_at=timezone.now()
     )  # un só pagamento vivo
     if booking:
         concept = f"{booking.facility.name} · {timezone.localtime(booking.start):%d/%m %H:%M} · {booking.reference}"
-        amount = booking.price_cents
+        amount = booking.price_cents - booking.paid_cents
+    elif voucher:
+        concept = f"{voucher.type.name} · {voucher.uses_total} usos"
+        amount = voucher.price_cents
     else:
         concept = f"{enrollment.group} · {enrollment.participant_name}"
         amount = enrollment.group.fee_cents
@@ -52,6 +60,7 @@ def start_online_payment(*, booking=None, enrollment=None, url_ok, url_ko):
         municipality=target.municipality,
         booking=booking,
         enrollment=enrollment,
+        voucher=voucher,
         concept=concept[:200],
         amount_cents=amount,
         reference=new_reference(),
@@ -103,6 +112,9 @@ def _apply_paid(payment):
 
         mark_enrollment_paid(payment.enrollment, payment.reference, payment.amount_cents)
         return
+    if payment.voucher_id:
+        activate_voucher(payment.voucher)
+        return
     booking = payment.booking
     if booking is None:
         return
@@ -144,6 +156,8 @@ def _apply_rejected(payment):
             e.save(update_fields=["status"])
             promote_waitlist(e.group)
         return
+    if payment.voucher_id:
+        return  # o bono segue pendente; pódese volver intentar
     booking = payment.booking
     if booking and booking.status == Booking.Status.PENDING_PAYMENT:
         booking.status = Booking.Status.REJECTED
@@ -171,7 +185,7 @@ def record_counter_payment(booking, method, by):
         method=method,
         status=Payment.Status.PAID,
         concept=f"{booking.facility.name} · {booking.reference}",
-        amount_cents=booking.price_cents,
+        amount_cents=booking.price_cents - booking.paid_cents,
         reference=new_reference(),
         resolved_at=timezone.now(),
         recorded_by=by,
@@ -214,10 +228,66 @@ def refund_booking(booking, amount_cents):
     return refund_payment(paid, amount_cents)
 
 
+def activate_voucher(voucher):
+    from datetime import timedelta
+
+    from .models import Voucher
+
+    if voucher.status != Voucher.Status.PENDING:
+        return voucher
+    voucher.status = Voucher.Status.ACTIVE
+    voucher.expires_at = timezone.now() + timedelta(days=voucher.type.valid_days)
+    voucher.save(update_fields=["status", "expires_at"])
+    notify(
+        voucher.user,
+        _("Bono activado: %(n)s") % {"n": voucher.type.name},
+        _("Tes %(u)s usos. Escolle «Bono» ao reservar.") % {"u": voucher.uses_left},
+        municipality=voucher.municipality,
+        level="success",
+    )
+    return voucher
+
+
+def sell_voucher(voucher_type, user, *, method=None, by=None):
+    """Bono vendido na oficina (efectivo ou tarxeta) ou iniciado en liña (pendente de TPV)."""
+    from .models import Voucher
+
+    voucher = Voucher.objects.create(
+        municipality=voucher_type.municipality,
+        type=voucher_type,
+        user=user,
+        uses_total=voucher_type.uses,
+        uses_left=voucher_type.uses,
+        price_cents=voucher_type.price_cents,
+        channel="counter" if method else "online",
+        sold_by=by,
+    )
+    if method:
+        Payment.objects.create(
+            municipality=voucher.municipality,
+            voucher=voucher,
+            method=method,
+            status=Payment.Status.PAID,
+            concept=f"{voucher_type.name} · {voucher.uses_total} usos",
+            amount_cents=voucher.price_cents,
+            reference=new_reference(),
+            resolved_at=timezone.now(),
+            recorded_by=by,
+        )
+        activate_voucher(voucher)
+        audit("voucher.sold", by, voucher.municipality, voucher, method=method)
+    return voucher
+
+
 def expire_pending(now=None):
-    """Reservas pendentes cuxo bloqueo caducou: «caducada» e franxa libre."""
+    """Reservas pendentes cuxo bloqueo caducou: «caducada» e franxa libre.
+
+    v5: tamén as pendentes de pagamento na oficina fóra de prazo."""
     now = now or timezone.now()
-    qs = Booking.objects.filter(status=Booking.Status.PENDING_PAYMENT, hold_expires_at__lte=now)
+    qs = Booking.objects.filter(
+        status__in=[Booking.Status.PENDING_PAYMENT, Booking.Status.PENDING_OFFICE],
+        hold_expires_at__lte=now,
+    )
     ids = list(qs.values_list("pk", flat=True))
     Payment.objects.filter(booking_id__in=ids, status=Payment.Status.PENDING).update(
         status=Payment.Status.EXPIRED, resolved_at=now
@@ -233,4 +303,6 @@ __all__ = [
     "refund_payment",
     "refund_booking",
     "expire_pending",
+    "sell_voucher",
+    "activate_voucher",
 ]

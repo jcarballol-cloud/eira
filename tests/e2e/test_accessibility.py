@@ -53,6 +53,23 @@ def page_sets():
     c = "/c/vilardeiras"
     mail = DevMail.objects.order_by("-pk").first()
     notice = Notice.objects.filter(municipality__slug="vilardeiras", cancelled__gt=0).first()
+    # v5
+    from apps.accounts.models import DataBreach
+
+    pon_padel = Facility.objects.get(name="Pista de pádel 1 da Ribeira")
+    from apps.bookings.services import slot_starts
+
+    night = next(
+        s
+        for d in range(2, 9)
+        for s in slot_starts(pon_padel, timezone.localdate() + timezone.timedelta(days=d))
+        if timezone.localtime(s).hour >= 20
+    )
+    approval = Booking.objects.filter(
+        status="pending_approval", municipality__slug="vilardeiras"
+    ).first()
+    states = Booking.objects.filter(start_state_ok=False).first()
+    breach = DataBreach.objects.filter(municipality__slug="vilardeiras").first()
     return {
         None: [
             "/",
@@ -64,6 +81,8 @@ def page_sets():
             "/preferencias/",
             "/saude/",
             f"{c}/privacidade/",
+            f"{c}/privacidade/datos/",
+            "/axuda/",
             f"{c}/accesibilidade/",
             f"{c}/datos-abertos/",
             "/dev/lock-simulator/",
@@ -94,8 +113,29 @@ def page_sets():
             f"{c}/actividades/as-minas/",
             f"{c}/actividades/grupo/{group.pk}/inscribirse/",
             f"{c}/actividades/observatorio/",
+            # v5
+            f"{c}/app/proximos/",
+            "/c/pontedouro/",
+            f"/c/pontedouro/instalacions/{pon_padel.pk}/",
+            f"/c/pontedouro/instalacions/{pon_padel.pk}/reservar/?inicio="
+            + night.isoformat().replace("+", "%2B"),
+            f"{c}/reservas/bonos/",
+            f"{c}/seguridade/",
+            f"{c}/privacidade/datos/",
+            f"{c}/incidencias/nova/?risco=1",
+            f"{c}/reservas/{upcoming.pk}/estado-inicial/",
+            "/axuda/",
         ],
         "admin@vilardeiras.demo.eira.example": [
+            # v5
+            f"{c}/xestion/cobros/",
+            f"{c}/xestion/cobros/bonos/",
+            f"{c}/xestion/reservas/{approval.pk}/",
+            f"{c}/xestion/reservas/{states.pk}/",
+            f"{c}/xestion/privacidade/brechas/",
+            f"{c}/xestion/privacidade/brechas/{breach.pk}/",
+            f"{c}/xestion/privacidade/brechas/{breach.pk}/comunicacion/",
+            f"{c}/xestion/privacidade/brechas/nova/",
             f"{c}/xestion/",
             f"{c}/xestion/altas/",
             f"{c}/xestion/valoracions/",

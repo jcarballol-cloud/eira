@@ -54,6 +54,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     photo_consent_at = models.DateTimeField(null=True, blank=True)
     telegram_chat = models.CharField(_("chat de Telegram"), max_length=64, blank=True)
+    # v5 · Administración: menú básico (día a día) ou avanzado (todo). Non cambia permisos.
+    desk_mode = models.CharField(
+        max_length=10,
+        choices=[("basic", _("Básico")), ("advanced", _("Avanzado"))],
+        default="basic",
+    )
+    # v5 · Actividades e eventos dos concellos próximos (opcional): slugs dos concellos escollidos
+    network_feed = models.JSONField(default=list, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -85,7 +93,8 @@ class Role(models.TextChoices):
     CITIZEN = "citizen", _("Veciñanza")
     ADMIN = "admin", _("Administración do concello")
     MAINTENANCE = "maintenance", _("Mantemento")
-    MONITOR = "monitor", _("Monitor/a")
+    MONITOR = "monitor", _("Persoa monitora")
+    DPO = "dpo", _("Persoa delegada de protección de datos")
 
 
 class Membership(models.Model):
@@ -468,3 +477,67 @@ class HealthProfile(models.Model):
             "age": self.age,
             "minutes": self.weekly_minutes,
         }
+
+
+class DataBreach(models.Model):
+    """v5 · Rexistro de brechas de seguridade dos datos persoais (arts. 33 e 34 do RXPD).
+
+    Só o ven e o editan a administración do concello e a persoa delegada de protección de datos.
+    Documentado en docs/rxpd/brechas.md."""
+
+    class Status(models.TextChoices):
+        OPEN = "open", _("Aberta")
+        CLOSED = "closed", _("Pechada")
+
+    class Risk(models.TextChoices):
+        UNLIKELY = "unlikely", _("Improbable que supoña un risco")
+        RISK = "risk", _("Risco para os dereitos e liberdades")
+        HIGH = "high", _("Alto risco")
+
+    municipality = models.ForeignKey(
+        Municipality, on_delete=models.CASCADE, related_name="data_breaches"
+    )
+    detected_at = models.DateTimeField(_("data e hora en que se detectou"))
+    occurred_at = models.DateTimeField(
+        _("data aproximada en que se produciu"), null=True, blank=True
+    )
+    description = models.TextField(_("que pasou"))
+    data_affected = models.TextField(_("datos afectados"))
+    people_affected = models.CharField(
+        _("persoas afectadas"), max_length=200, help_text=_("Número aproximado e colectivo.")
+    )
+    risk = models.CharField(_("nivel de risco"), max_length=10, choices=Risk.choices)
+    measures = models.TextField(_("medidas tomadas"), blank=True)
+    aepd_notified = models.BooleanField(_("notificada á AEPD"), default=False)
+    aepd_notified_at = models.DateTimeField(_("data da notificación á AEPD"), null=True, blank=True)
+    aepd_not_needed_reason = models.CharField(
+        _("motivo para non notificar á AEPD"), max_length=300, blank=True
+    )
+    people_informed = models.BooleanField(_("informouse ás persoas afectadas"), default=False)
+    people_informed_at = models.DateTimeField(null=True, blank=True)
+    status = models.CharField(
+        _("estado"), max_length=10, choices=Status.choices, default=Status.OPEN
+    )
+    closed_at = models.DateTimeField(null=True, blank=True)
+    created_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name="+")
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_demo = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = _("brecha de seguridade")
+        verbose_name_plural = _("brechas de seguridade")
+        ordering = ["-detected_at"]
+
+    def __str__(self):
+        return f"#{self.pk} · {self.detected_at:%d/%m/%Y}"
+
+    @property
+    def aepd_deadline(self):
+        """Prazo de 72 h desde que se detectou (art. 33)."""
+        return self.detected_at + timezone.timedelta(hours=72)
+
+    @property
+    def aepd_on_time(self):
+        if not self.aepd_notified or not self.aepd_notified_at:
+            return None
+        return self.aepd_notified_at <= self.aepd_deadline

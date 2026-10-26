@@ -83,7 +83,7 @@ class DependentForm(forms.ModelForm):
         label=_("Ten 14 anos ou máis e está de acordo con estes consentimentos."),
         required=False,
         help_text=_(
-            "A partir dos 14 anos a lei permite que consinta por si mesmo/a (art. 7 LOPDGDD)."
+            "A partir dos 14 anos a lei permite que dea o consentimento sen a familia (art. 7 LOPDGDD)."
         ),
     )
 
@@ -146,6 +146,6 @@ class PrivacyForm(forms.ModelForm):
         }
         help_texts = {
             "photo_consent": _(
-                "Se non o marcas, o monitor verá unha cámara riscada xunto ao teu nome."
+                "Se non o marcas, a persoa monitora verá unha cámara riscada xunto ao teu nome."
             ),
         }

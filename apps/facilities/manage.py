@@ -51,9 +51,18 @@ class FacilityForm(forms.ModelForm):
             "hearing_loop",
             "braille_signage",
             "accessibility_notes",
+            # v5
+            "max_participants",
+            "booking_mode",
+            "lighting_supplement_cents",
+            "equipment",
+            "accident_protocol",
+            "aed_location",
         ]
         widgets = {
             "description": forms.Textarea(attrs={"rows": 3}),
+            "equipment": forms.Textarea(attrs={"rows": 3}),
+            "accident_protocol": forms.Textarea(attrs={"rows": 3}),
             "accessibility_notes": forms.Textarea(attrs={"rows": 2}),
             "photo": forms.ClearableFileInput(attrs={"accept": "image/jpeg,image/png,image/webp"}),
         }
@@ -95,11 +104,51 @@ class FacilityForm(forms.ModelForm):
             _("Accesibilidade"),
             tuple(f for f, _i in Facility.ACCESSIBILITY) + ("accessibility_notes",),
         ),
+        (
+            "reserva",
+            _("Reserva e pagamento"),
+            ("max_participants", "booking_mode", "payment_methods", "lighting_supplement_cents"),
+        ),
+        ("seguridade", _("Seguridade"), ("equipment", "accident_protocol", "aed_location")),
     )
 
     def __init__(self, *args, tenant=None, **kwargs):
         super().__init__(*args, **kwargs)
+        from apps.tenants.models import PaymentMethod
+
         self.fields["parish"].queryset = Parish.objects.for_tenant(tenant)
+        # v5: os campos novos levan valor por defecto; un formulario sen eles mantén o que había
+        for name in self.V5_DEFAULTED:
+            self.fields[name].required = False
+        # v5: formas de pagamento da instalación (dentro das do concello)
+        town = tenant.payment_method_list() if tenant else [PaymentMethod.TPV.value]
+        self.fields["payment_methods"] = forms.MultipleChoiceField(
+            label=_("Formas de pagamento"),
+            required=False,
+            choices=[(v, label) for v, label in PaymentMethod.choices if v in town],
+            widget=forms.CheckboxSelectMultiple,
+            initial=[m for m in (self.instance.payment_methods or []) if m in town],
+            help_text=_("Sen marcar ningunha = as do concello (Configuración)."),
+        )
+
+    V5_DEFAULTED = ("max_participants", "booking_mode", "lighting_supplement_cents")
+
+    def _keep_v5_defaults(self, data):
+        for name in self.V5_DEFAULTED:
+            if data.get(name) in (None, ""):
+                data[name] = (
+                    getattr(self.instance, name)
+                    if self.instance.pk
+                    else Facility._meta.get_field(name).get_default()
+                )
+
+    def save(self, commit=True):
+        obj = super().save(commit=False)
+        obj.payment_methods = list(self.cleaned_data.get("payment_methods") or [])
+        if commit:
+            obj.save()
+            self.save_m2m()
+        return obj
 
     def groups(self):
         icons = dict(Facility.ACCESSIBILITY)
@@ -126,6 +175,7 @@ class FacilityForm(forms.ModelForm):
 
     def clean(self):
         data = super().clean()
+        self._keep_v5_defaults(data)
         if data.get("access_level") == 1 and not data.get("key_holder_name"):
             self.add_error("key_holder_name", _("Indica quen custodia a chave (nivel 1)."))
         if data.get("photo") and not data.get("photo_alt"):
@@ -420,3 +470,55 @@ def closure_delete(request, pk):
         closure.delete()
         messages.success(request, _("Peche eliminado."))
     return redirect(treverse(request.tenant, "manage:closures"))
+
+
+# ---------------------------------------------------------------- v5 · B e H
+
+
+def _poster_url(request, facility):
+    from apps.tenants.urlutils import treverse as tr
+
+    if facility.access_level == 0:
+        return request.build_absolute_uri(
+            tr(request.tenant, "access:checkin", facility.checkin_token)
+        )
+    return request.build_absolute_uri(tr(request.tenant, "facilities:detail", facility.pk))
+
+
+@role_required(*ADMIN_ROLES, "maintenance")
+def facility_poster(request, pk):
+    """Cartel A4 en PDF etiquetado para a porta: nome, QR, normas, accidentes, DEA e 112."""
+    from django.http import HttpResponse
+
+    from .poster import build_poster
+
+    facility = get_object_or_404(Facility, municipality=request.tenant, pk=pk)
+    pdf = build_poster(request.tenant, facility, _poster_url(request, facility))
+    response = HttpResponse(pdf, content_type="application/pdf")
+    response["Content-Disposition"] = f'inline; filename="cartel-{facility.pk}.pdf"'
+    return response
+
+
+@role_required(*ADMIN_ROLES, "maintenance")
+def poster_template(request):
+    """Plantilla de cartel co escudo do concello e os campos en branco."""
+    from django.http import HttpResponse
+
+    from .poster import build_poster
+
+    response = HttpResponse(build_poster(request.tenant), content_type="application/pdf")
+    response["Content-Disposition"] = 'inline; filename="cartel-modelo.pdf"'
+    return response
+
+
+@role_required(*ADMIN_ROLES)
+def safety_review(request, pk):
+    """Crea a orde «Revisión de seguridade inicial Eira» (ou abre a que xa hai)."""
+    from apps.maintenance.safety import create_safety_review
+
+    facility = get_object_or_404(Facility, municipality=request.tenant, pk=pk)
+    if request.method == "POST":
+        order = create_safety_review(facility, by=request.user)
+        messages.success(request, _("Revisión de seguridade creada. Asígnaa a mantemento."))
+        return redirect(treverse(request.tenant, "manage:work_order", order.pk))
+    return redirect(treverse(request.tenant, "manage:facility_edit", facility.pk))

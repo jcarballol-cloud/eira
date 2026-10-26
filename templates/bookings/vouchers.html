@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Os meus bonos" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{% translate "Os meus bonos" %}</h1><p class="muted">{% translate "Cada reserva con bono desconta un uso (luz incluída). Se cancelas a tempo, o uso devólvese." %}</p></div></div>
+{% if returned == 'ok' %}<div class="alert alert-success" role="status">{% translate "Pagamento recibido. O bono actívase en canto o banco o confirma." %}</div>{% elif returned == 'ko' %}<div class="alert alert-warn" role="status">{% translate "O pagamento non se completou. Non se fixo ningún cargo." %}</div>{% endif %}
+<ul class="grid grid-2 list" role="list">
+  {% for v in vouchers %}<li class="card"><h2 class="h3 mb-0">{{ v.type.name }}</h2>
+    <p class="big mb-0"><strong>{{ v.uses_left }}</strong> / {{ v.uses_total }} {% translate "usos" %}</p>
+    <small>{{ v.type.facility.name|default:_("Todas as instalacións que admiten bono") }}{% if v.expires_at %} · {% blocktranslate with d=v.expires_at|date:"d/m/Y" %}válido ata o {{ d }}{% endblocktranslate %}{% endif %}</small>
+    <p class="mb-0"><span class="badge {% if v.status == 'active' %}badge-ok{% else %}badge-muted{% endif %}">{{ v.get_status_display }}</span></p></li>
+  {% empty %}<li class="card"><p class="mb-0">{% translate "Aínda non tes bonos." %}</p></li>{% endfor %}
+</ul>
+{% if types %}
+<section class="mt-2" aria-labelledby="buy-title"><h2 id="buy-title">{% translate "Comprar un bono" %}</h2>
+  <ul class="app-list">{% for t in types %}<li><form method="post" class="row-between">{% csrf_token %}<input type="hidden" name="type" value="{{ t.pk }}"><span><strong>{{ t.name }}</strong><br><small>{{ t.uses }} {% translate "usos" %} · {{ t.facility.name|default:_("todas as instalacións") }}</small></span><button class="btn btn-sm" type="submit">{% blocktranslate with p=t.price_cents|euros %}Comprar por {{ p }}{% endblocktranslate %}<span class="visually-hidden"> · {{ t.name }}</span></button></form></li>{% endfor %}</ul>
+  <p class="help">{% translate "Tamén os podes comprar na oficina de deportes." %}</p>
+</section>
+{% endif %}
+{% endblock %}

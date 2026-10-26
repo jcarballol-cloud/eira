@@ -1,0 +1,15 @@
+{% load i18n eira %}{# v5 · E: botón de axuda «?» sempre visible, coa axuda da pantalla actual (sen JS: details/summary) #}
+<details class="help-pop{% if css %} {{ css }}{% endif %}">
+  <summary class="icon-btn help-pop__btn" title="{% translate 'Axuda' %}"><span aria-hidden="true" class="help-pop__q">?</span><span class="visually-hidden">{% translate "Axuda desta pantalla" %}</span></summary>
+  <div class="help-pop__panel" role="region" aria-label="{% translate 'Axuda' %}">
+    <p class="help-pop__title"><strong>{{ help_topic.title }}</strong></p>
+    <p>{{ help_topic.body }}</p>
+    <ul class="list-plain help-pop__links">
+      <li><a href="{% url 'help_guide' %}{% if help_topic.key %}#{{ help_topic.key|slugify }}{% endif %}">{% translate "Guía completa" %}</a></li>
+      {% with t=tenant|default:app_tenant %}{% if t %}
+      {% if t.contact_phone %}<li><a href="tel:{{ t.contact_phone|cut:' ' }}">{% icon 'phone' %} {% blocktranslate with c=t.name %}Chamar ao Concello de {{ c }}{% endblocktranslate %}</a></li>{% endif %}
+      {% if t.contact_email %}<li><a href="mailto:{{ t.contact_email }}">{% icon 'mail' %} {% translate "Escribir ao concello" %}</a></li>{% endif %}
+      {% endif %}{% endwith %}
+    </ul>
+  </div>
+</details>

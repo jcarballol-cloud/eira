@@ -11,16 +11,17 @@
 </div>
 
 {% for b in pending_checklist %}
-  <a class="app-alert" href="{% turl 'bookings:checklist' b.pk %}">{% icon 'door' %}<span><strong>{% translate "Antes de marchar" %}</strong><br>{% blocktranslate with f=b.facility.name %}Confirma que {{ f }} quedou pechada e en orde.{% endblocktranslate %}</span>{% icon 'chevron' %}</a>
+  <a class="app-alert" href="{{ b|booking_url:'bookings:checklist' }}">{% icon 'door' %}<span><strong>{% translate "Antes de marchar" %}</strong><br>{% blocktranslate with f=b.facility.name %}Confirma que {{ f }} quedou pechada e en orde.{% endblocktranslate %}</span>{% icon 'chevron' %}</a>
 {% endfor %}
 
 {% if next_booking %}
 <section class="app-card app-card--hero" aria-labelledby="next-title">
   <p class="eyebrow" id="next-title">{% translate "A túa próxima reserva" %}</p>
   <h2 class="mb-0">{{ next_booking.facility.name }}</h2>
+  {% if next_booking.municipality != tenant %}<p class="mb-0"><span class="badge">{% icon 'map' %} {{ next_booking.municipality.name }}</span></p>{% endif %}
   <p class="big mb-1">{{ next_booking.start|date:"l j \d\e F" }} · <strong>{{ next_booking.start|hhmm }}–{{ next_booking.end|hhmm }}</strong></p>
-  {% if next_booking.status == 'pending_payment' %}
-    <p class="badge badge-warn">{% translate "Pendente de pagamento" %}</p>
+  {% if next_booking.status == 'pending_payment' or next_booking.status == 'pending_approval' or next_booking.status == 'pending_office' %}
+    <p class="badge badge-warn">{{ next_booking.get_status_display }}</p>
   {% elif access.code %}
     {% include "includes/access_code.html" with code=access.code small=True %}
     <p class="muted mb-0">{% blocktranslate with a=access.valid_from|hhmm b=access.valid_until|hhmm %}Válido de {{ a }} a {{ b }}{% endblocktranslate %}</p>
@@ -32,7 +33,7 @@
     <p class="mb-0">{% icon 'qr' %} {% translate "Escanea o QR da entrada ao chegar." %}</p>
   {% endif %}
   {% include "bookings/_health.html" with booking=next_booking compact=True %}
-  <a class="btn btn-block mt-2" href="{% turl 'bookings:detail' next_booking.pk %}">{% translate "Ver a reserva" %}</a>
+  <a class="btn btn-block mt-2" href="{{ next_booking|booking_url }}">{% translate "Ver a reserva" %}</a>
 </section>
 {% else %}
 <section class="app-card app-empty" aria-labelledby="empty-title">
@@ -48,6 +49,9 @@
   {% if modules.activities %}<a href="{% turl 'activities:list' %}">{% icon 'users' %}<span>{% translate "Escolas" %}</span></a>{% endif %}
   <a href="{% turl 'incidents:new' %}">{% icon 'alert' %}<span>{% translate "Avisar dunha avaría" %}</span></a>
   <a href="{% url 'account:household' %}">{% icon 'heart' %}<span>{% translate "A miña familia" %}{% if dependents %} · {{ dependents|length }}{% endif %}</span></a>
+  {% if nearby %}<a href="{% turl 'app:nearby' %}">{% icon 'map' %}<span>{% translate "Concellos próximos" %}</span></a>{% endif %}
+  <a href="{% turl 'bookings:vouchers' %}">{% icon 'star' %}<span>{% translate "Bonos" %}</span></a>
+  <a href="{% turl 'privacy_custody' %}">{% icon 'shield' %}<span>{% translate "Os teus datos" %}</span></a>
 </nav>
 
 {% if not dependents %}
@@ -56,7 +60,7 @@
 
 {% if not is_resident %}
 <section class="app-card" aria-labelledby="res-title">
-  <h2 id="res-title" class="h3">{% translate "Estás empadroado/a aquí?" %}</h2>
+  <h2 id="res-title" class="h3">{% translate "Tes o empadroamento aquí?" %}</h2>
   <p class="muted">{% translate "Co teu código de empadroamento aplícase a tarifa de veciñanza." %}</p>
   <a class="btn btn-secondary" href="{% turl 'app:welcome' %}">{% translate "Introducir o código" %}</a>
 </section>
@@ -65,7 +69,7 @@
 {% if upcoming %}
 <section aria-labelledby="up-title" class="mt-2">
   <h2 id="up-title" class="h3">{% translate "Despois" %}</h2>
-  <ul class="app-list">{% for b in upcoming %}<li><a href="{% turl 'bookings:detail' b.pk %}"><span><strong>{{ b.facility.name }}</strong><br><small>{{ b.start|date:"D j/n" }} · {{ b.start|hhmm }}</small></span>{% icon 'chevron' %}</a></li>{% endfor %}</ul>
+  <ul class="app-list">{% for b in upcoming %}<li><a href="{{ b|booking_url }}"><span><strong>{{ b.facility.name }}</strong><br><small>{{ b.start|date:"D j/n" }} · {{ b.start|hhmm }}{% if b.municipality != tenant %} · {{ b.municipality.name }}{% endif %}</small></span>{% icon 'chevron' %}</a></li>{% endfor %}</ul>
 </section>
 {% endif %}
 

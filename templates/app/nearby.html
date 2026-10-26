@@ -1,0 +1,31 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Concellos próximos" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div>
+  <p class="eyebrow">{{ region.name }}</p>
+  <h1>{% translate "Concellos próximos" %}</h1>
+  <p class="muted">{% blocktranslate trimmed with t=tenant.name %}Coa túa conta de {{ t }} podes reservar nas instalacións dos concellos da túa rede que o permiten, sen crear outra conta.{% endblocktranslate %}</p>
+</div></div>
+<ul class="stack list" role="list">
+  {% for r in rows %}{% with m=r.municipality %}
+  <li class="app-card">
+    <div class="row-between"><h2 class="h3 mb-0">{{ m.name }}</h2>{% if m.network_open %}<span class="badge badge-ok">{% translate "Aberto á rede" %}</span>{% else %}<span class="badge">{% translate "Só para a súa veciñanza" %}</span>{% endif %}</div>
+    <p class="muted mb-1">{% blocktranslate count n=r.facilities %}{{ n }} instalación{% plural %}{{ n }} instalacións{% endblocktranslate %}{% if m.contact_phone %} · {% icon 'phone' %} {{ m.contact_phone }}{% endif %}</p>
+    {% if m.network_open %}
+    <ul class="list-plain help mb-1">
+      <li>{% translate "Pagas a tarifa de persoas non empadroadas dese concello e o cobro vai ao seu TPV." %}</li>
+      <li>{% blocktranslate count n=m.network_max_active %}Ata {{ n }} reserva activa á vez.{% plural %}Ata {{ n }} reservas activas á vez.{% endblocktranslate %}{% if m.network_advance_days is not None %} {% blocktranslate with d=m.network_advance_days %}Con ata {{ d }} días de antelación.{% endblocktranslate %}{% endif %}</li>
+      <li>{% translate "Ese concello só recibe o necesario para a reserva: o teu nome, a hora, cantas persoas ides e o pagamento." %}</li>
+    </ul>
+    <a class="btn btn-block" href="{% url 'tenant_home' m.slug %}">{% blocktranslate with c=m.name %}Reservar en {{ c }}{% endblocktranslate %}</a>
+    {% endif %}
+    <form method="post" action="{% turl 'app:nearby_follow' %}" class="mt-1">{% csrf_token %}
+      <input type="hidden" name="concello" value="{{ m.slug }}"><input type="hidden" name="on" value="{% if r.following %}0{% else %}1{% endif %}">
+      <button class="btn btn-secondary btn-sm" type="submit" aria-pressed="{% if r.following %}true{% else %}false{% endif %}">{% icon 'bell' %} {% if r.following %}{% translate "Deixar de ver as súas actividades e eventos" %}{% else %}{% translate "Ver as súas actividades e eventos en «Avisos»" %}{% endif %}<span class="visually-hidden"> · {{ m.name }}</span></button>
+    </form>
+  </li>
+  {% endwith %}{% empty %}
+  <li class="app-card"><p class="mb-0">{% translate "O teu concello non forma parte de ningunha rede." %}</p></li>
+  {% endfor %}
+</ul>
+{% endblock %}

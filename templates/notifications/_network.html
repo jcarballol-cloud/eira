@@ -1,0 +1,27 @@
+{% load i18n eira %}{# v5 · A: actividades e eventos dos concellos próximos (opcional e filtrable) #}
+<section aria-labelledby="near-t" class="mt-2">
+  <h2 id="near-t" class="h3">{% translate "Concellos próximos" %}</h2>
+  {% if not network.towns and not network.only %}
+    <p class="help">{% translate "Podes ver aquí as actividades e eventos doutros concellos da túa rede. É opcional: escolle cales." %}</p>
+  {% else %}
+    <nav class="chips" aria-label="{% translate 'Filtrar por concello' %}">
+      <a class="chip-link" href="?" {% if not network.only %}aria-current="page"{% endif %}>{% translate "Todos" %}</a>
+      {% for a in network.available %}{% if a.following %}<a class="chip-link" href="?proximo={{ a.m.slug }}" {% if network.only == a.m.slug %}aria-current="page"{% endif %}>{{ a.m.name }}</a>{% endif %}{% endfor %}
+    </nav>
+    <ul class="notice-list" role="list">
+      {% for n in network.notices %}
+        <li class="notice-item notice-item--board"><div class="row-between"><strong>{{ n.title }}</strong><small class="muted nowrap">{{ n.sent_at|date:"d/m" }}</small></div>
+          <p class="mb-0">{{ n.body|linebreaksbr }}</p><small class="muted">{{ n.municipality.name }} · {{ n.get_category_display }}</small></li>
+      {% endfor %}
+      {% for g in network.groups %}
+        <li class="notice-item notice-item--board"><div class="row-between"><strong><a href="{% url 'activities:list' g.municipality.slug %}">{{ g.activity.name }} · {{ g.name }}</a></strong></div>
+          <small class="muted">{{ g.municipality.name }}{% if g.facility %} · {{ g.facility.name }}{% endif %}</small></li>
+      {% endfor %}
+      {% if not network.notices and not network.groups %}<li class="muted">{% translate "Nada destes concellos polo de agora." %}</li>{% endif %}
+    </ul>
+  {% endif %}
+  <ul class="list-plain row">{% for a in network.available %}
+    <li><form method="post" action="{% url 'app:nearby_follow' app_tenant.slug %}">{% csrf_token %}<input type="hidden" name="concello" value="{{ a.m.slug }}"><input type="hidden" name="on" value="{% if a.following %}0{% else %}1{% endif %}"><input type="hidden" name="next" value="{{ request.get_full_path }}">
+      <button class="btn btn-secondary btn-sm" type="submit" aria-pressed="{% if a.following %}true{% else %}false{% endif %}">{% if a.following %}{% icon 'check' %} {% endif %}{{ a.m.name }}</button></form></li>
+  {% endfor %}</ul>
+</section>

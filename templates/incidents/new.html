@@ -3,10 +3,12 @@
 {% block content %}
 <div class="layout-aside">
   <section class="card" aria-labelledby="inc-title">
-    <h1 id="inc-title">{% translate "Avisar dunha avaría" %}</h1>
-    <p>{% translate "En 30 segundos: que instalación, que pasa e, se queres, unha foto." %}</p>
+    {% if risk %}<h1 id="inc-title">{% translate "Avisar dun risco" %}</h1>
+    <p>{% translate "O concello recibe este aviso ao momento e con prioridade alta." %} <a href="tel:112">{% translate "Se hai perigo agora mesmo, chama ao 112." %}</a></p>
+    {% else %}<h1 id="inc-title">{% translate "Avisar dunha avaría" %}</h1>
+    <p>{% translate "En 30 segundos: que instalación, que pasa e, se queres, unha foto." %}</p>{% endif %}
     <form method="post" enctype="multipart/form-data" novalidate>
-      {% csrf_token %}
+      {% csrf_token %}{% if risk %}<input type="hidden" name="risco" value="1">{% endif %}
       {% include "includes/form.html" %}
       <div class="form-actions"><button class="btn btn-lg" type="submit">{% icon 'alert' %} {% translate "Enviar aviso" %}</button></div>
     </form>

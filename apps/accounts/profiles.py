@@ -16,7 +16,7 @@ documentada en DECISIONS.md).
 
 from django.urls import reverse
 
-STAFF_ROLES = frozenset({"admin", "maintenance", "monitor", "region_admin"})
+STAFF_ROLES = frozenset({"admin", "maintenance", "monitor", "region_admin", "dpo"})
 LAYOUT = {
     "public": "public",
     "neighbour": "app",
@@ -24,6 +24,7 @@ LAYOUT = {
     "monitor": "tablet",
     "admin": "desk",
     "region": "desk",
+    "dpo": "desk",  # v5: persoa delegada de protección de datos (rexistro de brechas)
 }
 
 
@@ -38,6 +39,8 @@ def kind_in_tenant(user, roles):
         return "operator"
     if "monitor" in roles:
         return "monitor"
+    if "dpo" in roles:
+        return "dpo"
     return "neighbour"
 
 
@@ -88,6 +91,7 @@ def home_url(user, tenant=None, roles=None):
         "admin": "manage:dashboard",
         "operator": "maintenance:my_orders",
         "monitor": "monitor:today",
+        "dpo": "manage:breaches",
         "neighbour": "app:home",
     }[kind]
     return reverse(target, args=[tenant.slug])

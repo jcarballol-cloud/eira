@@ -1,0 +1,35 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Quen custodia os teus datos" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div>
+  <p class="eyebrow">{% icon 'shield' %} {% translate "Protección de datos" %}</p>
+  <h1>{% translate "Quen custodia os teus datos" %}</h1>
+  <p>{% blocktranslate trimmed with c=tenant.name %}Que datos teus usa o servizo de deportes de {{ c }}, quen os recibe, para que, canto tempo se gardan e como pedir que se borren. Explicado sen tecnicismos.{% endblocktranslate %}</p>
+</div></div>
+<div class="layout-aside">
+  <ul class="stack list" role="list">
+    {% for r in rows %}
+    <li class="card custody-item">
+      <h2 class="h3">{{ r.data }}</h2>
+      <dl class="kv">
+        <dt>{% translate "Quen o recibe" %}</dt>
+        <dd>{% if r.recipients %}<ul class="list-plain">{% for who, how in r.recipients %}<li><strong>{{ who }}</strong>: {{ how }}</li>{% endfor %}</ul>{% else %}{% translate "Ninguén máis ca ti." %}{% endif %}</dd>
+        {% if r.purpose %}<dt>{% translate "Para que" %}</dt><dd>{{ r.purpose }}</dd>{% endif %}
+        {% if r.retention %}<dt>{% translate "Canto tempo" %}</dt><dd>{{ r.retention }}</dd>{% endif %}
+        {% if r.erase %}<dt>{% translate "Como pedir que se borre" %}</dt><dd>{{ r.erase }}</dd>{% endif %}
+      </dl>
+    </li>
+    {% endfor %}
+  </ul>
+  <aside class="stack">
+    <section class="card" aria-labelledby="dpo-title"><h2 id="dpo-title">{% translate "Dúbidas e reclamacións" %}</h2>
+      <p>{% translate "Responsable: o concello." %}{% if tenant.dpo_contact %} {% blocktranslate with d=tenant.dpo_contact %}Persoa delegada de protección de datos: {{ d }}.{% endblocktranslate %}{% endif %}</p>
+      <p>{% translate "Se non estás conforme, podes reclamar ante a Axencia Española de Protección de Datos (www.aepd.es)." %}</p>
+      <p class="mb-0"><a href="{% turl 'privacy' %}">{% translate "Política de privacidade completa" %}</a></p>
+    </section>
+    <section class="card" aria-labelledby="breach-title"><h2 id="breach-title">{% translate "Se hai un incidente" %}</h2>
+      <p class="mb-0">{% translate "Se algunha vez hai un incidente de seguridade cos teus datos, o concello rexístrao, avisa á AEPD nun prazo de 72 horas se hai risco e, se o risco é alto, avísate a ti directamente." %}</p>
+    </section>
+  </aside>
+</div>
+{% endblock %}

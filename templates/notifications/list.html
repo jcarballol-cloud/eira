@@ -39,6 +39,8 @@
   </ul>
 </section>
 
+{% if network and kind == 'neighbour' %}{% include "notifications/_network.html" %}{% endif %}
+
 {% if telegram_channel %}<p class="mt-2">{% icon 'share' %} {% blocktranslate with c=telegram_channel %}Tamén na canle pública de Telegram <strong>{{ c }}</strong>.{% endblocktranslate %}
   <a href="https://t.me/{{ telegram_channel|slice:'1:' }}" rel="noopener">{% translate "Abrir a canle" %}</a>{% if demo_tools %} · <a href="{% url 'dev:telegram' %}?chat={{ telegram_channel|urlencode }}">{% translate "Ver no simulador" %}</a>{% endif %}</p>{% endif %}
 {% endblock %}

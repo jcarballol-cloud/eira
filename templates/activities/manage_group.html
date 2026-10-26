@@ -3,7 +3,7 @@
 {% block content %}
 <p><a href="{% turl 'manage:activities' %}">← {% translate "Escolas e grupos" %}</a></p>
 <div class="page-head"><div><p class="eyebrow">{{ group.activity.name }}</p><h1>{{ group.name }}</h1>
-  <p>{% blocktranslate with m=group.monitor|default:"—" f=group.facility|default:"—" %}Monitor/a: {{ m }} · Instalación: {{ f }}{% endblocktranslate %}</p></div></div>
+  <p>{% blocktranslate with m=group.monitor|default:"—" f=group.facility|default:"—" %}Persoa monitora: {{ m }} · Instalación: {{ f }}{% endblocktranslate %}</p></div></div>
 
 <nav class="row mb-2" aria-label="{% translate 'Filtro de imaxe' %}">
   <a class="btn btn-sm {% if only %}btn-secondary{% endif %}" href="?" {% if not only %}aria-current="page"{% endif %}>{% blocktranslate with n=total %}Todas ({{ n }}){% endblocktranslate %}</a>

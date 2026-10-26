@@ -6,6 +6,11 @@
   <div>
     <p class="eyebrow">{{ facility.get_kind_display }}{% if facility.parish %} · {{ facility.parish.name }}{% endif %}</p>
     <h1>{{ facility.name }}</h1>
+    <ul class="badges facility-trust" role="list" aria-label="{% translate 'Seguridade e confianza' %}">
+      {% include "facilities/_vitality.html" with idx=vitality lvl=vitality_level %}
+      {% if safety_review %}<li class="badge badge-ok">{% icon 'shield' %} {% blocktranslate with d=safety_review.closed_at|date:"d/m/Y" %}Revisada o {{ d }}{% endblocktranslate %}</li>{% endif %}
+      {% if last_supervision %}<li class="badge">{% icon 'wrench' %} {% blocktranslate with d=last_supervision|date:"d/m/Y" %}Última supervisión: {{ d }}{% endblocktranslate %}</li>{% endif %}
+    </ul>
     {% if facility.description %}<p>{{ facility.description }}</p>{% endif %}
   </div>
   {% if is_neighbour %}<a class="btn btn-secondary" href="{% turl 'incidents:new' %}?instalacion={{ facility.pk }}">{% icon 'alert' %} {% translate "Avisar dunha avaría" %}</a>{% endif %}
@@ -28,13 +33,29 @@
       {% elif facility.access_level == 2 %}<p>{% translate "Teclado con código. Ao reservar recibes un código que só abre durante a túa franxa, aínda que a instalación non teña internet." %}</p>
       {% else %}<p>{% translate "Pechadura conectada. Durante a túa franxa abres a porta desde o móbil e as luces acéndense soas." %}</p>{% endif %}
     </section>
+    <section class="card safety-card" aria-labelledby="safety-title">
+      <h2 id="safety-title">{% icon 'shield' %} {% translate "Seguridade" %}</h2>
+      <a class="emergency-call emergency-call--small" href="tel:112"><span class="emergency-call__num" aria-hidden="true">112</span><span><strong>{% translate "Emerxencias: 112" %}</strong><br>{% translate "Chamar agora" %}</span></a>
+      {% if facility.accident_protocol %}<h3 class="h4">{% translate "En caso de accidente" %}</h3><p class="pre-wrap">{{ facility.accident_protocol }}</p>{% endif %}
+      <dl class="kv">
+        <dt>{% translate "DEA máis próximo" %}</dt><dd>{{ facility.aed_location|default:_("Pregunta no concello") }}</dd>
+        {% if tenant.contact_phone %}<dt>{% translate "Concello" %}</dt><dd><a href="tel:{{ tenant.contact_phone|cut:' ' }}">{{ tenant.contact_phone }}</a></dd>{% endif %}
+        <dt>{% translate "Última supervisión" %}</dt><dd>{% if last_supervision %}{{ last_supervision|date:"d/m/Y" }}{% else %}{% translate "Sen datos" %}{% endif %}</dd>
+      </dl>
+      {% with items=facility.equipment_items %}{% if items %}
+      <h3 class="h4">{% translate "Material dispoñible" %}</h3>
+      <ul class="list-plain equipment-list">{% for it in items %}<li>{% if it.qty %}{{ it.qty }} {% endif %}{{ it.name }}</li>{% endfor %}</ul>
+      {% endif %}{% endwith %}
+    </section>
     <section class="card" aria-labelledby="info-title">
       <h2 id="info-title">{% translate "Datos prácticos" %}</h2>
       <dl class="kv">
         {% if facility.address %}<dt>{% translate "Enderezo" %}</dt><dd>{{ facility.address }}</dd>{% endif %}
         <dt>{% translate "Franxas" %}</dt><dd>{% blocktranslate with m=facility.slot_minutes %}{{ m }} minutos{% endblocktranslate %}</dd>
         <dt>{% translate "Prazas" %}</dt><dd>{% if facility.is_shared %}{{ facility.capacity }}{% else %}{% translate "Uso exclusivo" %}{% endif %}</dd>
-        <dt>{% translate "Iluminación" %}</dt><dd>{{ facility.lighting|yesno:_("Si,Non") }}</dd>
+        <dt>{% translate "Iluminación" %}</dt><dd>{{ facility.lighting|yesno:_("Si,Non") }}{% if facility.lighting and facility.lighting_supplement_cents %} · {% blocktranslate with l=facility.lighting_supplement_cents|euros %}suplemento de luz {{ l }}{% endblocktranslate %}{% endif %}</dd>
+        <dt>{% translate "Persoas por reserva" %}</dt><dd>{% blocktranslate with n=facility.max_participants %}ata {{ n }}{% endblocktranslate %}</dd>
+        {% if facility.needs_approval %}<dt>{% translate "Reserva" %}</dt><dd>{% translate "Con aprobación do concello" %}</dd>{% endif %}
         <dt>{% translate "Cuberta" %}</dt><dd>{{ facility.indoor|yesno:_("Si,Non") }}</dd>
       </dl>
     </section>

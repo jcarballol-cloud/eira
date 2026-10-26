@@ -100,6 +100,15 @@ class WorkOrder(TenantModel):
         related_name="work_orders",
     )
     checklist_state = models.JSONField(default=list, blank=True)  # [{"label": str, "done": bool}]
+    # v5 · H: «Revisión de seguridade inicial Eira» (alta da instalación)
+    kind = models.CharField(
+        max_length=20,
+        choices=[
+            ("regular", _("Ordinaria")),
+            ("safety_review", _("Revisión de seguridade inicial")),
+        ],
+        default="regular",
+    )
     closing_notes = models.TextField(_("notas de peche"), blank=True)
     closed_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

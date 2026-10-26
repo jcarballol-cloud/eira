@@ -17,6 +17,15 @@
   <div class="stat"><div class="label">{% translate "Neto" %}</div><div class="value">{{ totals.net|euros }}</div></div>
   <div class="stat"><div class="label">{% translate "Pendente / rexeitados" %}</div><div class="value">{{ totals.pending|euros }} · {{ totals.rejected }}</div></div>
 </div>
+<section class="card mb-2" aria-labelledby="by-method-title">
+  <div class="row-between"><h2 id="by-method-title" class="mb-0">{% translate "Por forma de pagamento" %}</h2><a href="{% turl 'manage:vouchers' %}">{% translate "Bonos" %}</a></div>
+  <div class="table-wrap" tabindex="0"><table class="data">
+    <caption class="visually-hidden">{% translate "Reservas e importes por forma de pagamento no período" %}</caption>
+    <thead><tr><th scope="col">{% translate "Forma de pagamento" %}</th><th scope="col" class="num">{% translate "Reservas" %}</th><th scope="col" class="num">{% translate "Cobrado (neto)" %}</th><th scope="col" class="num">{% translate "Pendente de cobro" %}</th><th scope="col" class="num">{% translate "Suplemento de luz" %}</th></tr></thead>
+    <tbody>{% for r in by_method.rows %}<tr><th scope="row">{{ r.label }}</th><td class="num">{{ r.bookings }}</td><td class="num">{% if r.method == 'free' or r.method == 'voucher' %}—{% else %}{{ r.charged|euros }}{% endif %}</td><td class="num">{% if r.pending %}<strong>{{ r.pending|euros }}</strong>{% else %}—{% endif %}</td><td class="num">{% if r.lighting %}{{ r.lighting|euros }}{% else %}—{% endif %}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  <p class="help mb-0">{% blocktranslate trimmed with n=by_method.vouchers_sold i=by_method.voucher_income|euros u=by_method.voucher_uses %}Bonos vendidos no período: {{ n }} ({{ i }}, xa nos cobros de embaixo). Usos de bono en reservas: {{ u }}.{% endblocktranslate %}</p>
+</section>
 <div class="table-wrap" tabindex="0"><table class="data">
   <caption class="visually-hidden">{% translate "Cobros" %}</caption>
   <thead><tr><th scope="col">{% translate "Data" %}</th><th scope="col">{% translate "Referencia" %}</th><th scope="col">{% translate "Concepto" %}</th><th scope="col">{% translate "Método" %}</th><th scope="col">{% translate "Estado" %}</th><th scope="col" class="num">{% translate "Importe" %}</th><th scope="col" class="num">{% translate "Devolto" %}</th><th scope="col"><span class="visually-hidden">{% translate "Accións" %}</span></th></tr></thead>

@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Guía de Eira" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{% translate "Guía de Eira" %}</h1>
+  <p>{% translate "Que podes facer en cada pantalla, explicado en poucas palabras. O botón «?» de cada pantalla mostra só a parte que che toca." %}</p></div></div>
+{% for group in groups %}
+<section class="mb-2" aria-labelledby="g-{{ forloop.counter }}">
+  <h2 id="g-{{ forloop.counter }}">{{ group.title }}</h2>
+  <dl class="help-guide">
+    {% for item in group.items %}<dt id="{{ item.key|slugify }}">{{ item.title }}</dt><dd>{{ item.body }}</dd>{% endfor %}
+  </dl>
+</section>
+{% endfor %}
+<section class="card" aria-labelledby="contact-title"><h2 id="contact-title">{% translate "Necesitas máis axuda?" %}</h2>
+  <p class="mb-0">{% translate "Contacta co servizo de deportes do teu concello: o teléfono e o correo están no pé de cada páxina e no botón «?»." %} {% translate "Nunha emerxencia, chama ao 112." %}</p>
+  <p class="mb-0 mt-1"><a href="tel:112">{% translate "Chamar ao 112" %}</a> · <a href="{{ home_url }}">{% translate "Volver ao inicio" %}</a></p></section>
+{% endblock %}

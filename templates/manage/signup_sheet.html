@@ -6,7 +6,7 @@
   <header class="sheet__head">
     <img class="install__icon" src="{% static 'img/eira.svg' %}" alt="" width="56" height="56">
     <div><p class="eyebrow mb-0">{{ tenant.name }} · {% translate "Deportes municipais" %}</p>
-    <h1 id="sheet-title" class="mb-0">{% blocktranslate with n=r.name %}Benvida/o, {{ n }}{% endblocktranslate %}</h1></div>
+    <h1 id="sheet-title" class="mb-0">{% blocktranslate with n=r.name %}Dámosche a benvida, {{ n }}{% endblocktranslate %}</h1></div>
   </header>
   <div class="sheet__body">
     <div class="qr" role="img" aria-label="{% translate 'Código QR para instalar a app' %}">{{ svg|safe }}</div>

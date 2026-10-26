@@ -1,0 +1,28 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Bonos" %}{% endblock %}
+{% block content %}
+<nav class="mb-1" aria-label="{% translate 'Migas' %}"><a href="{% turl 'manage:payments' %}">{% translate "Cobros" %}</a> / <span aria-current="page">{% translate "Bonos" %}</span></nav>
+<div class="page-head"><div><h1>{% translate "Bonos" %}</h1><p>{% translate "Un número de usos que a persoa compra na oficina ou co TPV e que se desconta en cada reserva." %}</p></div></div>
+<div class="layout-aside">
+  <div class="stack">
+    <section class="card" aria-labelledby="types-title"><h2 id="types-title">{% translate "Bonos á venda" %}</h2>
+      <div class="table-wrap" tabindex="0"><table class="data"><caption class="visually-hidden">{% translate "Tipos de bono" %}</caption>
+        <thead><tr><th scope="col">{% translate "Nome" %}</th><th scope="col">{% translate "Instalación" %}</th><th scope="col" class="num">{% translate "Usos" %}</th><th scope="col" class="num">{% translate "Prezo" %}</th><th scope="col">{% translate "Estado" %}</th></tr></thead>
+        <tbody>{% for t in types %}<tr><th scope="row">{{ t.name }}</th><td>{{ t.facility.name|default:_("Todas") }}</td><td class="num">{{ t.uses }}</td><td class="num">{{ t.price_cents|euros }}</td><td>{% if t.active %}<span class="badge badge-ok">{% translate "Á venda" %}</span>{% else %}<span class="badge">{% translate "Retirado" %}</span>{% endif %}</td></tr>{% empty %}<tr><td colspan="5">{% translate "Aínda non hai bonos." %}</td></tr>{% endfor %}</tbody></table></div>
+    </section>
+    <section class="card" aria-labelledby="sold-title"><h2 id="sold-title">{% translate "Bonos vendidos" %}</h2>
+      <div class="table-wrap" tabindex="0"><table class="data"><caption class="visually-hidden">{% translate "Bonos vendidos" %}</caption>
+        <thead><tr><th scope="col">{% translate "Data" %}</th><th scope="col">{% translate "Persoa" %}</th><th scope="col">{% translate "Bono" %}</th><th scope="col" class="num">{% translate "Usos restantes" %}</th><th scope="col">{% translate "Canle" %}</th></tr></thead>
+        <tbody>{% for v in vouchers %}<tr><td class="nowrap">{{ v.created_at|date:"d/m/Y" }}</td><td>{{ v.user }}</td><td>{{ v.type.name }}</td><td class="num">{{ v.uses_left }}/{{ v.uses_total }}</td><td>{% if v.channel == 'counter' %}{% translate "Oficina" %}{% else %}{% translate "TPV en liña" %}{% endif %}</td></tr>{% empty %}<tr><td colspan="5">{% translate "Aínda non se vendeu ningún." %}</td></tr>{% endfor %}</tbody></table></div>
+    </section>
+  </div>
+  <aside class="stack">
+    <form method="post" class="card write-link" novalidate>{% csrf_token %}<input type="hidden" name="action" value="sell">
+      <h2>{% translate "Vender na oficina" %}</h2>{% include "includes/form.html" with form=sell_form %}
+      <button class="btn" type="submit">{% translate "Vender e cobrar" %}</button></form>
+    <form method="post" class="card write-link" novalidate>{% csrf_token %}<input type="hidden" name="action" value="type">
+      <h2>{% translate "Novo bono" %}</h2>{% include "includes/form.html" with form=type_form %}
+      <button class="btn btn-secondary" type="submit">{% translate "Crear bono" %}</button></form>
+  </aside>
+</div>
+{% endblock %}

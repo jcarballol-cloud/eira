@@ -1510,3 +1510,90 @@ html.theme-dark body.themable :is(.lg-mine, .pill-mine, .kiosk__count, .seg a[ar
 html.theme-dark body.themable :is(.app-card--hero, .slot-discount) { background: #0A1215; }
 html.theme-dark body.themable .app-card--hero { color: var(--text); border: 1px solid var(--liña); }
 html.theme-dark body.themable .app-card--hero .btn { color: #1A1406; }
+
+/* ===================================================================== v5 */
+.list-plain { list-style: none; padding: 0; margin: 0; }
+.list-plain.row { display: flex; flex-wrap: wrap; gap: .5rem; }
+.center-row { justify-content: center; }
+
+/* E · Botón de axuda «?» (details/summary, sen JS) */
+.help-pop { position: relative; }
+.help-pop > summary { list-style: none; cursor: pointer; }
+.help-pop > summary::-webkit-details-marker { display: none; }
+.help-pop__q { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; border: 2px solid currentColor; font-weight: 800; font-size: .9rem; line-height: 1; }
+.help-pop__panel {
+  position: absolute; right: 0; top: calc(100% + .4rem); z-index: 40; width: min(20rem, calc(100vw - 2rem));
+  background: var(--surface); color: var(--text); border: 1px solid var(--liña); border-radius: var(--radius-sm);
+  box-shadow: var(--shadow); padding: .8rem 1rem; text-align: left; font-size: .95rem;
+}
+.help-pop__panel p { margin: 0 0 .5rem; }
+.help-pop__links { display: grid; gap: .3rem; }
+.help-pop__links .icon { width: 1em; height: 1em; }
+.help-pop--public { margin-left: .25rem; }
+
+/* E · «Incidencia ou seguridade» */
+.safety-btn { gap: .35rem; }
+.safety-btn__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.layout-desk .safety-btn__label { position: static; width: auto; height: auto; clip: auto; font-size: .85rem; font-weight: 700; }
+.emergency-call {
+  display: flex; align-items: center; gap: 1rem; padding: .9rem 1.1rem; margin: 0 0 1rem;
+  background: #9E0D0D; color: #FFFFFF; border-radius: var(--radius); text-decoration: none; font-size: 1.1rem;
+}
+.emergency-call:hover, .emergency-call:focus { color: #FFFFFF; background: #7E0A0A; }
+.emergency-call__num { font-size: 2.4rem; font-weight: 900; line-height: 1; letter-spacing: .02em; }
+.emergency-call--small { font-size: 1rem; padding: .6rem .9rem; }
+.emergency-call--small .emergency-call__num { font-size: 1.6rem; }
+.safety-option--risk { border-left: 6px solid var(--arxila); }
+
+/* A · Concellos próximos */
+.network-banner { display: flex; flex-wrap: wrap; gap: .4rem .6rem; align-items: center; padding: .6rem .9rem; margin: .5rem 0 0; border: 1px solid var(--liña); border-left: 6px solid var(--accent); border-radius: var(--radius-sm); background: var(--surface); }
+.network-banner .icon { width: 1.1em; height: 1.1em; }
+.town-switch { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin: .25rem 0 .75rem; }
+.town-switch label { font-weight: 700; }
+.town-switch select { min-width: 0; max-width: 100%; }
+.chip-link { display: inline-block; padding: .25rem .75rem; border-radius: 999px; border: 1px solid var(--liña); text-decoration: none; color: var(--text); background: var(--surface); }
+.chip-link[aria-current="page"] { background: var(--granito); color: var(--branco); border-color: var(--granito); }
+
+/* C · Desglose do prezo e estado ao entrar/saír */
+.price-summary { margin-bottom: 1rem; }
+.price-line { overflow-wrap: anywhere; }
+.pill__light { font-weight: 700; }
+.state-pair { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
+.state-pair__item { border: 1px solid var(--liña); border-radius: var(--radius-sm); padding: .75rem; min-width: 0; }
+.state-pair__item h3 { margin-top: 0; }
+.card-attention { border-left: 6px solid var(--millo); }
+
+/* B e G · Ficha: seguridade, material e índice de vida activa */
+.facility-trust { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0; margin: .5rem 0 0; }
+.facility-trust .badge, .facility-trust .vitality { white-space: normal; }
+.vitality { display: inline-flex; align-items: center; gap: .35rem; padding: .15rem .6rem; border-radius: 999px; font-size: .9rem; border: 1px solid var(--liña); background: var(--surface); }
+.vitality .icon { width: 1em; height: 1em; }
+.vitality--high { border-color: #A9D3BA; background: #DCEFE4; color: #1D4D36; }
+.vitality--mid { border-color: #E9C47E; background: var(--millo-claro); color: #5B3D05; }
+.vitality--low { border-color: #E5AE9F; background: var(--arxila-claro); color: #7A3022; }
+.vitality--none { color: var(--text-muted); }
+.vitality-list li { gap: .5rem; }
+.equipment-list li { padding: .15rem 0; }
+.h4 { font-size: 1rem; margin: 1rem 0 .4rem; }
+
+/* E · Menú básico / avanzado */
+.sidenav__more > summary { cursor: pointer; font-weight: 700; padding: .5rem .75rem; margin-top: .5rem; border-radius: var(--radius-sm); }
+.sidenav__more > summary:hover { background: rgb(22 37 43 / 6%); }
+.mode-toggle { display: inline; }
+
+/* F · Guía, custodia */
+.help-guide dt { font-weight: 700; margin-top: .75rem; }
+.help-guide dd { margin: 0; }
+.custody-item h2 { margin-top: 0; }
+
+html.theme-dark body.themable :is(.vitality--high) { background: var(--neboa); color: #BFE8D2; border-color: #2F5A45; }
+html.theme-dark body.themable :is(.vitality--mid) { color: #F6D79A; border-color: #6B5320; background: transparent; }
+html.theme-dark body.themable :is(.vitality--low) { color: #F4B4A3; border-color: #7A3E30; background: transparent; }
+html.theme-dark body.themable .chip-link[aria-current="page"] { background: var(--millo); color: #1A1406; border-color: var(--millo); }
+@media print { .help-pop, .safety-btn { display: none; } }
+/* v5: no tema escuro faltaban o día escollido e as franxas tranquilas do selector (víanse ao probar Pontedouro) */
+html.theme-dark body.themable .daychip[aria-selected="true"] .daychip__dow { color: var(--branco); opacity: .85; }
+html.theme-dark body.themable .pill-recommended { background: #2A2410; border-color: #B88A2A; }
+html.theme-dark body.themable .pill-recommended :is(.pill__price, .pill__price s, .pill__star) { color: #F6D79A; }
+/* v5: títulos longos (p. ex. «Revisión de seguridade inicial Eira · …») recortados dentro do día */
+.cal .day li a { display: block; overflow: hidden; text-overflow: ellipsis; }

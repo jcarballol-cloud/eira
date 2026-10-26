@@ -55,6 +55,10 @@ def home(request):
             qs = qs.filter(indoor=True)
     facilities = list(qs)
     tiles = tile_settings(tenant)
+    # v5: selector de concello (o propio e os da rede abertos)
+    from apps.tenants.network import switcher
+
+    towns = switcher(request.user, tenant)
     # v4: filtros activos (sen contar a busca, que se ve no campo) con ligazón para quitar cada un
     active = []
     if form.is_valid():
@@ -106,6 +110,7 @@ def home(request):
             "nav": "facilities",
             "view": request.GET.get("vista", "lista"),
             "active": active,
+            "towns": towns if len(towns) > 1 else [],
         },
     )
 
@@ -141,6 +146,19 @@ def detail(request, pk):
         "tariffs": facility.tariffs.all(),
         "hours": facility.opening_hours.all(),
     }
+    if not request.headers.get("HX-Request"):
+        # v5: índice de vida activa, última supervisión e revisión de seguridade
+        from apps.analytics.vitality import facility_index, level
+
+        idx = facility_index(facility)
+        ctx.update(
+            {
+                "vitality": idx,
+                "vitality_level": level(idx["value"]),
+                "last_supervision": facility.last_supervision(),
+                "safety_review": facility.safety_review(),
+            }
+        )
     template = (
         "facilities/_week.html" if request.headers.get("HX-Request") else "facilities/detail.html"
     )

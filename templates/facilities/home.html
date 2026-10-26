@@ -11,6 +11,14 @@
   </nav>
 </div>
 
+{% if towns %}
+<form method="get" action="{% turl 'app:nearby_go' %}" class="town-switch" aria-label="{% translate 'Concello onde reservar' %}">
+  <label for="town-select">{% translate "Concello" %}</label>
+  <select id="town-select" name="concello">{% for t in towns %}<option value="{{ t.municipality.slug }}"{% if t.current %} selected{% endif %}>{{ t.municipality.name }}{% if t.is_home %} · {% translate "o teu" %}{% endif %}</option>{% endfor %}</select>
+  <button class="btn btn-secondary btn-sm" type="submit">{% translate "Ver" %}</button>
+  <a class="town-switch__more" href="{% url 'app:nearby' app_tenant.slug %}">{% translate "Concellos próximos" %}</a>
+</form>
+{% endif %}
 <form method="get" class="searchbar" role="search" aria-label="{% translate 'Buscar instalacións' %}">
   <input type="hidden" name="vista" value="{{ view }}">
   <div class="searchbar__row">
@@ -72,6 +80,6 @@
 </ul>
 
 {% if kind == 'public' %}
-<a class="app-cta mt-2" href="{% turl 'app:request' %}">{% icon 'phone' %}<span><strong>{% translate "Solicita a app de deportes" %}</strong><br>{% translate "Reservas, código de acceso e escolas no teu teléfono. Se estás empadroado/a, coa tarifa de veciñanza." %}</span>{% icon 'chevron' %}</a>
+<a class="app-cta mt-2" href="{% turl 'app:request' %}">{% icon 'phone' %}<span><strong>{% translate "Solicita a app de deportes" %}</strong><br>{% translate "Reservas, código de acceso e escolas no teu teléfono. Se tes o empadroamento aquí, coa tarifa de veciñanza." %}</span>{% icon 'chevron' %}</a>
 {% endif %}
 {% endblock %}

@@ -236,7 +236,7 @@ def pending_resolve(request, pk):
         pending.status = PendingParticipant.Status.REJECTED
         pending.resolved_at = timezone.now()
         pending.save(update_fields=["status", "resolved_at"])
-        messages.success(request, _("%(n)s descartado/a.") % {"n": pending.first_name})
+        messages.success(request, _("Descartamos a %(n)s.") % {"n": pending.first_name})
         return back
     email = (request.POST.get("guardian_email") or pending.guardian_email).strip().lower()
     try:
@@ -261,14 +261,14 @@ def pending_resolve(request, pk):
         email,
         _("Inscrición en %(g)s") % {"g": pending.group},
         _(
-            "%(n)s xa figura inscrito/a en %(g)s. Entra na app co teu correo para ver os horarios "
+            "%(n)s xa ten inscrición en %(g)s. Entra na app co teu correo para ver os horarios "
             "e revisar os consentimentos."
         )
         % {"n": pending.first_name, "g": pending.group},
     )
     messages.success(
         request,
-        _("%(n)s inscrito/a (%(s)s).")
+        _("Inscrición feita: %(n)s (%(s)s).")
         % {"n": pending.first_name, "s": enrollment.get_status_display()},
     )
     return back

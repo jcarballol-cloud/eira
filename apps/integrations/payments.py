@@ -38,6 +38,11 @@ def merchant_key():
     return (settings.EIRA_PAYMENT_SECRET or settings.SECRET_KEY).encode()
 
 
+def merchant_label(municipality):
+    """Comercio do TPV: cada concello cobra no seu (código INE ou slug e nome)."""
+    return f"{municipality.ine_code or municipality.slug} · Concello de {municipality.name}"[:160]
+
+
 def sign(params_b64):
     digest = hmac.new(merchant_key(), params_b64.encode(), hashlib.sha256).digest()
     return base64.b64encode(digest).decode()
@@ -69,6 +74,7 @@ class FakeRedsysAdapter(PaymentAdapter):
             defaults={
                 "amount_cents": payment.amount_cents,
                 "description": payment.concept[:200],
+                "merchant": merchant_label(payment.municipality),
                 "return_url": url_ok,
                 "return_url_ko": url_ko,
                 "status": FakePayment.Status.PENDING,

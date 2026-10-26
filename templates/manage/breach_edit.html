@@ -1,0 +1,12 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% if breach.pk %}{% translate "Brecha" %} #{{ breach.pk }}{% else %}{% translate "Rexistrar unha brecha" %}{% endif %}{% endblock %}
+{% block content %}
+<nav class="mb-1" aria-label="{% translate 'Migas' %}"><a href="{% turl 'manage:breaches' %}">{% translate "Rexistro de brechas" %}</a> / <span aria-current="page">{% if breach.pk %}#{{ breach.pk }}{% else %}{% translate "Nova" %}{% endif %}</span></nav>
+<div class="page-head"><div><h1>{% if breach.pk %}{% translate "Brecha" %} #{{ breach.pk }}{% else %}{% translate "Rexistrar unha brecha" %}{% endif %}</h1>
+  {% if breach.pk %}<p>{% blocktranslate with d=breach.aepd_deadline|date:"l j \d\e F, H:i" %}Prazo para notificar á AEPD: {{ d }} (72 h desde a detección).{% endblocktranslate %}</p>{% endif %}</div>
+  {% if breach.pk %}<a class="btn btn-secondary" href="{% turl 'manage:breach_communication' breach.pk %}">{% icon 'mail' %} {% translate "Comunicación ás persoas afectadas" %}</a>{% endif %}</div>
+<form method="post" class="card form-compact" novalidate>{% csrf_token %}
+  <div class="form-grid">{% include "includes/form.html" %}</div>
+  <div class="form-actions form-actions--sticky"><button class="btn" type="submit">{% translate "Gardar" %}</button></div>
+</form>
+{% endblock %}

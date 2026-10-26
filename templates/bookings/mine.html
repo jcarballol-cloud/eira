@@ -11,7 +11,7 @@
   <ul class="grid grid-2 list" role="list">
     {% for b in upcoming %}
       <li class="card">
-        <div class="row-between"><h3 class="mb-0"><a href="{% turl 'bookings:detail' b.pk %}">{{ b.facility.name }}</a></h3><span class="badge {% if b.status == 'pending_payment' %}badge-warn{% else %}badge-ok{% endif %}">{{ b.get_status_display }}</span></div>
+        <div class="row-between"><h3 class="mb-0"><a href="{% turl 'bookings:detail' b.pk %}">{{ b.facility.name }}</a></h3><span class="badge {% if b.status == 'confirmed' or b.status == 'used' %}badge-ok{% else %}badge-warn{% endif %}">{{ b.get_status_display }}</span></div>
         <p class="mb-0">{{ b.start|date:"l j \d\e F" }} · <strong>{{ b.start|hhmm }}–{{ b.end|hhmm }}</strong></p>
         <small>{% translate "Ref." %} {{ b.reference }} · {{ b.facility.get_access_level_display }}</small>
       </li>
@@ -20,6 +20,20 @@
     {% endfor %}
   </ul>
 </section>
+{% if elsewhere %}
+<section aria-labelledby="else-title" class="mb-2">
+  <h2 id="else-title">{% translate "Noutros concellos" %}</h2>
+  <ul class="grid grid-2 list" role="list">
+    {% for b in elsewhere %}
+      <li class="card">
+        <div class="row-between"><h3 class="mb-0"><a href="{{ b|booking_url }}">{{ b.facility.name }}</a></h3><span class="badge {% if b.status == 'confirmed' %}badge-ok{% else %}badge-warn{% endif %}">{{ b.get_status_display }}</span></div>
+        <p class="mb-0">{{ b.start|date:"l j \d\e F" }} · <strong>{{ b.start|hhmm }}–{{ b.end|hhmm }}</strong></p>
+        <small>{% icon 'map' %} {{ b.municipality.name }} · {% translate "Ref." %} {{ b.reference }}</small>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
 <section aria-labelledby="hist-title">
   <h2 id="hist-title">{% translate "Historial" %}</h2>
   <ul class="hist-cards" role="list">

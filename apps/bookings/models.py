@@ -9,7 +9,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from apps.facilities.models import Facility, RulesVersion
-from apps.tenants.models import TenantModel
+from apps.tenants.models import PaymentMethod, TenantModel
 
 
 def booking_reference():
@@ -25,8 +25,17 @@ class BookingQuerySet(models.QuerySet):
         """Reservas que ocupan praza: confirmadas, usadas ou pendentes de pago non caducadas."""
         now = timezone.now()
         return self.filter(
-            models.Q(status__in=[Booking.Status.CONFIRMED, Booking.Status.USED])
-            | models.Q(status=Booking.Status.PENDING_PAYMENT, hold_expires_at__gt=now)
+            models.Q(
+                status__in=[
+                    Booking.Status.CONFIRMED,
+                    Booking.Status.USED,
+                    Booking.Status.PENDING_APPROVAL,
+                ]
+            )
+            | models.Q(
+                status__in=[Booking.Status.PENDING_PAYMENT, Booking.Status.PENDING_OFFICE],
+                hold_expires_at__gt=now,
+            )
         )
 
     def overlapping(self, start, end):
@@ -42,6 +51,10 @@ class Booking(TenantModel):
         CANCELLED = "cancelled", _("Cancelada")
         USED = "used", _("Usada")
         NO_SHOW = "no_show", _("Non presentada")
+        # v5
+        PENDING_APPROVAL = "pending_approval", _("Pendente de aprobación")
+        PENDING_OFFICE = "pending_office", _("Pendente de pagamento na oficina")
+        DECLINED = "declined", _("Rexeitada polo concello")
 
     class Channel(models.TextChoices):
         ONLINE = "online", _("En liña")
@@ -93,6 +106,34 @@ class Booking(TenantModel):
     close_key_ok = models.BooleanField(null=True)
     close_all_ok = models.BooleanField(null=True)
     close_notes = models.TextField(blank=True)
+    # v5 · Participantes
+    participants = models.PositiveIntegerField(_("número de persoas"), default=1)
+    participant_names = models.TextField(_("nomes (opcional)"), blank=True)
+    # v5 · Forma de pagamento, bono e suplemento de luz
+    payment_method = models.CharField(
+        _("forma de pagamento"), max_length=10, choices=PaymentMethod.choices, default="tpv"
+    )
+    voucher = models.ForeignKey(
+        "Voucher", null=True, blank=True, on_delete=models.SET_NULL, related_name="bookings"
+    )
+    lighting_cents = models.PositiveIntegerField(default=0)
+    needs_light = models.BooleanField(_("pediu luz"), default=False)
+    # v5 · Aprobación do concello
+    approved_at = models.DateTimeField(null=True, blank=True)
+    decided_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    decision_reason = models.CharField(_("motivo"), max_length=300, blank=True)
+    requested_start = models.DateTimeField(null=True, blank=True)  # cambio pendente de aprobar
+    # v5 · Reserva desde outro concello da rede: concello de orixe da persoa (só o nome se mostra)
+    network_origin = models.ForeignKey(
+        "tenants.Municipality", null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    # v5 · Estado ao entrar (o de saída é o checklist de peche)
+    start_state_at = models.DateTimeField(null=True, blank=True)
+    start_state_ok = models.BooleanField(null=True)
+    start_state_notes = models.CharField(max_length=500, blank=True)
+    start_state_photo = models.ImageField(upload_to="incidents/%Y/%m/", blank=True)
 
     objects = BookingQuerySet.as_manager()
 
@@ -111,6 +152,9 @@ class Booking(TenantModel):
     @property
     def holder_label(self):
         if self.user:
+            if self.network_origin_id and not self.user.display_name:
+                # v5: o concello de destino non ve o correo dunha persoa doutro concello
+                return _("Persoa de %(c)s") % {"c": self.network_origin.name}
             return str(self.user)
         return self.holder_name
 
@@ -147,12 +191,51 @@ class Booking(TenantModel):
         return self.start - timezone.timedelta(hours=self.municipality.cancellation_hours)
 
     def can_modify(self):
-        return self.status == self.Status.CONFIRMED and timezone.now() < self.cancellation_cutoff()
+        return (
+            self.status in (self.Status.CONFIRMED, self.Status.PENDING_APPROVAL)
+            and self.requested_start is None
+            and timezone.now() < self.cancellation_cutoff()
+        )
 
     def can_cancel(self):
+        return self.status in self.OPEN_STATUSES and timezone.now() < self.start
+
+    OPEN_STATUSES = (
+        Status.CONFIRMED,
+        Status.PENDING_PAYMENT,
+        Status.PENDING_APPROVAL,
+        Status.PENDING_OFFICE,
+    )
+
+    @property
+    def total_cents(self):
+        return self.price_cents
+
+    @property
+    def slot_cents(self):
+        """Prezo da franxa sen o suplemento de luz."""
+        return self.price_cents - self.lighting_cents
+
+    @property
+    def outstanding_cents(self):
+        """O que falta por cobrar (oficina ou aprazado)."""
+        if self.status in (self.Status.CANCELLED, self.Status.DECLINED, self.Status.EXPIRED):
+            return 0
+        if self.payment_method in (PaymentMethod.FREE, PaymentMethod.VOUCHER):
+            return 0
+        return max(0, self.price_cents - self.paid_cents)
+
+    def participant_name_list(self):
+        return [n.strip() for n in self.participant_names.splitlines() if n.strip()]
+
+    @property
+    def needs_start_state(self):
+        """Ao empezar (check-in ou apertura) pódese marcar como estaba a pista."""
         return (
-            self.status in (self.Status.CONFIRMED, self.Status.PENDING_PAYMENT)
-            and timezone.now() < self.start
+            self.start_state_at is None
+            and self.checked_in_at is not None
+            and self.status in (self.Status.CONFIRMED, self.Status.USED)
+            and timezone.now() < self.end
         )
 
     def penalty_if_cancelled_now(self):
@@ -195,6 +278,9 @@ class Payment(TenantModel):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="payments",
+    )
+    voucher = models.ForeignKey(
+        "Voucher", null=True, blank=True, on_delete=models.SET_NULL, related_name="payments"
     )
     concept = models.CharField(_("concepto"), max_length=200)
     amount_cents = models.PositiveIntegerField(_("importe"))
@@ -255,3 +341,71 @@ class Rating(TenantModel):
         verbose_name = _("valoración")
         verbose_name_plural = _("valoracións")
         ordering = ["-created_at"]
+
+
+class VoucherType(TenantModel):
+    """v5 · Bono: un número de usos que se compra na oficina ou co TPV e se desconta en cada
+    reserva. Sen instalación = válido en todas as do concello que admitan bono."""
+
+    name = models.CharField(_("nome"), max_length=120)
+    facility = models.ForeignKey(
+        Facility,
+        verbose_name=_("instalación"),
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="voucher_types",
+    )
+    uses = models.PositiveIntegerField(_("usos"), default=10)
+    price_cents = models.PositiveIntegerField(_("prezo (céntimos)"))
+    valid_days = models.PositiveIntegerField(_("validez (días)"), default=365)
+    active = models.BooleanField(_("á venda"), default=True)
+
+    class Meta:
+        verbose_name = _("tipo de bono")
+        verbose_name_plural = _("tipos de bono")
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+
+class Voucher(TenantModel):
+    class Status(models.TextChoices):
+        PENDING = "pending", _("Pendente de pagamento")
+        ACTIVE = "active", _("Activo")
+        SPENT = "spent", _("Esgotado")
+        EXPIRED = "expired", _("Caducado")
+
+    type = models.ForeignKey(VoucherType, on_delete=models.CASCADE, related_name="vouchers")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="vouchers"
+    )
+    uses_total = models.PositiveIntegerField()
+    uses_left = models.PositiveIntegerField()
+    price_cents = models.PositiveIntegerField()
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
+    channel = models.CharField(max_length=10, default="online")  # online | counter
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField(null=True, blank=True)
+    sold_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+
+    class Meta:
+        verbose_name = _("bono")
+        verbose_name_plural = _("bonos")
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.type} · {self.uses_left}/{self.uses_total}"
+
+    def usable_for(self, facility, at=None):
+        at = at or timezone.now()
+        return (
+            self.status == self.Status.ACTIVE
+            and self.uses_left > 0
+            and (self.expires_at is None or self.expires_at > at)
+            and self.municipality_id == facility.municipality_id
+            and (self.type.facility_id is None or self.type.facility_id == facility.pk)
+        )

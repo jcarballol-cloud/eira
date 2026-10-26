@@ -1,6 +1,9 @@
 {% load i18n eira %}<div class="desk-top">
   <div class="desk-top__title">{% if tenant %}<span class="crest" aria-hidden="true">{% if tenant.coat_of_arms %}<img src="{{ tenant.coat_of_arms.url }}" alt="">{% else %}{{ tenant.initials }}{% endif %}</span> {{ tenant.name }}{% elif nav_region %}{{ nav_region.name }}{% endif %}</div>
   <div class="desk-top__actions">
+    {% if kind == 'admin' and tenant %}<form method="post" action="{% url 'desk_mode' %}" class="mode-toggle">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><input type="hidden" name="mode" value="{% if desk_mode == 'advanced' %}basic{% else %}advanced{% endif %}"><button type="submit" class="btn btn-ghost btn-sm" aria-pressed="{% if desk_mode == 'advanced' %}true{% else %}false{% endif %}">{% translate "Menú avanzado" %}</button></form>{% endif %}
+    {% include "includes/safety_button.html" %}
+    {% include "includes/help_button.html" %}
     {% include "includes/lang_form.html" %}
     <a class="icon-btn" href="{% url 'account:profile' %}" title="{% translate 'A miña conta' %}">{% icon 'user' %}<span class="visually-hidden">{% translate "A miña conta" %}</span></a>
     {% include "includes/logout_button.html" with with_label=True %}

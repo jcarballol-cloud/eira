@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: EUPL-1.2
 """Concellos (tenants) e agrupacións supramunicipais (deputacións, mancomunidades)."""
 
+import datetime as dt
+
 from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db import models
@@ -27,6 +29,26 @@ DEFAULT_MODULES = {
 
 def default_modules():
     return dict(DEFAULT_MODULES)
+
+
+class PaymentMethod(models.TextChoices):
+    """v5: formas de pagamento dunha reserva, configurables por concello e por instalación."""
+
+    TPV = "tpv", _("TPV en liña")
+    OFFICE = "office", _("Pagamento na oficina")
+    FREE = "free", _("Gratuíta")
+    VOUCHER = "voucher", _("Bono")
+    DEFERRED = "deferred", _("Aprazado")
+
+
+def default_payment_methods():
+    # Como ata a v4: só TPV. O aprazado vai sempre desactivado por defecto.
+    return [PaymentMethod.TPV.value]
+
+
+class LightingRule(models.TextChoices):
+    SUNSET = "sunset", _("Segundo a hora do solpor e do amencer")
+    FIXED = "fixed", _("Horario fixo do concello")
 
 
 class Region(models.Model):
@@ -133,6 +155,45 @@ class Municipality(models.Model):
     no_show_grace_minutes = models.PositiveIntegerField(
         _("minutos de cortesía para non presentado"), default=15
     )
+    # v5 · Formas de pagamento (cada instalación pode restrinxilas)
+    payment_methods = models.JSONField(
+        _("formas de pagamento"), default=default_payment_methods, blank=True
+    )
+    office_payment_hours = models.PositiveIntegerField(
+        _("prazo para pagar na oficina (horas)"),
+        default=48,
+        help_text=_("Se non se paga nese prazo (nin antes do inicio), a franxa queda libre."),
+    )
+    # v5 · Suplemento de iluminación
+    lighting_rule = models.CharField(
+        _("cando se precisa luz"),
+        max_length=10,
+        choices=LightingRule.choices,
+        default=LightingRule.SUNSET,
+    )
+    lighting_from = models.TimeField(_("luz desde (horario fixo)"), default=dt.time(21, 0))
+    lighting_until = models.TimeField(_("luz ata (horario fixo, pola mañá)"), default=dt.time(8, 0))
+    # v5 · Reservas desde outros concellos da mesma rede (deputación ou mancomunidade)
+    network_open = models.BooleanField(
+        _("abrir as instalacións ás persoas doutros concellos da rede"),
+        default=True,
+        help_text=_(
+            "Poden reservar coa súa conta, pagando a tarifa de persoas non empadroadas deste concello."
+        ),
+    )
+    network_max_active = models.PositiveIntegerField(
+        _("reservas activas máximas por persoa doutro concello"), default=2
+    )
+    network_advance_days = models.PositiveIntegerField(
+        _("antelación máxima para persoas doutros concellos (días)"),
+        null=True,
+        blank=True,
+        help_text=_("Baleiro = a mesma ca para a veciñanza."),
+    )
+    # v5 · Índice de vida activa: pesos de cada compoñente (ver docs/indice-vida-activa.md)
+    vitality_weights = models.JSONField(
+        _("pesos do índice de vida activa"), default=dict, blank=True
+    )
     is_active = models.BooleanField(_("activo"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -143,6 +204,10 @@ class Municipality(models.Model):
 
     def __str__(self):
         return self.name
+
+    def payment_method_list(self):
+        values = [m for m in (self.payment_methods or []) if m in PaymentMethod.values]
+        return values or default_payment_methods()
 
     def module_enabled(self, key):
         return bool({**DEFAULT_MODULES, **(self.modules or {})}.get(key, False))

@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Estado ao entrar" %}{% endblock %}
+{% block content %}
+<section class="card prose">
+  <p class="eyebrow">{{ booking.facility.name }} · {{ booking.start|hhmm }}–{{ booking.end|hhmm }}</p>
+  <h1>{% translate "Como está todo ao entrar?" %}</h1>
+  <p>{% translate "Se algo xa estaba mal (pista, porterías, material…), avísao agora. Queda rexistrado que estaba antes da túa reserva, así que non se che atribuirá." %}</p>
+  {% with items=booking.facility.equipment_items %}{% if items %}
+  <p class="help">{% translate "Material que debería haber:" %} {% for it in items %}{% if it.qty %}{{ it.qty }} {% endif %}{{ it.name }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
+  {% endif %}{% endwith %}
+  <form method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {% include "includes/form.html" %}
+    <div class="form-actions"><button class="btn btn-lg" type="submit">{% translate "Enviar" %}</button>
+      <a class="btn btn-ghost" href="{% turl 'bookings:detail' booking.pk %}">{% translate "Agora non" %}</a></div>
+  </form>
+</section>
+{% endblock %}

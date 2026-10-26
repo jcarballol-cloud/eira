@@ -1,0 +1,24 @@
+{% load i18n eira %}{# v5 · D: estado ao entrar (marcado ao comezar) e ao saír (checklist de peche), xuntos #}
+<div class="state-pair">
+  <div class="state-pair__item">
+    <h3 class="h4">{% icon 'door' %} {% translate "Ao entrar" %}</h3>
+    {% if b.start_state_at %}
+      <p class="mb-0"><span class="badge {% if b.start_state_ok %}badge-ok{% else %}badge-warn{% endif %}">{% if b.start_state_ok %}{% translate "Todo ben" %}{% else %}{% translate "Había un problema" %}{% endif %}</span> <small>{{ b.start_state_at|date:"d/m H:i" }}</small></p>
+      {% if b.start_state_notes %}<p class="mb-0">{{ b.start_state_notes }}</p>{% endif %}
+      {% if b.start_state_photo %}<p class="mb-0"><a href="{{ b.start_state_photo.url }}">{% icon 'camera' %} {% translate "Ver a foto" %}</a></p>{% endif %}
+      {% for inc in b.found_on_start.all %}<p class="help mb-0">{% blocktranslate with n=inc.pk %}Incidencia #{{ n }}: xa estaba antes desta reserva.{% endblocktranslate %}</p>{% endfor %}
+    {% else %}<p class="muted mb-0">{% translate "Sen marcar." %}</p>{% endif %}
+  </div>
+  <div class="state-pair__item">
+    <h3 class="h4">{% icon 'lock' %} {% translate "Ao saír" %}</h3>
+    {% if b.closed_at %}
+      <p class="mb-0"><span class="badge {% if b.close_door_ok is False or b.close_key_ok is False or b.close_all_ok is False %}badge-warn{% else %}badge-ok{% endif %}">{% if b.close_door_ok is False or b.close_key_ok is False or b.close_all_ok is False %}{% translate "Con problemas" %}{% else %}{% translate "Todo en orde" %}{% endif %}</span> <small>{{ b.closed_at|date:"d/m H:i" }}</small></p>
+      <ul class="list-plain mb-0">
+        <li>{% translate "Porta pechada" %}: {{ b.close_door_ok|yesno:_("si,non,—") }}</li>
+        {% if b.close_key_ok is not None %}<li>{% translate "Chave devolta" %}: {{ b.close_key_ok|yesno:_("si,non,—") }}</li>{% endif %}
+        <li>{% translate "Todo en orde" %}: {{ b.close_all_ok|yesno:_("si,non,—") }}</li>
+      </ul>
+      {% if b.close_notes %}<p class="mb-0">{{ b.close_notes }}</p>{% endif %}
+    {% else %}<p class="muted mb-0">{% translate "Checklist de peche sen enviar." %}</p>{% endif %}
+  </div>
+</div>

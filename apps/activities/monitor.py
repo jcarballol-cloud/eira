@@ -133,7 +133,7 @@ def add_pending(request, pk):
             )
             messages.success(
                 request,
-                _("%(n)s queda apuntado/a. O concello validará a inscrición.") % {"n": name},
+                _("Apuntamos a %(n)s. O concello validará a inscrición.") % {"n": name},
             )
     target = "monitor:kiosk" if request.POST.get("next") == "kiosk" else "monitor:attendance"
     return redirect(treverse(request.tenant, target, session.pk))

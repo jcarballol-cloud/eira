@@ -38,6 +38,22 @@ def _categories(selected):
     ]
 
 
+def _network_feed(request):
+    from apps.tenants.network import network_feed, network_of
+
+    towns = list(network_of(request.tenant))
+    if not towns:
+        return None
+    only = request.GET.get("proximo") or None
+    feed = network_feed(request.user, request.tenant, only=only)
+    following = set(request.user.network_feed or [])
+    return {
+        **feed,
+        "only": only,
+        "available": [{"m": m, "following": m.slug in following} for m in towns],
+    }
+
+
 @login_required
 def list_view(request):
     selected = request.GET.get("categoria", "")
@@ -63,6 +79,8 @@ def list_view(request):
             "selected": selected,
             "has_consent": notices.has_consent(request.user, request.tenant),
             "telegram_channel": request.tenant.telegram_channel,
+            # v5: actividades e eventos dos concellos próximos (opcional e filtrable)
+            "network": _network_feed(request),
             "nav": "notifications",
         },
     )

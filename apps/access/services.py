@@ -140,7 +140,10 @@ def remote_open(booking, user):
         user=user,
         kind=AccessEvent.Kind.REMOTE_OPEN,
     )
-    if device.controls_lights and booking.facility.lighting:
+    # v5: con suplemento de luz configurado, as luces só se acenden se a reserva o leva
+    # (pagado, ou incluído no bono ou na reserva gratuíta). Sen suplemento, como ata agora.
+    light_paid = not booking.facility.lighting_supplement_cents or booking.needs_light
+    if device.controls_lights and booking.facility.lighting and light_paid:
         adapter.set_lights(device, True, until=booking.end)
         device.lights_on_until = booking.end
         device.save(update_fields=["lights_on_until"])

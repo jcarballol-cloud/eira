@@ -1,0 +1,21 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Rexistro de brechas" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% icon 'shield' %} {% translate "Protección de datos" %}</p><h1>{% translate "Rexistro de brechas de seguridade" %}</h1>
+  <p>{% translate "Todas as brechas quedan rexistradas, aínda que non se notifiquen (art. 33.5 do RXPD). Se hai risco, hai que notificar á AEPD nun prazo de 72 horas." %}</p></div>
+  <a class="btn" href="{% turl 'manage:breach_new' %}">{% icon 'plus' %} {% translate "Rexistrar unha brecha" %}</a></div>
+<p class="help">{% translate "Só o ven a administración do concello e a persoa delegada de protección de datos." %} <a href="{% turl 'privacy_custody' %}">{% translate "Quen custodia os datos" %}</a></p>
+<div class="table-wrap" tabindex="0"><table class="data">
+  <caption class="visually-hidden">{% translate "Brechas rexistradas" %}</caption>
+  <thead><tr><th scope="col">{% translate "Detectada" %}</th><th scope="col">{% translate "Que pasou" %}</th><th scope="col">{% translate "Risco" %}</th><th scope="col">{% translate "AEPD (72 h)" %}</th><th scope="col">{% translate "Persoas informadas" %}</th><th scope="col">{% translate "Estado" %}</th></tr></thead>
+  <tbody>{% for b in breaches %}<tr>
+    <td class="nowrap"><a href="{% turl 'manage:breach' b.pk %}">{{ b.detected_at|date:"d/m/Y H:i" }}</a>{% if b.is_demo %} <span class="badge">{% translate "Exemplo ficticio" %}</span>{% endif %}</td>
+    <td>{{ b.description|truncatechars:90 }}</td>
+    <td>{{ b.get_risk_display }}</td>
+    <td>{% if b.aepd_notified %}{% if b.aepd_on_time %}<span class="badge badge-ok">{% blocktranslate with d=b.aepd_notified_at|date:"d/m H:i" %}En prazo · {{ d }}{% endblocktranslate %}</span>{% else %}<span class="badge badge-alert">{% blocktranslate with d=b.aepd_notified_at|date:"d/m H:i" %}Fóra de prazo · {{ d }}{% endblocktranslate %}</span>{% endif %}{% elif b.aepd_not_needed_reason %}<span class="badge">{% translate "Non se notifica" %}</span>{% elif b.status == 'open' %}<span class="badge badge-warn">{% blocktranslate with d=b.aepd_deadline|date:"d/m H:i" %}Prazo ata {{ d }}{% endblocktranslate %}</span>{% else %}—{% endif %}</td>
+    <td>{% if b.people_informed %}{% icon 'check' %} {{ b.people_informed_at|date:"d/m/Y" }}{% else %}—{% endif %}</td>
+    <td><span class="badge {% if b.status == 'closed' %}badge-ok{% else %}badge-warn{% endif %}">{{ b.get_status_display }}</span></td></tr>
+  {% empty %}<tr><td colspan="6">{% translate "Non hai ningunha brecha rexistrada." %}</td></tr>{% endfor %}</tbody>
+</table></div>
+<p class="help mt-2">{% translate "Protocolo completo: docs/rxpd/brechas.md (detectar, conter, avaliar o risco, notificar á AEPD, informar ás persoas e pechar)." %}</p>
+{% endblock %}

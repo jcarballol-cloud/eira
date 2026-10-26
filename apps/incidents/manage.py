@@ -39,6 +39,20 @@ def incident_list(request):
     qs = Incident.objects.for_tenant(request.tenant).select_related("facility", "reporter")
     if status:
         qs = qs.filter(status=status)
+    # v5: os riscos abertos van primeiro
+    from django.db.models import Case, IntegerField, Value, When
+
+    qs = qs.annotate(
+        risk_first=Case(
+            When(
+                priority=Incident.Priority.HIGH,
+                status__in=[Incident.Status.RECEIVED, Incident.Status.VALIDATED],
+                then=Value(0),
+            ),
+            default=Value(1),
+            output_field=IntegerField(),
+        )
+    ).order_by("risk_first", "-created_at")
     return render(
         request,
         "manage/incidents.html",

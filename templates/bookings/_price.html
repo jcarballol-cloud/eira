@@ -1,0 +1,20 @@
+{% load i18n eira %}{# v5: desglose do prezo antes de pagar (franxa + luz), refrescado con HTMX ao cambiar o formulario #}
+<div id="price-summary" class="price-summary" data-announce>
+  <dl class="kv big mb-1">
+    <dt>{% translate "Prezo" %}</dt>
+    <dd>
+      {% if quote.method == 'voucher' %}{% translate "1 uso do bono" %} <small>({% translate "luz incluída" %})</small>
+      {% elif quote.method == 'free' %}{% translate "Gratuíta" %}
+      {% elif price %}
+        <span class="price-line">{% if discount %}<del aria-label="{% translate 'Prezo habitual' %} {{ base_price|euros }}">{{ base_price|euros }}</del> {% endif %}{{ facility.get_kind_display }} {{ quote.slot_cents|euros }}{% if quote.lighting_cents %} + {% translate "luz" %} {{ quote.lighting_cents|euros }}{% endif %}</span>
+        {% if quote.lighting_cents %}<br><strong class="price-now">{% translate "Total" %} {{ price|euros }}</strong>{% else %}{% if discount %} <span class="badge badge-warn">★ −{{ discount }} % {% translate "franxa tranquila" %}</span>{% endif %}{% endif %}
+      {% else %}{% translate "Gratuíta" %}{% endif %}
+      <small>({{ audience_label }})</small>
+    </dd>
+  </dl>
+  {% if quote.lighting_auto and quote.lighting_cents %}<p class="help mb-1">{% icon 'light' %} {% translate "Esta franxa precisa luz (despois do solpor ou antes do amencer), así que leva o suplemento de iluminación." %}</p>{% endif %}
+  {% if network_origin %}<p class="help mb-1">{% blocktranslate trimmed with c=tenant.name o=network_origin.name %}Reservas en {{ c }} coa túa conta de {{ o }}: aplícase a tarifa de persoas non empadroadas de {{ c }} e o cobro vai ao TPV de {{ c }}.{% endblocktranslate %}</p>{% endif %}
+  {% if facility.needs_approval %}<p class="help mb-1">{% icon 'clock' %} {% translate "Esta instalación reserva con aprobación do concello. Se a rexeita, devolvémosche o importe." %}</p>{% endif %}
+  {% if quote.method == 'office' and price %}<p class="help mb-1">{% blocktranslate with h=tenant.office_payment_hours %}Gardámosche a franxa {{ h }} horas (ou ata o inicio) para pagar na oficina de deportes.{% endblocktranslate %}</p>{% endif %}
+  {% if quote.method == 'deferred' and price %}<p class="help mb-1">{% translate "Pagamento aprazado: o concello indicarache como e cando pagar." %}</p>{% endif %}
+</div>

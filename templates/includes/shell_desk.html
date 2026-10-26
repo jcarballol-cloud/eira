@@ -5,18 +5,23 @@
   </div>
   <div class="nav-wrap" id="primary-nav" data-collapsed="true">
   {% if kind == 'admin' and tenant %}
-  <nav class="sidenav" aria-label="{% translate 'Xestión do concello' %}">
+  {# v5: modo básico (por defecto) = día a día á vista e o resto recollido en «Máis ferramentas»; avanzado = todo á vista. Non cambia permisos #}
+  <nav class="sidenav" data-mode="{{ desk_mode }}" aria-label="{% translate 'Xestión do concello' %}">
     <p class="sidenav__group">{% translate "Día a día" %}</p>
     <a href="{% turl 'manage:dashboard' %}" {% if sub == 'dashboard' %}aria-current="page"{% endif %}>{% icon 'home' %} {% translate "Panel do día" %}</a>
     <a href="{% turl 'manage:agenda' %}" {% if sub == 'agenda' %}aria-current="page"{% endif %}>{% icon 'calendar' %} {% translate "Axenda" %}</a>
     <a href="{% turl 'manage:on_behalf' %}" {% if sub == 'on_behalf' %}aria-current="page"{% endif %}>{% icon 'user' %} {% translate "Reservar por alguén" %}</a>
-    <a href="{% turl 'manage:payments' %}" {% if sub == 'payments' %}aria-current="page"{% endif %}>{% icon 'euro' %} {% translate "Cobros" %}</a>
     <a href="{% turl 'manage:incidents' %}" {% if sub == 'incidents' %}aria-current="page"{% endif %}>{% icon 'alert' %} {% translate "Incidencias" %}</a>
+    <a href="{% turl 'manage:notices' %}" {% if sub == 'notices' %}aria-current="page"{% endif %}>{% icon 'bell' %} {% translate "Avisos" %}</a>
+    {% with adv=sub|default:'' %}
+    <details class="sidenav__more"{% if desk_mode == 'advanced' or adv in 'payments work_orders facilities closures maintenance activities indicators ratings observatory signups staff settings breaches custody' and adv %} open{% endif %}>
+    <summary>{% if desk_mode == 'advanced' %}{% translate "Todas as ferramentas" %}{% else %}{% translate "Máis ferramentas" %}{% endif %}</summary>
+    <p class="sidenav__group">{% translate "Cobros e mantemento" %}</p>
+    <a href="{% turl 'manage:payments' %}" {% if sub == 'payments' %}aria-current="page"{% endif %}>{% icon 'euro' %} {% translate "Cobros" %}</a>
     <a href="{% turl 'manage:work_orders' %}" {% if sub == 'work_orders' %}aria-current="page"{% endif %}>{% icon 'wrench' %} {% translate "Ordes de traballo" %}</a>
     <p class="sidenav__group">{% translate "Servizo" %}</p>
     <a href="{% turl 'manage:facilities' %}" {% if sub == 'facilities' %}aria-current="page"{% endif %}>{% icon 'map' %} {% translate "Instalacións" %}</a>
     <a href="{% turl 'manage:closures' %}" {% if sub == 'closures' %}aria-current="page"{% endif %}>{% icon 'lock' %} {% translate "Peches" %}</a>
-    <a href="{% turl 'manage:notices' %}" {% if sub == 'notices' %}aria-current="page"{% endif %}>{% icon 'bell' %} {% translate "Avisos" %}</a>
     <a href="{% turl 'manage:maintenance_plans' %}" {% if sub == 'maintenance' %}aria-current="page"{% endif %}>{% icon 'check' %} {% translate "Mantemento" %}</a>
     <a href="{% turl 'manage:activities' %}" {% if sub == 'activities' %}aria-current="page"{% endif %}>{% icon 'users' %} {% translate "Escolas" %}</a>
     <p class="sidenav__group">{% translate "Datos" %}</p>
@@ -26,7 +31,16 @@
     <p class="sidenav__group">{% translate "Concello" %}</p>
     <a href="{% turl 'manage:signups' %}" {% if sub == 'signups' %}aria-current="page"{% endif %}>{% icon 'plus' %} {% translate "Altas da app" %}</a>
     <a href="{% turl 'manage:staff' %}" {% if sub == 'staff' %}aria-current="page"{% endif %}>{% icon 'users' %} {% translate "Persoal e códigos" %}</a>
+    <a href="{% turl 'manage:breaches' %}" {% if sub == 'breaches' %}aria-current="page"{% endif %}>{% icon 'shield' %} {% translate "Rexistro de brechas" %}</a>
     <a href="{% turl 'manage:settings' %}" {% if sub == 'settings' %}aria-current="page"{% endif %}>{% icon 'star' %} {% translate "Configuración" %}</a>
+    </details>
+    {% endwith %}
+  </nav>
+  {% elif kind == 'dpo' and tenant %}
+  <nav class="sidenav" aria-label="{% translate 'Protección de datos' %}">
+    <p class="sidenav__group">{% translate "Protección de datos" %}</p>
+    <a href="{% turl 'manage:breaches' %}" {% if sub == 'breaches' %}aria-current="page"{% endif %}>{% icon 'shield' %} {% translate "Rexistro de brechas" %}</a>
+    <a href="{% turl 'privacy_custody' %}" {% if nav == 'privacy' %}aria-current="page"{% endif %}>{% icon 'user' %} {% translate "Quen custodia os datos" %}</a>
   </nav>
   {% elif kind == 'region' %}
   <nav class="sidenav" aria-label="{% translate 'Rede de concellos' %}">

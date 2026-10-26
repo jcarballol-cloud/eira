@@ -37,5 +37,16 @@
     </div></td></tr>
   {% empty %}<tr><td colspan="10">{% translate "Aínda non hai concellos." %}</td></tr>{% endfor %}</tbody>
 </table></div>
+<section class="card mt-2" aria-labelledby="vit-title">
+  <h2 id="vit-title" class="h3">{% icon 'heart' %} {% translate "Índice de vida activa por instalación (0–100)" %}</h2>
+  <p class="help">{% translate "Engádese ao observatorio: ocupación real, diversidade de idades, satisfacción, accesibilidade e mantemento. Só con n ≥ 10." %}</p>
+  <div class="table-wrap" tabindex="0"><table class="data">
+    <caption class="visually-hidden">{% translate "Índice de vida activa por concello e instalación" %}</caption>
+    <thead><tr><th scope="col">{% translate "Concello" %}</th><th scope="col" class="num">{% translate "Índice medio" %}</th><th scope="col">{% translate "Instalacións" %}</th><th scope="col" class="num">{% translate "Reservas desde a rede" %}</th></tr></thead>
+    <tbody>{% for r in rows %}<tr><th scope="row">{{ r.m.name }}</th><td class="num">{% if r.vitality is not None %}<strong>{{ r.vitality }}</strong>{% else %}{% translate "sen datos suficientes" %}{% endif %}</td>
+      <td><ul class="list-plain vitality-list">{% for f in r.vitality_facilities %}<li>{{ f.name }}: {% if f.value is not None %}<span class="vitality vitality--{{ f.level }}">{{ f.value }}</span>{% else %}<span class="muted">{% translate "sen datos suficientes" %}</span>{% endif %}</li>{% endfor %}</ul></td>
+      <td class="num">{{ r.network_in }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+</section>
 <p class="help mt-1">{% translate "Frechas: variación fronte ás 4 semanas anteriores. A satisfacción calcúlase coas valoracións «Que tal foi?» (Ben = 100, Regular = 50, Mal = 0); entre parénteses, número de valoracións." %}</p>
 {% endblock %}

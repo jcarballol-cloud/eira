@@ -2,7 +2,7 @@
 {% block title %}{% translate "Panel do día" %}{% endblock %}
 {% block content %}
 <div class="page-head"><div><p class="eyebrow">{{ today|date:"l j \d\e F" }}</p><h1>{% translate "Panel do día" %}</h1></div>
-  <a class="btn write-link" href="{% turl 'manage:on_behalf' %}">{% translate "Reservar en nome dun veciño" %}</a></div>
+  <a class="btn write-link" href="{% turl 'manage:on_behalf' %}">{% translate "Reservar en nome doutra persoa" %}</a></div>
 <div class="grid grid-4 mb-2">
   <div class="stat"><div class="label">{% translate "Reservas hoxe" %}</div><div class="value">{{ held }}</div></div>
   <div class="stat"><div class="label">{% translate "Ocupación hoxe" %}</div><div class="value">{{ occupancy }} %</div></div>
@@ -41,8 +41,21 @@
     {% endif %}
   </div>
   <aside class="stack">
+    {% if to_approve %}
+    <section class="card card-attention" aria-labelledby="appr-title"><h2 id="appr-title">{% icon 'clock' %} {% translate "Para aprobar" %}</h2>
+      <ul class="list">{% for b in to_approve %}<li><a href="{% turl 'manage:booking' b.pk %}">{{ b.facility.name }}</a> {% if b.requested_start %}<span class="badge badge-warn">{% translate "Cambio" %}</span>{% endif %}<br><small>{{ b.start|date:"D j/n" }} · {{ b.start|hhmm }} · {{ b.holder_label|default:"—" }} · {% blocktranslate count n=b.participants %}{{ n }} persoa{% plural %}{{ n }} persoas{% endblocktranslate %}</small></li>{% endfor %}</ul></section>
+    {% endif %}
+    {% if office %}
+    <section class="card" aria-labelledby="office-title"><h2 id="office-title">{% icon 'euro' %} {% translate "Pagamentos na oficina" %}</h2>
+      <ul class="list">{% for b in office %}<li><a href="{% turl 'manage:booking' b.pk %}">{{ b.holder_label|default:b.reference }}</a> · {{ b.outstanding_cents|euros }}<br><small>{{ b.facility.name }} · {% blocktranslate with d=b.hold_expires_at|date:"d/m H:i" %}prazo {{ d }}{% endblocktranslate %}</small></li>{% endfor %}</ul></section>
+    {% endif %}
     {% if forecast %}{% include "bookings/_weather.html" %}
       <form method="post" action="{% turl 'manage:weather_alert' %}" class="card-flat">{% csrf_token %}<p class="mb-1">{% translate "Demo: simular aviso meteorolóxico que pecha as instalacións descubertas e avisa ás reservas." %}</p><button class="btn btn-danger btn-sm" type="submit">{% translate "Simular alerta (6 h)" %}</button></form>
+    {% endif %}
+    {% if vitality %}
+    <section class="card" aria-labelledby="vit-title"><h2 id="vit-title">{% icon 'heart' %} {% translate "Índice de vida activa" %}</h2>
+      <ul class="list vitality-list">{% for v in vitality %}<li class="row-between"><a href="{% turl 'facilities:detail' v.pk %}">{{ v.name }}</a> {% if v.value is not None %}<span class="vitality vitality--{{ v.level }}"><strong>{{ v.value }}</strong>/100</span>{% else %}<small class="muted">{% translate "sen datos suficientes" %}</small>{% endif %}</li>{% endfor %}</ul>
+      <small class="muted">{% translate "0–100 · Ver docs/indice-vida-activa.md" %}</small></section>
     {% endif %}
     <section class="card" aria-labelledby="inc-title"><h2 id="inc-title">{% translate "Incidencias por validar" %}</h2>
       <ul class="list">{% for i in incidents_new %}<li><a href="{% turl 'manage:incident_detail' i.pk %}">#{{ i.pk }} {{ i.facility.name }}</a><br><small>{{ i.description|truncatechars:80 }}</small></li>{% empty %}<li class="muted">{% translate "Ningunha." %}</li>{% endfor %}</ul></section>

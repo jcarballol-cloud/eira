@@ -30,14 +30,25 @@ def _can_see(user, municipality_id, reporter_id=None):
 
 def protected_serve(request, path):
     if path.startswith(PRIVATE_PREFIXES):
+        from apps.bookings.models import Booking
         from apps.incidents.models import Incident
         from apps.maintenance.models import WorkOrderPhoto
 
         incident = (
             Incident.objects.filter(photo=path).values("municipality_id", "reporter_id").first()
         )
+        # v5: foto do estado ao entrar (vai coa reserva; se había un problema, tamén coa incidencia)
+        start_photo = (
+            None
+            if incident
+            else Booking.objects.filter(start_state_photo=path)
+            .values("municipality_id", "user_id")
+            .first()
+        )
         if incident:
             allowed = _can_see(request.user, incident["municipality_id"], incident["reporter_id"])
+        elif start_photo:
+            allowed = _can_see(request.user, start_photo["municipality_id"], start_photo["user_id"])
         else:
             photo = (
                 WorkOrderPhoto.objects.filter(image=path).values("order__municipality_id").first()

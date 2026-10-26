@@ -4,6 +4,7 @@ import datetime as dt
 from django import forms
 from django.conf import settings
 from django.contrib import messages
+from django.core.validators import MaxValueValidator
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -42,10 +43,66 @@ def weather_for(facility, start):
 
 
 class ConfirmForm(forms.Form):
+    # v5 · participantes, forma de pagamento e luz
+    participants = forms.IntegerField(
+        label=gettext_lazy("Cantas persoas ides?"),
+        min_value=1,
+        initial=1,
+        widget=forms.NumberInput(attrs={"inputmode": "numeric"}),
+    )
+    participant_names = forms.CharField(
+        label=gettext_lazy("Nomes (opcional)"),
+        required=False,
+        help_text=gettext_lazy("Un por liña. Só os ve o concello e bórranse coa reserva."),
+        widget=forms.Textarea(attrs={"rows": 2}),
+    )
+    payment_method = forms.ChoiceField(
+        label=gettext_lazy("Como pagas?"), widget=forms.RadioSelect, required=False
+    )
+    voucher = forms.ChoiceField(label=gettext_lazy("Bono"), required=False)
+    needs_light = forms.BooleanField(
+        label=gettext_lazy("Necesito luz"),
+        required=False,
+        help_text=gettext_lazy("Márcao se queres as luces acesas aínda que sexa de día."),
+    )
     accept_rules = forms.BooleanField(
         label=gettext_lazy("Lin e acepto as normas de uso, dereitos e deberes desta instalación."),
         error_messages={"required": gettext_lazy("Para reservar debes aceptar as normas.")},
     )
+
+    def __init__(self, *args, facility=None, vouchers=(), **kwargs):
+        super().__init__(*args, **kwargs)
+        from apps.tenants.models import PaymentMethod
+
+        self.fields["participants"].max_value = facility.max_participants
+        self.fields["participants"].widget.attrs["max"] = facility.max_participants
+        self.fields["participants"].validators.append(MaxValueValidator(facility.max_participants))
+        self.fields["participants"].help_text = _("Máximo %(n)s.") % {
+            "n": facility.max_participants
+        }
+        labels = dict(PaymentMethod.choices)
+        methods = [
+            m for m in facility.payment_method_list() if m != PaymentMethod.VOUCHER or vouchers
+        ] or [PaymentMethod.TPV.value]
+        self.fields["payment_method"].choices = [(m, labels[m]) for m in methods]
+        self.fields["payment_method"].initial = methods[0]
+        self.methods = methods
+        if vouchers:
+            self.fields["voucher"].choices = [
+                (str(v.pk), f"{v.type.name} · {v.uses_left}/{v.uses_total}") for v in vouchers
+            ]
+        else:
+            del self.fields["voucher"]
+        if len(methods) == 1:
+            self.fields["payment_method"].widget = forms.HiddenInput()
+        if not (facility.lighting and facility.lighting_supplement_cents):
+            del self.fields["needs_light"]
+
+    def clean_payment_method(self):
+        value = self.cleaned_data.get("payment_method") or self.methods[0]
+        if value not in self.methods:
+            raise forms.ValidationError(_("Escolle unha forma de pagamento."))
+        return value
 
 
 def _go_to_gateway(request, booking):
@@ -62,41 +119,79 @@ def book(request, pk):
     if start is None:
         return redirect(treverse(tenant, "facilities:detail", facility.pk))
     rules = facility.current_rules()
-    quote = services.price_for(facility, request.user, start=start)
-    form = ConfirmForm(request.POST or None)
+    vouchers = services.usable_vouchers(facility, request.user)
+    data = (
+        request.POST
+        if request.method == "POST"
+        else (request.GET if request.GET.get("resumo") else None)
+    )
+    form = ConfirmForm(data, facility=facility, vouchers=vouchers)
+    # Prezo cos datos que haxa (forma de pagamento e «necesito luz») para o desglose
+    method = (data or {}).get("payment_method") or form.methods[0]
+    if method not in form.methods:
+        method = form.methods[0]
+    needs_light = bool((data or {}).get("needs_light")) and "needs_light" in form.fields
+    quote = services.quote(facility, request.user, start, needs_light=needs_light, method=method)
+    origin = services.network_origin(tenant, request.user)
     error = None
+    if not tenant.network_open and not services.linked_to(tenant, request.user):
+        error = _("%(c)s non admite agora reservas de persoas doutros concellos.") % {
+            "c": tenant.name
+        }
     if request.method == "POST" and form.is_valid():
+        d = form.cleaned_data
         try:
-            booking = services.create_booking(facility, start, request.user, rules_version=rules)
+            booking = services.create_booking(
+                facility,
+                start,
+                request.user,
+                rules_version=rules,
+                participants=d["participants"],
+                participant_names=d.get("participant_names", ""),
+                payment_method=d["payment_method"],
+                needs_light=d.get("needs_light", False),
+                voucher=int(d["voucher"]) if d.get("voucher") else None,
+            )
         except services.BookingError as exc:
             error = str(exc)
         else:
             if booking.status == Booking.Status.PENDING_PAYMENT:
                 return _go_to_gateway(request, booking)
-            messages.success(request, _("Reserva confirmada."))
+            if booking.status == Booking.Status.PENDING_APPROVAL:
+                messages.info(
+                    request,
+                    _("Solicitude enviada. O concello ten que aprobala; avisarémoste da resposta."),
+                )
+            elif booking.status == Booking.Status.PENDING_OFFICE:
+                messages.warning(
+                    request,
+                    _("Reserva gardada. Págaa na oficina antes do %(d)s ou quedará libre.")
+                    % {"d": timezone.localtime(booking.hold_expires_at).strftime("%d/%m %H:%M")},
+                )
+            else:
+                messages.success(request, _("Reserva confirmada."))
             return redirect(treverse(tenant, "bookings:detail", booking.pk))
-    forecast, tips = weather_for(facility, start)
-    return render(
-        request,
-        "bookings/confirm.html",
-        {
-            "facility": facility,
-            "start": start,
-            "end": start + dt.timedelta(minutes=facility.slot_minutes),
-            "rules": rules,
-            "price": quote.price,
-            "base_price": quote.base,
-            "discount": quote.discount,
-            "audience": quote.audience,
-            "hold_minutes": settings.EIRA_PAYMENT_HOLD_MINUTES,
-            "form": form,
-            "error": error,
-            "nav": "facilities",
-            "forecast": forecast,
-            "tips": tips,
-            "audience_label": dict(facility.tariffs.model.Audience.choices).get(quote.audience, ""),
-        },
-    )
+    ctx = {
+        "facility": facility,
+        "start": start,
+        "end": start + dt.timedelta(minutes=facility.slot_minutes),
+        "rules": rules,
+        "quote": quote,
+        "price": quote.total_cents,
+        "base_price": quote.base_cents,
+        "discount": quote.discount_pct,
+        "audience": quote.audience,
+        "hold_minutes": settings.EIRA_PAYMENT_HOLD_MINUTES,
+        "form": form,
+        "error": error,
+        "nav": "facilities",
+        "network_origin": origin,
+        "audience_label": dict(facility.tariffs.model.Audience.choices).get(quote.audience, ""),
+    }
+    if request.GET.get("resumo") and request.headers.get("HX-Request"):
+        return render(request, "bookings/_price.html", ctx)
+    ctx["forecast"], ctx["tips"] = weather_for(facility, start)
+    return render(request, "bookings/confirm.html", ctx)
 
 
 @neighbour_required
@@ -151,10 +246,28 @@ def mine(request):
         .select_related("facility")
     )
     now = timezone.now()
-    upcoming = qs.filter(
-        end__gt=now,
-        status__in=[Booking.Status.CONFIRMED, Booking.Status.PENDING_PAYMENT, Booking.Status.USED],
-    ).order_by("start")
+    open_statuses = [
+        Booking.Status.CONFIRMED,
+        Booking.Status.PENDING_PAYMENT,
+        Booking.Status.USED,
+        Booking.Status.PENDING_APPROVAL,
+        Booking.Status.PENDING_OFFICE,
+    ]
+    upcoming = qs.filter(end__gt=now, status__in=open_statuses).order_by("start")
+    # v5: reservas nos concellos próximos da mesma rede (as do propio concello van arriba)
+    elsewhere = []
+    if request.tenant.region_id:
+        elsewhere = (
+            Booking.objects.filter(
+                user=request.user,
+                municipality__region_id=request.tenant.region_id,
+                end__gt=now,
+                status__in=open_statuses,
+            )
+            .exclude(municipality=request.tenant)
+            .select_related("facility", "municipality")
+            .order_by("start")
+        )
     history = qs.exclude(pk__in=upcoming.values("pk")).order_by("-start")[:50]
     pending_checklist = [
         b
@@ -170,6 +283,7 @@ def mine(request):
         "bookings/mine.html",
         {
             "upcoming": upcoming,
+            "elsewhere": elsewhere,
             "history": history,
             "pending_checklist": pending_checklist,
             "nav": "bookings",
@@ -334,6 +448,22 @@ def receipt_pdf(booking):
                 False,
             )
         )
+    if booking.lighting_cents:
+        lines.append(
+            (
+                _("Desglose: %(k)s %(s)s € + luz %(l)s €")
+                % {
+                    "k": booking.facility.get_kind_display(),
+                    "s": f"{booking.slot_cents / 100:.2f}".replace(".", ","),
+                    "l": f"{booking.lighting_cents / 100:.2f}".replace(".", ","),
+                },
+                11,
+                False,
+            )
+        )
+    lines.append(
+        (_("Forma de pagamento: %(m)s") % {"m": booking.get_payment_method_display()}, 11, False)
+    )
     lines += [
         (
             _("Importe pagado: %(p)s €")
@@ -508,3 +638,65 @@ def open_lock(request, pk):
             {"booking": booking, "access": booking_access_info(booking), "just_opened": True},
         )
     return redirect(treverse(request.tenant, "bookings:detail", booking.pk))
+
+
+class StartStateForm(forms.Form):
+    """v5 · D: como está a pista e o material ao entrar."""
+
+    state = forms.ChoiceField(
+        label=gettext_lazy("Como atopaches a instalación e o material?"),
+        choices=[
+            ("ok", gettext_lazy("Todo ben")),
+            ("problem", gettext_lazy("Hai un problema")),
+        ],
+        widget=forms.RadioSelect,
+    )
+    notes = forms.CharField(
+        label=gettext_lazy("Que viches? (opcional)"),
+        required=False,
+        max_length=500,
+        widget=forms.Textarea(attrs={"rows": 3}),
+    )
+    photo = forms.ImageField(
+        label=gettext_lazy("Foto (opcional)"),
+        required=False,
+        help_text=gettext_lazy("Quitámoslle a localización e os datos da cámara."),
+        widget=forms.ClearableFileInput(attrs={"accept": "image/*", "capture": "environment"}),
+    )
+
+    def clean_photo(self):
+        from apps.tenants.uploads import clean_image
+
+        photo = self.cleaned_data.get("photo")
+        return clean_image(photo) if photo else None
+
+
+@neighbour_required
+def start_state(request, pk):
+    booking = _own_booking(request, pk)
+    if booking.start_state_at:
+        messages.info(request, _("Xa indicaches como estaba a instalación ao entrar."))
+        return redirect(treverse(request.tenant, "bookings:detail", booking.pk))
+    form = StartStateForm(request.POST or None, request.FILES or None)
+    if request.method == "POST" and form.is_valid():
+        d = form.cleaned_data
+        incident = services.submit_start_state(
+            booking, d["state"] == "ok", d.get("notes", ""), d.get("photo"), by=request.user
+        )
+        if incident:
+            messages.warning(
+                request,
+                _(
+                    "Grazas. Creamos a incidencia #%(n)s e queda rexistrado que xa estaba antes "
+                    "da túa reserva."
+                )
+                % {"n": incident.pk},
+            )
+        else:
+            messages.success(request, _("Grazas! Bo adestramento."))
+        return redirect(treverse(request.tenant, "bookings:detail", booking.pk))
+    return render(
+        request,
+        "bookings/start_state.html",
+        {"booking": booking, "form": form, "nav": "bookings"},
+    )

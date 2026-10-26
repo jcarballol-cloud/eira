@@ -65,6 +65,31 @@ SETTINGS_SECTIONS = [
         ],
         False,
     ),
+    # v5: formas de pagamento e luz; rede de concellos e índice de vida activa
+    (
+        "pagamentos",
+        gettext_lazy("Formas de pagamento"),
+        ["pay_methods", "office_payment_hours"],
+        False,
+    ),
+    (
+        "luz",
+        gettext_lazy("Suplemento de iluminación"),
+        ["lighting_rule", "lighting_from", "lighting_until"],
+        False,
+    ),
+    (
+        "rede",
+        gettext_lazy("Concellos próximos"),
+        ["network_open", "network_max_active", "network_advance_days"],
+        False,
+    ),
+    (
+        "indice",
+        gettext_lazy("Índice de vida activa"),
+        ["w_occupancy", "w_diversity", "w_satisfaction", "w_accessibility", "w_maintenance"],
+        False,
+    ),
     ("mapa", gettext_lazy("Mapa"), ["tile_url", "tile_attribution", "tile_attribution_url"], True),
     (
         "legal",
@@ -98,8 +123,17 @@ class SettingsForm(forms.ModelForm):
             "privacy_text",
             "accessibility_statement",
             "legal_notice",
+            "office_payment_hours",
+            "lighting_rule",
+            "lighting_from",
+            "lighting_until",
+            "network_open",
+            "network_max_active",
+            "network_advance_days",
         ]
         widgets = {
+            "lighting_from": forms.TimeInput(attrs={"type": "time"}),
+            "lighting_until": forms.TimeInput(attrs={"type": "time"}),
             "accent_color": forms.TextInput(attrs={"type": "color"}),
             "privacy_text": forms.Textarea(attrs={"rows": 4}),
             "accessibility_statement": forms.Textarea(attrs={"rows": 4}),
@@ -110,14 +144,64 @@ class SettingsForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        from apps.analytics.vitality import COMPONENTS, weights_for
+
+        from .models import PaymentMethod
+
+        self.fields["pay_methods"] = forms.MultipleChoiceField(
+            label=gettext_lazy("Formas de pagamento admitidas"),
+            choices=PaymentMethod.choices,
+            widget=forms.CheckboxSelectMultiple,
+            initial=self.instance.payment_method_list(),
+            help_text=gettext_lazy(
+                "Cada instalación pode restrinxilas. O aprazado só se activa aquí (por defecto, non)."
+            ),
+        )
+        weights = weights_for(self.instance)
+        for key, label in COMPONENTS.items():
+            self.fields[f"w_{key}"] = forms.IntegerField(
+                label=label, min_value=0, max_value=100, initial=weights[key]
+            )
+        self.fields["w_occupancy"].help_text = gettext_lazy(
+            "Pesos relativos (0–100). Ver docs/indice-vida-activa.md."
+        )
         for key, label in MODULE_LABELS.items():
             self.fields[f"module_{key}"] = forms.BooleanField(
                 label=label, required=False, initial=self.instance.module_enabled(key)
             )
+        # v5: campos novos con valor por defecto; se non veñen no formulario, mantense o que había
+        for name in self.V5_KEEP + ("pay_methods",) + tuple(f"w_{k}" for k in COMPONENTS):
+            self.fields[name].required = False
+
+    V5_KEEP = (
+        "office_payment_hours",
+        "lighting_rule",
+        "lighting_from",
+        "lighting_until",
+        "network_max_active",
+    )
+
+    def clean(self):
+        data = super().clean()
+        for name in self.V5_KEEP:
+            if data.get(name) in (None, ""):
+                data[name] = getattr(self.instance, name)
+        return data
 
     def save(self, commit=True):
+        from apps.analytics.vitality import COMPONENTS, weights_for
+
         obj = super().save(commit=False)
         obj.modules = {k: bool(self.cleaned_data.get(f"module_{k}")) for k in DEFAULT_MODULES}
+        if "pay_methods" in self.data or self.cleaned_data.get("pay_methods"):
+            obj.payment_methods = list(self.cleaned_data.get("pay_methods") or ["tpv"])
+        current = weights_for(self.instance)
+        obj.vitality_weights = {
+            k: current[k]
+            if self.cleaned_data.get(f"w_{k}") is None
+            else self.cleaned_data[f"w_{k}"]
+            for k in COMPONENTS
+        }
         if commit:
             obj.save()
         return obj

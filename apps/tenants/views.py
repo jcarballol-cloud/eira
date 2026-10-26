@@ -219,3 +219,69 @@ def forbidden(request, exception=None):
             }
         )
     return render(request, "core/error.html", ctx, status=403)
+
+
+# ---------------------------------------------------------------- v5
+
+
+def custody(request):
+    """«Quen custodia os teus datos»: na app e na web pública, xerada a partir da matriz."""
+    from apps.accounts.custody import custody_rows
+
+    return render(request, "core/custody.html", {"rows": custody_rows(), "nav": "privacy"})
+
+
+def safety(request):
+    """«Incidencia ou seguridade»: avaría, risco (prioridade alta) ou chamar ao 112."""
+    return render(request, "core/safety.html", {"nav": "incident"})
+
+
+def help_guide(request):
+    """Guía completa: os textos do botón «?» xuntos e agrupados por ferramenta."""
+    from .help import HELP
+
+    groups = [
+        (
+            _("App da veciñanza"),
+            (
+                "app:",
+                "tenant_home",
+                "facilities:",
+                "bookings:",
+                "incidents:",
+                "safety",
+                "notifications:",
+                "activities:",
+                "account:",
+                "health",
+                "privacy_custody",
+            ),
+        ),
+        (_("App de mantemento"), ("maintenance:",)),
+        (_("Tableta da persoa monitora"), ("monitor:",)),
+        (_("Administración do concello"), ("manage:",)),
+        (_("Deputación"), ("region:",)),
+    ]
+    out = []
+    for title, prefixes in groups:
+        items = [
+            {"key": key, "title": t, "body": b}
+            for key, (t, b) in HELP.items()
+            if key.startswith(prefixes)
+        ]
+        out.append({"title": title, "items": items})
+    return render(request, "core/help.html", {"groups": out})
+
+
+@require_http_methods(["POST"])
+def desk_mode(request):
+    """Modo básico / avanzado do menú da administración (por persoa; non cambia permisos)."""
+    if request.user.is_authenticated:
+        mode = "advanced" if request.POST.get("mode") == "advanced" else "basic"
+        request.user.desk_mode = mode
+        request.user.save(update_fields=["desk_mode"])
+    if request.headers.get("HX-Request"):
+        return HttpResponse(status=204)
+    response = HttpResponse(status=303)
+    response["Location"] = _safe_next(request)
+    return response

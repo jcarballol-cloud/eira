@@ -1,6 +1,8 @@
 {% load i18n eira %}<header class="app-header">
   {% include "includes/brand.html" %}
   <div class="app-header__actions">
+    {% include "includes/safety_button.html" %}
+    {% include "includes/help_button.html" %}
     {% if kind == 'neighbour' and app_tenant %}
       <a class="icon-btn" href="{% url 'notifications:list' app_tenant.slug %}" title="{% translate 'Avisos' %}">{% icon 'bell' %}<span class="visually-hidden">{% translate "Avisos" %}{% if unread_notifications %}: {{ unread_notifications }} {% translate "sen ler" %}{% endif %}</span>{% if unread_notifications %}<span class="dot" aria-hidden="true">{{ unread_notifications }}</span>{% endif %}</a>
       <a class="icon-btn" href="{% url 'account:profile' %}" title="{% translate 'A miña conta' %}">{% icon 'user' %}<span class="visually-hidden">{% translate "A miña conta e privacidade" %}</span></a>

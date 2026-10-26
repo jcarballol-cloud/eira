@@ -236,7 +236,7 @@ def test_full_booking_flow_through_views(client, padel_a, citizen):
     assert r.status_code == 200 and "Normas de uso" in r.content.decode()
     r = client.post(url, {"inicio": start.isoformat()})  # sen aceptar normas
     assert "aceptar as normas" in r.content.decode()
-    r = client.post(url, {"inicio": start.isoformat(), "accept_rules": "on"})
+    r = client.post(url, {"inicio": start.isoformat(), "accept_rules": "on", "participants": "2"})
     assert r.status_code == 302 and "/dev/tpv/" in r["Location"]
     ref = r["Location"].rstrip("/").split("/")[-1]
     r = client.post(r["Location"], {"result": "ok"})
@@ -263,7 +263,7 @@ def test_failed_payment_keeps_pending(client, padel_a, citizen):
     start = next_slot(padel_a)
     r = client.post(
         f"/c/concello-a/instalacions/{padel_a.pk}/reservar/",
-        {"inicio": start.isoformat(), "accept_rules": "on"},
+        {"inicio": start.isoformat(), "accept_rules": "on", "participants": "2"},
     )
     r = client.post(r["Location"], {"result": "ko"})
     client.get(r["Location"])

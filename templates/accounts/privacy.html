@@ -50,7 +50,7 @@
       <h2 id="pv-dpo">{% translate "A quen dirixirte" %}</h2>
       <p>{% translate "O responsable do tratamento é cada concello. Para exercer os teus dereitos (acceso, rectificación, supresión, oposición, limitación e portabilidade):" %}</p>
       <ul class="list">{% for m in municipalities %}<li><strong>{{ m.name }}</strong><br>
-        {% if m.dpo_contact %}{% translate "Delegado/a de protección de datos" %}: {{ m.dpo_contact }}{% else %}{{ m.contact_email|default:"—" }}{% endif %}
+        {% if m.dpo_contact %}{% translate "Persoa delegada de protección de datos" %}: {{ m.dpo_contact }}{% else %}{{ m.contact_email|default:"—" }}{% endif %}
         · <a href="{% url 'privacy' m.slug %}">{% translate "información completa" %}</a></li>
       {% empty %}<li class="muted">{% translate "Aínda non usaches o servizo de ningún concello." %}</li>{% endfor %}</ul>
       <p class="help mb-0">{% blocktranslate %}Se cres que non respectamos os teus dereitos, podes reclamar ante a <a href="https://www.aepd.es/" rel="noopener">Axencia Española de Protección de Datos</a>.{% endblocktranslate %}</p>

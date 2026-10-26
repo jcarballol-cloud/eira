@@ -4,10 +4,11 @@
 from django.urls import path
 
 from apps.access import views as access
-from apps.accounts import signup
+from apps.accounts import breaches, signup
 from apps.activities import views as activities
 from apps.analytics import views as analytics
 from apps.bookings import manage as bookings
+from apps.bookings import vouchers
 from apps.facilities import manage as facilities
 from apps.incidents import manage as incidents
 from apps.maintenance import views as maintenance
@@ -23,6 +24,7 @@ urlpatterns = [
     path("reservas/<int:pk>/", bookings.booking_detail, name="booking"),
     path("reservas/<int:pk>/chave/<slug:action>/", bookings.key_action, name="key_action"),
     path("cobros/", bookings.payments_list, name="payments"),
+    path("cobros/bonos/", vouchers.manage_vouchers, name="vouchers"),
     path("valoracions/", bookings.ratings_view, name="ratings"),
     path("cobros/<int:pk>/devolver/", bookings.payment_refund, name="payment_refund"),
     path("reservas/<int:pk>/cancelar/", bookings.staff_cancel, name="staff_cancel"),
@@ -34,6 +36,13 @@ urlpatterns = [
     path("instalacions/<int:pk>/tarifas/", facilities.facility_tariffs, name="facility_tariffs"),
     path("instalacions/<int:pk>/normas/", facilities.facility_rules, name="facility_rules"),
     path("instalacions/<int:pk>/qr/", access.facility_qr, name="facility_qr"),
+    path("instalacions/<int:pk>/cartel.pdf", facilities.facility_poster, name="facility_poster"),
+    path("instalacions/cartel-modelo.pdf", facilities.poster_template, name="poster_template"),
+    path(
+        "instalacions/<int:pk>/revision-seguridade/",
+        facilities.safety_review,
+        name="facility_safety_review",
+    ),
     path("peches/", facilities.closures, name="closures"),
     path("peches/<int:pk>/eliminar/", facilities.closure_delete, name="closure_delete"),
     path("peches/alerta/", tenant.weather_alert, name="weather_alert"),
@@ -59,6 +68,14 @@ urlpatterns = [
     path("actividades/pendentes/<int:pk>/", activities.pending_resolve, name="pending_resolve"),
     path("persoal/empadroamento/", tenant.issue_invitation, name="issue_invitation"),
     path("portabilidade/", portability.page, name="portability"),
+    path("privacidade/brechas/", breaches.breach_list, name="breaches"),
+    path("privacidade/brechas/nova/", breaches.breach_edit, name="breach_new"),
+    path("privacidade/brechas/<int:pk>/", breaches.breach_edit, name="breach"),
+    path(
+        "privacidade/brechas/<int:pk>/comunicacion/",
+        breaches.breach_communication,
+        name="breach_communication",
+    ),
     path("portabilidade/exportar.zip", portability.export_view, name="export"),
     path("portabilidade/importar/", portability.import_view, name="import"),
 ]

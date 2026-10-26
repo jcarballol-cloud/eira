@@ -272,6 +272,10 @@ class Command(BaseCommand):
             self.seed_activities()
             self.seed_notices()
             self.new_neighbour()
+            # v5: rede, formas de pagamento, aprobación, luz, seguridade e brecha de exemplo
+            from apps.tenants.demo_v5 import seed as seed_v5
+
+            seed_v5()
         self.stdout.write(
             self.style.SUCCESS(
                 f"Demo lista: {Municipality.objects.count()} concellos, {Facility.objects.count()} instalacións, "

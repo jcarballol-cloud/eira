@@ -1,0 +1,9 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Comunicación ás persoas afectadas" %}{% endblock %}
+{% block content %}
+<nav class="mb-1" aria-label="{% translate 'Migas' %}"><a href="{% turl 'manage:breaches' %}">{% translate "Rexistro de brechas" %}</a> / <a href="{% turl 'manage:breach' breach.pk %}">#{{ breach.pk }}</a> / <span aria-current="page">{% translate "Comunicación" %}</span></nav>
+<div class="page-head"><div><h1>{% translate "Comunicación ás persoas afectadas" %}</h1>
+  <p>{% translate "Modelo para o art. 34 do RXPD, en linguaxe clara. Revísao antes de envialo (aviso na app e correo)." %}</p></div>
+  <a class="btn btn-secondary" href="?descargar=1">{% icon 'download' %} {% translate "Descargar (.txt)" %}</a></div>
+<section class="card prose"><pre class="pre-wrap">{{ text }}</pre></section>
+{% endblock %}

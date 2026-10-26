@@ -6,4 +6,7 @@
   <a class="btn btn-sm {% if tab != 'tariffs' %}btn-secondary{% endif %}" href="{% turl 'manage:facility_tariffs' facility.pk %}" {% if tab == 'tariffs' %}aria-current="page"{% endif %}>{% translate "Tarifas" %}</a>
   <a class="btn btn-sm {% if tab != 'rules' %}btn-secondary{% endif %}" href="{% turl 'manage:facility_rules' facility.pk %}" {% if tab == 'rules' %}aria-current="page"{% endif %}>{% translate "Normas" %}</a>
   <a class="btn btn-sm btn-secondary" href="{% turl 'manage:facility_qr' facility.pk %}">{% translate "Cartel QR" %}</a>
+  <a class="btn btn-sm btn-secondary" href="{% turl 'manage:facility_poster' facility.pk %}">{% icon 'download' %} {% translate "Cartel da porta (PDF)" %}</a>
+  <a class="btn btn-sm btn-ghost" href="{% turl 'manage:poster_template' %}">{% translate "Plantilla de cartel" %}</a>
+  <form method="post" action="{% turl 'manage:facility_safety_review' facility.pk %}" class="write-link">{% csrf_token %}<button class="btn btn-sm btn-ghost" type="submit">{% icon 'shield' %} {% translate "Revisión de seguridade inicial" %}</button></form>
 </nav>

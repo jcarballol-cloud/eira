@@ -7,11 +7,24 @@
     <h1>{{ booking.facility.name }}</h1>
     <p>{{ booking.start|date:"l j \d\e F" }} · {{ booking.start|hhmm }}–{{ booking.end|hhmm }}</p>
   </div>
-  <span class="badge {% if booking.status == 'confirmed' or booking.status == 'used' %}badge-ok{% elif booking.status == 'pending_payment' %}badge-warn{% elif booking.status == 'cancelled' or booking.status == 'no_show' %}badge-alert{% endif %} big">{{ booking.get_status_display }}</span>
+  <span class="badge {% if booking.status == 'confirmed' or booking.status == 'used' %}badge-ok{% elif booking.status == 'pending_payment' or booking.status == 'pending_approval' or booking.status == 'pending_office' %}badge-warn{% elif booking.status == 'cancelled' or booking.status == 'no_show' or booking.status == 'declined' %}badge-alert{% endif %} big">{{ booking.get_status_display }}</span>
 </div>
 
 {% if booking.status == 'pending_payment' %}
 <div class="alert alert-warn">{% translate "Falta completar o pagamento. Gardamos a franxa uns minutos." %} <a class="btn btn-sm" href="{% turl 'bookings:retry_payment' booking.pk %}">{% translate "Pagar agora" %}</a></div>
+{% endif %}
+{% if booking.status == 'pending_approval' %}
+<div class="alert alert-warn">{% icon 'clock' %} {% translate "O concello ten que aprobar esta reserva. Avisarémoste cando responda." %}{% if booking.paid_cents %} {% translate "Se a rexeita, devolvémosche o importe automaticamente." %}{% endif %}</div>
+{% elif booking.status == 'pending_office' %}
+<div class="alert alert-warn">{% blocktranslate trimmed with p=booking.outstanding_cents|euros d=booking.hold_expires_at|date:"d/m H:i" %}Paga {{ p }} na oficina de deportes antes do {{ d }}. Se non, a franxa quedará libre.{% endblocktranslate %}</div>
+{% elif booking.status == 'declined' %}
+<div class="alert alert-error">{% blocktranslate with m=booking.decision_reason %}O concello non aprobou esta reserva. Motivo: {{ m }}{% endblocktranslate %}{% if booking.refunded_cents %} {% blocktranslate with r=booking.refunded_cents|euros %}Devolvémosche {{ r }}.{% endblocktranslate %}{% endif %}</div>
+{% endif %}
+{% if booking.requested_start %}
+<div class="alert alert-warn">{% blocktranslate trimmed with d=booking.requested_start|date:"l j \d\e F" h=booking.requested_start|hhmm %}Pediches cambiala ao {{ d }} ás {{ h }}. O concello ten que aprobar o cambio; mentres, segue a hora actual.{% endblocktranslate %}</div>
+{% endif %}
+{% if booking.needs_start_state %}
+<a class="app-alert" href="{% turl 'bookings:start_state' booking.pk %}">{% icon 'check' %}<span><strong>{% translate "Como está a pista ao entrar?" %}</strong><br>{% translate "Se algo xa estaba mal, avísao: non se che atribuirá a ti." %}</span>{% icon 'chevron' %}</a>
 {% endif %}
 {% if can_rate and not booking.needs_closing_checklist %}
 <a class="app-alert" href="{% turl 'bookings:rate' booking.pk %}">{% icon 'smile' %}<span><strong>{% translate "Que tal foi?" %}</strong><br>{% translate "Valora a instalación nun segundo." %}</span>{% icon 'chevron' %}</a>
@@ -35,16 +48,20 @@
       </div>
       {% if booking.can_cancel %}<p class="help mt-1">{% if penalty %}{% blocktranslate with p=penalty|euros %}Se cancelas agora, a penalización é de {{ p }}.{% endblocktranslate %}{% else %}{% blocktranslate with h=tenant.cancellation_hours %}Cancelación gratuíta ata {{ h }} h antes.{% endblocktranslate %}{% endif %}</p>{% endif %}
     </section>
-    {% if booking.closed_at %}
-    <section class="card" aria-labelledby="close-title"><h2 id="close-title">{% translate "Peche" %}</h2>
-      <p>{% blocktranslate with t=booking.closed_at|date:"d/m H:i" %}Checklist enviado o {{ t }}.{% endblocktranslate %}</p></section>
+    {% if booking.closed_at or booking.start_state_at %}
+    <section class="card" aria-labelledby="close-title"><h2 id="close-title">{% translate "Estado ao entrar e ao saír" %}</h2>
+      {% include "bookings/_states.html" with b=booking %}</section>
     {% endif %}
   </div>
   <aside class="stack">
     <section class="card" aria-labelledby="sum-title">
       <h2 id="sum-title">{% translate "Resumo" %}</h2>
       <dl class="kv">
-        <dt>{% translate "Importe" %}</dt><dd>{% if booking.price_cents %}{{ booking.price_cents|euros }}{% else %}{% translate "Gratuíta" %}{% endif %}</dd>
+        <dt>{% translate "Importe" %}</dt><dd>{% include "bookings/_amount.html" with b=booking %}</dd>
+        <dt>{% translate "Forma de pagamento" %}</dt><dd>{{ booking.get_payment_method_display }}{% if booking.voucher %} · {{ booking.voucher.type.name }}{% endif %}</dd>
+        {% if booking.outstanding_cents and booking.status != 'pending_payment' %}<dt>{% translate "Pendente de pagar" %}</dt><dd>{{ booking.outstanding_cents|euros }}</dd>{% endif %}
+        <dt>{% translate "Persoas" %}</dt><dd>{{ booking.participants }}{% with names=booking.participant_name_list %}{% if names %}<br><small>{{ names|join:", " }}</small>{% endif %}{% endwith %}</dd>
+        {% if booking.municipality != request.tenant %}<dt>{% translate "Concello" %}</dt><dd>{{ booking.municipality.name }}</dd>{% endif %}
         {% if booking.refunded_cents %}<dt>{% translate "Devolto" %}</dt><dd>{{ booking.refunded_cents|euros }}</dd>{% endif %}
         <dt>{% translate "Normas aceptadas" %}</dt><dd>v{{ booking.rules_version.version }} · {{ booking.rules_accepted_at|date:"d/m/Y H:i" }}</dd>
       </dl>

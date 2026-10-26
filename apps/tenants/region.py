@@ -83,6 +83,13 @@ def _compare(region, weeks):
         invited = (
             AuditLog.objects.filter(municipality=m, action="tenant.invite").order_by("-at").first()
         )
+        # v5: índice de vida activa (media das instalacións con cifra) e reservas desde a rede
+        from apps.analytics.vitality import municipality_indices
+        from apps.bookings.models import Booking
+
+        indices = municipality_indices(m)
+        values = [i["value"] for i in indices if i["value"] is not None]
+        since = timezone.now() - dt.timedelta(weeks=weeks)
         rows.append(
             {
                 "m": m,
@@ -105,6 +112,14 @@ def _compare(region, weeks):
                 "ratings": rs["total"],
                 "admin": admin.user if admin else None,
                 "invited_at": invited.at if invited else None,
+                "vitality": round(sum(values) / len(values)) if values else None,
+                "vitality_facilities": [
+                    {"name": i["facility"].name, "value": i["value"], "level": i["level"]}
+                    for i in indices
+                ],
+                "network_in": Booking.objects.filter(
+                    municipality=m, network_origin__isnull=False, start__gte=since
+                ).count(),
             }
         )
     return rows
@@ -130,6 +145,8 @@ def dashboard(request):
                 "horas_media_resolucion",
                 "ingresos_eur",
                 "ingresos_por_hab_eur",
+                "indice_vida_activa_0_100",
+                "reservas_desde_a_rede",
             ],
             [
                 [
@@ -144,6 +161,8 @@ def dashboard(request):
                     r["resolve_hours"],
                     r["revenue"] / 100,
                     r["revenue_per_inh"],
+                    r["vitality"],
+                    r["network_in"],
                 ]
                 for r in rows
             ],

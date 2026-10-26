@@ -50,8 +50,12 @@ class IncidentForm(forms.ModelForm):
 @neighbour_required
 def new(request):
     initial = {}
+    # v5: «Avisar dun risco» → prioridade alta e aviso inmediato ao concello
+    risk = (request.GET.get("risco") or request.POST.get("risco")) == "1"
     if request.GET.get("instalacion"):
         initial["facility"] = request.GET["instalacion"]
+    if risk:
+        initial["category"] = Incident.Category.SAFETY
     form = IncidentForm(
         request.POST or None, request.FILES or None, tenant=request.tenant, initial=initial
     )
@@ -59,20 +63,37 @@ def new(request):
         incident = form.save(commit=False)
         incident.municipality = request.tenant
         incident.reporter = request.user
+        if risk:
+            incident.priority = Incident.Priority.HIGH
+            incident.source = Incident.Source.RISK
         incident.save()
         notify_staff_new_incident(incident)
-        messages.success(
-            request,
-            _("Grazas! Recibimos o teu aviso (#%(n)s). Avisarémoste cando estea arranxado.")
-            % {"n": incident.pk},
-        )
+        if risk:
+            messages.warning(
+                request,
+                _(
+                    "Aviso de risco #%(n)s enviado. O concello xa o recibiu. Se hai perigo agora "
+                    "mesmo, chama ao 112."
+                )
+                % {"n": incident.pk},
+            )
+        else:
+            messages.success(
+                request,
+                _("Grazas! Recibimos o teu aviso (#%(n)s). Avisarémoste cando estea arranxado.")
+                % {"n": incident.pk},
+            )
         return redirect(treverse(request.tenant, "incidents:detail", incident.pk))
     mine = (
         Incident.objects.for_tenant(request.tenant)
         .filter(reporter=request.user)
         .select_related("facility")[:10]
     )
-    return render(request, "incidents/new.html", {"form": form, "mine": mine, "nav": "incident"})
+    return render(
+        request,
+        "incidents/new.html",
+        {"form": form, "mine": mine, "nav": "incident", "risk": risk},
+    )
 
 
 @neighbour_required

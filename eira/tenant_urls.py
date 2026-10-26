@@ -10,6 +10,8 @@ urlpatterns = [
     path("", facilities.home, name="tenant_home"),
     path("tema.css", core.theme_css, name="theme_css"),
     path("privacidade/", core.privacy, name="privacy"),
+    path("privacidade/datos/", core.custody, name="privacy_custody"),
+    path("seguridade/", core.safety, name="safety"),
     path("accesibilidade/", core.accessibility, name="accessibility"),
     path("app/", include("eira.app_urls")),
     path("instalacions/", include("apps.facilities.urls")),

@@ -33,6 +33,11 @@ class FacilityKind(models.TextChoices):
     OTHER = "other", _("Outra")
 
 
+class BookingMode(models.TextChoices):
+    DIRECT = "direct", _("Reserva directa")
+    APPROVAL = "approval", _("Con aprobación do concello")
+
+
 class AccessLevel(models.IntegerChoices):
     OPEN = 0, _("Aberta (QR de entrada)")
     CUSTODIAN = 1, _("Chave custodiada")
@@ -90,6 +95,46 @@ class Facility(TenantModel):
     checkin_token = models.CharField(max_length=32, default=new_token, unique=True, editable=False)
     is_published = models.BooleanField(_("publicada"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    # v5 · Reserva: participantes, aprobación, formas de pagamento e luz
+    max_participants = models.PositiveIntegerField(
+        _("persoas máximas por reserva"),
+        default=12,
+        help_text=_("Ao reservar pídese o número de persoas, ata este máximo."),
+    )
+    booking_mode = models.CharField(
+        _("modo de reserva"),
+        max_length=10,
+        choices=BookingMode.choices,
+        default=BookingMode.DIRECT,
+    )
+    payment_methods = models.JSONField(
+        _("formas de pagamento da instalación"),
+        default=list,
+        blank=True,
+        help_text=_("Baleiro = as do concello."),
+    )
+    lighting_supplement_cents = models.PositiveIntegerField(
+        _("suplemento de iluminación (céntimos)"),
+        default=0,
+        help_text=_("0 = sen suplemento. Aplícase nas franxas que precisan luz ou se se pide."),
+    )
+    # v5 · Seguridade e confianza (ficha)
+    equipment = models.TextField(
+        _("material dispoñible"),
+        blank=True,
+        help_text=_("Un por liña, coa cantidade primeiro. P. ex. «2 balóns»."),
+    )
+    accident_protocol = models.TextField(
+        _("protocolo en caso de accidente"),
+        blank=True,
+        help_text=_("Texto breve: que facer mentres chega a axuda."),
+    )
+    aed_location = models.CharField(
+        _("DEA máis próximo"),
+        max_length=200,
+        blank=True,
+        help_text=_("Onde está o desfibrilador máis próximo."),
+    )
 
     class Meta:
         verbose_name = _("instalación")
@@ -116,6 +161,54 @@ class Facility(TenantModel):
         ("hearing_loop", "ear"),
         ("braille_signage", "braille"),
     )
+
+    @property
+    def needs_approval(self):
+        return self.booking_mode == BookingMode.APPROVAL
+
+    def payment_method_list(self):
+        """Formas de pagamento efectivas: as da instalación (se as ten) dentro das do concello.
+
+        O aprazado só se o concello o activou."""
+        from apps.tenants.models import PaymentMethod
+
+        town = self.municipality.payment_method_list()
+        own = [m for m in (self.payment_methods or []) if m in PaymentMethod.values]
+        methods = own or town
+        if PaymentMethod.DEFERRED in methods and PaymentMethod.DEFERRED not in town:
+            methods = [m for m in methods if m != PaymentMethod.DEFERRED]
+        return methods or [PaymentMethod.TPV.value]
+
+    def equipment_items(self):
+        """«2 balóns» → {"qty": 2, "name": "balóns"}; sen número, cantidade baleira."""
+        out = []
+        for line in self.equipment.splitlines():
+            line = line.strip("-• ").strip()
+            if not line:
+                continue
+            head, _sep, rest = line.partition(" ")
+            if head.isdigit() and rest:
+                out.append({"qty": int(head), "name": rest.strip()})
+            else:
+                out.append({"qty": None, "name": line})
+        return out
+
+    def last_supervision(self):
+        """Data da última orde de mantemento pechada nesta instalación (calculada)."""
+        order = (
+            self.work_orders.filter(status="done", closed_at__isnull=False)
+            .order_by("-closed_at")
+            .first()
+        )
+        return order.closed_at if order else None
+
+    def safety_review(self):
+        """Última revisión de seguridade inicial Eira pechada (v5 · H) ou None."""
+        return (
+            self.work_orders.filter(kind="safety_review", status="done", closed_at__isnull=False)
+            .order_by("-closed_at")
+            .first()
+        )
 
     def accessibility_features(self):
         return [

@@ -70,6 +70,16 @@ def page_sets():
     ).first()
     states = Booking.objects.filter(start_state_ok=False).first()
     breach = DataBreach.objects.filter(municipality__slug="vilardeiras").first()
+    # v1.1 · limpeza
+    from apps.maintenance.models import CleaningZone
+
+    zone = CleaningZone.objects.get(facility__municipality__slug="vilardeiras", name="Aseos")
+    clean_order = (
+        WorkOrder.objects.filter(municipality__slug="vilardeiras", kind="cleaning")
+        .exclude(status="done")
+        .first()
+    )
+    hall = zone.facility
     return {
         None: [
             "/",
@@ -94,6 +104,9 @@ def page_sets():
             "/offline/",
             f"{c}/app/solicitar/",
             f"{c}/app/instalar/?codigo=ABCD-2345",
+            # v1.1: QR de limpeza visto por quen non é persoal, e a ficha coa última limpeza
+            f"{c}/operario/limpeza/{zone.token}/",
+            f"{c}/instalacions/{hall.pk}/",
         ],
         "uxia@demo.eira.example": [
             f"{c}/app/",
@@ -167,6 +180,17 @@ def page_sets():
             f"{c}/xestion/avisos/",
             f"{c}/xestion/avisos/novo/",
             f"{c}/xestion/avisos/{notice.pk}/",
+            # v1.1
+            f"{c}/xestion/limpeza/",
+            f"{c}/xestion/limpeza/zona/{zone.pk}/qr/",
+        ],
+        "noela@demo.eira.example": [
+            f"{c}/operario/",
+            f"{c}/operario/?dia=manha",
+            f"{c}/operario/calendario/",
+            f"{c}/operario/limpeza/{zone.token}/",
+            f"{c}/operario/orde/{clean_order.pk}/",
+            f"{c}/avisos/",
         ],
         "brais@demo.eira.example": [
             f"{c}/operario/",

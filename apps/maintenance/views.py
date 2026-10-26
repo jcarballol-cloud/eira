@@ -19,14 +19,24 @@ from apps.tenants.urlutils import aggregate_view, role_required, treverse
 from . import services
 from .models import Frequency, MaintenancePlan, MaintenanceTask, WorkOrder, WorkOrderPhoto
 
-OPERATOR = ("maintenance",)
+OPERATOR = ("maintenance", "cleaning")
 
 
 def operator_orders(request):
-    """Ordes que ve o operario: as asignadas a el e as pendentes sen asignar (para collelas)."""
-    return WorkOrder.objects.for_tenant(request.tenant).filter(
+    """Ordes que ve o operario: as asignadas a el e as pendentes sen asignar (para collelas).
+
+    v1.1: o persoal de limpeza só ve as de limpeza. Mantemento segue vendo todo, agás as de
+    limpeza cando o concello xa ten persoal de limpeza (sen el, a limpeza segue sendo súa)."""
+    from .cleaning import has_cleaning_staff
+
+    qs = WorkOrder.objects.for_tenant(request.tenant).filter(
         Q(assigned_to=request.user) | Q(assigned_to__isnull=True)
     )
+    if "maintenance" not in request.roles:
+        return qs.filter(kind="cleaning")
+    if has_cleaning_staff(request.tenant):
+        qs = qs.exclude(Q(kind="cleaning") & ~Q(assigned_to=request.user))
+    return qs
 
 
 @role_required(*OPERATOR)
@@ -40,14 +50,28 @@ def my_orders(request):
     else:
         pending = pending.filter(due_date__lte=today)
     done_today = qs.filter(status=WorkOrder.Status.DONE, closed_at__date=today)
+    zones = []
+    if "cleaning" in request.roles:
+        # v1.1: zonas con QR, a súa última limpeza e se van atrasadas
+        from .cleaning import zone_status
+        from .models import CleaningZone
+
+        zones = [
+            zone_status(z)
+            for z in CleaningZone.objects.for_tenant(request.tenant)
+            .filter(active=True)
+            .select_related("facility")
+        ]
+        zones.sort(key=lambda r: (not r["overdue"], r["zone"].facility.name, r["zone"].name))
     return render(
         request,
         "maintenance/my_orders.html",
         {
-            "pending": pending.order_by("due_date"),
+            "pending": pending.order_by("due_date", "slot"),
             "done_today": done_today,
             "today": today,
             "tomorrow": tomorrow,
+            "zones": zones,
             "nav": "operator",
         },
     )
@@ -95,9 +119,14 @@ def order_detail(request, pk):
                 done = {int(i) for i in request.POST.getlist("done") if i.isdigit()}
                 if done:
                     services.update_checklist(order, done)
+                photo = None
                 if form.cleaned_data.get("photo"):
-                    WorkOrderPhoto.objects.create(order=order, image=form.cleaned_data["photo"])
-                services.close_order(order, request.user, form.cleaned_data["closing_notes"])
+                    photo = WorkOrderPhoto.objects.create(
+                        order=order, image=form.cleaned_data["photo"]
+                    ).image.name
+                services.close_order(
+                    order, request.user, form.cleaned_data["closing_notes"], photo=photo
+                )
                 if synced:
                     return HttpResponse(status=204)
                 messages.success(request, _("Orde pechada. Bo traballo!"))
@@ -172,9 +201,10 @@ class AssignForm(forms.Form):
         super().__init__(*args, **kwargs)
         from apps.accounts.models import Membership, Role, User
 
-        ids = Membership.objects.filter(municipality=tenant, role=Role.MAINTENANCE).values_list(
-            "user_id", flat=True
-        )
+        # v1.1: tamén o persoal de limpeza (as ordes de limpeza van para el)
+        ids = Membership.objects.filter(
+            municipality=tenant, role__in=[Role.MAINTENANCE, Role.CLEANING]
+        ).values_list("user_id", flat=True)
         self.fields["assigned_to"].queryset = User.objects.filter(pk__in=ids)
         self.fields["assigned_to"].empty_label = gettext_lazy("Sen asignar")
 

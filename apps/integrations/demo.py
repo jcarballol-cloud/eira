@@ -95,6 +95,20 @@ DEMO_PERSONAS = [
         "thumb": "operario",
     },
     {
+        # v1.1 · rexistro de limpeza
+        "email": "noela@demo.eira.example",
+        "name": "Noela",
+        "tenant": "vilardeiras",
+        "initials": "N",
+        "role": _("Persoal de limpeza (empresa contratada)"),
+        "sees": _("App de limpeza (móbil)"),
+        "lands": _(
+            "Abre nas súas tarefas e zonas. Escanea o QR de cada zona para rexistrar a "
+            "limpeza; funciona sen cobertura. Os aseos do pavillón van atrasados."
+        ),
+        "thumb": "limpeza",
+    },
+    {
         "email": "antia@demo.eira.example",
         "name": "Antía",
         "tenant": "vilardeiras",

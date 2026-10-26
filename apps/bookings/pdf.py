@@ -51,3 +51,54 @@ def simple_pdf(lines, title="Recibo"):
         out += f"{off:010d} 00000 n \n".encode()
     out += f"trailer\n<< /Size {len(objects) + 1} /Root 1 0 R /Info {len(objects)} 0 R >>\nstartxref\n{xref}\n%%EOF\n".encode()
     return bytes(out)
+
+
+def paged_pdf(lines, title="Eira", top=800, bottom=56):
+    """v1.1: como `simple_pdf`, pero con varias páxinas A4 (rexistro de limpeza exportado)."""
+    pages, ops, y = [], ["BT"], top
+    for text, size, bold in lines:
+        step = int(size * 1.6)
+        if y - step < bottom:
+            ops.append("ET")
+            pages.append(ops)
+            ops, y = ["BT"], top
+        y -= step
+        font = "/F2" if bold else "/F1"
+        ops.append(f"{font} {size} Tf 1 0 0 1 56 {y} Tm ({_esc(text)}) Tj")
+    ops.append("ET")
+    pages.append(ops)
+    n = len(pages)
+    # 1 catálogo, 2 árbore de páxinas, 3–4 fontes; despois (páxina, contido) por páxina; info ao final
+    page_ids = [5 + 2 * i for i in range(n)]
+    objects = [
+        b"<< /Type /Catalog /Pages 2 0 R >>",
+        b"<< /Type /Pages /Kids ["
+        + " ".join(f"{p} 0 R" for p in page_ids).encode()
+        + b"] /Count "
+        + str(n).encode()
+        + b" >>",
+        b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>",
+        b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>",
+    ]
+    for i, page_ops in enumerate(pages):
+        footer = f"BT /F1 8 Tf 1 0 0 1 56 30 Tm ({_esc(f'{title} · {i + 1}/{n}')}) Tj ET"
+        stream = ("\n".join(page_ops) + "\n" + footer).encode("latin-1")
+        objects.append(
+            b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << "
+            b"/F1 3 0 R /F2 4 0 R >> >> /Contents " + str(page_ids[i] + 1).encode() + b" 0 R >>"
+        )
+        objects.append(
+            b"<< /Length " + str(len(stream)).encode() + b" >>\nstream\n" + stream + b"\nendstream"
+        )
+    objects.append(b"<< /Title (" + _esc(title).encode("latin-1") + b") /Producer (Eira) >>")
+    out = bytearray(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n")
+    offsets = []
+    for i, obj in enumerate(objects, start=1):
+        offsets.append(len(out))
+        out += f"{i} 0 obj\n".encode() + obj + b"\nendobj\n"
+    xref = len(out)
+    out += f"xref\n0 {len(objects) + 1}\n0000000000 65535 f \n".encode()
+    for off in offsets:
+        out += f"{off:010d} 00000 n \n".encode()
+    out += f"trailer\n<< /Size {len(objects) + 1} /Root 1 0 R /Info {len(objects)} 0 R >>\nstartxref\n{xref}\n%%EOF\n".encode()
+    return bytes(out)

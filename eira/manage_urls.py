@@ -11,6 +11,7 @@ from apps.bookings import manage as bookings
 from apps.bookings import vouchers
 from apps.facilities import manage as facilities
 from apps.incidents import manage as incidents
+from apps.maintenance import cleaning_views as cleaning
 from apps.maintenance import views as maintenance
 from apps.notifications import manage as notices
 from apps.tenants import manage as tenant
@@ -55,6 +56,9 @@ urlpatterns = [
     path("mantemento/calendario/", maintenance.manage_calendar, name="maintenance_calendar"),
     path("ordes/", maintenance.manage_orders, name="work_orders"),
     path("ordes/<int:pk>/", maintenance.manage_order, name="work_order"),
+    path("limpeza/", cleaning.manage_cleaning, name="cleaning"),
+    path("limpeza/rexistro/", cleaning.cleaning_export, name="cleaning_export"),
+    path("limpeza/zona/<int:pk>/qr/", cleaning.zone_qr, name="cleaning_qr"),
     path("actividades/", activities.manage_groups, name="activities"),
     path("actividades/grupo/<int:pk>/", activities.manage_group, name="group"),
     path("indicadores/", analytics.dashboard, name="indicators"),

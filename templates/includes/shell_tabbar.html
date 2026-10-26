@@ -1,6 +1,6 @@
 {% load i18n eira %}{% if app_tenant %}<nav class="tabbar" aria-label="{% translate 'Navegación da app' %}">
-  {% if kind == 'operator' %}
-    <a href="{% url 'maintenance:my_orders' app_tenant.slug %}" {% if nav == 'operator' %}aria-current="page"{% endif %}>{% icon 'wrench' %}<span>{% translate "Ordes" %}</span></a>
+  {% if kind == 'operator' or kind == 'cleaning' %}
+    <a href="{% url 'maintenance:my_orders' app_tenant.slug %}" {% if nav == 'operator' %}aria-current="page"{% endif %}>{% if kind == 'cleaning' %}{% icon 'sparkle' %}<span>{% translate "Tarefas" %}</span>{% else %}{% icon 'wrench' %}<span>{% translate "Ordes" %}</span>{% endif %}</a>
     <a href="{% url 'maintenance:calendar' app_tenant.slug %}" {% if nav == 'operator_calendar' %}aria-current="page"{% endif %}>{% icon 'calendar' %}<span>{% translate "Calendario" %}</span></a>
     <a href="{% url 'notifications:list' app_tenant.slug %}" {% if nav == 'notifications' %}aria-current="page"{% endif %}>{% icon 'bell' %}<span>{% translate "Avisos" %}</span></a>
   {% else %}

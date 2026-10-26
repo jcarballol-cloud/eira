@@ -14,3 +14,7 @@ class Command(BaseCommand):
         done = send_due()
         self.stdout.write(f"Avisos enviados: {len(done)}")
         self.stdout.write(f"Avisos antigos borrados (conservación 12 meses): {purge()}")
+        # v1.1: zonas de limpeza que levan máis do previsto sen limpar → aviso ao concello
+        from apps.maintenance.cleaning import check_overdue
+
+        self.stdout.write(f"Avisos de limpeza atrasada: {check_overdue()}")

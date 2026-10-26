@@ -208,3 +208,23 @@ def illustration(name, sizes="100vw", css="", eager=False, night=False):
         "css": css,
         "eager": eager,
     }
+
+
+@register.filter
+def when(value):
+    """v1.1: «hoxe 10:40», «onte 18:05» ou «12/10 09:30» (última limpeza)."""
+    if not value:
+        return ""
+    import datetime as dt
+
+    from django.utils import timezone
+    from django.utils.translation import gettext as _
+
+    local = localtime(value)
+    today = timezone.localdate()
+    hhmm = local.strftime("%H:%M")
+    if local.date() == today:
+        return _("hoxe %(h)s") % {"h": hhmm}
+    if local.date() == today - dt.timedelta(days=1):
+        return _("onte %(h)s") % {"h": hhmm}
+    return local.strftime("%d/%m %H:%M")

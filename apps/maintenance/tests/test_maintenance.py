@@ -10,7 +10,11 @@ pytestmark = pytest.mark.django_db
 
 
 def test_template_creates_plan(padel_a):
-    assert padel_a.maintenance_plans.get().tasks.count() == 2
+    # v1.1: o plan preventivo segue igual; a limpeza vai nun plan propio
+    plan = padel_a.maintenance_plans.exclude(tasks__kind="cleaning").get()
+    assert plan.tasks.count() == 2
+    cleaning = padel_a.maintenance_plans.get(tasks__kind="cleaning")
+    assert cleaning.tasks.count() == padel_a.cleaning_zones.count() == 1
 
 
 def test_generation_is_idempotent(padel_a):

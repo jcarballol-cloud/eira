@@ -127,6 +127,16 @@ def operator_a(muni_a):
     return u
 
 
+@pytest.fixture
+def cleaner_a(muni_a):
+    """v1.1: persoal de limpeza dunha empresa contratada (ficticia)."""
+    u = User.objects.create_user("limpeza@example.org", display_name="Persoa de limpeza")
+    Membership.objects.create(
+        user=u, municipality=muni_a, role=Role.CLEANING, company="Limpezas de Proba, S. L."
+    )
+    return u
+
+
 def next_slot(facility, days=2, hour=19):
     """Primeira franxa dispoñible `days` días despois, á hora indicada ou a primeira do día."""
     from apps.bookings.services import slot_starts

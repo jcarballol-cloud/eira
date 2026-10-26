@@ -20,9 +20,13 @@ def _staff(municipality, roles):
 
 
 def notify_staff_new_incident(incident):
+    from apps.maintenance.cleaning import route_incident
     from apps.tenants.urlutils import treverse
 
     url = treverse(incident.municipality, "manage:incident_detail", incident.pk)
+    # v1.1 · enrutado por tipo: o de limpeza xera tarefa e aviso ao persoal de limpeza.
+    # A administración recibe igualmente o seu aviso (ve todo).
+    route_incident(incident)
     if incident.priority == Incident.Priority.HIGH:
         # v5: risco → aviso inmediato á administración e a mantemento, tamén por correo
         for user in _staff(incident.municipality, [Role.ADMIN, Role.MAINTENANCE]):
@@ -47,6 +51,17 @@ def notify_staff_new_incident(incident):
             level="warning",
             email=False,
         )
+    if incident.category != Incident.Category.CLEANING:
+        # v1.1: as avarías avísanse tamén a mantemento (a orde segue creándoa o concello)
+        for user in _staff(incident.municipality, [Role.MAINTENANCE]):
+            notify(
+                user,
+                _("Nova avaría: %(f)s") % {"f": incident.facility.name},
+                incident.description[:200],
+                url=treverse(incident.municipality, "maintenance:my_orders"),
+                municipality=incident.municipality,
+                email=False,
+            )
 
 
 def _tell_reporter(incident, title, body=""):
@@ -82,12 +97,35 @@ def reject(incident, by, note=""):
     _tell_reporter(incident, _("Pechamos o teu aviso #%(n)s") % {"n": incident.pk}, note)
 
 
+def _order_kind(incident, assigned_to):
+    """v1.1: a orde é de limpeza se vai para o persoal de limpeza ou se a incidencia é de
+    limpeza e o concello ten persoal de limpeza; se non, ordinaria (mantemento)."""
+    from apps.maintenance.cleaning import has_cleaning_staff
+
+    if assigned_to is not None:
+        roles = set(
+            Membership.objects.filter(
+                user=assigned_to, municipality=incident.municipality
+            ).values_list("role", flat=True)
+        )
+        if Role.CLEANING in roles and Role.MAINTENANCE not in roles:
+            return "cleaning"
+        if Role.MAINTENANCE in roles:
+            return "regular"
+    if incident.category == Incident.Category.CLEANING and has_cleaning_staff(
+        incident.municipality
+    ):
+        return "cleaning"
+    return "regular"
+
+
 def create_work_order(incident, by, assigned_to=None, due_date=None, title=""):
     from apps.maintenance.models import WorkOrder
 
     if incident.status == Incident.Status.RECEIVED:
         incident.validated_at = timezone.now()
     order = WorkOrder.objects.create(
+        kind=_order_kind(incident, assigned_to),
         municipality=incident.municipality,
         facility=incident.facility,
         incident=incident,

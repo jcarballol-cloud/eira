@@ -95,6 +95,7 @@ class Role(models.TextChoices):
     MAINTENANCE = "maintenance", _("Mantemento")
     MONITOR = "monitor", _("Persoa monitora")
     DPO = "dpo", _("Persoa delegada de protección de datos")
+    CLEANING = "cleaning", _("Persoal de limpeza")  # v1.1
 
 
 class Membership(models.Model):
@@ -103,6 +104,8 @@ class Membership(models.Model):
         Municipality, on_delete=models.CASCADE, related_name="memberships"
     )
     role = models.CharField(_("rol"), max_length=20, choices=Role.choices)
+    # v1.1: persoal de limpeza propio ou dunha empresa contratada (baleiro = persoal do concello)
+    company = models.CharField(_("empresa"), max_length=120, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Eira 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 15:37+0100\n"
-"PO-Revision-Date: 2026-10-26 15:37+0100\n"
+"POT-Creation-Date: 2026-10-26 19:23+0100\n"
+"PO-Revision-Date: 2026-10-26 19:23+0100\n"
 "Last-Translator: Equipo Eira\n"
 "Language-Team: Equipo Eira\n"
 "Language: es\n"
@@ -458,7 +458,7 @@ msgstr "solo cifras agregadas"
 msgid "seudonimizado"
 msgstr "seudonimizado"
 
-#: apps/accounts/custody.py:154
+#: apps/accounts/custody.py:154 apps/maintenance/cleaning.py:426
 msgid "si"
 msgstr "sí"
 
@@ -572,7 +572,7 @@ msgstr ""
 "Si no lo marcas, la persona monitora verá una cámara tachada junto a tu "
 "nombre."
 
-#: apps/accounts/models.py:42 apps/accounts/models.py:199
+#: apps/accounts/models.py:42 apps/accounts/models.py:202
 msgid "correo electrónico"
 msgstr "correo electrónico"
 
@@ -584,8 +584,8 @@ msgstr "nombre para mostrar"
 msgid "teléfono"
 msgstr "teléfono"
 
-#: apps/accounts/models.py:45 apps/accounts/models.py:200
-#: apps/accounts/models.py:381 apps/activities/models.py:143
+#: apps/accounts/models.py:45 apps/accounts/models.py:203
+#: apps/accounts/models.py:384 apps/activities/models.py:143
 msgid "ano de nacemento"
 msgstr "año de nacimiento"
 
@@ -635,12 +635,12 @@ msgstr "Vecindario"
 msgid "Administración do concello"
 msgstr "Administración del ayuntamiento"
 
-#: apps/accounts/models.py:95 templates/includes/brand.html:3
-#: templates/includes/shell_desk.html:25
+#: apps/accounts/models.py:95 apps/maintenance/models.py:42
+#: templates/includes/brand.html:3 templates/includes/shell_desk.html:26
 msgid "Mantemento"
 msgstr "Mantenimiento"
 
-#: apps/accounts/models.py:96 apps/integrations/demo.py:102
+#: apps/accounts/models.py:96 apps/integrations/demo.py:116
 #: templates/activities/manage_groups.html:25
 msgid "Persoa monitora"
 msgstr "Persona monitora"
@@ -649,260 +649,269 @@ msgstr "Persona monitora"
 msgid "Persoa delegada de protección de datos"
 msgstr "Persona delegada de protección de datos"
 
-#: apps/accounts/models.py:105
+#: apps/accounts/models.py:98 templates/manage/cleaning.html:59
+msgid "Persoal de limpeza"
+msgstr "Personal de limpieza"
+
+#: apps/accounts/models.py:106
 msgid "rol"
 msgstr "rol"
 
-#: apps/accounts/models.py:109
+#: apps/accounts/models.py:108 apps/maintenance/models.py:277
+msgid "empresa"
+msgstr "empresa"
+
+#: apps/accounts/models.py:112
 msgid "rol no concello"
 msgstr "rol en el ayuntamiento"
 
-#: apps/accounts/models.py:110
+#: apps/accounts/models.py:113
 msgid "roles nos concellos"
 msgstr "roles en los ayuntamientos"
 
-#: apps/accounts/models.py:138
+#: apps/accounts/models.py:141
 msgid "nota interna"
 msgstr "nota interna"
 
-#: apps/accounts/models.py:187
+#: apps/accounts/models.py:190
 msgid "Pendente de revisar"
 msgstr "Pendiente de revisar"
 
-#: apps/accounts/models.py:188
+#: apps/accounts/models.py:191
 msgid "Código enviado"
 msgstr "Código enviado"
 
-#: apps/accounts/models.py:189
+#: apps/accounts/models.py:192
 msgid "Non figura no padrón"
 msgstr "No figura en el padrón"
 
-#: apps/accounts/models.py:192 apps/bookings/models.py:60
+#: apps/accounts/models.py:195 apps/bookings/models.py:60
 msgid "En liña"
 msgstr "En línea"
 
-#: apps/accounts/models.py:193 apps/accounts/models.py:277
-#: apps/bookings/manage.py:248 apps/bookings/models.py:62
+#: apps/accounts/models.py:196 apps/accounts/models.py:280
+#: apps/bookings/manage.py:253 apps/bookings/models.py:62
 msgid "Mostrador"
 msgstr "Mostrador"
 
-#: apps/accounts/models.py:198 apps/accounts/models.py:380
+#: apps/accounts/models.py:201 apps/accounts/models.py:383
 #: apps/activities/models.py:16 apps/activities/models.py:142
 #: apps/bookings/models.py:350 apps/facilities/models.py:14
-#: apps/facilities/models.py:53 apps/maintenance/models.py:25
-#: apps/tenants/models.py:60 apps/tenants/models.py:74
+#: apps/facilities/models.py:53 apps/maintenance/models.py:30
+#: apps/maintenance/models.py:64 apps/tenants/models.py:60
+#: apps/tenants/models.py:74
 msgid "nome"
 msgstr "nombre"
 
-#: apps/accounts/models.py:201
+#: apps/accounts/models.py:204
 msgid "código postal"
 msgstr "código postal"
 
-#: apps/accounts/models.py:204
+#: apps/accounts/models.py:207
 msgid "figura no padrón"
 msgstr "figura en el padrón"
 
-#: apps/accounts/models.py:206
+#: apps/accounts/models.py:209
 msgid "apelidos"
 msgstr "apellidos"
 
-#: apps/accounts/models.py:207
+#: apps/accounts/models.py:210
 msgid "DNI/NIE"
 msgstr "DNI/NIE"
 
-#: apps/accounts/models.py:208
+#: apps/accounts/models.py:211
 msgid "data de nacemento"
 msgstr "fecha de nacimiento"
 
-#: apps/accounts/models.py:209
+#: apps/accounts/models.py:212
 msgid "enderezo (opcional)"
 msgstr "dirección (opcional)"
 
-#: apps/accounts/models.py:210
+#: apps/accounts/models.py:213
 msgid "motivo da revisión"
 msgstr "motivo de la revisión"
 
-#: apps/accounts/models.py:221
+#: apps/accounts/models.py:224
 msgid "solicitude da app"
 msgstr "solicitud de la app"
 
-#: apps/accounts/models.py:222
+#: apps/accounts/models.py:225
 msgid "solicitudes da app"
 msgstr "solicitudes de la app"
 
-#: apps/accounts/models.py:229
+#: apps/accounts/models.py:232
 msgid "Non figura no padrón cargado"
 msgstr "No figura en el padrón cargado"
 
-#: apps/accounts/models.py:230
+#: apps/accounts/models.py:233
 msgid "Aínda non hai padrón cargado"
 msgstr "Aún no hay padrón cargado"
 
-#: apps/accounts/models.py:231
+#: apps/accounts/models.py:234
 msgid "DNI/NIE ou data non válidos"
 msgstr "DNI/NIE o fecha no válidos"
 
-#: apps/accounts/models.py:254
+#: apps/accounts/models.py:257
 msgid "carga do padrón"
 msgstr "carga del padrón"
 
-#: apps/accounts/models.py:255
+#: apps/accounts/models.py:258
 msgid "cargas do padrón"
 msgstr "cargas del padrón"
 
-#: apps/accounts/models.py:276
+#: apps/accounts/models.py:279
 msgid "Código de invitación"
 msgstr "Código de invitación"
 
-#: apps/accounts/models.py:278
+#: apps/accounts/models.py:281
 msgid "Identidade pública + padrón"
 msgstr "Identidad pública + padrón"
 
-#: apps/accounts/models.py:289
+#: apps/accounts/models.py:292
 msgid "empadroamento validado"
 msgstr "empadronamiento validado"
 
-#: apps/accounts/models.py:290
+#: apps/accounts/models.py:293
 msgid "empadroamentos validados"
 msgstr "empadronamientos validados"
 
-#: apps/accounts/models.py:346
+#: apps/accounts/models.py:349
 msgid "Persoa con discapacidade"
 msgstr "Persona con discapacidad"
 
-#: apps/accounts/models.py:347
+#: apps/accounts/models.py:350
 msgid "Persoa en desemprego"
 msgstr "Persona en desempleo"
 
-#: apps/accounts/models.py:348
+#: apps/accounts/models.py:351
 msgid "Familia numerosa ou monoparental"
 msgstr "Familia numerosa o monoparental"
 
-#: apps/accounts/models.py:354 apps/facilities/models.py:294
+#: apps/accounts/models.py:357 apps/facilities/models.py:302
 msgid "colectivo"
 msgstr "colectivo"
 
-#: apps/accounts/models.py:357
+#: apps/accounts/models.py:360
 msgid "válido ata"
 msgstr "válido hasta"
 
-#: apps/accounts/models.py:360
+#: apps/accounts/models.py:363
 msgid "tarifa reducida validada"
 msgstr "tarifa reducida validada"
 
-#: apps/accounts/models.py:361
+#: apps/accounts/models.py:364
 msgid "tarifas reducidas validadas"
 msgstr "tarifas reducidas validadas"
 
-#: apps/accounts/models.py:385
+#: apps/accounts/models.py:388
 msgid "menor ao cargo"
 msgstr "menor a cargo"
 
-#: apps/accounts/models.py:386
+#: apps/accounts/models.py:389
 msgid "menores ao cargo"
 msgstr "menores a cargo"
 
-#: apps/accounts/models.py:409
+#: apps/accounts/models.py:412
 msgid "Tratamento de datos para a actividade"
 msgstr "Tratamiento de datos para la actividad"
 
-#: apps/accounts/models.py:410
+#: apps/accounts/models.py:413
 msgid "Uso da imaxe en comunicacións municipais"
 msgstr "Uso de la imagen en comunicaciones municipales"
 
-#: apps/accounts/models.py:411
+#: apps/accounts/models.py:414
 msgid "Rexistro de esforzo e probas físicas"
 msgstr "Registro de esfuerzo y pruebas físicas"
 
-#: apps/accounts/models.py:421
+#: apps/accounts/models.py:424
 msgid "consentimento"
 msgstr "consentimiento"
 
-#: apps/accounts/models.py:422
+#: apps/accounts/models.py:425
 msgid "consentimentos"
 msgstr "consentimientos"
 
-#: apps/accounts/models.py:489 apps/activities/models.py:181
+#: apps/accounts/models.py:492 apps/activities/models.py:181
 msgid "Aberta"
 msgstr "Abierta"
 
-#: apps/accounts/models.py:490 apps/activities/models.py:183
+#: apps/accounts/models.py:493 apps/activities/models.py:183
 #: apps/bookings/calendar.py:26 apps/bookings/services.py:85
-#: apps/maintenance/models.py:70
+#: apps/maintenance/models.py:165
 msgid "Pechada"
 msgstr "Cerrada"
 
-#: apps/accounts/models.py:493
+#: apps/accounts/models.py:496
 msgid "Improbable que supoña un risco"
 msgstr "Improbable que suponga un riesgo"
 
-#: apps/accounts/models.py:494
+#: apps/accounts/models.py:497
 msgid "Risco para os dereitos e liberdades"
 msgstr "Riesgo para los derechos y libertades"
 
-#: apps/accounts/models.py:495
+#: apps/accounts/models.py:498
 msgid "Alto risco"
 msgstr "Alto riesgo"
 
-#: apps/accounts/models.py:500
+#: apps/accounts/models.py:503
 msgid "data e hora en que se detectou"
 msgstr "fecha y hora en que se detectó"
 
-#: apps/accounts/models.py:502
+#: apps/accounts/models.py:505
 msgid "data aproximada en que se produciu"
 msgstr "fecha aproximada en que se produjo"
 
-#: apps/accounts/models.py:504
+#: apps/accounts/models.py:507
 msgid "que pasou"
 msgstr "qué pasó"
 
-#: apps/accounts/models.py:505
+#: apps/accounts/models.py:508
 msgid "datos afectados"
 msgstr "datos afectados"
 
-#: apps/accounts/models.py:507
+#: apps/accounts/models.py:510
 msgid "persoas afectadas"
 msgstr "personas afectadas"
 
-#: apps/accounts/models.py:507
+#: apps/accounts/models.py:510
 msgid "Número aproximado e colectivo."
 msgstr "Número aproximado y colectivo."
 
-#: apps/accounts/models.py:509
+#: apps/accounts/models.py:512
 msgid "nivel de risco"
 msgstr "nivel de riesgo"
 
-#: apps/accounts/models.py:510
+#: apps/accounts/models.py:513
 msgid "medidas tomadas"
 msgstr "medidas tomadas"
 
-#: apps/accounts/models.py:511
+#: apps/accounts/models.py:514
 msgid "notificada á AEPD"
 msgstr "notificada a la AEPD"
 
-#: apps/accounts/models.py:512
+#: apps/accounts/models.py:515
 msgid "data da notificación á AEPD"
 msgstr "fecha de la notificación a la AEPD"
 
-#: apps/accounts/models.py:514
+#: apps/accounts/models.py:517
 msgid "motivo para non notificar á AEPD"
 msgstr "motivo para no notificar a la AEPD"
 
-#: apps/accounts/models.py:516
+#: apps/accounts/models.py:519
 msgid "informouse ás persoas afectadas"
 msgstr "se informó a las personas afectadas"
 
-#: apps/accounts/models.py:519 apps/bookings/models.py:78
+#: apps/accounts/models.py:522 apps/bookings/models.py:78
 #: apps/bookings/models.py:289 apps/incidents/models.py:57
-#: apps/maintenance/models.py:92
+#: apps/maintenance/models.py:187
 msgid "estado"
 msgstr "estado"
 
-#: apps/accounts/models.py:527
+#: apps/accounts/models.py:530
 msgid "brecha de seguridade"
 msgstr "brecha de seguridad"
 
-#: apps/accounts/models.py:528
+#: apps/accounts/models.py:531
 msgid "brechas de seguridade"
 msgstr "brechas de seguridad"
 
@@ -1154,7 +1163,7 @@ msgstr "Reservas"
 msgid "Avisos de avaría"
 msgstr "Avisos de avería"
 
-#: apps/accounts/views.py:476 templates/includes/shell_desk.html:29
+#: apps/accounts/views.py:476 templates/includes/shell_desk.html:30
 #: templates/manage/ratings.html:2 templates/manage/ratings.html:22
 #: templates/manage/ratings.html:32
 msgid "Valoracións"
@@ -1170,7 +1179,7 @@ msgid "Empadroamentos validados"
 msgstr "Empadronamientos validados"
 
 #: apps/activities/models.py:17 apps/facilities/models.py:58
-#: apps/facilities/models.py:271 apps/maintenance/models.py:89
+#: apps/facilities/models.py:279 apps/maintenance/models.py:184
 msgid "descrición"
 msgstr "descripción"
 
@@ -1533,7 +1542,7 @@ msgstr "Diversidad de edades"
 msgid "Satisfacción"
 msgstr "Satisfacción"
 
-#: apps/analytics/vitality.py:33 templates/facilities/detail.html:63
+#: apps/analytics/vitality.py:33 templates/facilities/detail.html:65
 msgid "Accesibilidade física"
 msgstr "Accesibilidad física"
 
@@ -1557,107 +1566,107 @@ msgstr "Pendiente de pago"
 msgid "Actividade municipal"
 msgstr "Actividad municipal"
 
-#: apps/bookings/manage.py:232
+#: apps/bookings/manage.py:237
 msgid "Nome da persoa"
 msgstr "Nombre de la persona"
 
-#: apps/bookings/manage.py:234 apps/bookings/manage.py:248
+#: apps/bookings/manage.py:239 apps/bookings/manage.py:253
 #: apps/bookings/models.py:61 templates/bookings/_access.html:16
 msgid "Teléfono"
 msgstr "Teléfono"
 
-#: apps/bookings/manage.py:240
+#: apps/bookings/manage.py:245
 msgid "Correo (se ten conta)"
 msgstr "Correo (si tiene cuenta)"
 
-#: apps/bookings/manage.py:243
+#: apps/bookings/manage.py:248
 msgid "Se o indicas, a reserva aparecerá no seu historial e recibirá avisos."
 msgstr ""
 "Si lo indicas, la reserva aparecerá en su historial y recibirá avisos."
 
-#: apps/bookings/manage.py:247 templates/dev/outbox.html:7
+#: apps/bookings/manage.py:252 templates/dev/outbox.html:7
 #: templates/manage/agenda.html:9 templates/manage/vouchers.html:15
 msgid "Canle"
 msgstr "Canal"
 
-#: apps/bookings/manage.py:253 apps/bookings/vouchers.py:38
+#: apps/bookings/manage.py:258 apps/bookings/vouchers.py:38
 msgid "Cobro"
 msgstr "Cobro"
 
-#: apps/bookings/manage.py:255
+#: apps/bookings/manage.py:260
 msgid "Pendente: pagará despois"
 msgstr "Pendiente: pagará después"
 
-#: apps/bookings/manage.py:256
+#: apps/bookings/manage.py:261
 msgid "Cobrado en efectivo"
 msgstr "Cobrado en efectivo"
 
-#: apps/bookings/manage.py:257
+#: apps/bookings/manage.py:262
 msgid "Cobrado con tarxeta no TPV físico"
 msgstr "Cobrado con tarjeta en el TPV físico"
 
-#: apps/bookings/manage.py:262
+#: apps/bookings/manage.py:267
 msgid "Lin as normas á persoa e acéptaas"
 msgstr "He leído las normas a la persona y las acepta"
 
-#: apps/bookings/manage.py:304
+#: apps/bookings/manage.py:309
 #, python-format
 msgid "Reserva %(r)s feita para %(n)s."
 msgstr "Reserva %(r)s realizada para %(n)s."
 
-#: apps/bookings/manage.py:348
+#: apps/bookings/manage.py:353
 #, python-format
 msgid "Chave entregada a %(n)s."
 msgstr "Llave entregada a %(n)s."
 
-#: apps/bookings/manage.py:351
+#: apps/bookings/manage.py:356
 msgid "Chave devolta."
 msgstr "Llave devuelta."
 
-#: apps/bookings/manage.py:363
+#: apps/bookings/manage.py:368
 msgid "Cancelada polo concello"
 msgstr "Cancelada por el ayuntamiento"
 
-#: apps/bookings/manage.py:366
+#: apps/bookings/manage.py:371
 msgid "Reserva cancelada e reembolsada."
 msgstr "Reserva cancelada y reembolsada."
 
-#: apps/bookings/manage.py:374 templates/manage/booking.html:25
+#: apps/bookings/manage.py:379 templates/manage/booking.html:25
 #: templates/manage/payments.html:10 templates/manage/payments.html:31
 msgid "Método"
 msgstr "Método"
 
-#: apps/bookings/manage.py:376 apps/bookings/vouchers.py:40
+#: apps/bookings/manage.py:381 apps/bookings/vouchers.py:40
 msgid "Efectivo"
 msgstr "Efectivo"
 
-#: apps/bookings/manage.py:377 apps/bookings/models.py:262
+#: apps/bookings/manage.py:382 apps/bookings/models.py:262
 #: apps/bookings/vouchers.py:41
 msgid "Tarxeta no TPV físico"
 msgstr "Tarjeta en el TPV físico"
 
-#: apps/bookings/manage.py:404
+#: apps/bookings/manage.py:409
 msgid "Esta reserva non está pendente de pagamento."
 msgstr "Esta reserva no está pendiente de pago."
 
-#: apps/bookings/manage.py:407
+#: apps/bookings/manage.py:412
 msgid "Cobro rexistrado."
 msgstr "Cobro registrado."
 
-#: apps/bookings/manage.py:413
+#: apps/bookings/manage.py:418
 msgid "Aprobada. Avisamos á persoa."
 msgstr "Aprobada. Avisamos a la persona."
 
-#: apps/bookings/manage.py:418
+#: apps/bookings/manage.py:423
 msgid "Rexeitada. Avisamos á persoa co motivo."
 msgstr "Rechazada. Avisamos a la persona con el motivo."
 
-#: apps/bookings/manage.py:420
+#: apps/bookings/manage.py:425
 #, python-format
 msgid "Devolución automática: %(r)s €."
 msgstr "Devolución automática: %(r)s €."
 
-#: apps/bookings/manage.py:598
+#: apps/bookings/manage.py:603
 #, python-format
 msgid "Devolución rexistrada: %(e)s €."
 msgstr "Devolución registrada: %(e)s €."
@@ -1734,7 +1743,7 @@ msgstr "forma de pago"
 msgid "pediu luz"
 msgstr "pidió luz"
 
-#: apps/bookings/models.py:126 apps/facilities/models.py:270
+#: apps/bookings/models.py:126 apps/facilities/models.py:278
 #: apps/tenants/models.py:299
 msgid "motivo"
 msgstr "motivo"
@@ -1752,7 +1761,7 @@ msgstr "reservas"
 msgid "Persoa de %(c)s"
 msgstr "Persona de %(c)s"
 
-#: apps/bookings/models.py:252 apps/maintenance/models.py:68
+#: apps/bookings/models.py:252 apps/maintenance/models.py:163
 #: templates/monitor/attendance.html:26
 msgid "Pendente"
 msgstr "Pendiente"
@@ -1843,8 +1852,9 @@ msgid "valoracións"
 msgstr "valoraciones"
 
 #: apps/bookings/models.py:353 apps/facilities/models.py:140
-#: apps/facilities/models.py:264 apps/incidents/models.py:39
-#: apps/maintenance/models.py:74 apps/notifications/models.py:106
+#: apps/facilities/models.py:272 apps/incidents/models.py:39
+#: apps/maintenance/models.py:60 apps/maintenance/models.py:169
+#: apps/maintenance/models.py:261 apps/notifications/models.py:106
 msgid "instalación"
 msgstr "instalación"
 
@@ -1993,6 +2003,10 @@ msgstr "Avisar al ayuntamiento para que lo arregle"
 #: apps/bookings/ratings.py:115
 msgid "Valoración: Mal"
 msgstr "Valoración: Mal"
+
+#: apps/bookings/ratings.py:131
+msgid "Valoración: Mal · Sucia"
+msgstr "Valoración: Mal · Sucia"
 
 #: apps/bookings/services.py:80 templates/facilities/_week.html:23
 msgid "Libre"
@@ -2181,19 +2195,23 @@ msgstr "Devolución: %(r)s €."
 msgid "Xa non se pode modificar esta reserva (prazo superado)."
 msgstr "Ya no se puede modificar esta reserva (plazo superado)."
 
-#: apps/bookings/services.py:853
+#: apps/bookings/services.py:855
 msgid "A porta non quedou pechada."
 msgstr "La puerta no quedó cerrada."
 
-#: apps/bookings/services.py:855
+#: apps/bookings/services.py:857
 msgid "A chave non se devolveu."
 msgstr "La llave no se devolvió."
 
-#: apps/bookings/services.py:857
+#: apps/bookings/services.py:859
 msgid "Non todo quedou en orde."
 msgstr "No todo quedó en orden."
 
-#: apps/bookings/services.py:907
+#: apps/bookings/services.py:888
+msgid "Ao saír: fai falta limpeza."
+msgstr "Al salir: hace falta limpieza."
+
+#: apps/bookings/services.py:925
 #, python-format
 msgid ""
 "Ao comezar a reserva %(r)s, a persoa atopou un problema que xa estaba antes."
@@ -2201,12 +2219,12 @@ msgstr ""
 "Al empezar la reserva %(r)s, la persona encontró un problema que ya estaba "
 "antes."
 
-#: apps/bookings/services.py:911
+#: apps/bookings/services.py:929
 #, python-format
 msgid "Última reserva anterior: %(r)s (%(d)s)."
 msgstr "Última reserva anterior: %(r)s (%(d)s)."
 
-#: apps/bookings/services.py:941
+#: apps/bookings/services.py:959
 #, python-format
 msgid "Peche da instalación: %(r)s"
 msgstr "Cierre de la instalación: %(r)s"
@@ -2381,69 +2399,78 @@ msgstr "¿Has devuelto la llave?"
 msgid "Quedou todo en orde (luces, material, limpeza)?"
 msgstr "¿Ha quedado todo en orden (luces, material, limpieza)?"
 
-#: apps/bookings/views.py:553
+#: apps/bookings/views.py:554
+msgid "Fai falta limpeza (lixo, vestiarios ou aseos sucios)"
+msgstr "Hace falta limpieza (basura, vestuarios o aseos sucios)"
+
+#: apps/bookings/views.py:558
 msgid "Algo que contar? (opcional)"
 msgstr "¿Algo que contar? (opcional)"
 
-#: apps/bookings/views.py:570
+#: apps/bookings/views.py:575
 msgid "Xa enviaches o checklist de peche desta reserva."
 msgstr "Ya has enviado el checklist de cierre de esta reserva."
 
-#: apps/bookings/views.py:590 apps/bookings/views.py:615
+#: apps/bookings/views.py:596 apps/bookings/views.py:621
 #, python-format
 msgid "Grazas. Creamos a incidencia #%(n)s para que o concello o revise."
 msgstr ""
 "Gracias. Hemos creado la incidencia #%(n)s para que el ayuntamiento la "
 "revise."
 
-#: apps/bookings/views.py:594
+#: apps/bookings/views.py:600
 msgid "Grazas! Instalación pechada correctamente."
 msgstr "¡Gracias! Instalación cerrada correctamente."
 
-#: apps/bookings/views.py:619
+#: apps/bookings/views.py:625
 msgid "Grazas pola túa valoración!"
 msgstr "¡Gracias por tu valoración!"
 
-#: apps/bookings/views.py:632
+#: apps/bookings/views.py:638
 msgid ""
 "Agora non se pode abrir. A porta ábrese desde 10 minutos antes do inicio."
 msgstr ""
 "Ahora no se puede abrir. La puerta se abre desde 10 minutos antes del "
 "inicio."
 
-#: apps/bookings/views.py:635
+#: apps/bookings/views.py:641
 msgid "Porta aberta. Ben adestramento!"
 msgstr "Puerta abierta. ¡Buen entrenamiento!"
 
-#: apps/bookings/views.py:649
+#: apps/bookings/views.py:655
 msgid "Como atopaches a instalación e o material?"
 msgstr "¿Cómo encontraste la instalación y el material?"
 
-#: apps/bookings/views.py:651 templates/bookings/_states.html:6
+#: apps/bookings/views.py:657 templates/bookings/_states.html:6
 msgid "Todo ben"
 msgstr "Todo bien"
 
-#: apps/bookings/views.py:652
+#: apps/bookings/views.py:658
 msgid "Hai un problema"
 msgstr "Hay un problema"
 
-#: apps/bookings/views.py:657
+#: apps/bookings/views.py:664
+msgid "O problema é de limpeza (lixo, sucidade, vestiarios ou aseos)"
+msgstr "El problema es de limpieza (basura, suciedad, vestuarios o aseos)"
+
+#: apps/bookings/views.py:668
 msgid "Que viches? (opcional)"
 msgstr "¿Qué viste? (opcional)"
 
-#: apps/bookings/views.py:663
+#: apps/bookings/views.py:674 apps/maintenance/cleaning_views.py:34
+#: templates/maintenance/cleaning_zone.html:17
 msgid "Foto (opcional)"
 msgstr "Foto (opcional)"
 
-#: apps/bookings/views.py:665
+#: apps/bookings/views.py:676 templates/maintenance/cleaning_zone.html:17
 msgid "Quitámoslle a localización e os datos da cámara."
 msgstr "Le quitamos la ubicación y los datos de la cámara."
 
-#: apps/bookings/views.py:680
+#: apps/bookings/views.py:691
 msgid "Xa indicaches como estaba a instalación ao entrar."
 msgstr "Ya indicaste cómo estaba la instalación al entrar."
 
-#: apps/bookings/views.py:692
+#: apps/bookings/views.py:708
 #, python-format
 msgid ""
 "Grazas. Creamos a incidencia #%(n)s e queda rexistrado que xa estaba antes "
@@ -2452,7 +2479,7 @@ msgstr ""
 "Gracias. Hemos creado la incidencia #%(n)s y queda registrado que ya estaba "
 "antes de tu reserva."
 
-#: apps/bookings/views.py:698
+#: apps/bookings/views.py:714
 msgid "Grazas! Bo adestramento."
 msgstr "¡Gracias! Buen entrenamiento."
 
@@ -2460,7 +2487,7 @@ msgstr "¡Gracias! Buen entrenamiento."
 msgid "Todas as que admitan bono"
 msgstr "Todas las que admitan bono"
 
-#: apps/bookings/vouchers.py:34 apps/tenants/manage.py:243
+#: apps/bookings/vouchers.py:34 apps/tenants/manage.py:252
 msgid "Correo da persoa"
 msgstr "Correo de la persona"
 
@@ -2468,7 +2495,7 @@ msgstr "Correo de la persona"
 msgid "O bono queda na súa conta da app."
 msgstr "El bono queda en su cuenta de la app."
 
-#: apps/bookings/vouchers.py:54 apps/tenants/manage.py:268
+#: apps/bookings/vouchers.py:54 apps/tenants/manage.py:277
 msgid "Non hai ningunha conta con ese correo."
 msgstr "No hay ninguna cuenta con ese correo."
 
@@ -2481,11 +2508,11 @@ msgstr "Bono creado."
 msgid "Bono vendido a %(p)s: %(u)s usos."
 msgstr "Bono vendido a %(p)s: %(u)s usos."
 
-#: apps/facilities/catalog.py:12
+#: apps/facilities/catalog.py:14
 msgid "Respecta o horario reservado: entra e sae á hora."
 msgstr "Respeta el horario reservado: entra y sal a la hora."
 
-#: apps/facilities/catalog.py:13
+#: apps/facilities/catalog.py:15
 msgid ""
 "Deixa a instalación como a atopaches: luces apagadas, material recollido e "
 "porta pechada."
@@ -2493,175 +2520,175 @@ msgstr ""
 "Deja la instalación como la encontraste: luces apagadas, material recogido y"
 " puerta cerrada."
 
-#: apps/facilities/catalog.py:14
+#: apps/facilities/catalog.py:16
 msgid "Comunica calquera desperfecto co botón «Avisar dunha avaría»."
 msgstr "Comunica cualquier desperfecto con el botón «Avisar de una avería»."
 
-#: apps/facilities/catalog.py:15
+#: apps/facilities/catalog.py:17
 msgid "Non se permite fumar nin introducir vidro."
 msgstr "No se permite fumar ni introducir vidrio."
 
-#: apps/facilities/catalog.py:16
+#: apps/facilities/catalog.py:18
 msgid "Se non podes vir, cancela con antelación: outra persoa poderá usala."
 msgstr ""
 "Si no puedes venir, cancela con antelación: otra persona podrá usarla."
 
-#: apps/facilities/catalog.py:28 apps/facilities/models.py:27
+#: apps/facilities/catalog.py:30 apps/facilities/models.py:27
 msgid "Pista exterior"
 msgstr "Pista exterior"
 
-#: apps/facilities/catalog.py:31
+#: apps/facilities/catalog.py:33
 msgid ""
 "Pista polideportiva descuberta para fútbol sala, baloncesto ou balonmán."
 msgstr ""
 "Pista polideportiva descubierta para fútbol sala, baloncesto o balonmano."
 
-#: apps/facilities/catalog.py:40
+#: apps/facilities/catalog.py:42
 msgid "Calzado deportivo. Non se permiten bicicletas nin patíns na pista."
 msgstr "Calzado deportivo. No se permiten bicicletas ni patines en la pista."
 
-#: apps/facilities/catalog.py:44
+#: apps/facilities/catalog.py:46
 msgid "Revisión visual da pista e redes"
 msgstr "Revisión visual de la pista y las redes"
 
-#: apps/facilities/catalog.py:48
+#: apps/facilities/catalog.py:50
 msgid "Limpeza de follas e drenaxes"
 msgstr "Limpieza de hojas y drenajes"
 
-#: apps/facilities/catalog.py:50
+#: apps/facilities/catalog.py:52
 msgid "Revisión eléctrica das torres de luz"
 msgstr "Revisión eléctrica de las torres de luz"
 
-#: apps/facilities/catalog.py:57 apps/facilities/models.py:28
+#: apps/facilities/catalog.py:59 apps/facilities/models.py:28
 msgid "Pavillón"
 msgstr "Pabellón"
 
-#: apps/facilities/catalog.py:59
+#: apps/facilities/catalog.py:61
 msgid "Pavillón cuberto con pista central e vestiarios."
 msgstr "Pabellón cubierto con pista central y vestuarios."
 
-#: apps/facilities/catalog.py:68
+#: apps/facilities/catalog.py:70
 msgid "Calzado deportivo limpo e de sola clara."
 msgstr "Calzado deportivo limpio y de suela clara."
 
-#: apps/facilities/catalog.py:69
+#: apps/facilities/catalog.py:71
 msgid "Os vestiarios péchanse 30 minutos despois da última franxa."
 msgstr "Los vestuarios se cierran 30 minutos después de la última franja."
 
-#: apps/facilities/catalog.py:73
+#: apps/facilities/catalog.py:75
 msgid "Limpeza de vestiarios"
 msgstr "Limpieza de vestuarios"
 
-#: apps/facilities/catalog.py:75
+#: apps/facilities/catalog.py:77
 msgid "Revisión de desfibrilador (DEA)"
 msgstr "Revisión del desfibrilador (DEA)"
 
-#: apps/facilities/catalog.py:79
+#: apps/facilities/catalog.py:81
 msgid "Revisión de extintores"
 msgstr "Revisión de extintores"
 
-#: apps/facilities/catalog.py:83 apps/facilities/models.py:29
+#: apps/facilities/catalog.py:85 apps/facilities/models.py:29
 msgid "Campo de herba"
 msgstr "Campo de césped"
 
-#: apps/facilities/catalog.py:85
+#: apps/facilities/catalog.py:87
 msgid "Campo de fútbol de herba (natural ou artificial)."
 msgstr "Campo de fútbol de césped (natural o artificial)."
 
-#: apps/facilities/catalog.py:94
+#: apps/facilities/catalog.py:96
 msgid "Botas de tacos de goma; prohibidos os tacos metálicos."
 msgstr "Botas de tacos de goma; prohibidos los tacos metálicos."
 
-#: apps/facilities/catalog.py:95
+#: apps/facilities/catalog.py:97
 msgid "Non se pode usar o campo con alerta laranxa ou vermella."
 msgstr "No se puede usar el campo con alerta naranja o roja."
 
-#: apps/facilities/catalog.py:100
+#: apps/facilities/catalog.py:102
 msgid "Cepillado e reposición de caucho"
 msgstr "Cepillado y reposición de caucho"
 
-#: apps/facilities/catalog.py:104
+#: apps/facilities/catalog.py:106
 msgid "Revisión de porterías e redes"
 msgstr "Revisión de porterías y redes"
 
-#: apps/facilities/catalog.py:108 apps/facilities/models.py:30
+#: apps/facilities/catalog.py:110 apps/facilities/models.py:30
 msgid "Ximnasio"
 msgstr "Gimnasio"
 
-#: apps/facilities/catalog.py:110
+#: apps/facilities/catalog.py:112
 msgid "Sala de musculación e cardio de uso compartido."
 msgstr "Sala de musculación y cardio de uso compartido."
 
-#: apps/facilities/catalog.py:119
+#: apps/facilities/catalog.py:121
 msgid "Toalla obrigatoria. Limpa as máquinas despois de usalas."
 msgstr "Toalla obligatoria. Limpia las máquinas después de usarlas."
 
-#: apps/facilities/catalog.py:120
+#: apps/facilities/catalog.py:122
 msgid "Idade mínima: 16 anos."
 msgstr "Edad mínima: 16 años."
 
-#: apps/facilities/catalog.py:124
+#: apps/facilities/catalog.py:126
 msgid "Desinfección de máquinas"
 msgstr "Desinfección de máquinas"
 
-#: apps/facilities/catalog.py:125
+#: apps/facilities/catalog.py:127
 msgid "Revisión de cables e poleas"
 msgstr "Revisión de cables y poleas"
 
-#: apps/facilities/catalog.py:129 apps/facilities/models.py:31
+#: apps/facilities/catalog.py:131 apps/facilities/models.py:31
 msgid "Piscina"
 msgstr "Piscina"
 
-#: apps/facilities/catalog.py:131
+#: apps/facilities/catalog.py:133
 msgid "Piscina climatizada con rúas de nado libre."
 msgstr "Piscina climatizada con calles de nado libre."
 
-#: apps/facilities/catalog.py:140
+#: apps/facilities/catalog.py:142
 msgid "Ducha obrigatoria antes do baño. Gorro obrigatorio."
 msgstr "Ducha obligatoria antes del baño. Gorro obligatorio."
 
-#: apps/facilities/catalog.py:141
+#: apps/facilities/catalog.py:143
 msgid "Menores de 14 anos acompañados."
 msgstr "Menores de 14 años acompañados."
 
-#: apps/facilities/catalog.py:146
+#: apps/facilities/catalog.py:148
 msgid "Control de cloro e pH"
 msgstr "Control de cloro y pH"
 
-#: apps/facilities/catalog.py:150
+#: apps/facilities/catalog.py:152
 msgid "Limpeza de fondo"
 msgstr "Limpieza de fondo"
 
-#: apps/facilities/catalog.py:151
+#: apps/facilities/catalog.py:153
 msgid "Revisión sanitaria anual"
 msgstr "Revisión sanitaria anual"
 
-#: apps/facilities/catalog.py:155 apps/facilities/models.py:32
+#: apps/facilities/catalog.py:157 apps/facilities/models.py:32
 msgid "Pista de pádel"
 msgstr "Pista de pádel"
 
-#: apps/facilities/catalog.py:157
+#: apps/facilities/catalog.py:159
 msgid "Pista de pádel con cristal."
 msgstr "Pista de pádel con cristal."
 
-#: apps/facilities/catalog.py:164
+#: apps/facilities/catalog.py:166
 msgid "Calzado de pádel ou tenis. Non pendurarse da rede."
 msgstr "Calzado de pádel o tenis. No colgarse de la red."
 
-#: apps/facilities/catalog.py:168
+#: apps/facilities/catalog.py:170
 msgid "Revisión de cristais e rede"
 msgstr "Revisión de cristales y red"
 
-#: apps/facilities/catalog.py:172
+#: apps/facilities/catalog.py:174
 msgid "Cepillado da herba"
 msgstr "Cepillado del césped"
 
-#: apps/facilities/catalog.py:196
+#: apps/facilities/catalog.py:211
 msgid "Plan preventivo básico"
 msgstr "Plan preventivo básico"
 
 #: apps/facilities/manage.py:74 apps/tenants/region.py:372
-#: templates/includes/shell_desk.html:27
+#: templates/includes/shell_desk.html:28
 #: templates/manage/_facility_tabs.html:4
 #: templates/manage/_wizard_steps.html:3 templates/manage/booking.html:10
 msgid "Datos"
@@ -2686,7 +2713,7 @@ msgid "Reserva e pagamento"
 msgstr "Reserva y pago"
 
 #: apps/facilities/manage.py:112 apps/incidents/models.py:35
-#: templates/facilities/detail.html:37
+#: templates/facilities/detail.html:38
 msgid "Seguridade"
 msgstr "Seguridad"
 
@@ -2778,6 +2805,7 @@ msgid "parroquias"
 msgstr "parroquias"
 
 #: apps/facilities/models.py:33 apps/incidents/models.py:36
+#: apps/maintenance/models.py:56
 msgid "Outra"
 msgstr "Otra"
 
@@ -2785,7 +2813,7 @@ msgstr "Otra"
 msgid "Reserva directa"
 msgstr "Reserva directa"
 
-#: apps/facilities/models.py:38 templates/facilities/detail.html:58
+#: apps/facilities/models.py:38 templates/facilities/detail.html:60
 msgid "Con aprobación do concello"
 msgstr "Con aprobación del ayuntamiento"
 
@@ -2806,7 +2834,7 @@ msgid "Pechadura conectada"
 msgstr "Cerradura conectada"
 
 #: apps/facilities/models.py:54 apps/incidents/models.py:52
-#: apps/tenants/models.py:62
+#: apps/maintenance/models.py:65 apps/tenants/models.py:62
 msgid "tipo"
 msgstr "tipo"
 
@@ -2823,6 +2851,7 @@ msgid "lonxitude"
 msgstr "longitud"
 
 #: apps/facilities/models.py:66 apps/incidents/models.py:55
+#: apps/maintenance/models.py:281 templates/manage/cleaning.html:45
 msgid "foto"
 msgstr "foto"
 
@@ -2959,7 +2988,7 @@ msgid "Texto breve: que facer mentres chega a axuda."
 msgstr "Texto breve: qué hacer mientras llega la ayuda."
 
 #: apps/facilities/models.py:133 templates/access/poster.html:13
-#: templates/facilities/detail.html:41
+#: templates/facilities/detail.html:42
 msgid "DEA máis próximo"
 msgstr "DEA más próximo"
 
@@ -2971,139 +3000,139 @@ msgstr "Dónde está el desfibrilador más próximo."
 msgid "instalacións"
 msgstr "instalaciones"
 
-#: apps/facilities/models.py:222
+#: apps/facilities/models.py:230
 msgid "Luns"
 msgstr "Lunes"
 
-#: apps/facilities/models.py:223
+#: apps/facilities/models.py:231
 msgid "Martes"
 msgstr "Martes"
 
-#: apps/facilities/models.py:224
+#: apps/facilities/models.py:232
 msgid "Mércores"
 msgstr "Miércoles"
 
-#: apps/facilities/models.py:225
+#: apps/facilities/models.py:233
 msgid "Xoves"
 msgstr "Jueves"
 
-#: apps/facilities/models.py:226
+#: apps/facilities/models.py:234
 msgid "Venres"
 msgstr "Viernes"
 
-#: apps/facilities/models.py:227
+#: apps/facilities/models.py:235
 msgid "Sábado"
 msgstr "Sábado"
 
-#: apps/facilities/models.py:228
+#: apps/facilities/models.py:236
 msgid "Domingo"
 msgstr "Domingo"
 
-#: apps/facilities/models.py:235
+#: apps/facilities/models.py:243
 msgid "día"
 msgstr "día"
 
-#: apps/facilities/models.py:236
+#: apps/facilities/models.py:244
 msgid "abre"
 msgstr "abre"
 
-#: apps/facilities/models.py:237
+#: apps/facilities/models.py:245
 msgid "pecha"
 msgstr "cierra"
 
-#: apps/facilities/models.py:238
+#: apps/facilities/models.py:246
 msgid "inicio de tempada"
 msgstr "inicio de temporada"
 
-#: apps/facilities/models.py:239
+#: apps/facilities/models.py:247
 msgid "fin de tempada"
 msgstr "fin de temporada"
 
-#: apps/facilities/models.py:242
+#: apps/facilities/models.py:250
 msgid "horario"
 msgstr "horario"
 
-#: apps/facilities/models.py:243
+#: apps/facilities/models.py:251
 msgid "horarios"
 msgstr "horarios"
 
-#: apps/facilities/models.py:256
+#: apps/facilities/models.py:264
 msgid "Festivo"
 msgstr "Festivo"
 
-#: apps/facilities/models.py:257
+#: apps/facilities/models.py:265
 msgid "Evento"
 msgstr "Evento"
 
-#: apps/facilities/models.py:258
+#: apps/facilities/models.py:266
 msgid "Obras"
 msgstr "Obras"
 
-#: apps/facilities/models.py:259 templates/manage/closures.html:20
+#: apps/facilities/models.py:267 templates/manage/closures.html:20
 msgid "Alerta meteorolóxica"
 msgstr "Alerta meteorológica"
 
-#: apps/facilities/models.py:260
+#: apps/facilities/models.py:268
 msgid "Outro"
 msgstr "Otro"
 
-#: apps/facilities/models.py:272 apps/notifications/models.py:125
+#: apps/facilities/models.py:280 apps/notifications/models.py:125
 msgid "desde"
 msgstr "desde"
 
-#: apps/facilities/models.py:273 apps/notifications/models.py:126
+#: apps/facilities/models.py:281 apps/notifications/models.py:126
 msgid "ata"
 msgstr "hasta"
 
-#: apps/facilities/models.py:277
+#: apps/facilities/models.py:285
 msgid "peche ou bloqueo"
 msgstr "cierre o bloqueo"
 
-#: apps/facilities/models.py:278
+#: apps/facilities/models.py:286
 msgid "peches e bloqueos"
 msgstr "cierres y bloqueos"
 
-#: apps/facilities/models.py:287
+#: apps/facilities/models.py:295
 msgid "Persoas empadroadas"
 msgstr "Personas empadronadas"
 
-#: apps/facilities/models.py:288
+#: apps/facilities/models.py:296
 msgid "Persoas non empadroadas"
 msgstr "Personas no empadronadas"
 
-#: apps/facilities/models.py:289
+#: apps/facilities/models.py:297
 msgid "Mocidade (ata 25 anos, empadroada)"
 msgstr "Juventud (hasta 25 años, empadronada)"
 
-#: apps/facilities/models.py:290
+#: apps/facilities/models.py:298
 msgid "Maiores de 65 (empadroadas)"
 msgstr "Mayores de 65 (empadronadas)"
 
-#: apps/facilities/models.py:291
+#: apps/facilities/models.py:299
 msgid "Colectivos con tarifa reducida (validado polo concello)"
 msgstr "Colectivos con tarifa reducida (validado por el ayuntamiento)"
 
-#: apps/facilities/models.py:295
+#: apps/facilities/models.py:303
 msgid "prezo por franxa (céntimos)"
 msgstr "precio por franja (céntimos)"
 
-#: apps/facilities/models.py:298
+#: apps/facilities/models.py:306
 msgid "tarifa"
 msgstr "tarifa"
 
-#: apps/facilities/models.py:299
+#: apps/facilities/models.py:307
 msgid "tarifas"
 msgstr "tarifas"
 
-#: apps/facilities/models.py:308
+#: apps/facilities/models.py:316
 msgid "normas"
 msgstr "normas"
 
-#: apps/facilities/models.py:315
+#: apps/facilities/models.py:323
 msgid "versión das normas"
 msgstr "versión de las normas"
 
-#: apps/facilities/models.py:316
+#: apps/facilities/models.py:324
 msgid "versións das normas"
 msgstr "versiones de las normas"
 
@@ -3216,7 +3245,7 @@ msgid "Pega aquí o QR da instalación."
 msgstr "Pega aquí el QR de la instalación."
 
 #: apps/facilities/poster.py:242 templates/access/poster.html:10
-#: templates/facilities/detail.html:81
+#: templates/facilities/detail.html:83
 msgid "Normas de uso"
 msgstr "Normas de uso"
 
@@ -3225,7 +3254,7 @@ msgid "Consulta as normas na web do concello."
 msgstr "Consulta las normas en la web del ayuntamiento."
 
 #: apps/facilities/poster.py:256 templates/access/poster.html:11
-#: templates/facilities/detail.html:39
+#: templates/facilities/detail.html:40
 msgid "En caso de accidente"
 msgstr "En caso de accidente"
 
@@ -3298,7 +3327,7 @@ msgstr "Acceso sin escalones"
 msgid "Con iluminación"
 msgstr "Con iluminación"
 
-#: apps/facilities/views.py:23 templates/facilities/detail.html:59
+#: apps/facilities/views.py:23 templates/facilities/detail.html:61
 #: templates/facilities/home.html:72
 msgid "Cuberta"
 msgstr "Cubierta"
@@ -3310,9 +3339,10 @@ msgstr "Cubierta"
 msgid "Todos"
 msgstr "Todos"
 
-#: apps/facilities/views.py:28 templates/activities/observatory.html:16
-#: templates/manage/closures.html:11 templates/manage/payments.html:11
-#: templates/manage/ratings.html:16 templates/manage/vouchers.html:11
+#: apps/facilities/views.py:28 apps/maintenance/cleaning_views.py:118
+#: templates/activities/observatory.html:16 templates/manage/closures.html:11
+#: templates/manage/payments.html:11 templates/manage/ratings.html:16
+#: templates/manage/vouchers.html:11
 msgid "Todas"
 msgstr "Todas"
 
@@ -3320,37 +3350,38 @@ msgstr "Todas"
 msgid "Título da orde"
 msgstr "Título de la orden"
 
-#: apps/incidents/manage.py:21 apps/maintenance/views.py:165
+#: apps/incidents/manage.py:21 apps/maintenance/views.py:194
 msgid "Asignar a"
 msgstr "Asignar a"
 
-#: apps/incidents/manage.py:24 apps/maintenance/views.py:168
+#: apps/incidents/manage.py:24 apps/maintenance/views.py:197
 msgid "Data prevista"
 msgstr "Fecha prevista"
 
-#: apps/incidents/manage.py:33 apps/maintenance/views.py:179
+#: apps/incidents/manage.py:34 apps/maintenance/views.py:209
 #: templates/manage/work_orders.html:13
 msgid "Sen asignar"
 msgstr "Sin asignar"
 
-#: apps/incidents/manage.py:78 apps/incidents/services.py:95
+#: apps/incidents/manage.py:79 apps/incidents/services.py:133
+#: apps/maintenance/cleaning.py:375
 #, python-format
 msgid "Incidencia #%(n)s: %(c)s"
 msgstr "Incidencia #%(n)s: %(c)s"
 
-#: apps/incidents/manage.py:87
+#: apps/incidents/manage.py:88
 msgid "Incidencia validada. Avisamos a quen informou."
 msgstr "Incidencia validada. Avisamos a quien la comunicó."
 
-#: apps/incidents/manage.py:90
+#: apps/incidents/manage.py:91
 msgid "Incidencia descartada."
 msgstr "Incidencia descartada."
 
-#: apps/incidents/manage.py:93
+#: apps/incidents/manage.py:94
 msgid "Incidencia resolta. Avisamos a quen informou."
 msgstr "Incidencia resuelta. Avisamos a quien la comunicó."
 
-#: apps/incidents/manage.py:102
+#: apps/incidents/manage.py:103
 #, python-format
 msgid "Creada a orde de traballo #%(n)s."
 msgstr "Creada la orden de trabajo #%(n)s."
@@ -3397,11 +3428,17 @@ msgstr "Alta"
 msgid "Desperfecto"
 msgstr "Desperfecto"
 
-#: apps/incidents/models.py:31
+#: apps/incidents/models.py:31 apps/maintenance/models.py:43
+#: apps/maintenance/models.py:204 apps/tenants/help.py:226
+#: templates/includes/brand.html:3 templates/includes/shell_desk.html:22
+#: templates/maintenance/cleaning_zone.html:2
+#: templates/maintenance/cleaning_zone_public.html:2
+#: templates/maintenance/my_orders.html:30 templates/manage/cleaning.html:2
+#: templates/manage/cleaning.html:4 templates/manage/cleaning_qr.html:4
 msgid "Limpeza"
 msgstr "Limpieza"
 
-#: apps/incidents/models.py:32 templates/facilities/detail.html:56
+#: apps/incidents/models.py:32 templates/facilities/detail.html:58
 msgid "Iluminación"
 msgstr "Iluminación"
 
@@ -3441,57 +3478,62 @@ msgstr "incidencia"
 msgid "incidencias"
 msgstr "incidencias"
 
-#: apps/incidents/services.py:31
+#: apps/incidents/services.py:35
 #, python-format
 msgid "RISCO: %(f)s"
 msgstr "RIESGO: %(f)s"
 
-#: apps/incidents/services.py:43
+#: apps/incidents/services.py:47
 #, python-format
 msgid "Nova incidencia: %(f)s"
 msgstr "Nueva incidencia: %(f)s"
 
-#: apps/incidents/services.py:72
+#: apps/incidents/services.py:59
+#, python-format
+msgid "Nova avaría: %(f)s"
+msgstr "Nueva avería: %(f)s"
+
+#: apps/incidents/services.py:87
 msgid "Recibimos o teu aviso e xa o revisamos"
 msgstr "Hemos recibido tu aviso y ya lo estamos revisando"
 
-#: apps/incidents/services.py:73
+#: apps/incidents/services.py:88
 #, python-format
 msgid "Incidencia #%(n)s en %(f)s."
 msgstr "Incidencia #%(n)s en %(f)s."
 
-#: apps/incidents/services.py:82
+#: apps/incidents/services.py:97
 #, python-format
 msgid "Pechamos o teu aviso #%(n)s"
 msgstr "Hemos cerrado tu aviso #%(n)s"
 
-#: apps/incidents/services.py:100
+#: apps/incidents/services.py:138
 msgid "Revisar e reparar"
 msgstr "Revisar y reparar"
 
-#: apps/incidents/services.py:101
+#: apps/incidents/services.py:139
 msgid "Deixar a zona segura e limpa"
 msgstr "Dejar la zona segura y limpia"
 
-#: apps/incidents/services.py:112 apps/maintenance/views.py:226
+#: apps/incidents/services.py:150 apps/maintenance/views.py:256
 #, python-format
 msgid "Nova orde de traballo: %(t)s"
 msgstr "Nueva orden de trabajo: %(t)s"
 
-#: apps/incidents/services.py:119
+#: apps/incidents/services.py:157
 msgid "O teu aviso xa ten unha orde de traballo"
 msgstr "Tu aviso ya tiene una orden de trabajo"
 
-#: apps/incidents/services.py:120
+#: apps/incidents/services.py:158
 #, python-format
 msgid "O equipo de mantemento vai revisar %(f)s."
 msgstr "El equipo de mantenimiento va a revisar %(f)s."
 
-#: apps/incidents/services.py:134
+#: apps/incidents/services.py:172
 msgid "Arranxado! Grazas polo teu aviso"
 msgstr "¡Arreglado! Gracias por tu aviso"
 
-#: apps/incidents/services.py:135
+#: apps/incidents/services.py:173
 #, python-format
 msgid "A incidencia #%(n)s en %(f)s está resolta."
 msgstr "La incidencia #%(n)s en %(f)s está resuelta."
@@ -3575,12 +3617,12 @@ msgstr ""
 "14.250 habitantes, piscina y pabellones con cerradura conectada y muchas más"
 " reservas. En la demo no tiene escuelas."
 
-#: apps/integrations/demo.py:39 apps/integrations/demo.py:112
+#: apps/integrations/demo.py:39 apps/integrations/demo.py:126
 msgid "Persoa usuaria"
 msgstr "Persona usuaria"
 
 #: apps/integrations/demo.py:40 apps/integrations/demo.py:61
-#: apps/integrations/demo.py:113 apps/tenants/views.py:245
+#: apps/integrations/demo.py:127 apps/tenants/views.py:245
 msgid "App da veciñanza"
 msgstr "App del vecindario"
 
@@ -3627,11 +3669,12 @@ msgstr ""
 "Acaba de darse de alta: sin reservas, avisos ni inscripciones (estados "
 "vacíos)."
 
-#: apps/integrations/demo.py:82 apps/integrations/demo.py:122
+#: apps/integrations/demo.py:82 apps/integrations/demo.py:136
+#: templates/manage/cleaning.html:60
 msgid "Persoal do concello"
 msgstr "Personal del ayuntamiento"
 
-#: apps/integrations/demo.py:83 apps/integrations/demo.py:123
+#: apps/integrations/demo.py:83 apps/integrations/demo.py:137
 msgid "Panel do concello (escritorio)"
 msgstr "Panel del ayuntamiento (escritorio)"
 
@@ -3640,11 +3683,11 @@ msgid "Abre no panel do día: reservas de hoxe, incidencias, cobros e axenda."
 msgstr ""
 "Abre en el panel del día: reservas de hoy, incidencias, cobros y agenda."
 
-#: apps/integrations/demo.py:92 apps/integrations/demo.py:132
+#: apps/integrations/demo.py:92 apps/integrations/demo.py:146
 msgid "Persoal de mantemento"
 msgstr "Personal de mantenimiento"
 
-#: apps/integrations/demo.py:93 apps/integrations/demo.py:133
+#: apps/integrations/demo.py:93 apps/integrations/demo.py:147
 msgid "App do operario (móbil)"
 msgstr "App del operario (móvil)"
 
@@ -3653,37 +3696,53 @@ msgid "Abre nas súas ordes de traballo; funciona sen cobertura."
 msgstr "Abre en sus órdenes de trabajo; funciona sin cobertura."
 
 #: apps/integrations/demo.py:103
+msgid "Persoal de limpeza (empresa contratada)"
+msgstr "Personal de limpieza (empresa contratada)"
+
+#: apps/integrations/demo.py:104
+msgid "App de limpeza (móbil)"
+msgstr "App de limpieza (móvil)"
+
+#: apps/integrations/demo.py:106
+msgid ""
+"Abre nas súas tarefas e zonas. Escanea o QR de cada zona para rexistrar a "
+"limpeza; funciona sen cobertura. Os aseos do pavillón van atrasados."
+msgstr ""
+"Abre en sus tareas y zonas. Escanea el QR de cada zona para registrar la "
+"limpieza; funciona sin cobertura. Los aseos del pabellón van atrasados."
+
+#: apps/integrations/demo.py:117
 msgid "Tableta da monitora"
 msgstr "Tableta de la monitora"
 
-#: apps/integrations/demo.py:104
+#: apps/integrations/demo.py:118
 msgid ""
 "Abre nas sesións de hoxe; o rexistro de asistencia e esforzo vai na tableta."
 msgstr ""
 "Abre en las sesiones de hoy; el registro de asistencia y esfuerzo va en la "
 "tableta."
 
-#: apps/integrations/demo.py:114
+#: apps/integrations/demo.py:128
 msgid "Abre no inicio da app de Pontedouro (piscina e pavillóns)."
 msgstr "Abre en el inicio de la app de Pontedouro (piscina y pabellones)."
 
-#: apps/integrations/demo.py:124
+#: apps/integrations/demo.py:138
 msgid "Abre no panel do día dun concello con máis volume."
 msgstr "Abre en el panel del día de un ayuntamiento con más volumen."
 
-#: apps/integrations/demo.py:134
+#: apps/integrations/demo.py:148
 msgid "Abre nas súas ordes de traballo."
 msgstr "Abre en sus órdenes de trabajo."
 
-#: apps/integrations/demo.py:143
+#: apps/integrations/demo.py:157
 msgid "Persoal da deputación"
 msgstr "Personal de la diputación"
 
-#: apps/integrations/demo.py:144
+#: apps/integrations/demo.py:158
 msgid "Rede de concellos (escritorio)"
 msgstr "Red de ayuntamientos (escritorio)"
 
-#: apps/integrations/demo.py:145
+#: apps/integrations/demo.py:159
 msgid ""
 "Abre na comparativa dos dous concellos; pode consultar cada un en só "
 "lectura."
@@ -3786,89 +3845,420 @@ msgstr "Viento fuerte: cuidado con redes, porterías y objetos sueltos."
 msgid "Bo tempo para facer deporte. Hidrátate e disfruta."
 msgstr "Buen tiempo para hacer deporte. Hidrátate y disfruta."
 
-#: apps/maintenance/models.py:15
+#: apps/maintenance/cleaning.py:37
+msgid "Chan varrido e fregado"
+msgstr "Suelo barrido y fregado"
+
+#: apps/maintenance/cleaning.py:38
+msgid "Duchas e desaugadoiros limpos"
+msgstr "Duchas y desagües limpios"
+
+#: apps/maintenance/cleaning.py:39
+msgid "Bancos e colgadoiros limpos"
+msgstr "Bancos y colgadores limpios"
+
+#: apps/maintenance/cleaning.py:40 apps/maintenance/cleaning.py:46
+#: apps/maintenance/cleaning.py:51 apps/maintenance/cleaning.py:56
+#: apps/maintenance/cleaning.py:69
+msgid "Papeleiras baleiradas"
+msgstr "Papeleras vaciadas"
+
+#: apps/maintenance/cleaning.py:43
+msgid "Inodoros e lavabos desinfectados"
+msgstr "Inodoros y lavabos desinfectados"
+
+#: apps/maintenance/cleaning.py:44
+msgid "Papel, xabón e secamáns repostos"
+msgstr "Papel, jabón y secamanos repuestos"
+
+#: apps/maintenance/cleaning.py:45
+msgid "Chan fregado"
+msgstr "Suelo fregado"
+
+#: apps/maintenance/cleaning.py:49
+msgid "Pista varrida ou mopeada"
+msgstr "Pista barrida o mopeada"
+
+#: apps/maintenance/cleaning.py:50
+msgid "Sen lixo nin obxectos esquecidos"
+msgstr "Sin basura ni objetos olvidados"
+
+#: apps/maintenance/cleaning.py:54
+msgid "Bancadas varridas"
+msgstr "Gradas barridas"
+
+#: apps/maintenance/cleaning.py:55
+msgid "Varandas limpas"
+msgstr "Barandillas limpias"
+
+#: apps/maintenance/cleaning.py:59
+msgid "Material recollido e ordenado"
+msgstr "Material recogido y ordenado"
+
+#: apps/maintenance/cleaning.py:60
+msgid "Chan varrido"
+msgstr "Suelo barrido"
+
+#: apps/maintenance/cleaning.py:63
+msgid "Praia do vaso fregada e desinfectada"
+msgstr "Playa del vaso fregada y desinfectada"
+
+#: apps/maintenance/cleaning.py:64
+msgid "Escumadoiras sen restos"
+msgstr "Rebosaderos sin restos"
+
+#: apps/maintenance/cleaning.py:65
+msgid "Duchas exteriores limpas"
+msgstr "Duchas exteriores limpias"
+
+#: apps/maintenance/cleaning.py:68
+msgid "Zona limpa e recollida"
+msgstr "Zona limpia y recogida"
+
+#: apps/maintenance/cleaning.py:78
+msgid "Pista central"
+msgstr "Pista central"
+
+#: apps/maintenance/cleaning.py:79
+msgid "Vestiario 1"
+msgstr "Vestuario 1"
+
+#: apps/maintenance/cleaning.py:80
+msgid "Vestiario 2"
+msgstr "Vestuario 2"
+
+#: apps/maintenance/cleaning.py:81 apps/maintenance/cleaning.py:88
+#: apps/maintenance/models.py:51
+msgid "Aseos"
+msgstr "Aseos"
+
+#: apps/maintenance/cleaning.py:82 apps/maintenance/models.py:53
+msgid "Bancadas"
+msgstr "Gradas"
+
+#: apps/maintenance/cleaning.py:83
+msgid "Almacén de material"
+msgstr "Almacén de material"
+
+#: apps/maintenance/cleaning.py:86
+msgid "Vaso e praia"
+msgstr "Vaso y playa"
+
+#: apps/maintenance/cleaning.py:87 apps/maintenance/cleaning.py:92
+#: apps/maintenance/cleaning.py:95 apps/maintenance/models.py:50
+msgid "Vestiarios"
+msgstr "Vestuarios"
+
+#: apps/maintenance/cleaning.py:91
+msgid "Sala de máquinas"
+msgstr "Sala de máquinas"
+
+#: apps/maintenance/cleaning.py:96
+msgid "Bancada"
+msgstr "Grada"
+
+#: apps/maintenance/cleaning.py:99 apps/maintenance/models.py:52
+msgid "Pista"
+msgstr "Pista"
+
+#: apps/maintenance/cleaning.py:102
+msgid "Pista e arredores"
+msgstr "Pista y alrededores"
+
+#: apps/maintenance/cleaning.py:143
+msgid "Plan de limpeza"
+msgstr "Plan de limpieza"
+
+#: apps/maintenance/cleaning.py:160
+#, python-format
+msgid "Limpeza: %(z)s"
+msgstr "Limpieza: %(z)s"
+
+#: apps/maintenance/cleaning.py:292
+#, python-format
+msgid "Limpeza atrasada: %(z)s"
+msgstr "Limpieza atrasada: %(z)s"
+
+#: apps/maintenance/cleaning.py:294
+#, python-format
+msgid "Leva máis de %(h)s horas sen limpar (última: %(d)s)."
+msgstr "Lleva más de %(h)s horas sin limpiar (última: %(d)s)."
+
+#: apps/maintenance/cleaning.py:300
+msgid "Non hai ningunha limpeza rexistrada."
+msgstr "No hay ninguna limpieza registrada."
+
+#: apps/maintenance/cleaning.py:344
+msgid "Limpar a zona indicada"
+msgstr "Limpiar la zona indicada"
+
+#: apps/maintenance/cleaning.py:345
+msgid "Comprobar que queda en bo estado"
+msgstr "Comprobar que queda en buen estado"
+
+#: apps/maintenance/cleaning.py:351
+#, python-format
+msgid "Nova tarefa de limpeza: %(f)s"
+msgstr "Nueva tarea de limpieza: %(f)s"
+
+#: apps/maintenance/cleaning.py:426
+msgid "non"
+msgstr "no"
+
+#: apps/maintenance/cleaning.py:438 apps/maintenance/cleaning.py:466
+#: templates/manage/cleaning_qr.html:8
+msgid "Rexistro de limpeza"
+msgstr "Registro de limpieza"
+
+#: apps/maintenance/cleaning.py:441 templates/bookings/vouchers.html:15
+msgid "todas as instalacións"
+msgstr "todas las instalaciones"
+
+#: apps/maintenance/cleaning.py:446
+#, python-format
+msgid "Período: %(a)s – %(b)s · %(n)s rexistros"
+msgstr "Período: %(a)s – %(b)s · %(n)s registros"
+
+#: apps/maintenance/cleaning.py:457
+msgid "sen tarefas marcadas"
+msgstr "sin tareas marcadas"
+
+#: apps/maintenance/cleaning.py:459
+#, python-format
+msgid "pendente: %(p)s"
+msgstr "pendiente: %(p)s"
+
+#: apps/maintenance/cleaning.py:465
+msgid "Non hai rexistros neste período."
+msgstr "No hay registros en este período."
+
+#: apps/maintenance/cleaning_views.py:28
+#: templates/maintenance/cleaning_zone.html:16
+msgid "Observacións (opcional)"
+msgstr "Observaciones (opcional)"
+
+#: apps/maintenance/cleaning_views.py:77
+msgid "Limpeza rexistrada. Grazas!"
+msgstr "Limpieza registrada. ¡Gracias!"
+
+#: apps/maintenance/cleaning_views.py:103
+#: templates/analytics/dashboard.html:22 templates/analytics/dashboard.html:30
+#: templates/bookings/confirm.html:10 templates/bookings/mine.html:54
+#: templates/bookings/receipt.html:10 templates/manage/_facility_tabs.html:1
+#: templates/manage/agenda.html:9 templates/manage/cleaning.html:67
+#: templates/manage/closures.html:10 templates/manage/dashboard.html:18
+#: templates/manage/incidents.html:8 templates/manage/on_behalf.html:6
+#: templates/manage/payments.html:11 templates/manage/ratings.html:15
+#: templates/manage/ratings.html:32 templates/manage/vouchers.html:10
+#: templates/manage/work_orders.html:9
+msgid "Instalación"
+msgstr "Instalación"
+
+#: apps/maintenance/cleaning_views.py:106 templates/manage/closures.html:10
+#: templates/manage/payments.html:7
+msgid "Desde"
+msgstr "Desde"
+
+#: apps/maintenance/cleaning_views.py:108 templates/manage/closures.html:10
+#: templates/manage/payments.html:8
+msgid "Ata"
+msgstr "Hasta"
+
+#: apps/maintenance/cleaning_views.py:110
+msgid "Formato"
+msgstr "Formato"
+
+#: apps/maintenance/cleaning_views.py:123
+msgid "A data de inicio ten que ser anterior á de fin."
+msgstr "La fecha de inicio tiene que ser anterior a la de fin."
+
+#: apps/maintenance/cleaning_views.py:125
+msgid "Exporta como moito un ano de cada vez."
+msgstr "Exporta como mucho un año cada vez."
+
+#: apps/maintenance/cleaning_views.py:142
+msgid "Zona creada. Imprime o seu QR e pégao na parede."
+msgstr "Zona creada. Imprime su QR y pégalo en la pared."
+
+#: apps/maintenance/cleaning_views.py:149
+#, python-format
+msgid "Aplicado o modelo de limpeza a %(f)s: %(n)s zonas novas."
+msgstr "Aplicado el modelo de limpieza a %(f)s: %(n)s zonas nuevas."
+
+#: apps/maintenance/cleaning_views.py:157
+msgid "Zona actualizada."
+msgstr "Zona actualizada."
+
+#: apps/maintenance/cleaning_views.py:203 templates/core/error.html:5
+msgid "Erro"
+msgstr "Error"
+
+#: apps/maintenance/models.py:19
+msgid "Varias veces ao día"
+msgstr "Varias veces al día"
+
+#: apps/maintenance/models.py:20
 msgid "Diaria"
 msgstr "Diaria"
 
-#: apps/maintenance/models.py:16
+#: apps/maintenance/models.py:21
 msgid "Semanal"
 msgstr "Semanal"
 
-#: apps/maintenance/models.py:17
+#: apps/maintenance/models.py:22
 msgid "Mensual"
 msgstr "Mensual"
 
-#: apps/maintenance/models.py:18
+#: apps/maintenance/models.py:23
 msgid "Anual"
 msgstr "Anual"
 
-#: apps/maintenance/models.py:29
+#: apps/maintenance/models.py:34
 msgid "plan de mantemento"
 msgstr "plan de mantenimiento"
 
-#: apps/maintenance/models.py:30
+#: apps/maintenance/models.py:35
 msgid "plans de mantemento"
 msgstr "planes de mantenimiento"
 
-#: apps/maintenance/models.py:38
+#: apps/maintenance/models.py:54
+msgid "Almacén"
+msgstr "Almacén"
+
+#: apps/maintenance/models.py:55
+msgid "Vaso e praia da piscina"
+msgstr "Vaso y playa de la piscina"
+
+#: apps/maintenance/models.py:67
+msgid "tempo máximo sen limpar (horas)"
+msgstr "tiempo máximo sin limpiar (horas)"
+
+#: apps/maintenance/models.py:69
+msgid "Se pasa máis tempo sen rexistrar unha limpeza, avísase ao concello."
+msgstr ""
+"Si pasa más tiempo sin registrar una limpieza, se avisa al ayuntamiento."
+
+#: apps/maintenance/models.py:72
+msgid "activa"
+msgstr "activa"
+
+#: apps/maintenance/models.py:77
+msgid "zona de limpeza"
+msgstr "zona de limpieza"
+
+#: apps/maintenance/models.py:78
+msgid "zonas de limpeza"
+msgstr "zonas de limpieza"
+
+#: apps/maintenance/models.py:108
 msgid "tarefa"
 msgstr "tarea"
 
-#: apps/maintenance/models.py:39
+#: apps/maintenance/models.py:109
 msgid "frecuencia"
 msgstr "frecuencia"
 
-#: apps/maintenance/models.py:40
+#: apps/maintenance/models.py:110
 msgid "checklist (unha liña por punto)"
 msgstr "checklist (una línea por punto)"
 
-#: apps/maintenance/models.py:41
+#: apps/maintenance/models.py:111
 msgid "data de inicio"
 msgstr "fecha de inicio"
 
-#: apps/maintenance/models.py:45
+#: apps/maintenance/models.py:115
+msgid "tipo de tarefa"
+msgstr "tipo de tarea"
+
+#: apps/maintenance/models.py:119 apps/maintenance/models.py:211
+#: apps/maintenance/models.py:267
+msgid "zona"
+msgstr "zona"
+
+#: apps/maintenance/models.py:126
+msgid "veces ao día"
+msgstr "veces al día"
+
+#: apps/maintenance/models.py:126
+msgid "Só para «Varias veces ao día»."
+msgstr "Solo para «Varias veces al día»."
+
+#: apps/maintenance/models.py:130
 msgid "tarefa periódica"
 msgstr "tarea periódica"
 
-#: apps/maintenance/models.py:46
+#: apps/maintenance/models.py:131
 msgid "tarefas periódicas"
 msgstr "tareas periódicas"
 
-#: apps/maintenance/models.py:69
+#: apps/maintenance/models.py:157
+#, python-format
+msgid "%(n)s veces ao día"
+msgstr "%(n)s veces al día"
+
+#: apps/maintenance/models.py:164
 msgid "En curso"
 msgstr "En curso"
 
-#: apps/maintenance/models.py:88 apps/notifications/models.py:98
+#: apps/maintenance/models.py:183 apps/notifications/models.py:98
 msgid "título"
 msgstr "título"
 
-#: apps/maintenance/models.py:90
+#: apps/maintenance/models.py:185
 msgid "data prevista"
 msgstr "fecha prevista"
 
-#: apps/maintenance/models.py:96
+#: apps/maintenance/models.py:191
 msgid "asignada a"
 msgstr "asignada a"
 
-#: apps/maintenance/models.py:107
+#: apps/maintenance/models.py:202
 msgid "Ordinaria"
 msgstr "Ordinaria"
 
-#: apps/maintenance/models.py:108 templates/manage/_facility_tabs.html:11
+#: apps/maintenance/models.py:203 templates/manage/_facility_tabs.html:11
 msgid "Revisión de seguridade inicial"
 msgstr "Revisión de seguridad inicial"
 
-#: apps/maintenance/models.py:112
+#: apps/maintenance/models.py:218
 msgid "notas de peche"
 msgstr "notas de cierre"
 
-#: apps/maintenance/models.py:117
+#: apps/maintenance/models.py:223
 msgid "orde de traballo"
 msgstr "orden de trabajo"
 
-#: apps/maintenance/models.py:118
+#: apps/maintenance/models.py:224
 msgid "ordes de traballo"
 msgstr "órdenes de trabajo"
+
+#: apps/maintenance/models.py:256
+msgid "QR da zona"
+msgstr "QR de la zona"
+
+#: apps/maintenance/models.py:257
+msgid "Orde de limpeza"
+msgstr "Orden de limpieza"
+
+#: apps/maintenance/models.py:276
+msgid "persoa"
+msgstr "persona"
+
+#: apps/maintenance/models.py:278
+msgid "data e hora"
+msgstr "fecha y hora"
+
+#: apps/maintenance/models.py:280
+msgid "observacións"
+msgstr "observaciones"
+
+#: apps/maintenance/models.py:289
+msgid "rexistro de limpeza"
+msgstr "registro de limpieza"
+
+#: apps/maintenance/models.py:290
+msgid "rexistros de limpeza"
+msgstr "registros de limpieza"
 
 #: apps/maintenance/safety.py:16
 msgid "Revisión de seguridade inicial Eira"
@@ -3936,37 +4326,37 @@ msgstr ""
 " en cada punto lo que falte y crea una orden para corregirlo. Al cerrar esta"
 " orden, la ficha mostrará «Revisada el ‹fecha›»."
 
-#: apps/maintenance/views.py:58 templates/maintenance/order.html:20
+#: apps/maintenance/views.py:82 templates/maintenance/order.html:20
 #: templates/manage/work_order.html:10
 msgid "Notas de peche"
 msgstr "Notas de cierre"
 
-#: apps/maintenance/views.py:63
+#: apps/maintenance/views.py:87
 msgid "Foto do traballo feito"
 msgstr "Foto del trabajo realizado"
 
-#: apps/maintenance/views.py:84
+#: apps/maintenance/views.py:108
 msgid "Esta orde xa estaba pechada."
 msgstr "Esta orden ya estaba cerrada."
 
-#: apps/maintenance/views.py:91
+#: apps/maintenance/views.py:115
 msgid "Checklist gardado."
 msgstr "Checklist guardado."
 
-#: apps/maintenance/views.py:103
+#: apps/maintenance/views.py:132
 msgid "Orde pechada. Bo traballo!"
 msgstr "Orden cerrada. ¡Buen trabajo!"
 
-#: apps/maintenance/views.py:231
+#: apps/maintenance/views.py:261
 msgid "Orde actualizada."
 msgstr "Orden actualizada."
 
-#: apps/maintenance/views.py:264
+#: apps/maintenance/views.py:294
 #, python-format
 msgid "Xeradas %(n)s ordes novas."
 msgstr "Generadas %(n)s órdenes nuevas."
 
-#: apps/maintenance/views.py:271
+#: apps/maintenance/views.py:301
 msgid "Tarefa engadida."
 msgstr "Tarea añadida."
 
@@ -4083,7 +4473,7 @@ msgstr "aviso"
 msgid "avisos"
 msgstr "avisos"
 
-#: apps/notifications/models.py:49 templates/includes/shell_desk.html:24
+#: apps/notifications/models.py:49 templates/includes/shell_desk.html:25
 #: templates/manage/closures.html:9
 msgid "Peches"
 msgstr "Cierres"
@@ -4338,8 +4728,9 @@ msgstr ""
 "uso. Se compra aquí con el TPV o en la oficina de deportes."
 
 #: apps/tenants/help.py:84 templates/app/home.html:50
-#: templates/facilities/detail.html:16 templates/incidents/new.html:2
+#: templates/facilities/detail.html:17 templates/incidents/new.html:2
 #: templates/incidents/new.html:8
+#: templates/maintenance/cleaning_zone_public.html:11
 msgid "Avisar dunha avaría"
 msgstr "Avisar de una avería"
 
@@ -4444,7 +4835,7 @@ msgstr ""
 " sin cobertura: se envía al recuperar la red."
 
 #: apps/tenants/help.py:136 templates/maintenance/_calendar_grid.html:1
-#: templates/maintenance/calendar.html:2 templates/manage/dashboard.html:64
+#: templates/maintenance/calendar.html:2 templates/manage/dashboard.html:69
 #: templates/manage/maintenance_calendar.html:2
 msgid "Calendario de mantemento"
 msgstr "Calendario de mantenimiento"
@@ -4554,7 +4945,7 @@ msgstr ""
 
 #: apps/tenants/help.py:189 templates/facilities/detail.html:4
 #: templates/facilities/home.html:2 templates/facilities/home.html:7
-#: templates/includes/shell_desk.html:23
+#: templates/includes/shell_desk.html:24
 #: templates/includes/shell_public.html:8
 #: templates/manage/agenda_calendar.html:11 templates/manage/facilities.html:2
 #: templates/manage/facilities.html:4 templates/region/dashboard.html:45
@@ -4593,7 +4984,7 @@ msgstr ""
 "Envía cierres, alertas o novedades por app, correo y Telegram, con vista "
 "previa."
 
-#: apps/tenants/help.py:204 templates/includes/shell_desk.html:35
+#: apps/tenants/help.py:204 templates/includes/shell_desk.html:36
 #: templates/manage/settings.html:2
 msgid "Configuración"
 msgstr "Configuración"
@@ -4606,8 +4997,8 @@ msgstr ""
 "Reglas de reserva, formas de pago, luz, ayuntamientos cercanos, pesos del "
 "índice de vida activa y módulos."
 
-#: apps/tenants/help.py:211 templates/includes/shell_desk.html:34
-#: templates/includes/shell_desk.html:42
+#: apps/tenants/help.py:211 templates/includes/shell_desk.html:35
+#: templates/includes/shell_desk.html:43
 #: templates/manage/breach_communication.html:4
 #: templates/manage/breach_edit.html:4 templates/manage/breaches.html:2
 msgid "Rexistro de brechas"
@@ -4621,12 +5012,35 @@ msgstr ""
 "Anota cualquier incidente con los datos personales. Si hay riesgo, notifica "
 "a la AEPD en 72 horas; si es alto, informa también a las personas afectadas."
 
-#: apps/tenants/help.py:218 templates/includes/brand.html:3
-#: templates/includes/shell_desk.html:46
+#: apps/tenants/help.py:219 apps/tenants/help.py:265
+msgid "Limpeza da zona"
+msgstr "Limpieza de la zona"
+
+#: apps/tenants/help.py:221
+msgid ""
+"Marca o que fixeches e toca «Rexistrar limpeza». Queda gardado quen, o día e"
+" a hora. Sen cobertura gárdase no móbil e envíase ao volver a rede."
+msgstr ""
+"Marca lo que has hecho y toca «Registrar limpieza». Queda guardado quién, el"
+" día y la hora. Sin cobertura se guarda en el móvil y se envía al volver la "
+"red."
+
+#: apps/tenants/help.py:228
+msgid ""
+"Zonas de cada instalación co seu QR, a última limpeza e as atrasadas. "
+"Exporta o rexistro dun período en CSV, ODS ou PDF para unha inspección ou "
+"para a empresa."
+msgstr ""
+"Zonas de cada instalación con su QR, la última limpieza y las atrasadas. "
+"Exporta el registro de un período en CSV, ODS o PDF para una inspección o "
+"para la empresa."
+
+#: apps/tenants/help.py:233 templates/includes/brand.html:3
+#: templates/includes/shell_desk.html:47
 msgid "Rede de concellos"
 msgstr "Red de ayuntamientos"
 
-#: apps/tenants/help.py:219
+#: apps/tenants/help.py:234
 msgid ""
 "Indicadores agregados e comparativa dos concellos da rede, co índice de vida"
 " activa."
@@ -4634,22 +5048,30 @@ msgstr ""
 "Indicadores agregados y comparativa de los ayuntamientos de la red, con el "
 "índice de vida activa."
 
-#: apps/tenants/help.py:224
+#: apps/tenants/help.py:239
 msgid ""
 "Usa as lapelas de abaixo para reservar, ver as túas reservas e a túa "
 "familia."
 msgstr ""
 "Usa las pestañas de abajo para reservar, ver tus reservas y tu familia."
 
-#: apps/tenants/help.py:225
+#: apps/tenants/help.py:240
 msgid "Aquí tes as túas ordes de traballo. Funciona tamén sen cobertura."
 msgstr "Aquí tienes tus órdenes de trabajo. Funciona también sin cobertura."
 
-#: apps/tenants/help.py:226
+#: apps/tenants/help.py:242
+msgid ""
+"Aquí tes as túas tarefas de limpeza e as zonas. Escanea o QR da parede de "
+"cada zona para marcar o feito. Funciona tamén sen cobertura."
+msgstr ""
+"Aquí tienes tus tareas de limpieza y las zonas. Escanea el QR de la pared de"
+" cada zona para marcar lo hecho. Funciona también sin cobertura."
+
+#: apps/tenants/help.py:245
 msgid "Escolle un grupo para pasar lista e recoller o esforzo."
 msgstr "Elige un grupo para pasar lista y recoger el esfuerzo."
 
-#: apps/tenants/help.py:228
+#: apps/tenants/help.py:247
 msgid ""
 "No modo básico tes o día a día. Activa o modo avanzado para ver todo o menú;"
 " os permisos son os mesmos."
@@ -4657,15 +5079,44 @@ msgstr ""
 "En el modo básico tienes el día a día. Activa el modo avanzado para ver todo"
 " el menú; los permisos son los mismos."
 
-#: apps/tenants/help.py:231
+#: apps/tenants/help.py:250
 msgid "Ves os concellos da túa rede con datos agregados."
 msgstr "Ves los ayuntamientos de tu red con datos agregados."
 
-#: apps/tenants/help.py:232
+#: apps/tenants/help.py:251
 msgid "Busca unha instalación e consulta as horas libres sen rexistrarte."
 msgstr "Busca una instalación y consulta las horas libres sin registrarte."
 
-#: apps/tenants/help.py:240 templates/includes/help_button.html:3
+#: apps/tenants/help.py:258
+msgid "As túas tarefas de limpeza"
+msgstr "Tus tareas de limpieza"
+
+#: apps/tenants/help.py:260
+msgid ""
+"Arriba, as zonas atrasadas. Escanea o QR da zona (ou tócaa) para marcar o "
+"feito; tamén podes abrir unha tarefa e pechala. Funciona sen cobertura."
+msgstr ""
+"Arriba, las zonas atrasadas. Escanea el QR de la zona (o tócala) para marcar"
+" lo hecho; también puedes abrir una tarea y cerrarla. Funciona sin "
+"cobertura."
+
+#: apps/tenants/help.py:267
+msgid ""
+"Aquí ves cando se limpou esta zona por última vez. Se algo está sucio ou "
+"estragado, avisa ao concello."
+msgstr ""
+"Aquí ves cuándo se limpió esta zona por última vez. Si algo está sucio o "
+"estropeado, avisa al ayuntamiento."
+
+#: apps/tenants/help.py:272
+msgid "Calendario de limpeza"
+msgstr "Calendario de limpieza"
+
+#: apps/tenants/help.py:273
+msgid "As limpezas programadas por día. Toca un día para ver as tarefas."
+msgstr "Las limpiezas programadas por día. Toca un día para ver las tareas."
+
+#: apps/tenants/help.py:287 templates/includes/help_button.html:3
 #: templates/includes/help_button.html:4
 msgid "Axuda"
 msgstr "Ayuda"
@@ -4763,54 +5214,65 @@ msgstr "Configuración guardada."
 msgid "Rol"
 msgstr "Rol"
 
-#: apps/tenants/manage.py:244
+#: apps/tenants/manage.py:242
+msgid "Empresa (opcional)"
+msgstr "Empresa (opcional)"
+
+#: apps/tenants/manage.py:246
+msgid ""
+"Só se a persoa traballa para unha empresa contratada (p. ex. a de limpeza)."
+msgstr ""
+"Solo si la persona trabaja para una empresa contratada (p. ej. la de "
+"limpieza)."
+
+#: apps/tenants/manage.py:253
 msgid "Colectivo"
 msgstr "Colectivo"
 
-#: apps/tenants/manage.py:246
+#: apps/tenants/manage.py:255
 msgid "Válido ata"
 msgstr "Válido hasta"
 
-#: apps/tenants/manage.py:279
+#: apps/tenants/manage.py:288
 #, python-format
 msgid "Tarifa reducida validada para %(e)s."
 msgstr "Tarifa reducida validada para %(e)s."
 
-#: apps/tenants/manage.py:287
+#: apps/tenants/manage.py:296
 msgid "Rol retirado."
 msgstr "Rol retirado."
 
-#: apps/tenants/manage.py:301
+#: apps/tenants/manage.py:313
 msgid "Rol asignado."
 msgstr "Rol asignado."
 
-#: apps/tenants/manage.py:340 templates/manage/staff.html:35
+#: apps/tenants/manage.py:352 templates/manage/staff.html:35
 msgid "Este concello non pertence a ningunha deputación."
 msgstr "Este ayuntamiento no pertenece a ninguna diputación."
 
-#: apps/tenants/manage.py:345
+#: apps/tenants/manage.py:357
 msgid "Indica o motivo do acceso de soporte."
 msgstr "Indica el motivo del acceso de soporte."
 
-#: apps/tenants/manage.py:359
+#: apps/tenants/manage.py:371
 #, python-format
 msgid "Acceso de soporte autorizado ata o %(d)s."
 msgstr "Acceso de soporte autorizado hasta el %(d)s."
 
-#: apps/tenants/manage.py:367
+#: apps/tenants/manage.py:379
 msgid "Acceso de soporte retirado."
 msgstr "Acceso de soporte retirado."
 
-#: apps/tenants/manage.py:376
+#: apps/tenants/manage.py:388
 #, python-format
 msgid "Código de empadroamento xerado: %(c)s"
 msgstr "Código de empadronamiento generado: %(c)s"
 
-#: apps/tenants/manage.py:394
+#: apps/tenants/manage.py:406
 msgid "Aviso laranxa por vento e chuvia (simulado)"
 msgstr "Aviso naranja por viento y lluvia (simulado)"
 
-#: apps/tenants/manage.py:401
+#: apps/tenants/manage.py:413
 #, python-format
 msgid ""
 "Alerta aplicada ás instalacións descubertas. %(n)s reservas canceladas e "
@@ -4831,7 +5293,7 @@ msgstr "Pago en la oficina"
 #: templates/activities/list.html:18 templates/bookings/_amount.html:1
 #: templates/bookings/_price.html:7 templates/bookings/_price.html:12
 #: templates/facilities/_week.html:41 templates/facilities/_week.html:45
-#: templates/facilities/detail.html:72
+#: templates/facilities/detail.html:74
 msgid "Gratuíta"
 msgstr "Gratuita"
 
@@ -5267,8 +5729,8 @@ msgid "Invitación"
 msgstr "Invitación"
 
 #: apps/tenants/region.py:422 templates/access/poster.html:14
-#: templates/bookings/detail.html:64 templates/facilities/detail.html:42
-#: templates/facilities/home.html:16 templates/includes/shell_desk.html:31
+#: templates/bookings/detail.html:64 templates/facilities/detail.html:43
+#: templates/facilities/home.html:16 templates/includes/shell_desk.html:32
 #: templates/region/dashboard.html:23 templates/region/dashboard.html:45
 #: templates/region/new_municipality.html:18
 msgid "Concello"
@@ -5300,6 +5762,16 @@ msgstr "%(r)s pide acceso de soporte durante 24 horas. Motivo: %(m)s"
 #, python-format
 msgid "Solicitude enviada a %(m)s. Avisarémoste cando a autorice."
 msgstr "Solicitud enviada a %(m)s. Te avisaremos cuando la autorice."
+
+#: apps/tenants/templatetags/eira.py:227
+#, python-format
+msgid "hoxe %(h)s"
+msgstr "hoy %(h)s"
+
+#: apps/tenants/templatetags/eira.py:229
+#, python-format
+msgid "onte %(h)s"
+msgstr "ayer %(h)s"
 
 #: apps/tenants/uploads.py:21
 #, python-format
@@ -5790,7 +6262,7 @@ msgid "Idades"
 msgstr "Edades"
 
 #: templates/activities/enroll.html:7 templates/bookings/_access.html:15
-#: templates/facilities/detail.html:76 templates/manage/_facility_tabs.html:5
+#: templates/facilities/detail.html:78 templates/manage/_facility_tabs.html:5
 #: templates/manage/facility_hours.html:2
 #: templates/manage/facility_new_step3.html:7
 msgid "Horario"
@@ -5857,7 +6329,7 @@ msgstr "Inscribe a personas adultas o a los menores de tu unidad familiar."
 msgid "As miñas inscricións"
 msgstr "Mis inscripciones"
 
-#: templates/activities/list.html:6 templates/includes/shell_desk.html:30
+#: templates/activities/list.html:6 templates/includes/shell_desk.html:31
 msgid "Observatorio"
 msgstr "Observatorio"
 
@@ -5920,12 +6392,13 @@ msgstr "Participante"
 
 #: templates/activities/manage_group.html:15 templates/bookings/mine.html:54
 #: templates/manage/agenda.html:9 templates/manage/booking.html:25
-#: templates/manage/breaches.html:10 templates/manage/dashboard.html:18
-#: templates/manage/facilities.html:7 templates/manage/incidents.html:5
-#: templates/manage/incidents.html:8 templates/manage/notice_detail.html:15
-#: templates/manage/notices.html:10 templates/manage/payments.html:9
-#: templates/manage/payments.html:31 templates/manage/vouchers.html:10
-#: templates/manage/work_orders.html:6 templates/manage/work_orders.html:9
+#: templates/manage/breaches.html:10 templates/manage/cleaning.html:21
+#: templates/manage/dashboard.html:18 templates/manage/facilities.html:7
+#: templates/manage/incidents.html:5 templates/manage/incidents.html:8
+#: templates/manage/notice_detail.html:15 templates/manage/notices.html:10
+#: templates/manage/payments.html:9 templates/manage/payments.html:31
+#: templates/manage/vouchers.html:10 templates/manage/work_orders.html:6
+#: templates/manage/work_orders.html:9
 msgid "Estado"
 msgstr "Estado"
 
@@ -6259,7 +6732,7 @@ msgstr ""
 " min/día para menores (configurable)."
 
 #: templates/analytics/dashboard.html:2 templates/analytics/dashboard.html:4
-#: templates/includes/shell_desk.html:28
+#: templates/includes/shell_desk.html:29
 msgid "Indicadores"
 msgstr "Indicadores"
 
@@ -6339,17 +6812,6 @@ msgstr "ocupación"
 #: templates/analytics/dashboard.html:19
 msgid "Ocupación por instalación (%)"
 msgstr "Ocupación por instalación (%)"
-
-#: templates/analytics/dashboard.html:22 templates/analytics/dashboard.html:30
-#: templates/bookings/confirm.html:10 templates/bookings/mine.html:54
-#: templates/bookings/receipt.html:10 templates/manage/_facility_tabs.html:1
-#: templates/manage/agenda.html:9 templates/manage/closures.html:10
-#: templates/manage/dashboard.html:18 templates/manage/incidents.html:8
-#: templates/manage/on_behalf.html:6 templates/manage/payments.html:11
-#: templates/manage/ratings.html:15 templates/manage/ratings.html:32
-#: templates/manage/vouchers.html:10 templates/manage/work_orders.html:9
-msgid "Instalación"
-msgstr "Instalación"
 
 #: templates/analytics/dashboard.html:22
 msgid "Ofertadas"
@@ -6532,7 +6994,7 @@ msgstr "Atajos"
 msgid "Reservar"
 msgstr "Reservar"
 
-#: templates/app/home.html:49 templates/includes/shell_desk.html:26
+#: templates/app/home.html:49 templates/includes/shell_desk.html:27
 msgid "Escolas"
 msgstr "Escuelas"
 
@@ -7036,7 +7498,7 @@ msgstr "Entrada registrada a las %(t)s"
 msgid "Quen ten a chave"
 msgstr "Quién tiene la llave"
 
-#: templates/bookings/_access.html:14
+#: templates/bookings/_access.html:14 templates/manage/cleaning.html:40
 msgid "Onde"
 msgstr "Dónde"
 
@@ -7412,7 +7874,7 @@ msgstr "Revisa y confirma"
 
 #: templates/bookings/confirm.html:11 templates/facilities/_week.html:11
 #: templates/includes/theme_toggle.html:6
-#: templates/maintenance/my_orders.html:7
+#: templates/maintenance/my_orders.html:20
 #: templates/manage/facility_hours.html:11
 #: templates/manage/facility_hours.html:14
 msgid "Día"
@@ -7471,7 +7933,7 @@ msgid "Abrirás a porta desde o móbil."
 msgstr "Abrirás la puerta desde el móvil."
 
 #: templates/bookings/detail.html:2 templates/bookings/detail.html:6
-#: templates/facilities/detail.html:58 templates/manage/booking.html:2
+#: templates/facilities/detail.html:60 templates/manage/booking.html:2
 #: templates/manage/booking.html:5
 msgid "Reserva"
 msgstr "Reserva"
@@ -7701,7 +8163,8 @@ msgstr "Pago"
 msgid "Enviar valoración"
 msgstr "Enviar valoración"
 
-#: templates/bookings/receipt.html:5 templates/manage/signup_sheet.html:4
+#: templates/bookings/receipt.html:5 templates/manage/cleaning.html:27
+#: templates/manage/signup_sheet.html:4
 msgid "Imprimir"
 msgstr "Imprimir"
 
@@ -7796,10 +8259,6 @@ msgstr "Aún no tienes bonos."
 #: templates/bookings/vouchers.html:14
 msgid "Comprar un bono"
 msgstr "Comprar un bono"
-
-#: templates/bookings/vouchers.html:15
-msgid "todas as instalacións"
-msgstr "todas las instalaciones"
 
 #: templates/bookings/vouchers.html:15
 #, python-format
@@ -7947,8 +8406,8 @@ msgstr "Ilustración generada con IA para el proyecto Eira, licencia"
 msgid "Non inclúe obras de terceiros nin persoas reais nin marcas."
 msgstr "No incluye obras de terceros, personas reales ni marcas."
 
-#: templates/core/custody.html:5 templates/includes/shell_desk.html:40
-#: templates/includes/shell_desk.html:41 templates/manage/breaches.html:4
+#: templates/core/custody.html:5 templates/includes/shell_desk.html:41
+#: templates/includes/shell_desk.html:42 templates/manage/breaches.html:4
 msgid "Protección de datos"
 msgstr "Protección de datos"
 
@@ -8013,10 +8472,6 @@ msgstr ""
 "Si alguna vez hay un incidente de seguridad con tus datos, el ayuntamiento "
 "lo registra, avisa a la AEPD en un plazo de 72 horas si hay riesgo y, si el "
 "riesgo es alto, te avisa a ti directamente."
-
-#: templates/core/error.html:5
-msgid "Erro"
-msgstr "Error"
 
 #: templates/core/error.html:8
 #, python-format
@@ -8244,12 +8699,10 @@ msgid "Nunha emerxencia, chama ao 112."
 msgstr "En una emergencia, llama al 112."
 
 #: templates/core/help.html:16
-#| msgid "Chamar agora"
 msgid "Chamar ao 112"
 msgstr "Llamar al 112"
 
 #: templates/core/help.html:16
-#| msgid "Ir ao inicio"
 msgid "Volver ao inicio"
 msgstr "Volver al inicio"
 
@@ -9015,11 +9468,12 @@ msgstr "Elegir"
 msgid "Cambiar a esta hora"
 msgstr "Cambiar a esta hora"
 
-#: templates/facilities/detail.html:4 templates/maintenance/order.html:4
-#: templates/manage/booking.html:4
+#: templates/facilities/detail.html:4
+#: templates/maintenance/cleaning_zone.html:4
+#: templates/maintenance/order.html:4 templates/manage/booking.html:4
 #: templates/manage/breach_communication.html:4
-#: templates/manage/breach_edit.html:4 templates/manage/vouchers.html:4
-#: templates/manage/work_order.html:4
+#: templates/manage/breach_edit.html:4 templates/manage/cleaning_qr.html:4
+#: templates/manage/vouchers.html:4 templates/manage/work_order.html:4
 msgid "Migas"
 msgstr "Migas"
 
@@ -9037,11 +9491,18 @@ msgstr "Revisada el %(d)s"
 msgid "Última supervisión: %(d)s"
 msgstr "Última supervisión: %(d)s"
 
-#: templates/facilities/detail.html:21
+#: templates/facilities/detail.html:13
+#: templates/maintenance/cleaning_zone.html:6
+#: templates/maintenance/cleaning_zone_public.html:7
+#, python-format
+msgid "Última limpeza: %(d)s"
+msgstr "Última limpieza: %(d)s"
+
+#: templates/facilities/detail.html:22
 msgid "Dispoñibilidade"
 msgstr "Disponibilidad"
 
-#: templates/facilities/detail.html:22
+#: templates/facilities/detail.html:23
 msgid ""
 "Escolle unha franxa libre para reservala. As marcadas con ★ adoitan ter "
 "pouca demanda."
@@ -9049,22 +9510,22 @@ msgstr ""
 "Elige una franja libre para reservarla. Las marcadas con ★ suelen tener poca"
 " demanda."
 
-#: templates/facilities/detail.html:26
+#: templates/facilities/detail.html:27
 msgid "Información da instalación"
 msgstr "Información de la instalación"
 
-#: templates/facilities/detail.html:29
+#: templates/facilities/detail.html:30
 msgid "Como se accede"
 msgstr "Cómo se accede"
 
-#: templates/facilities/detail.html:31
+#: templates/facilities/detail.html:32
 msgid ""
 "Instalación aberta. Ao chegar, escanea o QR da entrada para rexistrar o uso."
 msgstr ""
 "Instalación abierta. Al llegar, escanea el QR de la entrada para registrar "
 "el uso."
 
-#: templates/facilities/detail.html:32
+#: templates/facilities/detail.html:33
 #, python-format
 msgid ""
 "A chave tena <strong>%(who)s</strong> en %(where)s (%(when)s). Avisarémola "
@@ -9073,7 +9534,7 @@ msgstr ""
 "La llave la tiene <strong>%(who)s</strong> en %(where)s (%(when)s). Te "
 "avisaremos de tu reserva."
 
-#: templates/facilities/detail.html:33
+#: templates/facilities/detail.html:34
 msgid ""
 "Teclado con código. Ao reservar recibes un código que só abre durante a túa "
 "franxa, aínda que a instalación non teña internet."
@@ -9081,7 +9542,7 @@ msgstr ""
 "Teclado con código. Al reservar recibes un código que solo abre durante tu "
 "franja, aunque la instalación no tenga internet."
 
-#: templates/facilities/detail.html:34
+#: templates/facilities/detail.html:35
 msgid ""
 "Pechadura conectada. Durante a túa franxa abres a porta desde o móbil e as "
 "luces acéndense soas."
@@ -9089,82 +9550,86 @@ msgstr ""
 "Cerradura conectada. Durante tu franja abres la puerta desde el móvil y las "
 "luces se encienden solas."
 
-#: templates/facilities/detail.html:38
+#: templates/facilities/detail.html:39
 msgid "Emerxencias: 112"
 msgstr "Emergencias: 112"
 
-#: templates/facilities/detail.html:38
+#: templates/facilities/detail.html:39
 msgid "Chamar agora"
 msgstr "Llamar ahora"
 
-#: templates/facilities/detail.html:41
+#: templates/facilities/detail.html:42
 msgid "Pregunta no concello"
 msgstr "Pregunta en el ayuntamiento"
 
-#: templates/facilities/detail.html:43
+#: templates/facilities/detail.html:44
 msgid "Última supervisión"
 msgstr "Última supervisión"
 
-#: templates/facilities/detail.html:43
+#: templates/facilities/detail.html:44 templates/facilities/detail.html:45
 msgid "Sen datos"
 msgstr "Sin datos"
 
-#: templates/facilities/detail.html:46
+#: templates/facilities/detail.html:45 templates/manage/cleaning.html:21
+msgid "Última limpeza"
+msgstr "Última limpieza"
+
+#: templates/facilities/detail.html:48
 msgid "Material dispoñible"
 msgstr "Material disponible"
 
-#: templates/facilities/detail.html:51
+#: templates/facilities/detail.html:53
 msgid "Datos prácticos"
 msgstr "Datos prácticos"
 
-#: templates/facilities/detail.html:53
+#: templates/facilities/detail.html:55
 msgid "Enderezo"
 msgstr "Dirección"
 
-#: templates/facilities/detail.html:54
+#: templates/facilities/detail.html:56
 msgid "Franxas"
 msgstr "Franjas"
 
-#: templates/facilities/detail.html:54
+#: templates/facilities/detail.html:56
 #, python-format
 msgid "%(m)s minutos"
 msgstr "%(m)s minutos"
 
-#: templates/facilities/detail.html:55
+#: templates/facilities/detail.html:57
 msgid "Prazas"
 msgstr "Plazas"
 
-#: templates/facilities/detail.html:55
+#: templates/facilities/detail.html:57
 msgid "Uso exclusivo"
 msgstr "Uso exclusivo"
 
-#: templates/facilities/detail.html:56 templates/facilities/detail.html:59
+#: templates/facilities/detail.html:58 templates/facilities/detail.html:61
 msgid "Si,Non"
 msgstr "Sí,No"
 
-#: templates/facilities/detail.html:56
+#: templates/facilities/detail.html:58
 #, python-format
 msgid "suplemento de luz %(l)s"
 msgstr "suplemento de luz %(l)s"
 
-#: templates/facilities/detail.html:57
+#: templates/facilities/detail.html:59
 msgid "Persoas por reserva"
 msgstr "Personas por reserva"
 
-#: templates/facilities/detail.html:57
+#: templates/facilities/detail.html:59
 #, python-format
 msgid "ata %(n)s"
 msgstr "hasta %(n)s"
 
-#: templates/facilities/detail.html:65
+#: templates/facilities/detail.html:67
 msgid "Sen información de accesibilidade."
 msgstr "Sin información de accesibilidad."
 
-#: templates/facilities/detail.html:70
+#: templates/facilities/detail.html:72
 msgid "Tarifas por franxa"
 msgstr "Tarifas por franja"
 
-#: templates/facilities/detail.html:71 templates/manage/_facility_tabs.html:6
+#: templates/facilities/detail.html:73 templates/manage/_facility_tabs.html:6
 #: templates/manage/facility_new_step3.html:8
 #: templates/manage/facility_tariffs.html:2
 msgid "Tarifas"
@@ -9803,34 +10268,34 @@ msgstr "Cobros"
 msgid "Ordes de traballo"
 msgstr "Órdenes de trabajo"
 
-#: templates/includes/shell_desk.html:22
+#: templates/includes/shell_desk.html:23
 msgid "Servizo"
 msgstr "Servicio"
 
-#: templates/includes/shell_desk.html:32 templates/manage/padron.html:4
+#: templates/includes/shell_desk.html:33 templates/manage/padron.html:4
 #: templates/manage/signup_sheet.html:4 templates/manage/signups.html:2
 #: templates/manage/signups.html:4
 msgid "Altas da app"
 msgstr "Altas de la app"
 
-#: templates/includes/shell_desk.html:33
+#: templates/includes/shell_desk.html:34
 msgid "Persoal e códigos"
 msgstr "Personal y códigos"
 
-#: templates/includes/shell_desk.html:43 templates/manage/breaches.html:7
+#: templates/includes/shell_desk.html:44 templates/manage/breaches.html:7
 msgid "Quen custodia os datos"
 msgstr "Quién custodia los datos"
 
-#: templates/includes/shell_desk.html:48
+#: templates/includes/shell_desk.html:49
 msgid "Rede"
 msgstr "Red"
 
-#: templates/includes/shell_desk.html:49
+#: templates/includes/shell_desk.html:50
 #: templates/region/new_municipality.html:2
 msgid "Novo concello"
 msgstr "Nuevo ayuntamiento"
 
-#: templates/includes/shell_desk.html:50
+#: templates/includes/shell_desk.html:51
 msgid "Concellos"
 msgstr "Ayuntamientos"
 
@@ -9876,7 +10341,15 @@ msgstr "Mi área"
 msgid "Navegación da app"
 msgstr "Navegación de la app"
 
-#: templates/includes/shell_tabbar.html:3 templates/maintenance/order.html:4
+#: templates/includes/shell_tabbar.html:3
+#: templates/maintenance/cleaning_zone.html:4
+#: templates/manage/cleaning.html:40
+msgid "Tarefas"
+msgstr "Tareas"
+
+#: templates/includes/shell_tabbar.html:3
+#: templates/maintenance/cleaning_zone.html:4
+#: templates/maintenance/order.html:4
 msgid "Ordes"
 msgstr "Órdenes"
 
@@ -9909,24 +10382,121 @@ msgstr "Mes anterior"
 msgid "Mes seguinte"
 msgstr "Mes siguiente"
 
+#: templates/maintenance/cleaning_zone.html:6
+#: templates/maintenance/cleaning_zone_public.html:7
+msgid "Aínda non hai ningunha limpeza rexistrada."
+msgstr "Aún no hay ninguna limpieza registrada."
+
+#: templates/maintenance/cleaning_zone.html:7
+#: templates/maintenance/my_orders.html:15
+#: templates/maintenance/my_orders.html:29 templates/manage/cleaning.html:26
+#: templates/manage/dashboard.html:68 templates/manage/work_orders.html:11
+msgid "Atrasada"
+msgstr "Atrasada"
+
+#: templates/maintenance/cleaning_zone.html:8
+#: templates/maintenance/order.html:8
+msgid "Pendentes de enviar:"
+msgstr "Pendientes de enviar:"
+
+#: templates/maintenance/cleaning_zone.html:9
+msgid ""
+"Sen conexión: limpeza gardada no dispositivo coa hora de agora. Enviarase ao"
+" volver a rede."
+msgstr ""
+"Sin conexión: limpieza guardada en el dispositivo con la hora de ahora. Se "
+"enviará al volver la red."
+
+#: templates/maintenance/cleaning_zone.html:11
+msgid "Que fixeches?"
+msgstr "¿Qué has hecho?"
+
+#: templates/maintenance/cleaning_zone.html:16
+msgid "Por exemplo: falta xabón, unha billa pinga…"
+msgstr "Por ejemplo: falta jabón, un grifo gotea…"
+
+#: templates/maintenance/cleaning_zone.html:20
+msgid "Rexistrar limpeza"
+msgstr "Registrar limpieza"
+
+#: templates/maintenance/cleaning_zone.html:24
+msgid "Últimas limpezas desta zona"
+msgstr "Últimas limpiezas de esta zona"
+
+#: templates/maintenance/cleaning_zone_public.html:8
+msgid ""
+"Este QR é para o persoal de limpeza: ao escanealo rexistra a limpeza da "
+"zona."
+msgstr ""
+"Este QR es para el personal de limpieza: al escanearlo registra la limpieza "
+"de la zona."
+
+#: templates/maintenance/cleaning_zone_public.html:9
+msgid "Se ves algo sucio ou estragado, avisa ao concello:"
+msgstr "Si ves algo sucio o estropeado, avisa al ayuntamiento:"
+
+#: templates/maintenance/cleaning_zone_public.html:12
+msgid "Ver a instalación"
+msgstr "Ver la instalación"
+
+#: templates/maintenance/cleaning_zone_public.html:13
+msgid "Entrar como persoal"
+msgstr "Entrar como personal"
+
+#: templates/maintenance/my_orders.html:2
+msgid "As miñas tarefas de limpeza"
+msgstr "Mis tareas de limpieza"
+
 #: templates/maintenance/my_orders.html:2
 msgid "As miñas ordes"
 msgstr "Mis órdenes"
+
+#: templates/maintenance/my_orders.html:4
+msgid "Tarefas de limpeza"
+msgstr "Tareas de limpieza"
 
 #: templates/maintenance/my_orders.html:6
 msgid "Cambios gardados sen conexión pendentes de enviar:"
 msgstr "Cambios guardados sin conexión pendientes de enviar:"
 
-#: templates/maintenance/my_orders.html:8
+#: templates/maintenance/my_orders.html:10
+msgid "Zonas"
+msgstr "Zonas"
+
+#: templates/maintenance/my_orders.html:11
+msgid ""
+"Escanea o QR da parede de cada zona ou tócaa aquí para marcar a limpeza."
+msgstr ""
+"Escanea el QR de la pared de cada zona o tócala aquí para marcar la "
+"limpieza."
+
+#: templates/maintenance/my_orders.html:15
+#, python-format
+msgid "Última: %(d)s"
+msgstr "Última: %(d)s"
+
+#: templates/maintenance/my_orders.html:15
+msgid "Sen rexistros"
+msgstr "Sin registros"
+
+#: templates/maintenance/my_orders.html:21
 #: templates/manage/agenda_calendar.html:20
 msgid "Hoxe"
 msgstr "Hoy"
 
-#: templates/maintenance/my_orders.html:9 templates/monitor/today.html:6
+#: templates/maintenance/my_orders.html:22 templates/monitor/today.html:6
 msgid "Mañá"
 msgstr "Mañana"
 
-#: templates/maintenance/my_orders.html:11
+#: templates/maintenance/my_orders.html:24
+msgid ""
+"Esta páxina funciona sen cobertura: as tarefas e zonas que abras quedan "
+"gardadas e os rexistros envíanse ao recuperar a rede."
+msgstr ""
+"Esta página funciona sin cobertura: las tareas y zonas que abras quedan "
+"guardadas y los registros se envían al recuperar la red."
+
+#: templates/maintenance/my_orders.html:24
 msgid ""
 "Esta páxina funciona sen cobertura: as ordes que abras quedan gardadas e os "
 "peches envíanse ao recuperar a rede."
@@ -9934,30 +10504,29 @@ msgstr ""
 "Esta página funciona sin cobertura: las órdenes que abras quedan guardadas y"
 " los cierres se envían al recuperar la red."
 
-#: templates/maintenance/my_orders.html:16 templates/manage/dashboard.html:63
-#: templates/manage/work_orders.html:11
-msgid "Atrasada"
-msgstr "Atrasada"
-
-#: templates/maintenance/my_orders.html:17
+#: templates/maintenance/my_orders.html:30
 #: templates/manage/incident_detail.html:2
 #: templates/manage/work_orders.html:12
 msgid "Incidencia"
 msgstr "Incidencia"
 
-#: templates/maintenance/my_orders.html:20
+#: templates/maintenance/my_orders.html:33
 msgid "Mañá está todo ao día!"
 msgstr "¡Mañana está todo al día!"
 
-#: templates/maintenance/my_orders.html:20
+#: templates/maintenance/my_orders.html:33
 msgid "Todo feito por hoxe!"
 msgstr "¡Todo hecho por hoy!"
 
-#: templates/maintenance/my_orders.html:20
+#: templates/maintenance/my_orders.html:33
+msgid "A limpeza está ao día."
+msgstr "La limpieza está al día."
+
+#: templates/maintenance/my_orders.html:33
 msgid "O mantemento está ao día."
 msgstr "El mantenimiento está al día."
 
-#: templates/maintenance/my_orders.html:23
+#: templates/maintenance/my_orders.html:36
 msgid "Pechadas hoxe"
 msgstr "Cerradas hoy"
 
@@ -9968,10 +10537,6 @@ msgstr "Origen: incidencia"
 #: templates/maintenance/order.html:7
 msgid "ver foto"
 msgstr "ver foto"
-
-#: templates/maintenance/order.html:8
-msgid "Pendentes de enviar:"
-msgstr "Pendientes de enviar:"
 
 #: templates/maintenance/order.html:10
 #, python-format
@@ -10343,6 +10908,179 @@ msgstr ""
 "Protocolo completo: docs/rxpd/brechas.md (detectar, contener, evaluar el "
 "riesgo, notificar a la AEPD, informar a las personas y cerrar)."
 
+#: templates/manage/cleaning.html:4
+msgid ""
+"Zonas con QR en cada instalación, quen limpou e cando. Substitúe a folla de "
+"papel da parede."
+msgstr ""
+"Zonas con QR en cada instalación, quién limpió y cuándo. Sustituye la hoja "
+"de papel de la pared."
+
+#: templates/manage/cleaning.html:5
+msgid "Plans e frecuencias"
+msgstr "Planes y frecuencias"
+
+#: templates/manage/cleaning.html:9
+#, python-format
+msgid "%(n)s zona leva máis do previsto sen limpar"
+msgid_plural "%(n)s zonas levan máis do previsto sen limpar"
+msgstr[0] "%(n)s zona lleva más de lo previsto sin limpiar"
+msgstr[1] "%(n)s zonas llevan más de lo previsto sin limpiar"
+
+#: templates/manage/cleaning.html:10 templates/manage/dashboard.html:62
+#, python-format
+msgid "última limpeza %(d)s (máximo %(h)s h)"
+msgstr "última limpieza %(d)s (máximo %(h)s h)"
+
+#: templates/manage/cleaning.html:10 templates/manage/dashboard.html:62
+msgid "sen ningunha limpeza rexistrada"
+msgstr "sin ninguna limpieza registrada"
+
+#: templates/manage/cleaning.html:20
+#, python-format
+msgid "Zonas de limpeza de %(f)s"
+msgstr "Zonas de limpieza de %(f)s"
+
+#: templates/manage/cleaning.html:21
+msgid "Zona"
+msgstr "Zona"
+
+#: templates/manage/cleaning.html:21
+msgid "Frecuencia"
+msgstr "Frecuencia"
+
+#: templates/manage/cleaning.html:21 templates/manage/facilities.html:7
+msgid "QR"
+msgstr "QR"
+
+#: templates/manage/cleaning.html:24
+#, python-format
+msgid "máximo %(h)s h"
+msgstr "máximo %(h)s h"
+
+#: templates/manage/cleaning.html:26
+msgid "Desactivada"
+msgstr "Desactivada"
+
+#: templates/manage/cleaning.html:26
+msgid "Ao día"
+msgstr "Al día"
+
+#: templates/manage/cleaning.html:28
+msgid "Desactivar"
+msgstr "Desactivar"
+
+#: templates/manage/cleaning.html:28
+msgid "Activar"
+msgstr "Activar"
+
+#: templates/manage/cleaning.html:33
+msgid "Aínda non hai zonas de limpeza."
+msgstr "Aún no hay zonas de limpieza."
+
+#: templates/manage/cleaning.html:33
+msgid "Aplica o modelo dunha instalación ou crea unha zona á man."
+msgstr "Aplica el modelo de una instalación o crea una zona a mano."
+
+#: templates/manage/cleaning.html:37
+msgid "Últimos rexistros"
+msgstr "Últimos registros"
+
+#: templates/manage/cleaning.html:39
+msgid "Últimos rexistros de limpeza"
+msgstr "Últimos registros de limpieza"
+
+#: templates/manage/cleaning.html:40
+msgid "Cando"
+msgstr "Cuándo"
+
+#: templates/manage/cleaning.html:40 templates/manage/padron.html:23
+msgid "Quen"
+msgstr "Quién"
+
+#: templates/manage/cleaning.html:46
+msgid "Aínda non hai rexistros."
+msgstr "Aún no hay registros."
+
+#: templates/manage/cleaning.html:53
+msgid "Exportar o rexistro"
+msgstr "Exportar el registro"
+
+#: templates/manage/cleaning.html:54
+msgid ""
+"Para unha inspección sanitaria ou para controlar o servizo da empresa "
+"contratada."
+msgstr ""
+"Para una inspección sanitaria o para controlar el servicio de la empresa "
+"contratada."
+
+#: templates/manage/cleaning.html:56
+msgid "Descargar"
+msgstr "Descargar"
+
+#: templates/manage/cleaning.html:60
+msgid "Sen persoal de limpeza: as tarefas de limpeza van a mantemento."
+msgstr "Sin personal de limpieza: las tareas de limpieza van a mantenimiento."
+
+#: templates/manage/cleaning.html:61
+msgid "Engadir no persoal"
+msgstr "Añadir en personal"
+
+#: templates/manage/cleaning.html:65
+msgid "Aplicar modelo de limpeza"
+msgstr "Aplicar modelo de limpieza"
+
+#: templates/manage/cleaning.html:66
+msgid ""
+"Crea as zonas típicas do tipo de instalación (vestiarios, aseos, pista, "
+"bancadas…) coas súas frecuencias e checklist."
+msgstr ""
+"Crea las zonas típicas del tipo de instalación (vestuarios, aseos, pista, "
+"gradas…) con sus frecuencias y checklist."
+
+#: templates/manage/cleaning.html:68
+msgid "Aplicar modelo"
+msgstr "Aplicar modelo"
+
+#: templates/manage/cleaning.html:72
+msgid "Nova zona"
+msgstr "Nueva zona"
+
+#: templates/manage/cleaning.html:73
+msgid "Crear zona"
+msgstr "Crear zona"
+
+#: templates/manage/cleaning_qr.html:2
+msgid "QR de limpeza"
+msgstr "QR de limpieza"
+
+#: templates/manage/cleaning_qr.html:9
+#, python-format
+msgid "Código QR de limpeza de %(z)s"
+msgstr "Código QR de limpieza de %(z)s"
+
+#: templates/manage/cleaning_qr.html:10
+msgid ""
+"Persoal de limpeza: escanea este código co móbil ao rematar e marca o feito."
+" Queda rexistrado quen, o día e a hora, tamén sen cobertura."
+msgstr ""
+"Personal de limpieza: escanea este código con el móvil al terminar y marca "
+"lo hecho. Queda registrado quién, el día y la hora, también sin cobertura."
+
+#: templates/manage/cleaning_qr.html:11
+msgid "Que hai que facer"
+msgstr "Qué hay que hacer"
+
+#: templates/manage/cleaning_qr.html:13
+msgid "A última limpeza vese na ficha da instalación, na web do concello."
+msgstr ""
+"La última limpieza se ve en la ficha de la instalación, en la web del "
+"ayuntamiento."
+
+#: templates/manage/cleaning_qr.html:15
+msgid "Imprimir QR"
+msgstr "Imprimir QR"
+
 #: templates/manage/closures.html:2
 msgid "Peches e bloqueos"
 msgstr "Cierres y bloqueos"
@@ -10358,14 +11096,6 @@ msgstr "Cierres programados"
 #: templates/manage/closures.html:10 templates/manage/staff.html:32
 msgid "Motivo"
 msgstr "Motivo"
-
-#: templates/manage/closures.html:10 templates/manage/payments.html:7
-msgid "Desde"
-msgstr "Desde"
-
-#: templates/manage/closures.html:10 templates/manage/payments.html:8
-msgid "Ata"
-msgstr "Hasta"
 
 #: templates/manage/closures.html:12 templates/manage/facility_hours.html:11
 #: templates/manage/facility_hours.html:19
@@ -10485,15 +11215,23 @@ msgstr "Simular alerta (6 h)"
 msgid "0–100 · Ver docs/indice-vida-activa.md"
 msgstr "0–100 · Ver docs/indice-vida-activa.md"
 
-#: templates/manage/dashboard.html:60
+#: templates/manage/dashboard.html:61
+msgid "Limpeza atrasada"
+msgstr "Limpieza atrasada"
+
+#: templates/manage/dashboard.html:63
+msgid "Ver o rexistro de limpeza"
+msgstr "Ver el registro de limpieza"
+
+#: templates/manage/dashboard.html:65
 msgid "Incidencias por validar"
 msgstr "Incidencias por validar"
 
-#: templates/manage/dashboard.html:61 templates/manage/dashboard.html:63
+#: templates/manage/dashboard.html:66 templates/manage/dashboard.html:68
 msgid "Ningunha."
 msgstr "Ninguna."
 
-#: templates/manage/dashboard.html:62
+#: templates/manage/dashboard.html:67
 msgid "Ordes de traballo pendentes"
 msgstr "Órdenes de trabajo pendientes"
 
@@ -10506,10 +11244,6 @@ msgstr "Alta asistida"
 #: templates/manage/facilities.html:6
 msgid "Instalacións do concello"
 msgstr "Instalaciones del ayuntamiento"
-
-#: templates/manage/facilities.html:7
-msgid "QR"
-msgstr "QR"
 
 #: templates/manage/facilities.html:10
 msgid "Publicada"
@@ -10589,6 +11323,10 @@ msgstr ""
 "La plantilla precarga normas, horario, tarifas, plan de mantenimiento y el "
 "dispositivo de acceso. Puedes cambiarlo todo después."
 
+#: templates/manage/facility_new_step1.html:6
+msgid "Tamén crea as zonas e o plan de limpeza do tipo de instalación."
+msgstr "También crea las zonas y el plan de limpieza del tipo de instalación."
+
 #: templates/manage/facility_new_step1.html:14
 #, python-format
 msgid "Franxas de %(m)s min"
@@ -10604,6 +11342,13 @@ msgid "%(n)s tarefa de mantemento"
 msgid_plural "%(n)s tarefas de mantemento"
 msgstr[0] "%(n)s tarea de mantenimiento"
 msgstr[1] "%(n)s tareas de mantenimiento"
+
+#: templates/manage/facility_new_step1.html:14
+#, python-format
+msgid "%(n)s zona de limpeza"
+msgid_plural "%(n)s zonas de limpeza"
+msgstr[0] "%(n)s zona de limpieza"
+msgstr[1] "%(n)s zonas de limpieza"
 
 #: templates/manage/facility_new_step2.html:5
 #, python-format
@@ -10951,10 +11696,6 @@ msgstr "Cargas del padrón"
 #: templates/manage/padron.html:23
 msgid "Rexeitadas"
 msgstr "Rechazadas"
-
-#: templates/manage/padron.html:23
-msgid "Quen"
-msgstr "Quién"
 
 #: templates/manage/padron.html:25
 msgid "Sen cargas."

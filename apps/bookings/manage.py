@@ -94,10 +94,15 @@ def dashboard(request):
             first.latitude, first.longitude, timezone.now().replace(hour=18)
         )
         tips = advice(forecast)
+    # v1.1: zonas de limpeza atrasadas (e aviso ao concello, unha vez por atraso)
+    from apps.maintenance.cleaning import check_overdue, overdue_zones
+
+    check_overdue(tenant)
     return render(
         request,
         "manage/dashboard.html",
         {
+            "cleaning_overdue": overdue_zones(tenant),
             "today": today,
             "bookings": bookings,
             "occupancy": round(100 * held / capacity_slots) if capacity_slots else 0,

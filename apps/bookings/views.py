@@ -549,6 +549,11 @@ class ChecklistForm(forms.Form):
         choices=YES_NO,
         widget=forms.RadioSelect,
     )
+    # v1.1: etiqueta «limpeza» (vai ao persoal de limpeza)
+    needs_cleaning = forms.BooleanField(
+        label=gettext_lazy("Fai falta limpeza (lixo, vestiarios ou aseos sucios)"),
+        required=False,
+    )
     notes = forms.CharField(
         label=gettext_lazy("Algo que contar? (opcional)"),
         required=False,
@@ -583,6 +588,7 @@ def checklist(request, pk):
             d["all_ok"] == "1",
             d.get("notes", ""),
             by=request.user,
+            needs_cleaning=d.get("needs_cleaning", False),
         )
         if incident:
             messages.warning(
@@ -653,6 +659,11 @@ class StartStateForm(forms.Form):
         ],
         widget=forms.RadioSelect,
     )
+    # v1.1: etiqueta «limpeza» (vai ao persoal de limpeza)
+    cleaning = forms.BooleanField(
+        label=gettext_lazy("O problema é de limpeza (lixo, sucidade, vestiarios ou aseos)"),
+        required=False,
+    )
     notes = forms.CharField(
         label=gettext_lazy("Que viches? (opcional)"),
         required=False,
@@ -683,7 +694,12 @@ def start_state(request, pk):
     if request.method == "POST" and form.is_valid():
         d = form.cleaned_data
         incident = services.submit_start_state(
-            booking, d["state"] == "ok", d.get("notes", ""), d.get("photo"), by=request.user
+            booking,
+            d["state"] == "ok",
+            d.get("notes", ""),
+            d.get("photo"),
+            by=request.user,
+            cleaning=d.get("cleaning", False),
         )
         if incident:
             messages.warning(

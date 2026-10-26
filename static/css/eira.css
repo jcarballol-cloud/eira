@@ -1601,3 +1601,15 @@ html.theme-dark body.themable .pill-recommended :is(.pill__price, .pill__price s
 html.theme-dark body.themable :is(.pill-busy, .pill-closed) { background: #1C2629; border-color: #4A5A5F; color: #C9D3D0; }
 html.theme-dark body.themable :is(.pill-busy, .pill-closed) :is(.pill__time, .pill__price) { color: #C9D3D0; }
 html.theme-dark body.themable .pill-mine :is(.pill__price, .pill__time, .pill__star) { color: var(--branco); }
+
+/* v1.1 · Rexistro de limpeza */
+.zone-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); }
+.zone-card { background: var(--surface); border: 1px solid var(--liña); border-left: 6px solid var(--musgo); border-radius: var(--radius-sm); padding: .7rem .85rem; display: flex; flex-direction: column; gap: .2rem; }
+.zone-card.overdue { border-left-color: var(--arxila); }
+.zone-card a { text-decoration: none; min-height: 44px; display: flex; align-items: center; flex-wrap: wrap; gap: .25rem; }
+.zone-card a:hover strong { text-decoration: underline; }
+.zone-card__meta { font-size: .9rem; }
+.inline-form { display: inline; }
+.zone-poster .qr svg { max-width: 18rem; }
+/* v1.1: «Atrasada» (badge-alert) non tiña versión escura; aparece ao ter zonas de limpeza atrasadas */
+html.theme-dark body.themable .badge-alert { background: #3A1F1A; color: #F4B4A3; border-color: #7A3E30; }

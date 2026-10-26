@@ -1,0 +1,76 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Limpeza" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{% translate "Limpeza" %}</h1><p>{% translate "Zonas con QR en cada instalación, quen limpou e cando. Substitúe a folla de papel da parede." %}</p></div>
+  <a class="btn btn-secondary" href="{% turl 'manage:maintenance_plans' %}">{% icon 'check' %} {% translate "Plans e frecuencias" %}</a></div>
+
+{% if overdue %}
+<section class="alert alert-warn" aria-labelledby="late-title">
+  <h2 id="late-title" class="h3">{% icon 'alert' %} {% blocktranslate count n=overdue|length %}{{ n }} zona leva máis do previsto sen limpar{% plural %}{{ n }} zonas levan máis do previsto sen limpar{% endblocktranslate %}</h2>
+  <ul class="list-plain">{% for r in overdue %}<li><strong>{{ r.zone.facility.name }} · {{ r.zone.name }}</strong>: {% if r.last_at %}{% blocktranslate with d=r.last_at|when h=r.zone.max_hours %}última limpeza {{ d }} (máximo {{ h }} h){% endblocktranslate %}{% else %}{% translate "sen ningunha limpeza rexistrada" %}{% endif %}</li>{% endfor %}</ul>
+</section>
+{% endif %}
+
+<div class="layout-aside">
+  <div class="stack">
+    {% for facility, rows in by_facility.items %}
+    <section class="card" aria-labelledby="cf-{{ facility.pk }}">
+      <h2 id="cf-{{ facility.pk }}">{{ facility.name }}</h2>
+      <div class="table-wrap" tabindex="0"><table class="data">
+        <caption class="visually-hidden">{% blocktranslate with f=facility.name %}Zonas de limpeza de {{ f }}{% endblocktranslate %}</caption>
+        <thead><tr><th scope="col">{% translate "Zona" %}</th><th scope="col">{% translate "Última limpeza" %}</th><th scope="col">{% translate "Estado" %}</th><th scope="col">{% translate "QR" %}</th></tr></thead>
+        <tbody>{% for r in rows %}<tr>
+          <th scope="row">{{ r.zone.name }}<br><small class="muted">{% for t in r.zone.tasks.all %}{{ t.frequency_label }} · {% endfor %}{% blocktranslate with h=r.zone.max_hours %}máximo {{ h }} h{% endblocktranslate %}</small></th>
+          <td>{% if r.last_at %}<span class="nowrap">{{ r.last_at|when }}</span><br><small class="muted">{{ r.last.by_name }}</small>{% else %}—{% endif %}</td>
+          <td>{% if not r.zone.active %}<span class="badge">{% translate "Desactivada" %}</span>{% elif r.overdue %}<span class="badge badge-alert">{% translate "Atrasada" %}</span>{% else %}<span class="badge badge-ok">{% translate "Ao día" %}</span>{% endif %}</td>
+          <td class="nowrap"><a href="{% turl 'manage:cleaning_qr' r.zone.pk %}">{% icon 'qr' %} {% translate "Imprimir" %}<span class="visually-hidden"> {{ r.zone.name }}</span></a>
+            <form method="post" class="inline-form write-link">{% csrf_token %}<input type="hidden" name="action" value="toggle"><input type="hidden" name="z" value="{{ r.zone.pk }}"><button class="btn btn-sm btn-ghost" type="submit">{% if r.zone.active %}{% translate "Desactivar" %}{% else %}{% translate "Activar" %}{% endif %}<span class="visually-hidden"> {{ r.zone.name }}</span></button></form></td>
+        </tr>{% endfor %}</tbody>
+      </table></div>
+    </section>
+    {% empty %}
+    <section class="card empty-state"><p class="mb-0"><strong>{% translate "Aínda non hai zonas de limpeza." %}</strong><br><span class="muted">{% translate "Aplica o modelo dunha instalación ou crea unha zona á man." %}</span></p></section>
+    {% endfor %}
+
+    <section class="card" aria-labelledby="logs-title">
+      <h2 id="logs-title">{% translate "Últimos rexistros" %}</h2>
+      <div class="table-wrap" tabindex="0"><table class="data">
+        <caption class="visually-hidden">{% translate "Últimos rexistros de limpeza" %}</caption>
+        <thead><tr><th scope="col">{% translate "Cando" %}</th><th scope="col">{% translate "Onde" %}</th><th scope="col">{% translate "Quen" %}</th><th scope="col">{% translate "Tarefas" %}</th></tr></thead>
+        <tbody>{% for log in logs %}<tr>
+          <td class="nowrap">{{ log.done_at|when }}</td>
+          <td>{{ log.facility.name }}{% if log.zone %} · {{ log.zone.name }}{% endif %}</td>
+          <td>{{ log.by_name|default:"—" }}{% if log.company %}<br><small class="muted">{{ log.company }}</small>{% endif %}</td>
+          <td><small>{{ log.done_items|join:" · " }}</small>{% if log.notes %}<br><small class="muted">{{ log.notes }}</small>{% endif %}{% if log.photo %} <a href="{{ log.photo.url }}">{% icon 'camera' %} {% translate "foto" %}</a>{% endif %}</td>
+        </tr>{% empty %}<tr><td colspan="4">{% translate "Aínda non hai rexistros." %}</td></tr>{% endfor %}</tbody>
+      </table></div>
+    </section>
+  </div>
+
+  <aside class="stack">
+    <form method="get" action="{% turl 'manage:cleaning_export' %}" class="card" novalidate>
+      <h2>{% icon 'download' %} {% translate "Exportar o rexistro" %}</h2>
+      <p class="help">{% translate "Para unha inspección sanitaria ou para controlar o servizo da empresa contratada." %}</p>
+      {% include "includes/form.html" with form=export_form %}
+      <button class="btn" type="submit">{% translate "Descargar" %}</button>
+    </form>
+    <section class="card" aria-labelledby="staff-title">
+      <h2 id="staff-title">{% translate "Persoal de limpeza" %}</h2>
+      <ul class="list">{% for m in staff %}<li>{{ m.user }}<br><small class="muted">{% if m.company %}{{ m.company }}{% else %}{% translate "Persoal do concello" %}{% endif %}</small></li>{% empty %}<li class="muted">{% translate "Sen persoal de limpeza: as tarefas de limpeza van a mantemento." %}</li>{% endfor %}</ul>
+      <a class="btn btn-sm btn-secondary" href="{% turl 'manage:staff' %}">{% translate "Engadir no persoal" %}</a>
+    </section>
+    {% if facilities_without %}
+    <form method="post" class="card write-link" novalidate>{% csrf_token %}<input type="hidden" name="action" value="template">
+      <h2>{% translate "Aplicar modelo de limpeza" %}</h2>
+      <p class="help">{% translate "Crea as zonas típicas do tipo de instalación (vestiarios, aseos, pista, bancadas…) coas súas frecuencias e checklist." %}</p>
+      <div class="field"><label for="tpl-f">{% translate "Instalación" %}</label><select id="tpl-f" name="f">{% for f in facilities_without %}<option value="{{ f.pk }}">{{ f.name }}</option>{% endfor %}</select></div>
+      <button class="btn btn-secondary" type="submit">{% translate "Aplicar modelo" %}</button>
+    </form>
+    {% endif %}
+    <form method="post" class="card write-link" novalidate>{% csrf_token %}<input type="hidden" name="action" value="zone">
+      <h2>{% translate "Nova zona" %}</h2>{% include "includes/form.html" with form=zone_form %}
+      <button class="btn btn-secondary" type="submit">{% translate "Crear zona" %}</button>
+    </form>
+  </aside>
+</div>
+{% endblock %}

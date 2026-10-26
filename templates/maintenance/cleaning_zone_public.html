@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Limpeza" %} · {{ zone.name }}{% endblock %}
+{% block content %}
+<section class="card prose center">
+  <p class="eyebrow">{{ zone.facility.name }}</p>
+  <h1>{{ zone.name }}</h1>
+  <p class="big">{% icon 'sparkle' %} {% if last_at %}{% blocktranslate with d=last_at|when %}Última limpeza: {{ d }}{% endblocktranslate %}{% else %}{% translate "Aínda non hai ningunha limpeza rexistrada." %}{% endif %}</p>
+  <p>{% translate "Este QR é para o persoal de limpeza: ao escanealo rexistra a limpeza da zona." %}</p>
+  <p>{% translate "Se ves algo sucio ou estragado, avisa ao concello:" %}</p>
+  <p class="row center-row">
+    {% if is_neighbour and user.is_authenticated %}<a class="btn" href="{% turl 'incidents:new' %}?instalacion={{ zone.facility.pk }}">{% icon 'alert' %} {% translate "Avisar dunha avaría" %}</a>{% endif %}
+    <a class="btn btn-secondary" href="{% turl 'facilities:detail' zone.facility.pk %}">{% translate "Ver a instalación" %}</a>
+    {% if not user.is_authenticated %}<a class="btn btn-ghost" href="{% url 'accounts:login' %}?next={{ request.get_full_path|urlencode }}">{% translate "Entrar como persoal" %}</a>{% endif %}
+  </p>
+</section>
+{% endblock %}

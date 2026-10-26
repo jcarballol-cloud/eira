@@ -19,6 +19,7 @@ C = "/c/vilardeiras"
 APP_PERSONAS = {
     "uxia@demo.eira.example": MOBILE,
     "brais@demo.eira.example": MOBILE,
+    "noela@demo.eira.example": MOBILE,  # v1.1
     NEW_NEIGHBOUR: MOBILE,
     "antia@demo.eira.example": TABLET,
 }
@@ -29,6 +30,7 @@ def dark_page_sets():
     return {
         "uxia@demo.eira.example": sets["uxia@demo.eira.example"],
         "brais@demo.eira.example": sets["brais@demo.eira.example"],
+        "noela@demo.eira.example": sets["noela@demo.eira.example"],
         NEW_NEIGHBOUR: [*sets[NEW_NEIGHBOUR], f"{C}/actividades/"],
         "antia@demo.eira.example": sets["antia@demo.eira.example"],
     }

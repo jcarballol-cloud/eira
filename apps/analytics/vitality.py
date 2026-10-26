@@ -134,7 +134,13 @@ def _maintenance(facility, today):
         .exclude(status=WorkOrder.Status.DONE)
         .exists()
     )
-    return max(0, score - 20) if overdue else score
+    score = max(0, score - 20) if overdue else score
+    # v1.1: unha zona de limpeza atrasada tamén resta (parte de «mantemento ao día»)
+    from apps.maintenance.cleaning import overdue_zones
+
+    if overdue_zones(facility.municipality, facility=facility):
+        score = max(0, score - 10)
+    return score
 
 
 def facility_index(facility, today=None):

@@ -214,6 +214,21 @@ HELP = {
             "horas; se é alto, informa tamén ás persoas afectadas."
         ),
     ),
+    # v1.1 · limpeza
+    "maintenance:cleaning_zone": (
+        _("Limpeza da zona"),
+        _(
+            "Marca o que fixeches e toca «Rexistrar limpeza». Queda gardado quen, o día e a hora. "
+            "Sen cobertura gárdase no móbil e envíase ao volver a rede."
+        ),
+    ),
+    "manage:cleaning": (
+        _("Limpeza"),
+        _(
+            "Zonas de cada instalación co seu QR, a última limpeza e as atrasadas. Exporta o "
+            "rexistro dun período en CSV, ODS ou PDF para unha inspección ou para a empresa."
+        ),
+    ),
     "region:dashboard": (
         _("Rede de concellos"),
         _("Indicadores agregados e comparativa dos concellos da rede, co índice de vida activa."),
@@ -223,6 +238,10 @@ HELP = {
 BY_KIND = {
     "neighbour": _("Usa as lapelas de abaixo para reservar, ver as túas reservas e a túa familia."),
     "operator": _("Aquí tes as túas ordes de traballo. Funciona tamén sen cobertura."),
+    "cleaning": _(
+        "Aquí tes as túas tarefas de limpeza e as zonas. Escanea o QR da parede de cada zona "
+        "para marcar o feito. Funciona tamén sen cobertura."
+    ),
     "monitor": _("Escolle un grupo para pasar lista e recoller o esforzo."),
     "admin": _(
         "No modo básico tes o día a día. Activa o modo avanzado para ver todo o menú; os "
@@ -233,7 +252,35 @@ BY_KIND = {
 }
 
 
+# v1.1: a mesma pantalla co texto propio do persoal de limpeza
+HELP_KIND = {
+    ("maintenance:my_orders", "cleaning"): (
+        _("As túas tarefas de limpeza"),
+        _(
+            "Arriba, as zonas atrasadas. Escanea o QR da zona (ou tócaa) para marcar o feito; "
+            "tamén podes abrir unha tarefa e pechala. Funciona sen cobertura."
+        ),
+    ),
+    ("maintenance:cleaning_zone", "public"): (
+        _("Limpeza da zona"),
+        _(
+            "Aquí ves cando se limpou esta zona por última vez. Se algo está sucio ou "
+            "estragado, avisa ao concello."
+        ),
+    ),
+    ("maintenance:calendar", "cleaning"): (
+        _("Calendario de limpeza"),
+        _("As limpezas programadas por día. Toca un día para ver as tarefas."),
+    ),
+}
+
+
 def help_for(view_name, kind):
+    if view_name == "maintenance:cleaning_zone" and kind in ("neighbour", "monitor", "region"):
+        kind = "public"  # quen non rexistra limpezas ve a páxina pública do QR
+    if (view_name, kind) in HELP_KIND:
+        title, body = HELP_KIND[(view_name, kind)]
+        return {"title": title, "body": body, "key": view_name}
     if view_name in HELP:
         title, body = HELP[view_name]
         return {"title": title, "body": body, "key": view_name}

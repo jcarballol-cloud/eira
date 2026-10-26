@@ -57,6 +57,11 @@
       <ul class="list vitality-list">{% for v in vitality %}<li class="row-between"><a href="{% turl 'facilities:detail' v.pk %}">{{ v.name }}</a> {% if v.value is not None %}<span class="vitality vitality--{{ v.level }}"><strong>{{ v.value }}</strong>/100</span>{% else %}<small class="muted">{% translate "sen datos suficientes" %}</small>{% endif %}</li>{% endfor %}</ul>
       <small class="muted">{% translate "0–100 · Ver docs/indice-vida-activa.md" %}</small></section>
     {% endif %}
+    {% if cleaning_overdue %}
+    <section class="card" aria-labelledby="clean-title"><h2 id="clean-title">{% icon 'sparkle' %} {% translate "Limpeza atrasada" %}</h2>
+      <ul class="list">{% for r in cleaning_overdue %}<li><strong>{{ r.zone.facility.name }} · {{ r.zone.name }}</strong><br><small>{% if r.last_at %}{% blocktranslate with d=r.last_at|when h=r.zone.max_hours %}última limpeza {{ d }} (máximo {{ h }} h){% endblocktranslate %}{% else %}{% translate "sen ningunha limpeza rexistrada" %}{% endif %}</small></li>{% endfor %}</ul>
+      <a href="{% turl 'manage:cleaning' %}">{% translate "Ver o rexistro de limpeza" %}</a></section>
+    {% endif %}
     <section class="card" aria-labelledby="inc-title"><h2 id="inc-title">{% translate "Incidencias por validar" %}</h2>
       <ul class="list">{% for i in incidents_new %}<li><a href="{% turl 'manage:incident_detail' i.pk %}">#{{ i.pk }} {{ i.facility.name }}</a><br><small>{{ i.description|truncatechars:80 }}</small></li>{% empty %}<li class="muted">{% translate "Ningunha." %}</li>{% endfor %}</ul></section>
     <section class="card" aria-labelledby="wo-title"><h2 id="wo-title">{% translate "Ordes de traballo pendentes" %}</h2>

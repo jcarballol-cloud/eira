@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "QR de limpeza" %} · {{ zone.name }}{% endblock %}
+{% block content %}
+<nav class="mb-1 no-print" aria-label="{% translate 'Migas' %}"><a href="{% turl 'manage:cleaning' %}">{% translate "Limpeza" %}</a> / <span aria-current="page">{{ zone }}</span></nav>
+<article class="card prose center ticket zone-poster">
+  <p class="eyebrow">{{ tenant.name }} · {{ zone.facility.name }}</p>
+  <h1>{% icon 'sparkle' %} {{ zone.name }}</h1>
+  <p class="big">{% translate "Rexistro de limpeza" %}</p>
+  <div class="qr" role="img" aria-label="{% blocktranslate with z=zone.name %}Código QR de limpeza de {{ z }}{% endblocktranslate %}">{{ svg|safe }}</div>
+  <p>{% translate "Persoal de limpeza: escanea este código co móbil ao rematar e marca o feito. Queda rexistrado quen, o día e a hora, tamén sen cobertura." %}</p>
+  <h2 class="h3">{% translate "Que hai que facer" %}</h2>
+  <ul class="poster-list">{% for item in zone.checklist_items %}<li>{{ item }}</li>{% endfor %}</ul>
+  <p>{% translate "A última limpeza vese na ficha da instalación, na web do concello." %}</p>
+  <p class="mono"><small>{{ url }}</small></p>
+  <p class="no-print row center-row"><button class="btn" type="button" data-print>{% translate "Imprimir QR" %}</button></p>
+</article>
+{% endblock %}

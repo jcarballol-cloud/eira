@@ -1,0 +1,28 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Limpeza" %} · {{ zone.name }}{% endblock %}
+{% block content %}
+<nav class="mb-1" aria-label="{% translate 'Migas' %}"><a href="{% turl 'maintenance:my_orders' %}">{% if kind == 'cleaning' %}{% translate "Tarefas" %}{% else %}{% translate "Ordes" %}{% endif %}</a> / <span aria-current="page">{{ zone.name }}</span></nav>
+<div class="page-head"><div><p class="eyebrow">{{ zone.facility.name }} · {{ zone.get_kind_display }}</p><h1>{{ zone.name }}</h1>
+  <p class="mb-0">{% if last_at %}{% blocktranslate with d=last_at|when %}Última limpeza: {{ d }}{% endblocktranslate %}{% if last.by_name %} · {{ last.by_name }}{% endif %}{% else %}{% translate "Aínda non hai ningunha limpeza rexistrada." %}{% endif %}</p></div>
+  {% if overdue %}<span class="badge badge-alert big">{% translate "Atrasada" %}</span>{% endif %}</div>
+<p class="alert alert-warn queue-note" data-queue-count hidden>{% translate "Pendentes de enviar:" %} <strong data-n>0</strong></p>
+<form method="post" enctype="multipart/form-data" class="card tablet" data-offline-queue data-offline-label="{{ zone }}" data-offline-message="{% translate 'Sen conexión: limpeza gardada no dispositivo coa hora de agora. Enviarase ao volver a rede.' %}">
+  {% csrf_token %}
+  <fieldset><legend>{% translate "Que fixeches?" %}</legend>
+    {% for item in items %}
+      <div class="check"><input type="checkbox" id="z-{{ forloop.counter0 }}" name="done" value="{{ forloop.counter0 }}" checked><label for="z-{{ forloop.counter0 }}">{{ item }}</label></div>
+    {% endfor %}
+  </fieldset>
+  <div class="field"><label for="id_notes">{% translate "Observacións (opcional)" %}</label><textarea id="id_notes" name="notes" rows="2" maxlength="500" aria-describedby="notes-help"></textarea><span class="help" id="notes-help">{% translate "Por exemplo: falta xabón, unha billa pinga…" %}</span></div>
+  <div class="field"><label for="id_photo">{% icon 'camera' %} {% translate "Foto (opcional)" %}</label><input id="id_photo" type="file" name="photo" accept="image/*" capture="environment" aria-describedby="zphoto-help"><span class="help" id="zphoto-help">{% translate "Quitámoslle a localización e os datos da cámara." %}</span></div>
+  {% if form.errors %}<p class="alert alert-error" role="alert">{% for errs in form.errors.values %}{% for e in errs %}{{ e }} {% endfor %}{% endfor %}</p>{% endif %}
+  <p class="alert alert-warn" data-offline-note hidden role="status"></p>
+  <div class="form-actions"><button class="btn btn-lg" type="submit">{% icon 'check' %} {% translate "Rexistrar limpeza" %}</button></div>
+</form>
+{% if recent %}
+<section class="mt-2" aria-labelledby="recent-title">
+  <h2 id="recent-title" class="h3">{% translate "Últimas limpezas desta zona" %}</h2>
+  <ul class="list">{% for log in recent %}<li>{% icon 'check' %} {{ log.done_at|when }} · {{ log.by_name|default:"—" }}{% if log.company %} ({{ log.company }}){% endif %}{% if log.notes %}<br><small class="muted">{{ log.notes }}</small>{% endif %}</li>{% endfor %}</ul>
+</section>
+{% endif %}
+{% endblock %}

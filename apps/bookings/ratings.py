@@ -120,6 +120,17 @@ def save_rating(booking, score, tags=(), comment="", create_incident=False):
         notify_staff_new_incident(incident)
         rating.incident = incident
         rating.save(update_fields=["incident"])
+        if "dirty" in tags and category != Incident.Category.CLEANING:
+            # v1.1: «Sucia» xunto a unha avaría → a avaría vai a mantemento e a limpeza, ao
+            # persoal de limpeza (se o concello ten)
+            from apps.maintenance.cleaning import has_cleaning_staff, request_cleaning
+
+            if has_cleaning_staff(booking.municipality):
+                request_cleaning(
+                    booking.facility,
+                    str(_("Valoración: Mal · Sucia")),
+                    rating.comment,
+                )
     return rating
 
 

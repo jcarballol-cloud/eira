@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: EUPL-1.2
-"""Plantillas de alta asistida: precargan normas, franxas, tarifas e plan de mantemento."""
+"""Plantillas de alta asistida: precargan normas, franxas, tarifas e plan de mantemento.
+
+v1.1: tamén as zonas e o plan de limpeza do tipo (modelos en `apps.maintenance.cleaning`)."""
 
 import datetime as dt
 
@@ -179,9 +181,22 @@ def template_choices():
     return [(key, t["label"]) for key, t in TEMPLATES.items()]
 
 
+def _with_cleaning():
+    """v1.1: cada plantilla leva tamén o seu modelo de zonas de limpeza."""
+    from apps.maintenance.cleaning import TEMPLATES as CLEANING
+
+    for key, t in TEMPLATES.items():
+        t["cleaning_zones"] = CLEANING.get(key, [])
+
+
+_with_cleaning()
+
+
 @transaction.atomic
-def apply_template(facility, key, user=None):
-    """Crea horario, normas, tarifas, plan de mantemento e dispositivo de acceso dunha plantilla."""
+def apply_template(facility, key, user=None, cleaning=True):
+    """Crea horario, normas, tarifas, plan de mantemento e dispositivo de acceso dunha plantilla.
+
+    v1.1: tamén as zonas e o plan de limpeza (`cleaning=False` para non crealos)."""
     from apps.maintenance.models import MaintenancePlan, MaintenanceTask
 
     t = TEMPLATES[key]
@@ -199,6 +214,10 @@ def apply_template(facility, key, user=None):
         MaintenanceTask.objects.create(
             plan=plan, title=str(title), frequency=freq, checklist=checklist
         )
+    from apps.maintenance.cleaning import apply_template as apply_cleaning
+
+    if cleaning:
+        apply_cleaning(facility, key)
     ensure_lock(facility)
     return facility
 

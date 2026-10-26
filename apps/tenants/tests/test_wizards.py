@@ -30,7 +30,10 @@ def test_facility_wizard_with_template(client, admin_a, muni_a):
     assert r["Location"].endswith(f"/xestion/instalacions/{f.pk}/revisar/")
     assert not f.is_published
     assert f.opening_hours.count() == 6 and f.tariffs.count() == 4 and f.current_rules()
-    assert f.maintenance_plans.get().tasks.count() == 3 and f.lock.kind == "connected"
+    plan = f.maintenance_plans.exclude(tasks__kind="cleaning").get()
+    assert plan.tasks.count() == 3 and f.lock.kind == "connected"
+    # v1.1: a plantilla da piscina trae tamén as súas zonas de limpeza
+    assert f.cleaning_zones.count() == 3
     client.post(f"/c/concello-a/xestion/instalacions/{f.pk}/revisar/")
     f.refresh_from_db()
     assert f.is_published

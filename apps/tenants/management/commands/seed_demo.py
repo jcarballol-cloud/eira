@@ -276,6 +276,10 @@ class Command(BaseCommand):
             from apps.tenants.demo_v5 import seed as seed_v5
 
             seed_v5()
+            # v1.1: rexistro de limpeza (Noela, empresa contratada ficticia, en Vilardeiras)
+            from apps.tenants.demo_v11 import seed as seed_v11
+
+            seed_v11()
         self.stdout.write(
             self.style.SUCCESS(
                 f"Demo lista: {Municipality.objects.count()} concellos, {Facility.objects.count()} instalacións, "
@@ -362,7 +366,8 @@ class Command(BaseCommand):
                 access_level=level,
                 **extra,
             )
-            apply_template(f, key)
+            # v1.1: a limpeza da demo créaa demo_v11 só onde toca (pavillón de Vilardeiras)
+            apply_template(f, key, cleaning=False)
             if f.step_free:  # accesibilidade completa nas instalacións cubertas grandes
                 f.lift = f.indoor and t["kind"] != "padel"
                 f.hearing_loop = t["kind"] in ("sports_hall", "pool")

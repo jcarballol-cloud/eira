@@ -156,6 +156,7 @@ def detail(request, pk):
                 "vitality": idx,
                 "vitality_level": level(idx["value"]),
                 "last_supervision": facility.last_supervision(),
+                "last_cleaning": facility.last_cleaning(),  # v1.1
                 "safety_review": facility.safety_review(),
             }
         )

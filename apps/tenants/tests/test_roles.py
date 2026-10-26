@@ -14,7 +14,7 @@ pytestmark = pytest.mark.django_db
 
 
 @pytest.fixture
-def people(muni_a, region, citizen, admin_a, operator_a):
+def people(muni_a, region, citizen, admin_a, operator_a, cleaner_a):
     monitor = User.objects.create_user("monitora-a@example.org")
     Membership.objects.create(user=monitor, municipality=muni_a, role=Role.MONITOR)
     dep = User.objects.create_user("deputacion@example.org")
@@ -25,6 +25,7 @@ def people(muni_a, region, citizen, admin_a, operator_a):
         "operator": operator_a,
         "monitor": monitor,
         "region": dep,
+        "cleaning": cleaner_a,  # v1.1
     }
 
 
@@ -71,15 +72,19 @@ MATRIX = [
     (f"{C}/xestion/ordes/", {"admin"}),
     (f"{C}/xestion/altas/", {"admin"}),
     (f"{C}/app/benvida/", {"neighbour"}),
-    (f"{C}/operario/", {"operator"}),
-    (f"{C}/operario/calendario/", {"operator"}),
+    (f"{C}/operario/", {"operator", "cleaning"}),
+    (f"{C}/operario/calendario/", {"operator", "cleaning"}),
+    # v1.1 · limpeza: o rexistro e a exportación son do concello
+    (f"{C}/xestion/limpeza/", {"admin"}),
+    (f"{C}/xestion/mantemento/", {"admin", "region"}),
+    (f"{C}/xestion/incidencias/", {"admin"}),
     (f"{C}/monitor/", {"monitor"}),
     ("/rexion/proba/", {"region"}),
 ]
 
 
 @pytest.mark.parametrize("url, allowed", MATRIX)
-@pytest.mark.parametrize("who", ["neighbour", "admin", "operator", "monitor", "region"])
+@pytest.mark.parametrize("who", ["neighbour", "admin", "operator", "monitor", "region", "cleaning"])
 def test_role_matrix(client, people, url, allowed, who):
     client.force_login(people[who])
     status = client.get(url).status_code
@@ -90,7 +95,7 @@ def test_staff_cannot_book_or_enroll_as_neighbour(client, people, padel_a, objec
     from conftest import next_slot
 
     start = next_slot(padel_a)
-    for who in ("admin", "operator", "monitor", "region"):
+    for who in ("admin", "operator", "monitor", "region", "cleaning"):
         client.force_login(people[who])
         r = client.post(
             f"{C}/instalacions/{padel_a.pk}/reservar/",

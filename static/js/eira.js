@@ -256,6 +256,8 @@
         return p.then(function () {
           var fd = new FormData();
           item.entries.forEach(function (kv) { fd.append(kv[0], kv[1]); });
+          // v1.1: hora real en que se gardou sen conexión (o rexistro de limpeza usa esta)
+          if (item.at) fd.append("_queued_at", item.at);
           return fetch(item.url, { method: "POST", body: fd, credentials: "same-origin", headers: { "X-Eira-Sync": "1" } })
             .then(function (resp) {
               if (resp.ok || resp.status === 409 || resp.status === 404) {
@@ -285,6 +287,21 @@
     });
     renderQueue();
     if (navigator.onLine) flushQueue();
+  }
+  // v1.1: as zonas de limpeza gárdanse no móbil (o service worker cachea /operario/…) para
+  // que o QR abra o checklist aínda sen cobertura
+  function precacheLinks() {
+    if (!navigator.onLine || !("serviceWorker" in navigator)) return;
+    var links = Array.prototype.map.call(document.querySelectorAll("[data-precache] a[href]"), function (a) { return a.getAttribute("href"); });
+    if (!links.length) return;
+    // Unha a unha e despois de cargar a páxina, para non competir con ela
+    window.setTimeout(function () {
+      links.reduce(function (p, href) {
+        return p.then(function () {
+          return fetch(href, { credentials: "same-origin", headers: { Accept: "text/html" } }).catch(function () {});
+        });
+      }, Promise.resolve());
+    }, 800);
   }
   window.eiraFlushQueue = flushQueue;
 
@@ -362,6 +379,6 @@
   document.addEventListener("DOMContentLoaded", function () {
     var f = document.querySelector("[data-focus]");
     if (f) { f.setAttribute("tabindex", "-1"); f.focus(); }
-    setupMenu(); syncThemeToggles(); updateOnline(); setupOfflineForms(); setupKeypad(); setupToggles(); setupAutoSubmit();
+    setupMenu(); syncThemeToggles(); updateOnline(); setupOfflineForms(); precacheLinks(); setupKeypad(); setupToggles(); setupAutoSubmit();
   });
 })();

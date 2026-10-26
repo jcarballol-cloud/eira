@@ -10,6 +10,7 @@
       {% include "facilities/_vitality.html" with idx=vitality lvl=vitality_level %}
       {% if safety_review %}<li class="badge badge-ok">{% icon 'shield' %} {% blocktranslate with d=safety_review.closed_at|date:"d/m/Y" %}Revisada o {{ d }}{% endblocktranslate %}</li>{% endif %}
       {% if last_supervision %}<li class="badge">{% icon 'wrench' %} {% blocktranslate with d=last_supervision|date:"d/m/Y" %}Última supervisión: {{ d }}{% endblocktranslate %}</li>{% endif %}
+      {% if last_cleaning %}<li class="badge">{% icon 'sparkle' %} {% blocktranslate with d=last_cleaning|when %}Última limpeza: {{ d }}{% endblocktranslate %}</li>{% endif %}
     </ul>
     {% if facility.description %}<p>{{ facility.description }}</p>{% endif %}
   </div>
@@ -41,6 +42,7 @@
         <dt>{% translate "DEA máis próximo" %}</dt><dd>{{ facility.aed_location|default:_("Pregunta no concello") }}</dd>
         {% if tenant.contact_phone %}<dt>{% translate "Concello" %}</dt><dd><a href="tel:{{ tenant.contact_phone|cut:' ' }}">{{ tenant.contact_phone }}</a></dd>{% endif %}
         <dt>{% translate "Última supervisión" %}</dt><dd>{% if last_supervision %}{{ last_supervision|date:"d/m/Y" }}{% else %}{% translate "Sen datos" %}{% endif %}</dd>
+        <dt>{% translate "Última limpeza" %}</dt><dd>{% if last_cleaning %}{{ last_cleaning|when }}{% else %}{% translate "Sen datos" %}{% endif %}</dd>
       </dl>
       {% with items=facility.equipment_items %}{% if items %}
       <h3 class="h4">{% translate "Material dispoñible" %}</h3>

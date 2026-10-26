@@ -237,6 +237,15 @@ def settings_view(request):
 class StaffForm(forms.Form):
     email = forms.EmailField(label=gettext_lazy("Correo"))
     role = forms.ChoiceField(label=gettext_lazy("Rol"), choices=Role.choices)
+    # v1.1: persoal de limpeza dunha empresa contratada
+    company = forms.CharField(
+        label=gettext_lazy("Empresa (opcional)"),
+        required=False,
+        max_length=120,
+        help_text=gettext_lazy(
+            "Só se a persoa traballa para unha empresa contratada (p. ex. a de limpeza)."
+        ),
+    )
 
 
 class EligibilityForm(forms.Form):
@@ -288,9 +297,12 @@ def staff(request):
             return redirect(treverse(request.tenant, "manage:staff"))
         if form.is_valid():
             user, _c = User.objects.get_or_create(email=form.cleaned_data["email"].lower())
-            Membership.objects.get_or_create(
+            membership, _c = Membership.objects.get_or_create(
                 user=user, municipality=request.tenant, role=form.cleaned_data["role"]
             )
+            if form.cleaned_data.get("company") != membership.company:
+                membership.company = form.cleaned_data.get("company", "")
+                membership.save(update_fields=["company"])
             audit(
                 "tenant.staff_add",
                 request.user,

@@ -194,13 +194,21 @@ class Facility(TenantModel):
         return out
 
     def last_supervision(self):
-        """Data da última orde de mantemento pechada nesta instalación (calculada)."""
+        """Data da última orde de mantemento pechada nesta instalación (calculada).
+
+        v1.1: as ordes de limpeza non contan como supervisión (teñen a súa «Última limpeza»)."""
         order = (
             self.work_orders.filter(status="done", closed_at__isnull=False)
+            .exclude(kind="cleaning")
             .order_by("-closed_at")
             .first()
         )
         return order.closed_at if order else None
+
+    def last_cleaning(self):
+        """v1.1: data e hora do último rexistro de limpeza (QR ou orde de limpeza)."""
+        log = self.cleaning_logs.order_by("-done_at").first()
+        return log.done_at if log else None
 
     def safety_review(self):
         """Última revisión de seguridade inicial Eira pechada (v5 · H) ou None."""

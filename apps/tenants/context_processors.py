@@ -85,7 +85,7 @@ def eira(request):
         "region_consult": bool(tenant and "region_admin" in roles and "admin" not in roles),
         "framed": getattr(request, "framed", False) and layout in ("app", "tablet"),
         "is_staff_of_tenant": bool(
-            roles & {"admin", "maintenance", "monitor", "region_admin", "dpo"}
+            roles & {"admin", "maintenance", "monitor", "region_admin", "dpo", "cleaning"}
         ),
         "is_tenant_admin": bool(roles & {"admin", "region_admin"}),
         "demo_tools": settings.EIRA_DEMO_TOOLS,

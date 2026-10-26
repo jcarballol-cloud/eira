@@ -839,7 +839,9 @@ def check_in(booking, at=None):
     return True
 
 
-def submit_closing_checklist(booking, door_ok, key_ok, all_ok, notes="", by=None):
+def submit_closing_checklist(
+    booking, door_ok, key_ok, all_ok, notes="", by=None, needs_cleaning=False
+):
     from apps.incidents.models import Incident
 
     booking.closed_at = timezone.now()
@@ -874,10 +876,26 @@ def submit_closing_checklist(booking, door_ok, key_ok, all_ok, notes="", by=None
         from apps.incidents.services import notify_staff_new_incident
 
         notify_staff_new_incident(incident)
+    if needs_cleaning:
+        # v1.1: etiqueta «limpeza» ao saír → incidencia de limpeza (tarefa para o persoal)
+        cleaning_incident = Incident.objects.create(
+            municipality=booking.municipality,
+            facility=booking.facility,
+            reporter=booking.user,
+            booking=booking,
+            category=Incident.Category.CLEANING,
+            source=Incident.Source.CHECKLIST,
+            description=str(_("Ao saír: fai falta limpeza."))
+            + (f"\n{notes}" if notes and not problems else ""),
+        )
+        from apps.incidents.services import notify_staff_new_incident
+
+        notify_staff_new_incident(cleaning_incident)
+        incident = incident or cleaning_incident
     return incident
 
 
-def submit_start_state(booking, ok, notes="", photo=None, by=None):
+def submit_start_state(booking, ok, notes="", photo=None, by=None, cleaning=False):
     """v5 · D: estado da pista e do material ao entrar.
 
     Se hai un problema, créase unha incidencia **atribuída a antes desta reserva**
@@ -917,7 +935,7 @@ def submit_start_state(booking, ok, notes="", photo=None, by=None):
         facility=booking.facility,
         reporter=booking.user,
         prior_to_booking=booking,
-        category=Incident.Category.DAMAGE,
+        category=Incident.Category.CLEANING if cleaning else Incident.Category.DAMAGE,
         source=Incident.Source.START_STATE,
         description="\n\n".join(p for p in ((notes or "").strip(), text) if p),
         photo=booking.start_state_photo.name if booking.start_state_photo else "",

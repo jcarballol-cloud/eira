@@ -26,9 +26,10 @@ class WorkOrderFromIncidentForm(forms.Form):
 
     def __init__(self, *args, tenant=None, **kwargs):
         super().__init__(*args, **kwargs)
-        ids = Membership.objects.filter(municipality=tenant, role=Role.MAINTENANCE).values_list(
-            "user_id", flat=True
-        )
+        # v1.1: mantemento e persoal de limpeza
+        ids = Membership.objects.filter(
+            municipality=tenant, role__in=[Role.MAINTENANCE, Role.CLEANING]
+        ).values_list("user_id", flat=True)
         self.fields["assigned_to"].queryset = User.objects.filter(pk__in=ids)
         self.fields["assigned_to"].empty_label = gettext_lazy("Sen asignar")
 

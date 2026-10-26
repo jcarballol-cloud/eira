@@ -14,11 +14,12 @@
     <a href="{% turl 'manage:incidents' %}" {% if sub == 'incidents' %}aria-current="page"{% endif %}>{% icon 'alert' %} {% translate "Incidencias" %}</a>
     <a href="{% turl 'manage:notices' %}" {% if sub == 'notices' %}aria-current="page"{% endif %}>{% icon 'bell' %} {% translate "Avisos" %}</a>
     {% with adv=sub|default:'' %}
-    <details class="sidenav__more"{% if desk_mode == 'advanced' or adv in 'payments work_orders facilities closures maintenance activities indicators ratings observatory signups staff settings breaches custody' and adv %} open{% endif %}>
+    <details class="sidenav__more"{% if desk_mode == 'advanced' or adv in 'payments work_orders facilities closures maintenance activities indicators ratings observatory signups staff settings breaches custody cleaning' and adv %} open{% endif %}>
     <summary>{% if desk_mode == 'advanced' %}{% translate "Todas as ferramentas" %}{% else %}{% translate "Máis ferramentas" %}{% endif %}</summary>
     <p class="sidenav__group">{% translate "Cobros e mantemento" %}</p>
     <a href="{% turl 'manage:payments' %}" {% if sub == 'payments' %}aria-current="page"{% endif %}>{% icon 'euro' %} {% translate "Cobros" %}</a>
     <a href="{% turl 'manage:work_orders' %}" {% if sub == 'work_orders' %}aria-current="page"{% endif %}>{% icon 'wrench' %} {% translate "Ordes de traballo" %}</a>
+    <a href="{% turl 'manage:cleaning' %}" {% if sub == 'cleaning' %}aria-current="page"{% endif %}>{% icon 'sparkle' %} {% translate "Limpeza" %}</a>
     <p class="sidenav__group">{% translate "Servizo" %}</p>
     <a href="{% turl 'manage:facilities' %}" {% if sub == 'facilities' %}aria-current="page"{% endif %}>{% icon 'map' %} {% translate "Instalacións" %}</a>
     <a href="{% turl 'manage:closures' %}" {% if sub == 'closures' %}aria-current="page"{% endif %}>{% icon 'lock' %} {% translate "Peches" %}</a>

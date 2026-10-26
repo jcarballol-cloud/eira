@@ -5,7 +5,7 @@
 <div class="grid grid-2">
   <section class="card" aria-labelledby="st-title">
     <h2 id="st-title">{% translate "Roles do persoal" %}</h2>
-    <ul class="list">{% for m in members %}<li class="row-between"><span>{{ m.user.email }} · {{ m.get_role_display }}</span>
+    <ul class="list">{% for m in members %}<li class="row-between"><span>{{ m.user.email }} · {{ m.get_role_display }}{% if m.company %} · {{ m.company }}{% endif %}</span>
       {% if m.user != user %}<form method="post">{% csrf_token %}<input type="hidden" name="remove" value="{{ m.pk }}"><button class="btn btn-sm btn-secondary" type="submit">{% translate "Retirar" %}<span class="visually-hidden"> {{ m.user.email }}</span></button></form>{% endif %}</li>{% endfor %}</ul>
     <form method="post" novalidate class="mt-2">{% csrf_token %}{% include "includes/form.html" %}<button class="btn" type="submit">{% translate "Asignar rol" %}</button></form>
   </section>

@@ -5,6 +5,7 @@ Cada perfil ten a súa ferramenta, co seu formato:
 - `public`:    sen sesión → web pública do concello (consulta sen rexistro)
 - `neighbour`: veciñanza → app móbil (reservar, reservas, familia, saúde, avisos)
 - `operator`:  mantemento → app móbil coas súas ordes
+- `cleaning`:  persoal de limpeza (v1.1) → a mesma app móbil, só coas tarefas de limpeza
 - `monitor`:   monitora → tableta cos seus grupos
 - `admin`:     administración do concello → web de escritorio
 - `region`:    deputación → web de escritorio coa súa rede
@@ -16,11 +17,12 @@ documentada en DECISIONS.md).
 
 from django.urls import reverse
 
-STAFF_ROLES = frozenset({"admin", "maintenance", "monitor", "region_admin", "dpo"})
+STAFF_ROLES = frozenset({"admin", "maintenance", "monitor", "region_admin", "dpo", "cleaning"})
 LAYOUT = {
     "public": "public",
     "neighbour": "app",
     "operator": "app",
+    "cleaning": "app",  # v1.1
     "monitor": "tablet",
     "admin": "desk",
     "region": "desk",
@@ -37,6 +39,8 @@ def kind_in_tenant(user, roles):
         return "region"
     if "maintenance" in roles:
         return "operator"
+    if "cleaning" in roles:
+        return "cleaning"
     if "monitor" in roles:
         return "monitor"
     if "dpo" in roles:
@@ -90,6 +94,7 @@ def home_url(user, tenant=None, roles=None):
     target = {
         "admin": "manage:dashboard",
         "operator": "maintenance:my_orders",
+        "cleaning": "maintenance:my_orders",
         "monitor": "monitor:today",
         "dpo": "manage:breaches",
         "neighbour": "app:home",

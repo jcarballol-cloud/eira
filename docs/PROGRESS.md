@@ -114,3 +114,15 @@ Regra: só se engade. Choques anotados en DECISIONS («Choque»).
 - ✅ H · plantilla «Revisión de seguridade inicial Eira» e «Revisada o ‹data›»; docs/servizos.md.
 - ✅ I · demo v5, guión con paso novo (pitch 2:14 sen pista de subtítulos), anexo de 54 s, 42 capturas en docs/capturas/v5/, informe e etiqueta `v1.0-certame`.
 - Números v5: 616 tests unitarios/integración + 54 E2E; axe 105 páxinas × 3 tamaños e 41 en escuro, 0 violacións. RAM sen IA ≈ 270 MiB (Docker).
+
+## v1.1 · Rexistro de limpeza (26/10)
+Regra: só se engade. Choques anotados en DECISIONS (v1.1).
+- ✅ 1 rol «Persoal de limpeza» (propio ou de empresa contratada), mesma app do operario só coas tarefas de limpeza; matriz de roles ampliada.
+- ✅ 2 plans de limpeza co motor preventivo (tipo de tarefa, zonas, «varias veces ao día», checklist) e modelos nas plantillas de instalación.
+- ✅ 3 QR por zona imprimible; checklist con quen, data e hora, tarefas e foto opcional; sen conexión coa mesma cola (E2E sen rede).
+- ✅ 4 «Última limpeza» na ficha pública e aviso ao concello cando unha zona se atrasa.
+- ✅ 5 enrutado por tipo (limpeza → persoal de limpeza; avarías → mantemento; o concello ve todo) e etiqueta «limpeza» no estado ao entrar e no checklist de saída.
+- ✅ 6 exportación CSV/ODS/PDF por instalación e período; −10 en «Mantemento ao día» se hai zonas atrasadas.
+- ✅ 7 demo: Noela (empresa ficticia), plans no pavillón e vestiarios, 3 semanas de rexistros, aseos atrasados co aviso, perfil novo na portada.
+- ✅ 8 22 capturas en docs/capturas/v1.1/, sección v1.1 no informe, etiqueta `v1.1-certame`.
+- Números v1.1: 683 tests unitarios/integración + 58 E2E; axe 115 páxinas × 3 tamaños e 47 en escuro, 0 violacións.

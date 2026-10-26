@@ -43,3 +43,9 @@ O mesmo percorrido está gravado, con subtítulos, en `eira-demo-movil.webm` e `
 ## Vídeo anexo v5 (≈ 60 s): «Eira para o concello e a saúde»
 
 `python tools/tasks.py annex` → `docs/demo/eira-anexo-saude.{mp4,webm,vtt}` (fóra do git). Percorrido: consellos de saúde co tempo na reserva de Uxía → valoracións do concello → observatorio (sen cambios) → índice de vida activa e ficha de seguridade na pista de pádel → cartel da porta → revisión de seguridade inicial pechada → rexistro de brechas e comunicación ás persoas afectadas.
+
+## v1.1 · Rexistro de limpeza (paso opcional, ≈ 40 s; non está nos vídeos)
+1. Portada → Vilardeiras → **Noela** (persoal de limpeza, empresa contratada ficticia). Abre nas súas tarefas: arriba as zonas, cos **Aseos do pavillón «Atrasada»**.
+2. Toca «Vestiario 2» (é o que abre o QR da parede) → checklist → «Rexistrar limpeza». «Sen cobertura gárdase no móbil coa hora de agora e envíase despois.»
+3. Concello → **Panel** («Limpeza atrasada») → **Máis ferramentas → Limpeza**: quen limpou e cando, empresa, QR para imprimir e **Exportar o rexistro** (PDF para unha inspección).
+4. Ficha pública do pavillón: «Última limpeza: hoxe …» xunto á última supervisión.

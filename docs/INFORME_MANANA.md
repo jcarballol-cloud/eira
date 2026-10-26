@@ -1,7 +1,50 @@
 # Informe de la sesión nocturna — Eira
 
-**Fecha:** 23/10/2026 (última actualización: 26/10/2026, v5) · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
+**Fecha:** 23/10/2026 (última actualización: 26/10/2026, v1.1) · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
 
+
+## v1.1. Registro de limpieza (26/10) · etiqueta `v1.1-certame`
+
+**Servidor:** <http://localhost:8000> y en la LAN (`0.0.0.0:8000`, `EIRA_DEBUG=1`), con los datos regenerados justo antes de arrancar. Commits locales, sin push. Los vídeos **no** se han vuelto a grabar (siguen siendo los de la v5).
+
+**Regla:** solo se añade. Choques en `DECISIONS.md` (sección v1.1, palabra «Choque»): el plan preventivo de las plantillas no se toca (la limpieza va en un plan aparte), las órdenes de limpieza no cuentan como «Última supervisión» y, si el concello no tiene personal de limpieza, todo sigue como antes.
+
+### Qué hay y cómo se verificó
+
+| # | Qué | Verificado |
+|---|---|---|
+| 1 | Rol «Persoal de limpeza» (`cleaning`) por concello, propio o de una **empresa contratada** (campo opcional «Empresa» al asignar el rol). Usa la misma app móvil del operario (`/operario/`), pestaña «Tarefas», y **solo ve tareas de limpieza** | ✅ matriz de roles ampliada (cleaning en todas las URL: 200 en su app, 403 en el resto) + 8 tests de 403 + E2E |
+| 2 | Planes de limpieza con el motor del mantenimiento preventivo: tipo de tarea «limpeza»/«mantemento», zonas (vestuarios, aseos, pista, gradas, almacén, vaso…), frecuencia nueva «Varias veces ao día» (una orden por ronda), diaria o semanal, y checklist. Modelos por tipo de instalación en las plantillas (y botón «Aplicar modelo» para las existentes) | ✅ tests (modelo, idempotencia, 3 rondas/día) |
+| 3 | QR por zona imprimible (sustituye la hoja de papel). Al escanearlo con el rol de limpieza se abre el checklist: registra quién, empresa, fecha y hora, tareas hechas, observaciones y foto opcional (sin EXIF). Cierra la ronda pendiente. **Sin conexión:** misma cola que el operario; la hora es la de cuando se guardó, no la de la sincronización | ✅ tests + **E2E con el navegador sin red**: la página de la zona abre desde la caché, se guarda en la cola y al volver la red queda con la hora original |
+| 4 | Ficha pública: «Última limpeza: hoxe 10:40» junto a la última supervisión. Zona con más tiempo del previsto sin limpiar → aviso al concello (y a limpieza), una vez por retraso, en el panel del día y en «Limpeza» | ✅ tests (aviso único, se rearma tras limpiar, zona nueva no avisa antes de tiempo) + E2E |
+| 5 | Enrutado por tipo: incidencias de limpieza, estado al entrar con el nuevo tic «é de limpeza», tic «fai falta limpeza» al salir y valoraciones «Mal» con «Sucia» → tarea y aviso al personal de limpieza; las averías avisan a mantenimiento; el concello ve todo | ✅ 6 tests (incluido «Sucia» + luz rota: avería a mantenimiento y tarea aparte a limpieza) |
+| 6 | Registro exportable por instalación y período en **CSV, ODS y PDF** (varias páginas). En el índice de vida activa: −10 en «Mantemento ao día» si hay alguna zona atrasada (era fácil) | ✅ tests (3 formatos, PDF de ≥ 3 páginas, fechas al revés) + E2E de descarga |
+| 7 | Demo: **Noela**, limpieza de Vilardeiras de la empresa ficticia «Limpezas Brillo do Val, S. L.»; planes en el pabellón (pista, vestuarios 1 y 2, aseos, gradas, almacén) y en los vestuarios del campo de Outeiro; ≈ 200 registros de 3 semanas (algunos checklists incompletos, observaciones y 3 fotos; los domingos los vestuarios los cubre Brais); **los aseos del pabellón llevan 20 h sin limpiar (máx. 16 h) con el aviso**; una valoración «Mal · Sucia» que generó una tarea. Perfil nuevo en la portada de la demo con su miniatura | ✅ revisado en la demo regenerada |
+| 8 | Capturas, informe, etiqueta, servidor | ver abajo |
+
+### Cifras finales
+- **Tests unitarios e integración:** 683 en verde (eran 616 en la v5).
+- **E2E:** 58 en verde (sin contar los de vídeo y capturas, marca `video`). En la última pasada completa salieron 57 + 1 fallo ajeno a la v1.1: la captura v3 necesita una reserva futura de Uxía en el gimnasio y la suya terminaba a las 20:00, en mitad de la pasada; repetida sola con la demo recién generada, en verde.
+- **axe (WCAG 2.1 AA):** 115 páginas × 3 tamaños y 47 en tema oscuro, **0 violaciones**. Las páginas nuevas (app de limpieza, QR de zona para personal y para vecindad, página «Limpeza», QR imprimible, ficha con última limpeza) están en ambos conjuntos.
+- **Castellano:** 100 % (154 cadenas nuevas, traducidas a mano en esta tanda).
+- **Capturas:** 22 en `docs/capturas/v1.1/` (11 pantallas en móvil y escritorio).
+
+### Correcciones encontradas por el camino
+- **Tema oscuro:** la etiqueta «Atrasada» (`badge-alert`) no tenía versión oscura; no se veía porque en la demo no había nada atrasado en las pantallas con tema oscuro. Corregido.
+- **Umbral por defecto:** con 8–12 h, las zonas que se limpian varias veces al día habrían avisado todas las mañanas (la noche dura 13 h). Por defecto 16 h; diaria 30 h; semanal 8 días.
+
+### NO verificado o con límites
+- **QR sin conexión en un móvil real:** probado en Chromium (Playwright) cortando la red; no en un teléfono con iOS/Android ni escaneando un QR impreso. La página de la zona solo abre sin red si antes se abrió la lista de tareas con conexión (allí se precargan las zonas).
+- **La hora sin conexión** es la del reloj del móvil: si está mal, el registro también (se rechazan horas futuras y de más de 7 días).
+- **El QR no prueba presencia:** cualquiera con la URL y el rol puede registrar; no se guarda la ubicación (decisión de privacidad).
+- **PDF del registro:** texto en Helvetica sin incrustar y sin etiquetar; no es un PDF accesible (el cartel sí lo está).
+- **Borrado a los 2 años** de los registros de limpieza: documentado en la matriz RGPD, no programado.
+- **Traducciones al castellano:** sin revisión externa.
+- **Vídeos:** no regrabados; no muestran la limpieza.
+- **Prueba frágil existente:** la captura v3 (`test_screenshots.py`) depende de la hora a la que se genera la demo (ver cifras). No se ha tocado.
+
+### Cómo enseñarlo en 1 minuto
+Portada → Vilardeiras → **Noela** → zonas arriba con los **Aseos «Atrasada»** → «Vestiario 2» (lo que abre el QR) → checklist → «Rexistrar limpeza». Después, el concello: **Panel** («Limpeza atrasada») → **Máis ferramentas → Limpeza** (quién y cuándo, empresa, QR para imprimir, **Exportar** en PDF). Y la ficha pública del pabellón: «Última limpeza: hoxe…».
 
 ## v5. Versión definitiva (26/10) · etiqueta `v1.0-certame`
 

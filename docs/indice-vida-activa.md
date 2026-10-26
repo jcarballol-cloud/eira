@@ -17,7 +17,7 @@ Cada compoñente vai de 0 a 100. Período: as últimas **8 semanas** (a satisfac
 | **Diversidade de idades** | Ano de nacemento das contas que usaron a instalación | Persoas distintas repartidas en 5 franxas (0–17, 18–34, 35–54, 55–64, 65+). Entropía de Shannon normalizada: `100 × H / ln 5`. Todas nunha franxa = 0; repartidas por igual = 100 | Si (n = persoas distintas) |
 | **Satisfacción** | «Que tal foi?» | Media con ben = 100, regular = 50, mal = 0 | Si (n = valoracións) |
 | **Accesibilidade física** | Ficha da instalación | Elementos declarados ÷ 7 × 100 | Non |
-| **Mantemento ao día** | Última orde de mantemento pechada («Última supervisión») | ≤ 30 días = 100; baixa en liña recta ata 0 aos 180 días; sen ningunha = 0. −20 se hai ordes atrasadas | Non |
+| **Mantemento ao día** | Última orde de mantemento pechada («Última supervisión») | ≤ 30 días = 100; baixa en liña recta ata 0 aos 180 días; sen ningunha = 0. −20 se hai ordes atrasadas; v1.1: −10 se algunha zona de limpeza leva máis do previsto sen limpar | Non |
 
 ## Pesos (configurables)
 

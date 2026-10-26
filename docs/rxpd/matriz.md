@@ -56,3 +56,16 @@ Unha persoa de Vilardeiras pode reservar en Pontedouro (mesma deputación) coa s
 | Estado ao entrar (texto e foto opcional, sen EXIF) | ✔ | ✔ | ✔ | só con acceso de soporte (24 h) | os da reserva; se hai incidencia, os da incidencia |
 | Bonos (usos e caducidade) | ✔ | — | ✔ | — | os dos cobros (obriga contable) |
 | Rexistro de brechas de seguridade | — | — | só administración do concello e DPD | **—** | 5 anos (ver `brechas.md`) |
+
+## v1.1 · Rexistro de limpeza (datos do persoal)
+
+Son datos do persoal (propio ou da empresa contratada), non da veciñanza; por iso a táboa non vai na páxina «Quen custodia os teus datos».
+
+| Dato do persoal | Persoal de limpeza (propio) | Mantemento | Concello | Deputación | Veciñanza | Conservación |
+|---|---|---|---|---|---|---|
+| Nome, empresa, data e hora de cada limpeza, tarefas feitas e observacións | ✔ (os da súa zona, últimos 5) | — | ✔ (páxina «Limpeza» e exportación CSV/ODS/PDF) | só con acceso de soporte (24 h) | só «Última limpeza: ‹día e hora›», **sen nome** | 2 anos (inspeccións e control do contrato); despois bórranse |
+| Foto opcional da zona (sen EXIF nin localización) | ✔ | — | ✔ | só con acceso de soporte (24 h) | — | a do rexistro |
+
+- Base xurídica: execución do contrato de limpeza e obriga de hixiene das instalacións (art. 6.1.b e 6.1.c RXPD). A empresa contratada é **encargada** do tratamento: o contrato debe recoller o art. 28.
+- Non se rexistra a localización: o QR só proba que a persoa abriu a páxina da zona, non onde estaba. Sen conexión, a hora é a do móbil ao gardar (ata 7 días atrás; nunca no futuro).
+- **Non verificado:** o borrado automático aos 2 anos non está programado (vai coa purga dos avisos cando se implemente para todos os rexistros).

@@ -536,3 +536,69 @@ Formato: data · decisión · motivo · alternativas descartadas.
 - Datos rexenerados (`seed_demo`) ao comezo da gravación e **IA desactivada** (`EIRA_AI_ENABLED=0`). O aviso por vento usa como franxa a próxima reserva nunha instalación descuberta (de Uxía se hai), para que a vista previa chegue a alguén aínda que se grave de noite.
 - Recorte fronte ao guión longo: fóra saúde, consellos da sesión, valoracións e observatorio, para quedar en ≈ 2 min.
 - MP4, WebM e `.vtt` quedan en `docs/demo/` e ignorados polo git; van a unha release privada en borrador (ver `docs/demo/VIDEOS.md`).
+
+## v5 · Versión definitiva (26/10)
+
+Regra principal da tanda: **só se engade**. Cando algo novo choca co existente, gaña o existente e anótase aquí («Choque»).
+
+### C · Participantes, formas de pagamento, aprobación e luz
+- **Participantes:** número de persoas obrigatorio (o formulario xa vén con 1) e un máximo por instalación (`max_participants`, 12 por defecto). Os nomes son opcionais, un por liña, e só os ve o concello.
+  - Os tests antigos que confirmaban sen o campo actualizáronse para envialo (agora é obrigatorio, como pide a especificación).
+- **Formas de pagamento** (`PaymentMethod`): TPV, pagamento na oficina, gratuíta, bono e aprazado.
+  - O concello escolle as admitidas (por defecto **só TPV**, como ata a v4) e cada instalación pode restrinxilas (baleiro = as do concello).
+  - **Aprazado** desactivado por defecto: aínda que unha instalación o marque, non se ofrece se o concello non o activou.
+  - **Oficina:** a franxa queda gardada `office_payment_hours` (48 h por defecto) ou ata o inicio, o que chegue antes. Se non se paga, caduca igual ca un pagamento co TPV sen completar (`expire_pending`).
+  - **Gratuíta:** sen taxa e luz incluída.
+  - **Bono:** cada reserva desconta un uso, **luz incluída** (o concello fixa o prezo do bono). Se se cancela a tempo, o uso devólvese; fóra de prazo, non (igual ca o importe). Cómprase co TPV do concello ou na oficina.
+  - **Conciliación:** nova táboa «Por forma de pagamento» en Cobros (reservas, cobrado neto, pendente de cobro e suplemento de luz) e bonos vendidos. Os cobros de bonos van na táboa de cobros co seu concepto.
+- **Aprobación do concello** (`booking_mode`: directa por defecto, ou con aprobación):
+  - Primeiro págase (se é co TPV) e despois apróbase. Se o concello a rexeita, **devólvese o importe automaticamente** e a persoa recibe o motivo (obrigatorio).
+  - Con pagamento na oficina, primeiro apróbase e despois empeza o prazo para pagar.
+  - Unha reserva pendente de aprobación **garda a franxa** (se non, poderían aprobarse dúas para a mesma hora).
+  - **Cambios:** nas instalacións con aprobación, o cambio de hora queda pendente (`requested_start`) e a reserva segue na hora vella ata que o concello o aprobe. A franxa nova compróbase ao pedilo e outra vez ao aprobalo (non se garda mentres tanto).
+  - O persoal recibe un aviso na app e ve «Para aprobar» no panel do día.
+- **Suplemento de iluminación** (`lighting_supplement_cents` por instalación):
+  - Regra do concello: **solpor** (por defecto; amencer e solpor calculados coa fórmula da NOAA para as coordenadas da instalación, sen rede nin dependencias) ou **horario fixo** (`lighting_from`–`lighting_until`).
+  - Aplícase se algunha parte da franxa cae fóra das horas de luz natural, ou se a persoa marca «Necesito luz».
+  - Desglose «Pista 4,00 € + luz 1,50 €» antes de pagar (refréscase con HTMX ao cambiar o formulario), na reserva, no recibo HTML e no PDF. A grella mostra que franxas levan luz.
+  - **Nivel 3:** se a instalación ten suplemento, as luces só se acenden se a reserva o leva (pagado ou incluído no bono ou na gratuíta). **Choque:** ata agora acendíanse sempre que a instalación tiña luz; iso mantense nas instalacións sen suplemento configurado.
+  - Ao cambiar de hora non se recalcula o suplemento; se a franxa nova precisa luz, acéndese igual (asúmeo o concello).
+- **Escolas deportivas:** sen cambios, seguen xestionándose desde o concello.
+
+### D · Estado ao entrar
+- Despois da entrada (QR, código, apertura remota ou chave), a reserva ofrece «Como está todo ao entrar?»: «Todo ben» / «Hai un problema», texto e foto opcional (sen EXIF, coma as incidencias).
+- Se hai un problema créase unha incidencia con orixe «Estado ao entrar» e `prior_to_booking` = esta reserva: **queda rexistrado que xa estaba antes**. O texto inclúe a reserva anterior nesa instalación, se a hai.
+- A ficha da reserva (veciña, operario/a e concello) mostra o estado ao entrar e ao saír xuntos. O persoal de mantemento pode ver a ficha da reserva só en consulta.
+
+### A · Concellos próximos da mesma rede
+- Unha persoa reserva noutro concello da súa rede (mesma deputación ou mancomunidade) coa mesma conta. Na app: selector de concello en «Reservar» e páxina «Concellos próximos». Mentres reserva noutro concello, as lapelas da app seguen sendo as do seu concello e un aviso lembra a tarifa.
+- **Tarifa:** a de persoas non empadroadas do concello de destino (xa era a que se aplicaba a quen non está empadroado alí). O prezo vese antes de pagar e o cobro créase no concello de destino: o TPV simulado mostra o comercio dese concello (`FakePayment.merchant`).
+- **Opción de cada concello** (`network_open`, cupo `network_max_active` e antelación `network_advance_days`).
+  - **Choque:** ata a v4 calquera persoa con conta podía reservar en calquera concello á tarifa de non empadroada. Para non quitalo, `network_open` vale **Si por defecto**. Se un concello o desmarca, só reservan as persoas con vínculo con el (conta ou empadroamento); a reserva en nome doutra persoa desde o mostrador non se ve afectada.
+  - O cupo interprétase como **reservas activas á vez por persoa doutro concello** (2 por defecto) e a antelación como días máximos (baleiro = a mesma ca para a veciñanza; nunca máis).
+- **Concello de orixe:** só polos vínculos explícitos (empadroamento ou conta). Quen non ten ningún vínculo non é «da rede»: segue como ata agora.
+- **RXPD:** o destino recibe o nome para mostrar (ou «Persoa de ‹concello›» se non o hai), o concello de orixe, data, hora, persoas e cobro. Non ve correo, teléfono, ano de nacemento, empadroamento, familia nin saúde. O de orixe non ve as reservas noutros concellos. Documentado en `docs/rxpd/matriz.md`.
+- **Actividades e eventos próximos:** opcionais. A persoa activa cada concello en «Concellos próximos»; en «Avisos» aparecen os seus avisos públicos de actividades, festas e novidades e os grupos das escolas, filtrables por concello. Non se envía nada: é un taboleiro, coma o do propio concello, así que non precisa consentimento de comunicacións.
+
+### B · Ficha de seguridade e cartel
+- Material dispoñible (un por liña, a cantidade primeiro), protocolo de accidentes, DEA máis próximo e o 112 (ligazón `tel:112`) na ficha pública.
+- **Última supervisión:** calculada, data de peche da última orde de mantemento pechada da instalación. Non se garda.
+- **Cartel A4 en PDF etiquetado** xerado sen dependencias novas (`apps/facilities/poster.py`): árbore de estrutura (H1, H2, P, L/LI, Figure), `/Lang`, título visible, XMP, QR como figura con texto alternativo e decoración como artefacto. O QR leva ao rexistro de entrada (nivel 0) ou á reserva (resto).
+  - **Non verificado** con PAC nin veraPDF (non hai rede nin licenzas); as fontes estándar non van incrustadas, o que impide declarar PDF/UA estrito.
+- **Plantilla do concello:** o mesmo cartel co escudo (ou as iniciais na cor do concello) e os campos en branco.
+
+### E · Axuda, seguridade e inclusión
+- **Botón «?»** en todas as cabeceiras (app, operario, tableta e administración): `details`/`summary`, sen JS. Axuda da pantalla actual segundo o nome da URL, guía completa en `/axuda/` e contacto do concello.
+- **«Incidencia ou seguridade»** (icona de escudo) sempre na cabeceira: avaría, aviso de risco (prioridade alta, aviso inmediato á administración e a mantemento tamén por correo, primeiro na lista) e chamada ao 112 destacada.
+- **Linguaxe inclusiva:** guía en `docs/accesibilidade/linguaxe-inclusiva.md` e test que busca as formas a evitar no catálogo e nas plantillas.
+- **Modo básico/avanzado** da administración por persoa (`User.desk_mode`, básico por defecto). Só cambia o menú; os permisos e as URL son os mesmos.
+
+### F · Protección de datos explicada
+- «Quen custodia os teus datos» (`/c/‹concello›/privacidade/datos/`, pública e na app): a columna «quen o recibe» lese de `docs/rxpd/matriz.md` en tempo de execución; para que, canto tempo e como borralo están en `apps/accounts/custody.py`. Un test falla se a matriz ten unha fila sen explicación.
+- **Rexistro de brechas** só para administración do concello e o novo rol **DPD** (`dpo`, escritorio cun menú propio). A deputación non o ve nin co acceso de soporte (pode ser parte da brecha como encargada). Prazo de 72 h calculado e marcado; con risco hai que notificar ou explicar por que non. Comunicación modelo do art. 34 descargable.
+
+### G · Índice de vida activa
+- Ver `docs/indice-vida-activa.md`. Engádese ao observatorio, que non cambia. Sen cifra se hai menos de dous compoñentes de persoas con n ≥ 10. No panel do día gárdase 10 min en caché e na comparativa da deputación vai coa caché existente (5 min).
+
+### H · Revisión de seguridade inicial
+- Orde de traballo `kind="safety_review"` co checklist de 10 puntos. Ao pechala, a ficha mostra «Revisada o ‹data›» e conta como última supervisión. Se xa hai unha aberta, non se crea outra.

@@ -101,3 +101,15 @@ guión de 3 min verificado cun test E2E, 44 capturas automáticas en `docs/captu
 - ✅ Configuración: módulos en columna fixa de 280 px (sticky; debaixo por baixo de 1200 px), seccións emparelladas sen ocos, nota do padrón unha vez, contacto e DPD sen cortes.
 - ✅ Botón «Día / Noite» (barra de demo e enriba do marco), tema na sesión ou do sistema, crossfade da cabeceira (sen animación con movemento reducido), tema escuro AA en veciñanza, operario e tableta.
 - ✅ Perfil «Brais · veciño novo» sen actividade, filtro «Mañá» do operario con estado baleiro e catálogo `/dev/ilustracions/`.
+
+## v5 · Versión definitiva (26/10)
+Regra: só se engade. Choques anotados en DECISIONS («Choque»).
+- ✅ C · participantes (obrigatorio, máximo por instalación), formas de pagamento (TPV, oficina con prazo, gratuíta, bono, aprazado desactivado por defecto), conciliación por forma de pagamento, aprobación do concello (con devolución automática ao rexeitar e cambios pendentes), suplemento de luz (solpor NOAA ou horario fixo, «necesito luz», desglose antes de pagar e no recibo, nivel 3 só con suplemento). 17 tests.
+- ✅ A · reservar en concellos próximos da rede coa mesma conta (selector, «Concellos próximos», tarifa de non empadroada, TPV do destino, opción/cupo/antelación por concello, actividades e eventos opcionais en «Avisos»), RXPD na matriz. 7 tests + E2E.
+- ✅ B · ficha de seguridade (material, protocolo, DEA, 112, última supervisión calculada) e cartel A4 en PDF etiquetado + plantilla co escudo. 5 tests (con H).
+- ✅ D · estado ao entrar con incidencia atribuída a antes da reserva; entrada e saída xuntas na ficha (veciña, operario/a e concello).
+- ✅ E · botón «?» con axuda contextual e guía, «Incidencia ou seguridade» (risco con prioridade alta, 112), linguaxe inclusiva (guía e test), modo básico/avanzado.
+- ✅ F · «Quen custodia os teus datos» xerada da matriz, rexistro de brechas (admin e DPD), comunicación modelo, protocolo en docs/rxpd/brechas.md. 9 tests.
+- ✅ G · índice de vida activa (n ≥ 10, pesos configurables) na ficha, no panel e na deputación. 4 tests.
+- ✅ H · plantilla «Revisión de seguridade inicial Eira» e «Revisada o ‹data›»; docs/servizos.md.
+- I · demo v5, guión con paso novo, vídeos, capturas, informe e etiqueta: ver INFORME_MANANA.md (sección v5).

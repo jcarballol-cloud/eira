@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: EUPL-1.2 -->
-# Guión da demostración v4 (≈ 4 minutos e medio)
+# Guión da demostración v5 (≈ 4 minutos e tres cuartos)
 
 **Preparación:** `python tools/tasks.py dev` (ou `docker compose up`) e abrir <http://localhost:8000>. Os datos de demo rexenéranse con `python manage.py seed_demo`; son ficticios e as reservas créanse arredor da hora actual.
 
@@ -7,7 +7,7 @@ No escritorio, a app da veciñanza e a do operario aparecen dentro dun **marco d
 
 O mesmo percorrido está gravado, con subtítulos, en `eira-demo-movil.webm` e `eira-demo-escritorio.webm`. Pesan máis de 10 MB, así que non van ao git: distribúense como adxuntos da release (ver [VIDEOS.md](VIDEOS.md)). As capturas de cada paso están en `docs/capturas/v3/pitch-*/` e as novidades da v4 en `docs/capturas/v4/`. Regénerase con `pytest tests/e2e/test_video.py`.
 
-**Vídeo final do pitch (≈ 2 min, 1920×1080):** versión curta deste guión (alta por padrón → franxa tranquila → pagamento rexeitado e reintento → código e pechadura → «Que tal foi?» e incidencia → orde do operario → tableta → avisos e Telegram → deputación). Grávase con `python tools/tasks.py pitch` en `docs/demo/eira-pitch.{mp4,webm,vtt}`, fóra do git.
+**Vídeo final do pitch (≈ 2 min, 1920×1080):** versión curta deste guión (alta por padrón → franxa tranquila → pagamento rexeitado e reintento → código e pechadura → **(v5) Uxía reserva en Pontedouro con tarifa de non empadroada e suplemento de luz** → «Que tal foi?» e incidencia → orde do operario → tableta → avisos e Telegram → deputación). Grávase con `python tools/tasks.py pitch` en `docs/demo/eira-pitch.{mp4,webm,vtt}`, fóra do git.
 
 | Tempo | Pantalla | Que facer | Que dicir |
 |---|---|---|---|
@@ -21,6 +21,7 @@ O mesmo percorrido está gravado, con subtítulos, en `eira-demo-movil.webm` e `
 | 1:15 | TPV simulado | **«Simular pagamento rexeitado»** → «Tentalo de novo» → Pagar | «Un rexeitamento nunca confirma: a franxa líbrase ao momento. Só a notificación asinada da pasarela confirma o pagamento.» |
 | 1:40 | Reserva | **Para esta sesión**: 2–4 consellos dunha liña co tempo real da franxa (temperatura, sensación, UV, chuvia) e «Ver máis» coas fontes | «Consellos concretos, coa fonte: ACSM, OMS. Calculados no dispositivo.» |
 | 1:55 | Simulador de pechadura | Código → **ABERTO** | «A pechadura non ten internet: segredo compartido e reloxo.» |
+| 2:05 | **(v5)** Uxía → Reservar → selector **Concello: Pontedouro** → Pista de pádel 1 da Ribeira → pastilla de noite **«+luz»** → resumo | O desglose «Pista de pádel 4,00 € + luz 1,50 €», a tarifa de non empadroada e «o cobro vai ao TPV de Pontedouro» → pagar | «Coa mesma app reserva no concello veciño da rede. Paga a tarifa de non empadroada e a luz, e o cobro vai ao TPV de Pontedouro, que só recibe o necesario para a reserva.» |
 | 2:10 | Uxía → Checklist de peche | Porta si, todo en orde non; **«Que tal foi?» → Mal → «Luces avariadas»** | «Ao marchar, tres preguntas e unha valoración. Se é Mal, avísase ao concello.» |
 | 2:25 | Concello → incidencia | Validar → Crear orde para Brais | «Na cabeceira, o concello; ninguén do persoal pode reservar como veciño.» |
 | 2:40 | Brais (operario) | Só as súas ordes → checklist → Pechar | «Funciona sen cobertura. Uxía recibe «Arranxado!».» |
@@ -38,3 +39,7 @@ O mesmo percorrido está gravado, con subtítulos, en `eira-demo-movil.webm` e `
 - Monitor na tableta: asistencia coas cámaras de fotos e esforzo unha persoa tras outra, con caras OMNI.
 - Centro de privacidade.
 - Mapa con teselas do servidor do concello.
+
+## Vídeo anexo v5 (≈ 60 s): «Eira para o concello e a saúde»
+
+`python tools/tasks.py annex` → `docs/demo/eira-anexo-saude.{mp4,webm,vtt}` (fóra do git). Percorrido: consellos de saúde co tempo na reserva de Uxía → valoracións do concello → observatorio (sen cambios) → índice de vida activa e ficha de seguridade na pista de pádel → cartel da porta → revisión de seguridade inicial pechada → rexistro de brechas e comunicación ás persoas afectadas.

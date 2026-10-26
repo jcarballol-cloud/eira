@@ -602,3 +602,10 @@ Regra principal da tanda: **só se engade**. Cando algo novo choca co existente,
 
 ### H · Revisión de seguridade inicial
 - Orde de traballo `kind="safety_review"` co checklist de 10 puntos. Ao pechala, a ficha mostra «Revisada o ‹data›» e conta como última supervisión. Se xa hai unha aberta, non se crea outra.
+
+### v5 · Choques e correccións do peche
+- **Choque (E, modo básico por defecto):** ocultar entradas do menú faría «menos visible» o existente. No modo básico non se quita ningunha: o día a día queda á vista e o resto vai en «Máis ferramentas» (un `details` pechado que se abre só se estás nunha desas pantallas). No avanzado todo vai aberto.
+- **Dockerfile:** desde a v4.1 a imaxe non se construía (`collectstatic` sen `EIRA_PADRON_SECRET`). A construción usa agora un valor só para construír, como xa facía coa clave secreta; en execución segue sendo obrigatorio en produción.
+- **Bonos e rexeneración da demo:** `Voucher.type` pasa de PROTECT a CASCADE para que borrar un concello (a demo rexenérase así) non falle.
+- **Pitch:** o MP4 xa non leva pista de subtítulos activable; só os queimados (o `.vtt` queda aparte). Dous subtítulos acurtados para quedar en ≈ 2:14 co paso novo.
+- **Versión conxelada:** etiqueta `v1.0-certame`. Desde aquí só correccións.

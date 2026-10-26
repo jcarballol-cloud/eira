@@ -7,7 +7,8 @@
       {% elif quote.method == 'free' %}{% translate "Gratuíta" %}
       {% elif price %}
         <span class="price-line">{% if discount %}<del aria-label="{% translate 'Prezo habitual' %} {{ base_price|euros }}">{{ base_price|euros }}</del> {% endif %}{{ facility.get_kind_display }} {{ quote.slot_cents|euros }}{% if quote.lighting_cents %} + {% translate "luz" %} {{ quote.lighting_cents|euros }}{% endif %}</span>
-        {% if quote.lighting_cents %}<br><strong class="price-now">{% translate "Total" %} {{ price|euros }}</strong>{% else %}{% if discount %} <span class="badge badge-warn">★ −{{ discount }} % {% translate "franxa tranquila" %}</span>{% endif %}{% endif %}
+        {% if discount %} <span class="badge badge-warn">★ −{{ discount }} % {% translate "franxa tranquila" %}</span>{% endif %}
+        {% if quote.lighting_cents %}<br><strong class="price-now">{% translate "Total" %} {{ price|euros }}</strong>{% endif %}
       {% else %}{% translate "Gratuíta" %}{% endif %}
       <small>({{ audience_label }})</small>
     </dd>

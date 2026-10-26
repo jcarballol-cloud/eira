@@ -12,7 +12,7 @@ RUN pip install -r requirements.txt
 
 COPY . .
 RUN python tools/compile_messages.py \
- && EIRA_SECRET_KEY=build-only python manage.py collectstatic --noinput -v0 \
+ && EIRA_SECRET_KEY=build-only EIRA_PADRON_SECRET=build-only python manage.py collectstatic --noinput -v0 \
  && useradd --create-home --uid 1000 eira && mkdir -p /app/media && chown -R eira /app/media
 USER eira
 

@@ -5,7 +5,8 @@
 
 Grava con capturas de pantalla do navegador (CDP) en vez do gravador de Playwright, que
 comprime moito a 1080p, e monta o vídeo con ffmpeg (H.264 para o MP4, VP9 para o WebM).
-Os subtítulos van queimados na imaxe e, ademais, nun .vtt e como pista no MP4.
+Os subtítulos van queimados na imaxe e, ademais, nun .vtt aparte (v5: o MP4 xa non leva
+pista de subtítulos activable).
 Non forma parte da CI (marca `video`).
 """
 
@@ -182,12 +183,12 @@ def run_pitch(page, base, d):
     d.click("main button.btn-lg")
     d.say("Pasarela de pagamento simulada. Primeiro intento: tarxeta rexeitada.")
     d.click("button[value=ko]")
-    d.say("Un rexeitamento nunca confirma a reserva: a franxa queda libre ao momento.", extra=0.4)
+    d.say("Un rexeitamento nunca confirma a reserva: a franxa queda libre.")
     d.click("text=Tentalo de novo")
     page.check("#id_accept_rules")
     d.click("main button.btn-lg")
     d.click("button[value=ok]")
-    d.say("Segundo intento: só a notificación asinada da pasarela confirma o pagamento.")
+    d.say("Segundo intento: só a pasarela asinada confirma o pagamento.")
     # 4. Código e pechadura
     d.click("text=Ver o acceso e a reserva")
     code = page.locator(".access-code__digits").first.text_content().replace(" ", "")
@@ -198,9 +199,29 @@ def run_pitch(page, base, d):
     d.click("text=Probar código")
     d.show(".lock-screen")
     d.say("A pechadura non ten internet: segredo compartido e reloxo. ABERTO.", extra=0.4)
-    # 5. Peche: «Que tal foi?» e incidencia
+    # 5. (v5) Uxía reserva en Pontedouro coa mesma app: tarifa de non empadroada e luz
     d.hide()
     d.login(base, "uxia@demo.eira.example")
+    d.go(c + "/")
+    page.select_option("#town-select", "pontedouro")
+    d.click("form.town-switch button[type=submit]")
+    d.click("main a:has-text('Pista de pádel 1 da Ribeira')")
+    for chip in page.locator(".daychip").all():
+        chip.click()
+        lit = page.locator(".daypanel:not([hidden]) a.pill:has(.pill__light)")
+        if lit.count():
+            break
+    lit.first.scroll_into_view_if_needed()
+    lit.first.click()
+    d.click("[data-picksum-go]")
+    d.show("#price-summary")
+    d.say("Uxía reserva en Pontedouro coa mesma app: tarifa de non empadroada e luz.")
+    page.check("#id_accept_rules")
+    d.click("main button.btn-lg")
+    d.say("O cobro vai ao TPV de Pontedouro.")
+    d.click("button[value=ok]")
+    # 6. Peche: «Que tal foi?» e incidencia
+    d.hide()
     d.go(c + "/reservas/")
     d.click("text=Checklist de peche")
     page.check("#id_door_ok_0")
@@ -220,7 +241,7 @@ def run_pitch(page, base, d):
     page.select_option("#id_assigned_to", label="Brais (mantemento)")
     d.say("O concello valida a incidencia e crea unha orde de traballo para Brais.")
     d.click("button:has-text('Crear orde')")
-    # 6. Orde no móbil do operario
+    # 7. Orde no móbil do operario
     d.hide()
     d.login(base, "brais@demo.eira.example")
     d.go(c + "/operario/")
@@ -230,7 +251,7 @@ def run_pitch(page, base, d):
     page.fill("#id_closing_notes", "Lámpadas substituídas.")
     d.click("button[value=close]")
     d.say("Orde pechada: Uxía recibe «Arranxado!».")
-    # 7. Tableta da monitora: abecedario → saída → RPE
+    # 8. Tableta da monitora: abecedario → saída → RPE
     from apps.activities.models import Group
     from apps.activities.services import sessions_for_day
 
@@ -247,7 +268,7 @@ def run_pitch(page, base, d):
     page.locator(".kiosk__rpebtn[data-rpe='5']").click()
     page.wait_for_selector(".kiosk__thanks")
     d.say("«Grazas!» e volve soa ao abecedario.")
-    # 8. Avisos con vista previa e Telegram
+    # 9. Avisos con vista previa e Telegram
     d.hide()
     d.login(base, "admin@vilardeiras.demo.eira.example")
     d.go(c + "/xestion/avisos/novo/")
@@ -269,7 +290,7 @@ def run_pitch(page, base, d):
     page.get_by_role("button", name="Vista previa").click()
     page.wait_for_load_state("networkidle")
     d.show("aside[aria-labelledby=pv-title]")
-    d.say("Vista previa en app, push, correo e Telegram, e a cantas persoas chega.", extra=0.4)
+    d.say("Vista previa en app, push, correo e Telegram, e a cantas persoas chega.")
     page.get_by_role("button", name="Enviar ou programar").click()
     page.wait_for_load_state("networkidle")
     from apps.notifications.demo import UXIA_CHAT
@@ -279,7 +300,7 @@ def run_pitch(page, base, d):
     d.say(
         "Telegram: o bot persoal avisa a Uxía, e a canle pública do concello, sen datos persoais."
     )
-    # 9. Comparativa da deputación
+    # 10. Comparativa da deputación
     d.hide()
     d.login(base, "deputacion@demo.eira.example")
     d.say("A deputación compara os concellos: uso por habitante, ocupación e satisfacción.")
@@ -314,6 +335,14 @@ def test_record_final_pitch(browser, base, tmp_path, settings):
     rec.stop()
     ctx.close()
 
+    total = encode(rec, d, tmp_path, "eira-pitch")
+    print(f"\nPitch: {total:.1f} s, {len(rec.frames)} frames")
+
+
+def encode(rec, d, tmp_path, stem):
+    """Monta MP4 (H.264) e WebM (VP9) cos subtítulos queimados e escribe o .vtt aparte.
+    Devolve a duración en segundos."""
+    ffmpeg = shutil.which("ffmpeg")
     # Lista para o demuxer concat: cada frame ocupa da súa marca ata a seguinte, sobre unha
     # grella de 1/FPS para que a duración total (e os subtítulos) non derive
     t0 = rec.frames[0][0]
@@ -329,7 +358,7 @@ def test_record_final_pitch(browser, base, tmp_path, settings):
     total = rec.frames[-1][0] + 1 - t0
 
     OUT.mkdir(exist_ok=True)
-    vtt = OUT / "eira-pitch.vtt"
+    vtt = OUT / f"{stem}.vtt"
     cues = ["WEBVTT", "Language: gl", ""]
     for i, (start, end, text) in enumerate(d.cues, 1):
         cues += [str(i), f"{vtt_time(max(start - t0, 0))} --> {vtt_time(end - t0)}", text, ""]
@@ -337,12 +366,12 @@ def test_record_final_pitch(browser, base, tmp_path, settings):
 
     src = ["-f", "concat", "-safe", "0", "-i", str(concat)]
     scale = ["-vf", f"scale={SIZE['width']}:{SIZE['height']},fps={FPS},format=yuv420p"]
-    mp4, webm = OUT / "eira-pitch.mp4", OUT / "eira-pitch.webm"
+    mp4, webm = OUT / f"{stem}.mp4", OUT / f"{stem}.webm"
     subprocess.run(
-        [ffmpeg, "-y", "-loglevel", "error", *src, "-i", str(vtt), *scale,
-         "-map", "0:v", "-map", "1:s", "-c:v", "libx264", "-preset", "slow", "-crf", "20",
-         "-c:s", "mov_text", "-metadata:s:s:0", "language=glg", "-movflags", "+faststart",
-         str(mp4)],
+        # v5: só os subtítulos queimados na imaxe, sen pista de subtítulos activable no MP4
+        [ffmpeg, "-y", "-loglevel", "error", *src, *scale,
+         "-map", "0:v", "-c:v", "libx264", "-preset", "slow", "-crf", "20",
+         "-movflags", "+faststart", str(mp4)],
         check=True,
     )  # fmt: skip
     subprocess.run(
@@ -351,4 +380,4 @@ def test_record_final_pitch(browser, base, tmp_path, settings):
         check=True,
     )  # fmt: skip
     assert mp4.stat().st_size > 500_000 and webm.stat().st_size > 500_000
-    print(f"\nPitch: {total:.1f} s, {len(rec.frames)} frames -> {mp4} e {webm}")
+    return total

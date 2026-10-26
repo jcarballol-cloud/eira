@@ -1,7 +1,56 @@
 # Informe de la sesión nocturna — Eira
 
-**Fecha:** 23/10/2026 · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
+**Fecha:** 23/10/2026 (última actualización: 26/10/2026, v5) · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
 
+
+## v5. Versión definitiva (26/10) · etiqueta `v1.0-certame`
+
+**Servidor:** <http://localhost:8000> y en la LAN (`0.0.0.0:8000`, `EIRA_DEBUG=1`), con los datos regenerados justo antes de arrancar. Commits locales, sin push. Desde aquí, solo correcciones.
+
+**Regla de la tanda:** solo se añade. Nada existente se quitó ni se hizo menos visible (salud, consejos, observatorio con esfuerzo y pruebas físicas, valoraciones, tableta, avisos, Telegram). Los choques están en `DECISIONS.md` con la palabra «Choque».
+
+### Qué hay y cómo se verificó
+
+| Bloque | Qué | Verificado |
+|---|---|---|
+| C | Participantes (obligatorio, máximo por instalación), formas de pago por concello e instalación (TPV, oficina con plazo, gratuita, bono, aplazado desactivado por defecto), conciliación por forma de pago, aprobación del gestor (aviso, aprobar/rechazar con motivo, devolución automática si estaba pagada, cambios pendientes), suplemento de luz (puesta de sol NOAA u horario fijo, «necesito luz», desglose antes de pagar, en la reserva y en el recibo HTML/PDF; nivel 3 solo enciende con suplemento) | ✅ 18 tests + 1 E2E (pago en oficina y aprobación desde el panel) |
+| A | Reservar en concellos de la red con la misma cuenta: selector en «Reservar», página «Concellos próximos», aviso de tarifa, tarifa de no empadronada del destino, cobro en el TPV del destino (el TPV simulado muestra el comercio), casilla + cupo + antelación por concello, actividades y eventos de concellos próximos opcionales y filtrables en «Avisos». RGPD en `docs/rxpd/matriz.md` | ✅ 7 tests (tarifa, TPV correcto, opción cerrada, cupo, antelación, el destino no ve correo ni teléfono, el origen no ve la reserva, feed opcional) + E2E de Uxía reservando en Pontedouro con luz |
+| B | Ficha: material con cantidades, protocolo de accidente, DEA, 112 (`tel:112`) y última supervisión calculada. Cartel A4 en **PDF etiquetado** (estructura, idioma, texto alternativo del QR, artefactos) y plantilla con el escudo; el cartel HTML también lleva normas, protocolo, DEA y 112 | ✅ 4 tests (contenido del PDF, marcas de etiquetado, permisos) |
+| D | Estado al entrar («todo ben» / «hai un problema» + foto sin EXIF); con problema, incidencia **atribuida a antes de la reserva**; entrada y salida juntas en la ficha (vecina, operario y gestor) | ✅ cubierto en tests de C y en la demo; ⚠️ sin E2E propio |
+| E | Botón «?» en las cuatro herramientas con ayuda de la pantalla, guía completa y contacto; botón «Incidencia ou seguridade» (avería, riesgo con prioridad alta y aviso inmediato, 112); guía de lenguaje inclusivo y revisión de cadenas gl/es; modo básico (por defecto) / avanzado del menú | ✅ E2E del «?» y de seguridad; test de lenguaje inclusivo sobre el catálogo y las plantillas; E2E del menú |
+| F | «Quen custodia os teus datos» (app y web pública) generada desde la matriz; protocolo de brechas; registro de brechas con plazo de 72 h y plantilla de comunicación; rol DPD | ✅ 9 tests de permisos (admin y DPD sí; vecindad, mantenimiento, monitora, diputación con acceso de soporte, otro concello y anónimo no) |
+| G | Índice de vida activa 0–100 (ocupación real, diversidad de edades, satisfacción, accesibilidad, mantenimiento), pesos configurables, n ≥ 10, «sen datos suficientes». En la ficha, el panel y la comparativa. **El observatorio no cambia** | ✅ 4 tests |
+| H | Plantilla «Revisión de seguridade inicial Eira» (10 puntos) y «Revisada o ‹data›»; `docs/servizos.md` | ✅ test |
+| I | Demo, guion, vídeos, capturas, informe, etiqueta, servidor | ver abajo |
+
+### Cifras finales
+- **Tests unitarios e integración:** 616 en verde (eran 425 al empezar la tanda).
+- **E2E:** 54 en verde (sin contar los de vídeo y capturas, marca `video`).
+- **axe (WCAG 2.1 AA):** 105 páginas × 3 tamaños (móvil, tableta, escritorio) y 41 en tema oscuro, **0 violaciones**. Las páginas nuevas de la v5 están en ambos conjuntos.
+- **Castellano:** 100 % (503 cadenas nuevas o cambiadas, traducidas y revisadas por muestreo).
+- **RAM sin IA** (`docker compose up`, sin modelo cargado): app 200–204 MiB (2 workers), PostgreSQL 47–49 MiB, bucle de avisos 17 MiB → **≈ 270 MiB** en reposo y tras 150 peticiones. Sigue valiendo un VPS de 1 GB.
+- **Vídeos** (fuera del git, `docs/demo/`): pitch 1920×1080 de **2:14** con el paso nuevo (reserva de Uxía en Pontedouro con tarifa de no empadronada y luz) y **sin pista de subtítulos activable** en el MP4 (comprobado con ffprobe: un solo flujo de vídeo); anexo «Eira para o concello e a saúde» de **54 s**.
+- **Capturas:** 42 en `docs/capturas/v5/` (21 pantallas de A–H en móvil y escritorio).
+
+### Correcciones encontradas por el camino
+- **Docker no construía desde la v4.1:** `collectstatic` en el `Dockerfile` fallaba porque `EIRA_PADRON_SECRET` es obligatorio en producción. Ahora la construcción usa un valor solo para construir, como ya hacía con la clave secreta. Verificado: imagen construida y `docker compose up` sirviendo las páginas v5.
+- **La demo no se podía regenerar con bonos** (FK protegida): corregido y con test.
+- **Tema oscuro:** el día elegido, las franjas tranquilas, las ocupadas y «A túa» del selector no tenían contraste en oscuro (dependía del día y la hora; salió al pasar axe por Pontedouro). Corregido y comprobado con axe en las 13 fichas.
+
+### NO verificado o con límites
+- **PDF accesible:** está etiquetado (estructura, idioma, alternativo del QR), pero **no se validó con PAC ni veraPDF** y usa Helvetica sin incrustar, así que no se puede declarar PDF/UA.
+- **Puesta de sol:** fórmula NOAA con precisión de ±2 minutos; no se contrastó con una fuente oficial día a día.
+- **TPV real:** cada concello cobra en su TPV solo en el adaptador simulado (el comercio aparece en la pasarela). El adaptador Redsys sigue siendo un esqueleto.
+- **Índice de vida activa:** los umbrales (60 % de ocupación = 100, ventanas de 30–180 días) son una propuesta razonable, no un estándar; están documentados y son configurables solo en los pesos.
+- **Estado al entrar:** sin E2E propio; probado en tests de servicio, en la ficha y en la demo.
+- **Traducciones al castellano:** hechas con apoyo automático y revisadas por muestreo, sin revisión externa.
+- **Lenguaje inclusivo:** el test busca las formas típicas; no garantiza que no quede ningún masculino genérico en textos largos.
+- **Aprobación + cambio de hora:** la franja nueva no se reserva mientras el cambio espera la aprobación (se vuelve a comprobar al aprobar).
+- **Vídeos:** revisados por fotogramas (paso nuevo y anexo), no vistos enteros en tiempo real.
+- **Commits:** el código de A–H va en un commit; los tests y E2E se pasaron sobre el árbol final de cada grupo, no sobre cada bloque por separado.
+
+### Cómo enseñarlo en 1 minuto
+Uxía (Vilardeiras) → Reservar → selector **Pontedouro** → Pista de pádel 1 → franja de noche con «+luz» → desglose y TPV de Pontedouro. Después, el concello: **Panel** («Para aprobar», «Índice de vida activa») → **Cobros** («Por forma de pagamento») → **Máis ferramentas → Rexistro de brechas**. Y la ficha pública de cualquier instalación: seguridad, 112, «Revisada o…».
 
 ## v4.1. Ajustes visuales rápidos (24/10)
 

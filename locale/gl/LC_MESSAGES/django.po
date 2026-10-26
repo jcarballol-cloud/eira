@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Eira 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 14:22+0100\n"
-"PO-Revision-Date: 2026-10-26 14:22+0100\n"
+"POT-Creation-Date: 2026-10-26 15:37+0100\n"
+"PO-Revision-Date: 2026-10-26 15:37+0100\n"
 "Last-Translator: Equipo Eira\n"
 "Language-Team: Equipo Eira\n"
 "Language: gl\n"
@@ -204,7 +204,7 @@ msgstr ""
 "padrón."
 
 #: apps/accounts/custody.py:38 apps/accounts/custody.py:43
-#: apps/accounts/custody.py:78 apps/accounts/custody.py:128
+#: apps/accounts/custody.py:78 apps/accounts/custody.py:130
 msgid "Pídeo no concello."
 msgstr "Pídeo no concello."
 
@@ -297,7 +297,7 @@ msgstr ""
 "Para mellorar as instalacións. O persoal le os comentarios sen o teu nome."
 
 #: apps/accounts/custody.py:72 apps/accounts/custody.py:77
-#: apps/accounts/custody.py:102
+#: apps/accounts/custody.py:104
 msgid "2 anos."
 msgstr "2 anos."
 
@@ -335,7 +335,7 @@ msgstr "Eira só garda un resumo cifrado ata a seguinte carga do padrón."
 msgid "Non hai nada teu que borrar en Eira: o padrón é do concello."
 msgstr "Non hai nada teu que borrar en Eira: o padrón é do concello."
 
-#: apps/accounts/custody.py:91
+#: apps/accounts/custody.py:92
 msgid ""
 "Cando reservas noutro concello da rede, para que o seu persoal saiba de quen"
 " é a reserva."
@@ -343,16 +343,16 @@ msgstr ""
 "Cando reservas noutro concello da rede, para que o seu persoal saiba de quen"
 " é a reserva."
 
-#: apps/accounts/custody.py:92
+#: apps/accounts/custody.py:94
 msgid "Os da reserva nese concello (2 anos)."
 msgstr "Os da reserva nese concello (2 anos)."
 
-#: apps/accounts/custody.py:93 apps/accounts/custody.py:98
-#: apps/accounts/custody.py:103
+#: apps/accounts/custody.py:95 apps/accounts/custody.py:100
+#: apps/accounts/custody.py:105
 msgid "Pídeo ao concello onde reservaches."
 msgstr "Pídeo ao concello onde reservaches."
 
-#: apps/accounts/custody.py:96
+#: apps/accounts/custody.py:98
 msgid ""
 "Para aplicarche a tarifa de persoas non empadroadas e contar as visitas da "
 "rede."
@@ -360,67 +360,67 @@ msgstr ""
 "Para aplicarche a tarifa de persoas non empadroadas e contar as visitas da "
 "rede."
 
-#: apps/accounts/custody.py:97
+#: apps/accounts/custody.py:99
 msgid "Os da reserva."
 msgstr "Os da reserva."
 
-#: apps/accounts/custody.py:101
+#: apps/accounts/custody.py:103
 msgid "Para gardarche a franxa no outro concello."
 msgstr "Para gardarche a franxa no outro concello."
 
-#: apps/accounts/custody.py:106
+#: apps/accounts/custody.py:108
 msgid "Para cobrar no TPV do concello onde reservas."
 msgstr "Para cobrar no TPV do concello onde reservas."
 
-#: apps/accounts/custody.py:107
+#: apps/accounts/custody.py:109
 msgid "6 anos, por obriga tributaria."
 msgstr "6 anos, por obriga tributaria."
 
-#: apps/accounts/custody.py:108 apps/accounts/custody.py:133
+#: apps/accounts/custody.py:110 apps/accounts/custody.py:135
 msgid "Non se poden borrar antes por obriga legal."
 msgstr "Non se poden borrar antes por obriga legal."
 
-#: apps/accounts/custody.py:111
+#: apps/accounts/custody.py:113
 msgid "O outro concello non os recibe: os avisos da reserva mándachos Eira."
 msgstr "O outro concello non os recibe: os avisos da reserva mándachos Eira."
 
-#: apps/accounts/custody.py:112 apps/accounts/custody.py:113
-#: apps/accounts/custody.py:117 apps/accounts/custody.py:118
+#: apps/accounts/custody.py:114 apps/accounts/custody.py:115
+#: apps/accounts/custody.py:119 apps/accounts/custody.py:120
 msgid "—"
 msgstr "—"
 
-#: apps/accounts/custody.py:116
+#: apps/accounts/custody.py:118
 msgid "O outro concello non os recibe."
 msgstr "O outro concello non os recibe."
 
-#: apps/accounts/custody.py:121
+#: apps/accounts/custody.py:123
 msgid "Para saber cantas persoas usan a instalación e, se queres, quen."
 msgstr "Para saber cantas persoas usan a instalación e, se queres, quen."
 
-#: apps/accounts/custody.py:122
+#: apps/accounts/custody.py:124
 msgid "Os da reserva (2 anos)."
 msgstr "Os da reserva (2 anos)."
 
-#: apps/accounts/custody.py:126
+#: apps/accounts/custody.py:128
 msgid ""
 "Para que, se algo xa estaba mal, non se che atribúa e se poida reparar."
 msgstr ""
 "Para que, se algo xa estaba mal, non se che atribúa e se poida reparar."
 
-#: apps/accounts/custody.py:127
+#: apps/accounts/custody.py:129
 msgid "Os da reserva; se se creou unha incidencia, os da incidencia (2 anos)."
 msgstr ""
 "Os da reserva; se se creou unha incidencia, os da incidencia (2 anos)."
 
-#: apps/accounts/custody.py:131
+#: apps/accounts/custody.py:133
 msgid "Para descontar os usos das túas reservas."
 msgstr "Para descontar os usos das túas reservas."
 
-#: apps/accounts/custody.py:132
+#: apps/accounts/custody.py:134
 msgid "6 anos, coma os cobros."
 msgstr "6 anos, coma os cobros."
 
-#: apps/accounts/custody.py:136
+#: apps/accounts/custody.py:138
 msgid ""
 "Para cumprir os arts. 33 e 34 do RXPD se algunha vez hai un incidente cos "
 "datos."
@@ -428,11 +428,11 @@ msgstr ""
 "Para cumprir os arts. 33 e 34 do RXPD se algunha vez hai un incidente cos "
 "datos."
 
-#: apps/accounts/custody.py:137
+#: apps/accounts/custody.py:139
 msgid "5 anos."
 msgstr "5 anos."
 
-#: apps/accounts/custody.py:138
+#: apps/accounts/custody.py:140
 msgid ""
 "Non contén os teus datos: describe o incidente. Se te afectase, "
 "informaríamoste."
@@ -440,15 +440,15 @@ msgstr ""
 "Non contén os teus datos: describe o incidente. Se te afectase, "
 "informaríamoste."
 
-#: apps/accounts/custody.py:143
+#: apps/accounts/custody.py:145
 msgid "só cifras agregadas"
 msgstr "só cifras agregadas"
 
-#: apps/accounts/custody.py:144
+#: apps/accounts/custody.py:146
 msgid "seudonimizado"
 msgstr "seudonimizado"
 
-#: apps/accounts/custody.py:152
+#: apps/accounts/custody.py:154
 msgid "si"
 msgstr "si"
 
@@ -616,7 +616,7 @@ msgstr "persoas usuarias"
 msgid "Veciñanza"
 msgstr "Veciñanza"
 
-#: apps/accounts/models.py:94 apps/tenants/views.py:249
+#: apps/accounts/models.py:94 apps/tenants/views.py:262
 msgid "Administración do concello"
 msgstr "Administración do concello"
 
@@ -667,7 +667,7 @@ msgid "En liña"
 msgstr "En liña"
 
 #: apps/accounts/models.py:193 apps/accounts/models.py:277
-#: apps/bookings/manage.py:243 apps/bookings/models.py:62
+#: apps/bookings/manage.py:248 apps/bookings/models.py:62
 msgid "Mostrador"
 msgstr "Mostrador"
 
@@ -1539,106 +1539,106 @@ msgstr "Pendente de pago"
 msgid "Actividade municipal"
 msgstr "Actividade municipal"
 
-#: apps/bookings/manage.py:227
+#: apps/bookings/manage.py:232
 msgid "Nome da persoa"
 msgstr "Nome da persoa"
 
-#: apps/bookings/manage.py:229 apps/bookings/manage.py:243
+#: apps/bookings/manage.py:234 apps/bookings/manage.py:248
 #: apps/bookings/models.py:61 templates/bookings/_access.html:16
 msgid "Teléfono"
 msgstr "Teléfono"
 
-#: apps/bookings/manage.py:235
+#: apps/bookings/manage.py:240
 msgid "Correo (se ten conta)"
 msgstr "Correo (se ten conta)"
 
-#: apps/bookings/manage.py:238
+#: apps/bookings/manage.py:243
 msgid "Se o indicas, a reserva aparecerá no seu historial e recibirá avisos."
 msgstr "Se o indicas, a reserva aparecerá no seu historial e recibirá avisos."
 
-#: apps/bookings/manage.py:242 templates/dev/outbox.html:7
+#: apps/bookings/manage.py:247 templates/dev/outbox.html:7
 #: templates/manage/agenda.html:9 templates/manage/vouchers.html:15
 msgid "Canle"
 msgstr "Canle"
 
-#: apps/bookings/manage.py:248 apps/bookings/vouchers.py:38
+#: apps/bookings/manage.py:253 apps/bookings/vouchers.py:38
 msgid "Cobro"
 msgstr "Cobro"
 
-#: apps/bookings/manage.py:250
+#: apps/bookings/manage.py:255
 msgid "Pendente: pagará despois"
 msgstr "Pendente: pagará despois"
 
-#: apps/bookings/manage.py:251
+#: apps/bookings/manage.py:256
 msgid "Cobrado en efectivo"
 msgstr "Cobrado en efectivo"
 
-#: apps/bookings/manage.py:252
+#: apps/bookings/manage.py:257
 msgid "Cobrado con tarxeta no TPV físico"
 msgstr "Cobrado con tarxeta no TPV físico"
 
-#: apps/bookings/manage.py:257
+#: apps/bookings/manage.py:262
 msgid "Lin as normas á persoa e acéptaas"
 msgstr "Lin as normas á persoa e acéptaas"
 
-#: apps/bookings/manage.py:299
+#: apps/bookings/manage.py:304
 #, python-format
 msgid "Reserva %(r)s feita para %(n)s."
 msgstr "Reserva %(r)s feita para %(n)s."
 
-#: apps/bookings/manage.py:343
+#: apps/bookings/manage.py:348
 #, python-format
 msgid "Chave entregada a %(n)s."
 msgstr "Chave entregada a %(n)s."
 
-#: apps/bookings/manage.py:346
+#: apps/bookings/manage.py:351
 msgid "Chave devolta."
 msgstr "Chave devolta."
 
-#: apps/bookings/manage.py:358
+#: apps/bookings/manage.py:363
 msgid "Cancelada polo concello"
 msgstr "Cancelada polo concello"
 
-#: apps/bookings/manage.py:361
+#: apps/bookings/manage.py:366
 msgid "Reserva cancelada e reembolsada."
 msgstr "Reserva cancelada e reembolsada."
 
-#: apps/bookings/manage.py:369 templates/manage/booking.html:25
+#: apps/bookings/manage.py:374 templates/manage/booking.html:25
 #: templates/manage/payments.html:10 templates/manage/payments.html:31
 msgid "Método"
 msgstr "Método"
 
-#: apps/bookings/manage.py:371 apps/bookings/vouchers.py:40
+#: apps/bookings/manage.py:376 apps/bookings/vouchers.py:40
 msgid "Efectivo"
 msgstr "Efectivo"
 
-#: apps/bookings/manage.py:372 apps/bookings/models.py:262
+#: apps/bookings/manage.py:377 apps/bookings/models.py:262
 #: apps/bookings/vouchers.py:41
 msgid "Tarxeta no TPV físico"
 msgstr "Tarxeta no TPV físico"
 
-#: apps/bookings/manage.py:399
+#: apps/bookings/manage.py:404
 msgid "Esta reserva non está pendente de pagamento."
 msgstr "Esta reserva non está pendente de pagamento."
 
-#: apps/bookings/manage.py:402
+#: apps/bookings/manage.py:407
 msgid "Cobro rexistrado."
 msgstr "Cobro rexistrado."
 
-#: apps/bookings/manage.py:408
+#: apps/bookings/manage.py:413
 msgid "Aprobada. Avisamos á persoa."
 msgstr "Aprobada. Avisamos á persoa."
 
-#: apps/bookings/manage.py:413
+#: apps/bookings/manage.py:418
 msgid "Rexeitada. Avisamos á persoa co motivo."
 msgstr "Rexeitada. Avisamos á persoa co motivo."
 
-#: apps/bookings/manage.py:415
+#: apps/bookings/manage.py:420
 #, python-format
 msgid "Devolución automática: %(r)s €."
 msgstr "Devolución automática: %(r)s €."
 
-#: apps/bookings/manage.py:593
+#: apps/bookings/manage.py:598
 #, python-format
 msgid "Devolución rexistrada: %(e)s €."
 msgstr "Devolución rexistrada: %(e)s €."
@@ -2032,7 +2032,7 @@ msgstr "O número de persoas ten que estar entre 1 e %(n)s."
 msgid "Esa forma de pagamento non está dispoñible nesta instalación."
 msgstr "Esa forma de pagamento non está dispoñible nesta instalación."
 
-#: apps/bookings/services.py:439 apps/bookings/views.py:138
+#: apps/bookings/services.py:439 apps/bookings/views.py:140
 #, python-format
 msgid "%(c)s non admite agora reservas de persoas doutros concellos."
 msgstr "%(c)s non admite agora reservas de persoas doutros concellos."
@@ -2137,7 +2137,7 @@ msgstr "Reserva confirmada: %(f)s"
 msgid "%(d)s de %(s)s a %(e)s. Referencia %(r)s."
 msgstr "%(d)s de %(s)s a %(e)s. Referencia %(r)s."
 
-#: apps/bookings/services.py:754 apps/bookings/views.py:335
+#: apps/bookings/services.py:754 apps/bookings/views.py:337
 msgid "Esta reserva xa non se pode cancelar."
 msgstr "Esta reserva xa non se pode cancelar."
 
@@ -2155,7 +2155,7 @@ msgstr "Reserva cancelada: %(f)s"
 msgid "Devolución: %(r)s €."
 msgstr "Devolución: %(r)s €."
 
-#: apps/bookings/services.py:792 apps/bookings/views.py:367
+#: apps/bookings/services.py:792 apps/bookings/views.py:369
 msgid "Xa non se pode modificar esta reserva (prazo superado)."
 msgstr "Xa non se pode modificar esta reserva (prazo superado)."
 
@@ -2234,186 +2234,186 @@ msgstr "Máximo %(n)s."
 msgid "Escolle unha forma de pagamento."
 msgstr "Escolle unha forma de pagamento."
 
-#: apps/bookings/views.py:163
+#: apps/bookings/views.py:165
 msgid ""
 "Solicitude enviada. O concello ten que aprobala; avisarémoste da resposta."
 msgstr ""
 "Solicitude enviada. O concello ten que aprobala; avisarémoste da resposta."
 
-#: apps/bookings/views.py:168
+#: apps/bookings/views.py:170
 #, python-format
 msgid "Reserva gardada. Págaa na oficina antes do %(d)s ou quedará libre."
 msgstr "Reserva gardada. Págaa na oficina antes do %(d)s ou quedará libre."
 
-#: apps/bookings/views.py:172
+#: apps/bookings/views.py:174
 msgid "Reserva confirmada."
 msgstr "Reserva confirmada."
 
-#: apps/bookings/views.py:236
+#: apps/bookings/views.py:238
 msgid "O tempo para pagar esgotouse e a franxa quedou libre."
 msgstr "O tempo para pagar esgotouse e a franxa quedou libre."
 
-#: apps/bookings/views.py:345 templates/bookings/_access.html:5
+#: apps/bookings/views.py:347 templates/bookings/_access.html:5
 msgid "Reserva cancelada."
 msgstr "Reserva cancelada."
 
-#: apps/bookings/views.py:347
+#: apps/bookings/views.py:349
 #, python-format
 msgid "Devolverémosche %(r)s €."
 msgstr "Devolverémosche %(r)s €."
 
-#: apps/bookings/views.py:376
+#: apps/bookings/views.py:378
 msgid "Reserva cambiada."
 msgstr "Reserva cambiada."
 
-#: apps/bookings/views.py:421
+#: apps/bookings/views.py:423
 #, python-format
 msgid "Concello de %(n)s"
 msgstr "Concello de %(n)s"
 
-#: apps/bookings/views.py:422
+#: apps/bookings/views.py:424
 msgid "Servizo municipal de deportes · Recibo"
 msgstr "Servizo municipal de deportes · Recibo"
 
-#: apps/bookings/views.py:424
+#: apps/bookings/views.py:426
 #, python-format
 msgid "Referencia da reserva: %(r)s"
 msgstr "Referencia da reserva: %(r)s"
 
-#: apps/bookings/views.py:425
+#: apps/bookings/views.py:427
 #, python-format
 msgid "Persoa: %(p)s"
 msgstr "Persoa: %(p)s"
 
-#: apps/bookings/views.py:426
+#: apps/bookings/views.py:428
 #, python-format
 msgid "Instalación: %(f)s"
 msgstr "Instalación: %(f)s"
 
-#: apps/bookings/views.py:428
+#: apps/bookings/views.py:430
 #, python-format
 msgid "Uso: %(d)s de %(a)s a %(b)s"
 msgstr "Uso: %(d)s de %(a)s a %(b)s"
 
-#: apps/bookings/views.py:437
+#: apps/bookings/views.py:439
 #, python-format
 msgid "Tarifa: %(t)s"
 msgstr "Tarifa: %(t)s"
 
-#: apps/bookings/views.py:442
+#: apps/bookings/views.py:444
 #, python-format
 msgid "Prezo habitual: %(b)s € · desconto franxa tranquila −%(d)s %%"
 msgstr "Prezo habitual: %(b)s € · desconto franxa tranquila −%(d)s %%"
 
-#: apps/bookings/views.py:454
+#: apps/bookings/views.py:456
 #, python-format
 msgid "Desglose: %(k)s %(s)s € + luz %(l)s €"
 msgstr "Desglose: %(k)s %(s)s € + luz %(l)s €"
 
-#: apps/bookings/views.py:465
+#: apps/bookings/views.py:467
 #, python-format
 msgid "Forma de pagamento: %(m)s"
 msgstr "Forma de pagamento: %(m)s"
 
-#: apps/bookings/views.py:469
+#: apps/bookings/views.py:471
 #, python-format
 msgid "Importe pagado: %(p)s €"
 msgstr "Importe pagado: %(p)s €"
 
-#: apps/bookings/views.py:478
+#: apps/bookings/views.py:480
 #, python-format
 msgid "Devolto: %(p)s €"
 msgstr "Devolto: %(p)s €"
 
-#: apps/bookings/views.py:487
+#: apps/bookings/views.py:489
 #, python-format
 msgid "Operación: %(r)s · %(m)s"
 msgstr "Operación: %(r)s · %(m)s"
 
-#: apps/bookings/views.py:493
+#: apps/bookings/views.py:495
 msgid "Documento xerado por Eira (software libre EUPL-1.2)."
 msgstr "Documento xerado por Eira (software libre EUPL-1.2)."
 
-#: apps/bookings/views.py:535
+#: apps/bookings/views.py:537
 msgid "Si"
 msgstr "Si"
 
-#: apps/bookings/views.py:535
+#: apps/bookings/views.py:537
 msgid "Non"
 msgstr "Non"
 
-#: apps/bookings/views.py:537
+#: apps/bookings/views.py:539
 msgid "Deixaches a porta pechada?"
 msgstr "Deixaches a porta pechada?"
 
-#: apps/bookings/views.py:540
+#: apps/bookings/views.py:542
 msgid "Devolviches a chave?"
 msgstr "Devolviches a chave?"
 
-#: apps/bookings/views.py:546
+#: apps/bookings/views.py:548
 msgid "Quedou todo en orde (luces, material, limpeza)?"
 msgstr "Quedou todo en orde (luces, material, limpeza)?"
 
-#: apps/bookings/views.py:551
+#: apps/bookings/views.py:553
 msgid "Algo que contar? (opcional)"
 msgstr "Algo que contar? (opcional)"
 
-#: apps/bookings/views.py:568
+#: apps/bookings/views.py:570
 msgid "Xa enviaches o checklist de peche desta reserva."
 msgstr "Xa enviaches o checklist de peche desta reserva."
 
-#: apps/bookings/views.py:588 apps/bookings/views.py:613
+#: apps/bookings/views.py:590 apps/bookings/views.py:615
 #, python-format
 msgid "Grazas. Creamos a incidencia #%(n)s para que o concello o revise."
 msgstr "Grazas. Creamos a incidencia #%(n)s para que o concello o revise."
 
-#: apps/bookings/views.py:592
+#: apps/bookings/views.py:594
 msgid "Grazas! Instalación pechada correctamente."
 msgstr "Grazas! Instalación pechada correctamente."
 
-#: apps/bookings/views.py:617
+#: apps/bookings/views.py:619
 msgid "Grazas pola túa valoración!"
 msgstr "Grazas pola túa valoración!"
 
-#: apps/bookings/views.py:630
+#: apps/bookings/views.py:632
 msgid ""
 "Agora non se pode abrir. A porta ábrese desde 10 minutos antes do inicio."
 msgstr ""
 "Agora non se pode abrir. A porta ábrese desde 10 minutos antes do inicio."
 
-#: apps/bookings/views.py:633
+#: apps/bookings/views.py:635
 msgid "Porta aberta. Ben adestramento!"
 msgstr "Porta aberta. Ben adestramento!"
 
-#: apps/bookings/views.py:647
+#: apps/bookings/views.py:649
 msgid "Como atopaches a instalación e o material?"
 msgstr "Como atopaches a instalación e o material?"
 
-#: apps/bookings/views.py:649 templates/bookings/_states.html:6
+#: apps/bookings/views.py:651 templates/bookings/_states.html:6
 msgid "Todo ben"
 msgstr "Todo ben"
 
-#: apps/bookings/views.py:650
+#: apps/bookings/views.py:652
 msgid "Hai un problema"
 msgstr "Hai un problema"
 
-#: apps/bookings/views.py:655
+#: apps/bookings/views.py:657
 msgid "Que viches? (opcional)"
 msgstr "Que viches? (opcional)"
 
-#: apps/bookings/views.py:661
+#: apps/bookings/views.py:663
 msgid "Foto (opcional)"
 msgstr "Foto (opcional)"
 
-#: apps/bookings/views.py:663
+#: apps/bookings/views.py:665
 msgid "Quitámoslle a localización e os datos da cámara."
 msgstr "Quitámoslle a localización e os datos da cámara."
 
-#: apps/bookings/views.py:678
+#: apps/bookings/views.py:680
 msgid "Xa indicaches como estaba a instalación ao entrar."
 msgstr "Xa indicaches como estaba a instalación ao entrar."
 
-#: apps/bookings/views.py:690
+#: apps/bookings/views.py:692
 #, python-format
 msgid ""
 "Grazas. Creamos a incidencia #%(n)s e queda rexistrado que xa estaba antes "
@@ -2422,7 +2422,7 @@ msgstr ""
 "Grazas. Creamos a incidencia #%(n)s e queda rexistrado que xa estaba antes "
 "da túa reserva."
 
-#: apps/bookings/views.py:696
+#: apps/bookings/views.py:698
 msgid "Grazas! Bo adestramento."
 msgstr "Grazas! Bo adestramento."
 
@@ -2733,7 +2733,7 @@ msgstr ""
 msgid "Peche eliminado."
 msgstr "Peche eliminado."
 
-#: apps/facilities/manage.py:520
+#: apps/facilities/manage.py:522
 msgid "Revisión de seguridade creada. Asígnaa a mantemento."
 msgstr "Revisión de seguridade creada. Asígnaa a mantemento."
 
@@ -2927,7 +2927,8 @@ msgstr "protocolo en caso de accidente"
 msgid "Texto breve: que facer mentres chega a axuda."
 msgstr "Texto breve: que facer mentres chega a axuda."
 
-#: apps/facilities/models.py:133 templates/facilities/detail.html:41
+#: apps/facilities/models.py:133 templates/access/poster.html:13
+#: templates/facilities/detail.html:41
 msgid "DEA máis próximo"
 msgstr "DEA máis próximo"
 
@@ -3179,23 +3180,25 @@ msgstr ""
 msgid "Consulta os horarios libres e reserva desde o móbil."
 msgstr "Consulta os horarios libres e reserva desde o móbil."
 
-#: apps/facilities/poster.py:237
+#: apps/facilities/poster.py:238
 msgid "Pega aquí o QR da instalación."
 msgstr "Pega aquí o QR da instalación."
 
-#: apps/facilities/poster.py:240 templates/facilities/detail.html:81
+#: apps/facilities/poster.py:242 templates/access/poster.html:10
+#: templates/facilities/detail.html:81
 msgid "Normas de uso"
 msgstr "Normas de uso"
 
-#: apps/facilities/poster.py:243
+#: apps/facilities/poster.py:247
 msgid "Consulta as normas na web do concello."
 msgstr "Consulta as normas na web do concello."
 
-#: apps/facilities/poster.py:252 templates/facilities/detail.html:39
+#: apps/facilities/poster.py:256 templates/access/poster.html:11
+#: templates/facilities/detail.html:39
 msgid "En caso de accidente"
 msgstr "En caso de accidente"
 
-#: apps/facilities/poster.py:256
+#: apps/facilities/poster.py:258
 msgid ""
 "1. Mantén a calma e protexe a persoa ferida sen movela se non hai perigo.\n"
 "2. Chama ao 112 e explica onde estás e que pasou.\n"
@@ -3207,24 +3210,24 @@ msgstr ""
 "3. Se non respira, empeza a reanimación e pide o DEA.\n"
 "4. Avisa ao concello."
 
-#: apps/facilities/poster.py:269
+#: apps/facilities/poster.py:270
 #, python-format
 msgid "DEA (desfibrilador) máis próximo: %(d)s"
 msgstr "DEA (desfibrilador) máis próximo: %(d)s"
 
-#: apps/facilities/poster.py:270
+#: apps/facilities/poster.py:273 templates/access/poster.html:13
 msgid "pregunta no concello"
 msgstr "pregunta no concello"
 
-#: apps/facilities/poster.py:282
+#: apps/facilities/poster.py:286 templates/access/poster.html:14
 msgid "Emerxencias"
 msgstr "Emerxencias"
 
-#: apps/facilities/poster.py:286
+#: apps/facilities/poster.py:290
 msgid "Concello · deportes"
 msgstr "Concello · deportes"
 
-#: apps/facilities/poster.py:296
+#: apps/facilities/poster.py:301
 #, python-format
 msgid ""
 "Avarías: botón «Incidencia ou seguridade» da app. Cartel xerado o %(d)s con "
@@ -3233,12 +3236,12 @@ msgstr ""
 "Avarías: botón «Incidencia ou seguridade» da app. Cartel xerado o %(d)s con "
 "Eira (software libre)."
 
-#: apps/facilities/poster.py:302
+#: apps/facilities/poster.py:308
 #, python-format
 msgid "Cartel · %(f)s"
 msgstr "Cartel · %(f)s"
 
-#: apps/facilities/poster.py:304
+#: apps/facilities/poster.py:310
 #, python-format
 msgid "Plantilla de cartel · Concello de %(c)s"
 msgstr "Plantilla de cartel · Concello de %(c)s"
@@ -3545,7 +3548,7 @@ msgid "Persoa usuaria"
 msgstr "Persoa usuaria"
 
 #: apps/integrations/demo.py:40 apps/integrations/demo.py:61
-#: apps/integrations/demo.py:113 apps/tenants/views.py:244
+#: apps/integrations/demo.py:113 apps/tenants/views.py:245
 msgid "App da veciñanza"
 msgstr "App da veciñanza"
 
@@ -4270,7 +4273,7 @@ msgstr ""
 "Se algo xa estaba mal ao chegar, márcao agora. Queda rexistrado que estaba "
 "antes da túa reserva e non se che atribúe."
 
-#: apps/tenants/help.py:72
+#: apps/tenants/help.py:73
 msgid ""
 "Tres preguntas antes de marchar: porta, chave e orde. Se algo falla, "
 "avisamos ao concello."
@@ -4278,13 +4281,13 @@ msgstr ""
 "Tres preguntas antes de marchar: porta, chave e orde. Se algo falla, "
 "avisamos ao concello."
 
-#: apps/tenants/help.py:75 apps/tenants/help.py:169 templates/app/home.html:53
+#: apps/tenants/help.py:77 apps/tenants/help.py:179 templates/app/home.html:53
 #: templates/manage/payments.html:21 templates/manage/vouchers.html:2
 #: templates/manage/vouchers.html:4 templates/manage/vouchers.html:5
 msgid "Bonos"
 msgstr "Bonos"
 
-#: apps/tenants/help.py:77
+#: apps/tenants/help.py:79
 msgid ""
 "Un bono é un número de usos. Ao reservar, escolle «Bono» e descóntase un "
 "uso. Cómprase aquí co TPV ou na oficina de deportes."
@@ -4292,13 +4295,13 @@ msgstr ""
 "Un bono é un número de usos. Ao reservar, escolle «Bono» e descóntase un "
 "uso. Cómprase aquí co TPV ou na oficina de deportes."
 
-#: apps/tenants/help.py:82 templates/app/home.html:50
+#: apps/tenants/help.py:84 templates/app/home.html:50
 #: templates/facilities/detail.html:16 templates/incidents/new.html:2
 #: templates/incidents/new.html:8
 msgid "Avisar dunha avaría"
 msgstr "Avisar dunha avaría"
 
-#: apps/tenants/help.py:84
+#: apps/tenants/help.py:86
 msgid ""
 "Escolle a instalación, di que pasa e, se queres, engade unha foto. "
 "Avisarémoste cando estea arranxado. Se é unha emerxencia, chama ao 112."
@@ -4306,12 +4309,12 @@ msgstr ""
 "Escolle a instalación, di que pasa e, se queres, engade unha foto. "
 "Avisarémoste cando estea arranxado. Se é unha emerxencia, chama ao 112."
 
-#: apps/tenants/help.py:89 templates/core/safety.html:2
+#: apps/tenants/help.py:91 templates/core/safety.html:2
 #: templates/core/safety.html:4 templates/includes/safety_button.html:1
 msgid "Incidencia ou seguridade"
 msgstr "Incidencia ou seguridade"
 
-#: apps/tenants/help.py:91
+#: apps/tenants/help.py:93
 msgid ""
 "Avisa dunha avaría, dun risco (o concello recibe o aviso ao momento) ou, se "
 "é unha emerxencia, chama ao 112."
@@ -4319,7 +4322,7 @@ msgstr ""
 "Avisa dunha avaría, dun risco (o concello recibe o aviso ao momento) ou, se "
 "é unha emerxencia, chama ao 112."
 
-#: apps/tenants/help.py:96 templates/app/home.html:78
+#: apps/tenants/help.py:98 templates/app/home.html:78
 #: templates/includes/shell_app_header.html:7
 #: templates/includes/shell_desk.html:15
 #: templates/includes/shell_tabbar.html:5
@@ -4330,7 +4333,7 @@ msgstr ""
 msgid "Avisos"
 msgstr "Avisos"
 
-#: apps/tenants/help.py:98
+#: apps/tenants/help.py:100
 msgid ""
 "Peches, alertas e cambios nas túas reservas e actividades. Tamén podes ver "
 "as actividades e eventos dos concellos próximos se o activas."
@@ -4338,22 +4341,22 @@ msgstr ""
 "Peches, alertas e cambios nas túas reservas e actividades. Tamén podes ver "
 "as actividades e eventos dos concellos próximos se o activas."
 
-#: apps/tenants/help.py:103 apps/tenants/manage.py:35
+#: apps/tenants/help.py:105 apps/tenants/manage.py:35
 #: templates/activities/list.html:2 templates/activities/list.html:4
 msgid "Escolas e actividades"
 msgstr "Escolas e actividades"
 
-#: apps/tenants/help.py:104
+#: apps/tenants/help.py:106
 msgid ""
 "Escolle unha actividade con prazas e inscribe a quen queiras da túa familia."
 msgstr ""
 "Escolle unha actividade con prazas e inscribe a quen queiras da túa familia."
 
-#: apps/tenants/help.py:107 templates/app/home.html:51
+#: apps/tenants/help.py:109 templates/app/home.html:51
 msgid "A miña familia"
 msgstr "A miña familia"
 
-#: apps/tenants/help.py:108
+#: apps/tenants/help.py:111
 msgid ""
 "Engade aos fillos ou persoas ao teu cargo para inscribilos nas escolas e "
 "reservar por eles."
@@ -4361,11 +4364,11 @@ msgstr ""
 "Engade aos fillos ou persoas ao teu cargo para inscribilos nas escolas e "
 "reservar por eles."
 
-#: apps/tenants/help.py:111 templates/includes/shell_tabbar.html:11
+#: apps/tenants/help.py:115 templates/includes/shell_tabbar.html:11
 msgid "Saúde"
 msgstr "Saúde"
 
-#: apps/tenants/help.py:113
+#: apps/tenants/help.py:117
 msgid ""
 "Os teus datos de saúde quedan no teu móbil. Úsanse para darche consellos na "
 "túa reserva segundo o tempo que vai facer."
@@ -4373,12 +4376,12 @@ msgstr ""
 "Os teus datos de saúde quedan no teu móbil. Úsanse para darche consellos na "
 "túa reserva segundo o tempo que vai facer."
 
-#: apps/tenants/help.py:118 templates/core/custody.html:2
+#: apps/tenants/help.py:122 templates/core/custody.html:2
 #: templates/core/custody.html:6
 msgid "Quen custodia os teus datos"
 msgstr "Quen custodia os teus datos"
 
-#: apps/tenants/help.py:119
+#: apps/tenants/help.py:124
 msgid ""
 "Para cada dato: quen o recibe, para que, canto tempo se garda e como pedir "
 "que se borre."
@@ -4386,11 +4389,11 @@ msgstr ""
 "Para cada dato: quen o recibe, para que, canto tempo se garda e como pedir "
 "que se borre."
 
-#: apps/tenants/help.py:123
+#: apps/tenants/help.py:129
 msgid "As túas ordes"
 msgstr "As túas ordes"
 
-#: apps/tenants/help.py:125
+#: apps/tenants/help.py:131
 msgid ""
 "Tarefas de hoxe e atrasadas. Abre unha, marca o checklist e péchaa. Funciona"
 " sen cobertura: envíase ao recuperar a rede."
@@ -4398,32 +4401,32 @@ msgstr ""
 "Tarefas de hoxe e atrasadas. Abre unha, marca o checklist e péchaa. Funciona"
 " sen cobertura: envíase ao recuperar a rede."
 
-#: apps/tenants/help.py:130 templates/maintenance/_calendar_grid.html:1
+#: apps/tenants/help.py:136 templates/maintenance/_calendar_grid.html:1
 #: templates/maintenance/calendar.html:2 templates/manage/dashboard.html:64
 #: templates/manage/maintenance_calendar.html:2
 msgid "Calendario de mantemento"
 msgstr "Calendario de mantemento"
 
-#: apps/tenants/help.py:131
+#: apps/tenants/help.py:137
 msgid "As tarefas programadas por día. Toca un día para ver as ordes."
 msgstr "As tarefas programadas por día. Toca un día para ver as ordes."
 
-#: apps/tenants/help.py:135
+#: apps/tenants/help.py:141
 msgid "Os teus grupos de hoxe"
 msgstr "Os teus grupos de hoxe"
 
-#: apps/tenants/help.py:136
+#: apps/tenants/help.py:142
 msgid ""
 "Escolle un grupo para pasar lista e recoller o esforzo ao final da sesión."
 msgstr ""
 "Escolle un grupo para pasar lista e recoller o esforzo ao final da sesión."
 
-#: apps/tenants/help.py:140 templates/includes/shell_desk.html:11
+#: apps/tenants/help.py:146 templates/includes/shell_desk.html:11
 #: templates/manage/dashboard.html:2 templates/manage/dashboard.html:4
 msgid "Panel do día"
 msgstr "Panel do día"
 
-#: apps/tenants/help.py:142
+#: apps/tenants/help.py:148
 msgid ""
 "Reservas de hoxe, chaves, incidencias por validar, reservas para aprobar e "
 "pagamentos pendentes na oficina. É o punto de partida de cada mañá."
@@ -4431,14 +4434,14 @@ msgstr ""
 "Reservas de hoxe, chaves, incidencias por validar, reservas para aprobar e "
 "pagamentos pendentes na oficina. É o punto de partida de cada mañá."
 
-#: apps/tenants/help.py:147 templates/includes/shell_desk.html:12
+#: apps/tenants/help.py:153 templates/includes/shell_desk.html:12
 #: templates/manage/agenda.html:2 templates/manage/agenda.html:4
 #: templates/manage/agenda_calendar.html:2
 #: templates/manage/agenda_calendar.html:4 templates/manage/booking.html:4
 msgid "Axenda"
 msgstr "Axenda"
 
-#: apps/tenants/help.py:148
+#: apps/tenants/help.py:155
 msgid ""
 "Todas as reservas por día, semana ou mes. Toca unha para ver a ficha e "
 "cobrar ou cancelar."
@@ -4446,11 +4449,11 @@ msgstr ""
 "Todas as reservas por día, semana ou mes. Toca unha para ver a ficha e "
 "cobrar ou cancelar."
 
-#: apps/tenants/help.py:151
+#: apps/tenants/help.py:159
 msgid "Ficha da reserva"
 msgstr "Ficha da reserva"
 
-#: apps/tenants/help.py:153
+#: apps/tenants/help.py:161
 msgid ""
 "Datos, cobros e estado ao entrar e ao saír. Se a instalación é con "
 "aprobación, aquí aprobas ou rexeitas (cun motivo; se xa pagou, devólvese "
@@ -4460,11 +4463,11 @@ msgstr ""
 "aprobación, aquí aprobas ou rexeitas (cun motivo; se xa pagou, devólvese "
 "só)."
 
-#: apps/tenants/help.py:158 templates/includes/shell_desk.html:13
+#: apps/tenants/help.py:166 templates/includes/shell_desk.html:13
 msgid "Reservar por alguén"
 msgstr "Reservar por alguén"
 
-#: apps/tenants/help.py:159
+#: apps/tenants/help.py:168
 msgid ""
 "Para reservas por teléfono ou no mostrador. Escolle instalación e hora e "
 "cobra se fai falla."
@@ -4472,11 +4475,11 @@ msgstr ""
 "Para reservas por teléfono ou no mostrador. Escolle instalación e hora e "
 "cobra se fai falla."
 
-#: apps/tenants/help.py:162 templates/manage/payments.html:4
+#: apps/tenants/help.py:172 templates/manage/payments.html:4
 msgid "Cobros e conciliación"
 msgstr "Cobros e conciliación"
 
-#: apps/tenants/help.py:164
+#: apps/tenants/help.py:174
 msgid ""
 "Todos os cobros e, arriba, o resumo por forma de pagamento: TPV, oficina, "
 "gratuíta, bono e aprazado. Exporta a CSV ou ODS para Intervención."
@@ -4484,7 +4487,7 @@ msgstr ""
 "Todos os cobros e, arriba, o resumo por forma de pagamento: TPV, oficina, "
 "gratuíta, bono e aprazado. Exporta a CSV ou ODS para Intervención."
 
-#: apps/tenants/help.py:170
+#: apps/tenants/help.py:180
 msgid ""
 "Crea tipos de bono e véndeos na oficina. Tamén se poden comprar na app co "
 "TPV."
@@ -4492,14 +4495,14 @@ msgstr ""
 "Crea tipos de bono e véndeos na oficina. Tamén se poden comprar na app co "
 "TPV."
 
-#: apps/tenants/help.py:173 apps/tenants/manage.py:33
+#: apps/tenants/help.py:183 apps/tenants/manage.py:33
 #: templates/analytics/dashboard.html:51 templates/includes/shell_desk.html:14
 #: templates/manage/incidents.html:2 templates/manage/incidents.html:4
 #: templates/manage/incidents.html:7
 msgid "Incidencias"
 msgstr "Incidencias"
 
-#: apps/tenants/help.py:174
+#: apps/tenants/help.py:185
 msgid ""
 "Valida os avisos, crea a orde de traballo e marca como resolta. Os riscos "
 "van primeiro."
@@ -4507,7 +4510,7 @@ msgstr ""
 "Valida os avisos, crea a orde de traballo e marca como resolta. Os riscos "
 "van primeiro."
 
-#: apps/tenants/help.py:177 templates/facilities/detail.html:4
+#: apps/tenants/help.py:189 templates/facilities/detail.html:4
 #: templates/facilities/home.html:2 templates/facilities/home.html:7
 #: templates/includes/shell_desk.html:23
 #: templates/includes/shell_public.html:8
@@ -4516,7 +4519,7 @@ msgstr ""
 msgid "Instalacións"
 msgstr "Instalacións"
 
-#: apps/tenants/help.py:178
+#: apps/tenants/help.py:190
 msgid ""
 "Alta con plantillas, horarios, tarifas, normas, ficha de seguridade e cartel"
 " da porta."
@@ -4524,11 +4527,11 @@ msgstr ""
 "Alta con plantillas, horarios, tarifas, normas, ficha de seguridade e cartel"
 " da porta."
 
-#: apps/tenants/help.py:181
+#: apps/tenants/help.py:193
 msgid "Datos da instalación"
 msgstr "Datos da instalación"
 
-#: apps/tenants/help.py:183
+#: apps/tenants/help.py:195
 msgid ""
 "Usa as lapelas: datos, foto, acceso, accesibilidade, reserva e pagamento, e "
 "seguridade (material, protocolo de accidentes e DEA)."
@@ -4536,11 +4539,11 @@ msgstr ""
 "Usa as lapelas: datos, foto, acceso, accesibilidade, reserva e pagamento, e "
 "seguridade (material, protocolo de accidentes e DEA)."
 
-#: apps/tenants/help.py:188
+#: apps/tenants/help.py:200
 msgid "Avisos do concello"
 msgstr "Avisos do concello"
 
-#: apps/tenants/help.py:189
+#: apps/tenants/help.py:201
 msgid ""
 "Envía peches, alertas ou novidades por app, correo e Telegram, con vista "
 "previa."
@@ -4548,12 +4551,12 @@ msgstr ""
 "Envía peches, alertas ou novidades por app, correo e Telegram, con vista "
 "previa."
 
-#: apps/tenants/help.py:192 templates/includes/shell_desk.html:35
+#: apps/tenants/help.py:204 templates/includes/shell_desk.html:35
 #: templates/manage/settings.html:2
 msgid "Configuración"
 msgstr "Configuración"
 
-#: apps/tenants/help.py:194
+#: apps/tenants/help.py:206
 msgid ""
 "Regras de reserva, formas de pagamento, luz, concellos próximos, pesos do "
 "índice de vida activa e módulos."
@@ -4561,14 +4564,14 @@ msgstr ""
 "Regras de reserva, formas de pagamento, luz, concellos próximos, pesos do "
 "índice de vida activa e módulos."
 
-#: apps/tenants/help.py:199 templates/includes/shell_desk.html:34
+#: apps/tenants/help.py:211 templates/includes/shell_desk.html:34
 #: templates/includes/shell_desk.html:42
 #: templates/manage/breach_communication.html:4
 #: templates/manage/breach_edit.html:4 templates/manage/breaches.html:2
 msgid "Rexistro de brechas"
 msgstr "Rexistro de brechas"
 
-#: apps/tenants/help.py:201
+#: apps/tenants/help.py:213
 msgid ""
 "Anota calquera incidente cos datos persoais. Se hai risco, notifica á AEPD "
 "en 72 horas; se é alto, informa tamén ás persoas afectadas."
@@ -4576,12 +4579,12 @@ msgstr ""
 "Anota calquera incidente cos datos persoais. Se hai risco, notifica á AEPD "
 "en 72 horas; se é alto, informa tamén ás persoas afectadas."
 
-#: apps/tenants/help.py:206 templates/includes/brand.html:3
+#: apps/tenants/help.py:218 templates/includes/brand.html:3
 #: templates/includes/shell_desk.html:46
 msgid "Rede de concellos"
 msgstr "Rede de concellos"
 
-#: apps/tenants/help.py:207
+#: apps/tenants/help.py:219
 msgid ""
 "Indicadores agregados e comparativa dos concellos da rede, co índice de vida"
 " activa."
@@ -4589,7 +4592,7 @@ msgstr ""
 "Indicadores agregados e comparativa dos concellos da rede, co índice de vida"
 " activa."
 
-#: apps/tenants/help.py:212
+#: apps/tenants/help.py:224
 msgid ""
 "Usa as lapelas de abaixo para reservar, ver as túas reservas e a túa "
 "familia."
@@ -4597,15 +4600,15 @@ msgstr ""
 "Usa as lapelas de abaixo para reservar, ver as túas reservas e a túa "
 "familia."
 
-#: apps/tenants/help.py:213
+#: apps/tenants/help.py:225
 msgid "Aquí tes as túas ordes de traballo. Funciona tamén sen cobertura."
 msgstr "Aquí tes as túas ordes de traballo. Funciona tamén sen cobertura."
 
-#: apps/tenants/help.py:214
+#: apps/tenants/help.py:226
 msgid "Escolle un grupo para pasar lista e recoller o esforzo."
 msgstr "Escolle un grupo para pasar lista e recoller o esforzo."
 
-#: apps/tenants/help.py:216
+#: apps/tenants/help.py:228
 msgid ""
 "No modo básico tes o día a día. Activa o modo avanzado para ver todo o menú;"
 " os permisos son os mesmos."
@@ -4613,15 +4616,15 @@ msgstr ""
 "No modo básico tes o día a día. Activa o modo avanzado para ver todo o menú;"
 " os permisos son os mesmos."
 
-#: apps/tenants/help.py:219
+#: apps/tenants/help.py:231
 msgid "Ves os concellos da túa rede con datos agregados."
 msgstr "Ves os concellos da túa rede con datos agregados."
 
-#: apps/tenants/help.py:220
+#: apps/tenants/help.py:232
 msgid "Busca unha instalación e consulta as horas libres sen rexistrarte."
 msgstr "Busca unha instalación e consulta as horas libres sen rexistrarte."
 
-#: apps/tenants/help.py:228 templates/includes/help_button.html:3
+#: apps/tenants/help.py:240 templates/includes/help_button.html:3
 #: templates/includes/help_button.html:4
 msgid "Axuda"
 msgstr "Axuda"
@@ -4785,7 +4788,7 @@ msgstr "Pagamento na oficina"
 
 #: apps/tenants/models.py:39 templates/activities/enroll.html:8
 #: templates/activities/list.html:18 templates/bookings/_amount.html:1
-#: templates/bookings/_price.html:7 templates/bookings/_price.html:11
+#: templates/bookings/_price.html:7 templates/bookings/_price.html:12
 #: templates/facilities/_week.html:41 templates/facilities/_week.html:45
 #: templates/facilities/detail.html:72
 msgid "Gratuíta"
@@ -5032,11 +5035,11 @@ msgstr "acceso de soporte da deputación"
 msgid "accesos de soporte da deputación"
 msgstr "accesos de soporte da deputación"
 
-#: apps/tenants/network.py:86
+#: apps/tenants/network.py:88
 msgid "Gardado. Verás as súas actividades e eventos en «Avisos»."
 msgstr "Gardado. Verás as súas actividades e eventos en «Avisos»."
 
-#: apps/tenants/network.py:88
+#: apps/tenants/network.py:90
 msgid "Gardado. Xa non verás as súas actividades e eventos."
 msgstr "Gardado. Xa non verás as súas actividades e eventos."
 
@@ -5220,10 +5223,10 @@ msgstr "Primeira instalación"
 msgid "Invitación"
 msgstr "Invitación"
 
-#: apps/tenants/region.py:422 templates/bookings/detail.html:64
-#: templates/facilities/detail.html:42 templates/facilities/home.html:16
-#: templates/includes/shell_desk.html:31 templates/region/dashboard.html:23
-#: templates/region/dashboard.html:45
+#: apps/tenants/region.py:422 templates/access/poster.html:14
+#: templates/bookings/detail.html:64 templates/facilities/detail.html:42
+#: templates/facilities/home.html:16 templates/includes/shell_desk.html:31
+#: templates/region/dashboard.html:23 templates/region/dashboard.html:45
 #: templates/region/new_municipality.html:18
 msgid "Concello"
 msgstr "Concello"
@@ -5312,15 +5315,15 @@ msgstr "Non tes permiso para ver isto"
 msgid "Datos persoais: precisa acceso de soporte"
 msgstr "Datos persoais: precisa acceso de soporte"
 
-#: apps/tenants/views.py:247
+#: apps/tenants/views.py:260
 msgid "App de mantemento"
 msgstr "App de mantemento"
 
-#: apps/tenants/views.py:248
+#: apps/tenants/views.py:261
 msgid "Tableta da persoa monitora"
 msgstr "Tableta da persoa monitora"
 
-#: apps/tenants/views.py:250
+#: apps/tenants/views.py:263
 msgid "Deputación"
 msgstr "Deputación"
 
@@ -5392,15 +5395,15 @@ msgstr "Ao entrar, escanea este código para rexistrar o uso."
 msgid "Código QR de entrada"
 msgstr "Código QR de entrada"
 
-#: templates/access/poster.html:10
+#: templates/access/poster.html:15
 msgid "Avarías: usa o botón «Avisar dunha avaría» na web do concello."
 msgstr "Avarías: usa o botón «Avisar dunha avaría» na web do concello."
 
-#: templates/access/poster.html:11
+#: templates/access/poster.html:16
 msgid "Imprimir cartel"
 msgstr "Imprimir cartel"
 
-#: templates/access/poster.html:12
+#: templates/access/poster.html:17
 msgid "Cartel completo en PDF (con normas, accidentes e 112)"
 msgstr "Cartel completo en PDF (con normas, accidentes e 112)"
 
@@ -7160,33 +7163,33 @@ msgstr "luz incluída"
 msgid "Prezo habitual"
 msgstr "Prezo habitual"
 
-#: templates/bookings/_price.html:10
-msgid "Total"
-msgstr "Total"
-
 #: templates/bookings/_price.html:10 templates/bookings/receipt.html:13
 #: templates/manage/booking.html:15
 msgid "franxa tranquila"
 msgstr "franxa tranquila"
 
-#: templates/bookings/_price.html:15
-msgid ""
-"Esta franxa precisa luz (despois do solpor ou antes do amencer), así que "
-"leva o suplemento de iluminación."
-msgstr ""
-"Esta franxa precisa luz (despois do solpor ou antes do amencer), así que "
-"leva o suplemento de iluminación."
+#: templates/bookings/_price.html:11
+msgid "Total"
+msgstr "Total"
 
 #: templates/bookings/_price.html:16
-#, python-format
 msgid ""
-"Reservas en %(c)s coa túa conta de %(o)s: aplícase a tarifa de persoas non "
-"empadroadas de %(c)s e o cobro vai ao TPV de %(c)s."
+"Esta franxa precisa luz (despois do solpor ou antes do amencer), así que "
+"leva o suplemento de iluminación."
 msgstr ""
-"Reservas en %(c)s coa túa conta de %(o)s: aplícase a tarifa de persoas non "
-"empadroadas de %(c)s e o cobro vai ao TPV de %(c)s."
+"Esta franxa precisa luz (despois do solpor ou antes do amencer), así que "
+"leva o suplemento de iluminación."
 
 #: templates/bookings/_price.html:17
+#, python-format
+msgid ""
+"Reservas en %(c)s coa túa conta de %(o)s: aplícase a tarifa de persoas non "
+"empadroadas de %(c)s e o cobro vai ao TPV de %(c)s."
+msgstr ""
+"Reservas en %(c)s coa túa conta de %(o)s: aplícase a tarifa de persoas non "
+"empadroadas de %(c)s e o cobro vai ao TPV de %(c)s."
+
+#: templates/bookings/_price.html:18
 msgid ""
 "Esta instalación reserva con aprobación do concello. Se a rexeita, "
 "devolvémosche o importe."
@@ -7194,7 +7197,7 @@ msgstr ""
 "Esta instalación reserva con aprobación do concello. Se a rexeita, "
 "devolvémosche o importe."
 
-#: templates/bookings/_price.html:18
+#: templates/bookings/_price.html:19
 #, python-format
 msgid ""
 "Gardámosche a franxa %(h)s horas (ou ata o inicio) para pagar na oficina de "
@@ -7203,7 +7206,7 @@ msgstr ""
 "Gardámosche a franxa %(h)s horas (ou ata o inicio) para pagar na oficina de "
 "deportes."
 
-#: templates/bookings/_price.html:19
+#: templates/bookings/_price.html:20
 msgid "Pagamento aprazado: o concello indicarache como e cando pagar."
 msgstr "Pagamento aprazado: o concello indicarache como e cando pagar."
 
@@ -7535,7 +7538,7 @@ msgid "Resumo"
 msgstr "Resumo"
 
 #: templates/bookings/detail.html:60 templates/bookings/mine.html:54
-#: templates/dev/tpv.html:12 templates/manage/booking.html:16
+#: templates/dev/tpv.html:11 templates/manage/booking.html:16
 #: templates/manage/booking.html:25 templates/manage/payments.html:31
 msgid "Importe"
 msgstr "Importe"
@@ -8182,6 +8185,14 @@ msgstr ""
 msgid "Nunha emerxencia, chama ao 112."
 msgstr "Nunha emerxencia, chama ao 112."
 
+#: templates/core/help.html:16
+msgid "Chamar ao 112"
+msgstr "Chamar ao 112"
+
+#: templates/core/help.html:16
+msgid "Volver ao inicio"
+msgstr "Volver ao inicio"
+
 #: templates/core/home.html:7
 msgid "Eira · Software libre para a xestión deportiva municipal"
 msgstr "Eira · Software libre para a xestión deportiva municipal"
@@ -8792,28 +8803,28 @@ msgstr "Pasarela de pagamento segura · simulación tipo Redsys"
 msgid "Pagamento con tarxeta"
 msgstr "Pagamento con tarxeta"
 
-#: templates/dev/tpv.html:9 templates/dev/tpv.html:10
+#: templates/dev/tpv.html:9
 msgid "Comercio"
 msgstr "Comercio"
 
-#: templates/dev/tpv.html:11 templates/manage/payments.html:31
+#: templates/dev/tpv.html:10 templates/manage/payments.html:31
 msgid "Concepto"
 msgstr "Concepto"
 
-#: templates/dev/tpv.html:13
+#: templates/dev/tpv.html:12
 msgid "Pedido"
 msgstr "Pedido"
 
-#: templates/dev/tpv.html:15
+#: templates/dev/tpv.html:14
 msgid "Esta operación xa está resolta e non se pode volver pagar nin cambiar."
 msgstr ""
 "Esta operación xa está resolta e non se pode volver pagar nin cambiar."
 
-#: templates/dev/tpv.html:16
+#: templates/dev/tpv.html:15
 msgid "Volver ao comercio"
 msgstr "Volver ao comercio"
 
-#: templates/dev/tpv.html:18
+#: templates/dev/tpv.html:17
 msgid ""
 "Prototipo: non se pide ningunha tarxeta. No despregamento real, aquí estaría"
 " o TPV virtual da entidade bancaria do concello."
@@ -8821,11 +8832,11 @@ msgstr ""
 "Prototipo: non se pide ningunha tarxeta. No despregamento real, aquí estaría"
 " o TPV virtual da entidade bancaria do concello."
 
-#: templates/dev/tpv.html:21
+#: templates/dev/tpv.html:20
 msgid "Pagar"
 msgstr "Pagar"
 
-#: templates/dev/tpv.html:22
+#: templates/dev/tpv.html:21
 msgid "Simular pagamento rexeitado"
 msgstr "Simular pagamento rexeitado"
 

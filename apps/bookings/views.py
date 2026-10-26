@@ -132,6 +132,8 @@ def book(request, pk):
         method = form.methods[0]
     needs_light = bool((data or {}).get("needs_light")) and "needs_light" in form.fields
     quote = services.quote(facility, request.user, start, needs_light=needs_light, method=method)
+    if quote.lighting_auto and "needs_light" in form.fields:
+        del form.fields["needs_light"]  # a franxa xa leva luz: a casiña sobra
     origin = services.network_origin(tenant, request.user)
     error = None
     if not tenant.network_open and not services.linked_to(tenant, request.user):

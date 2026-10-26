@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: EUPL-1.2
 """Tarefas do proxecto, equivalentes ao Makefile, para sistemas sen `make` (p. ex. Windows).
 
-python tools/tasks.py dev | seed | test | e2e | lint | licenses | i18n | openapi | screenshots | video | pitch
+python tools/tasks.py dev | seed | test | e2e | lint | licenses | i18n | openapi | screenshots | video | pitch | annex
 """
 
 import os
@@ -65,6 +65,23 @@ def pitch():
         "-m",
         "pytest",
         "tests/e2e/test_pitch_video.py",
+        "-m",
+        "video",
+        "-s",
+        "-p",
+        "no:cacheprovider",
+    )
+
+
+def annex():
+    # v5: vídeo anexo «Eira para o concello e a saúde» (≈ 60 s), en docs/demo/ (ignorado polo git)
+    i18n()
+    ENV["EIRA_AI_ENABLED"] = "0"
+    run(
+        PY,
+        "-m",
+        "pytest",
+        "tests/e2e/test_annex_video.py",
         "-m",
         "video",
         "-s",

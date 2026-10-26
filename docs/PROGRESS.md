@@ -1,6 +1,6 @@
 # Progreso (rexistro vivo)
 
-Última actualización: 2026-10-23, fin da sesión nocturna.
+Última actualización: 2026-10-26, v5 (versión conxelada `v1.0-certame`).
 
 ## Ferramentas da máquina
 - Python 3.13 (venv) ✔ · Docker 29 ✔ (arrancouse Docker Desktop durante a sesión) · Node 24 ✔ · Playwright + Chromium ✔
@@ -112,4 +112,5 @@ Regra: só se engade. Choques anotados en DECISIONS («Choque»).
 - ✅ F · «Quen custodia os teus datos» xerada da matriz, rexistro de brechas (admin e DPD), comunicación modelo, protocolo en docs/rxpd/brechas.md. 9 tests.
 - ✅ G · índice de vida activa (n ≥ 10, pesos configurables) na ficha, no panel e na deputación. 4 tests.
 - ✅ H · plantilla «Revisión de seguridade inicial Eira» e «Revisada o ‹data›»; docs/servizos.md.
-- I · demo v5, guión con paso novo, vídeos, capturas, informe e etiqueta: ver INFORME_MANANA.md (sección v5).
+- ✅ I · demo v5, guión con paso novo (pitch 2:14 sen pista de subtítulos), anexo de 54 s, 42 capturas en docs/capturas/v5/, informe e etiqueta `v1.0-certame`.
+- Números v5: 616 tests unitarios/integración + 54 E2E; axe 105 páxinas × 3 tamaños e 41 en escuro, 0 violacións. RAM sen IA ≈ 270 MiB (Docker).

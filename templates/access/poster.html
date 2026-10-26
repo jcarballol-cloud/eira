@@ -7,6 +7,11 @@
   <p class="big">{% translate "Ao entrar, escanea este código para rexistrar o uso." %}</p>
   <div class="qr" role="img" aria-label="{% translate 'Código QR de entrada' %}">{{ svg|safe }}</div>
   <p class="mono"><small>{{ url }}</small></p>
+  {% with rules=facility.current_rules %}{% if rules %}<h2 class="h3">{% translate "Normas de uso" %}</h2><ul class="poster-list">{% for line in rules.lines|slice:":6" %}<li>{{ line }}</li>{% endfor %}</ul>{% endif %}{% endwith %}
+  <h2 class="h3">{% translate "En caso de accidente" %}</h2>
+  {% if facility.accident_protocol %}<p class="pre-wrap poster-list">{{ facility.accident_protocol }}</p>{% endif %}
+  <p><strong>{% translate "DEA máis próximo" %}:</strong> {{ facility.aed_location|default:_("pregunta no concello") }}</p>
+  <div class="row center-row"><span class="emergency-call emergency-call--small"><span class="emergency-call__num">112</span><span><strong>{% translate "Emerxencias" %}</strong></span></span>{% if tenant.contact_phone %}<span class="badge big">{% translate "Concello" %} · {{ tenant.contact_phone }}</span>{% endif %}</div>
   <p>{% translate "Avarías: usa o botón «Avisar dunha avaría» na web do concello." %}</p>
   <p class="no-print row center-row"><button class="btn" type="button" data-print>{% translate "Imprimir cartel" %}</button>
   <a class="btn btn-secondary" href="{% turl 'manage:facility_poster' facility.pk %}">{% translate "Cartel completo en PDF (con normas, accidentes e 112)" %}</a></p>

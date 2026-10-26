@@ -6,8 +6,7 @@
 <section class="tpv">
   <div class="tpv__bank">{% icon 'lock' %} {% translate "Pasarela de pagamento segura · simulación tipo Redsys" %}</div>
   <h1>{% translate "Pagamento con tarxeta" %}</h1>
-  <dl class="kv big"><dt>{% translate "Comercio" %}</dt><dd>{% translate "Servizo municipal de deportes" %}</dd>
-    {% if payment.merchant %}<dt>{% translate "Comercio" %}</dt><dd>{{ payment.merchant }}</dd>{% endif %}
+  <dl class="kv big"><dt>{% translate "Comercio" %}</dt><dd>{% translate "Servizo municipal de deportes" %}{% if payment.merchant %}<br>{{ payment.merchant }}{% endif %}</dd>
     <dt>{% translate "Concepto" %}</dt><dd>{{ payment.description }}</dd>
     <dt>{% translate "Importe" %}</dt><dd><strong>{{ payment.amount_cents|euros }}</strong></dd>
     <dt>{% translate "Pedido" %}</dt><dd class="mono">{{ payment.reference }}</dd></dl>

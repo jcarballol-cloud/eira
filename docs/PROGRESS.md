@@ -126,3 +126,14 @@ Regra: só se engade. Choques anotados en DECISIONS (v1.1).
 - ✅ 7 demo: Noela (empresa ficticia), plans no pavillón e vestiarios, 3 semanas de rexistros, aseos atrasados co aviso, perfil novo na portada.
 - ✅ 8 22 capturas en docs/capturas/v1.1/, sección v1.1 no informe, etiqueta `v1.1-certame`.
 - Números v1.1: 683 tests unitarios/integración + 58 E2E; axe 115 páxinas × 3 tamaños e 47 en escuro, 0 violacións.
+
+## v1.2 · Aportacións do equipo (27/10)
+Regra: só se engade. Choques anotados en DECISIONS (v1.2). Orde de prioridade: A → C → B → E → F → D → G → H → I.
+- ✅ A · «Aviso» e «Alerta» (forma, cor e texto), protocolo de accidente paso a paso por concello e instalación, 112, DESA, aviso automático, rexistro mínimo de accidentes (admin + DPD, conservación configurable), incidencia de prioridade máxima, botóns na reserva en curso e «Alerta» na tableta.
+- ✅ C · accesibilidade detallada (7 puntos si/parcial/non que encheen a lista básica), sostibilidade, DESA (na instalación ou o máis próximo co adaptador `defibrillators`), filtros «Accesible», «Con aparcabicis» e «Con DESA», revisión de seguridade (+3 puntos) e índice de vida activa coa accesibilidade detallada.
+- ✅ B · peche sen confirmar: recordatorio push → app + canle → persoa responsable por orde e horario; a Policía Local só por decisión dunha persoa (rexistrada); estado da porta no nivel 3 (simulador); incumprimento só se o concello o activa.
+- ✅ E · enquisa anual con NPS (n ≥ 10, unha resposta por persoa, sete aspectos, evolución por ano e instalación), aviso por app/correo/Telegram, NPS tras o uso opcional (desactivado por defecto), panel e comparativa da deputación.
+- ✅ F · paso a paso Elixe → Paga → Confirma, «que tes que facer e cando», recordatorios ás 24 h e 2 h con «Confirmo»/«Cancelo», lista de espera nas franxas (cancelación, sen confirmar se o concello o activa, sen check-in aos 15 min) con oferta por orde, rexistro do ciclo e devolución da penalización se se volve vender.
+- ✅ D · inventario de equipos e lecturas de facturas, consumo estimado (kWh, €, CO₂) por semana/mes/ano, ocupación reservada e real, tempo medio, kWh e € por hora de uso, perfil agregado (n ≥ 10), tendencia mensual, estimado fronte a real; comparativa da deputación só agregada; docs/rendemento-instalacions.md.
+- ✅ G · «Busco xente» desde a reserva, «Partidas abertas» (propio concello e próximos, filtros por deporte, día e nivel), solicitudes que acepta quen organiza, mensaxes predefinidas, nome de pila e inicial, menores de 14 fóra, reparto orientativo, denuncias e módulo desactivable.
+- ✅ H · tipos de abono e abonos (TPV e oficina, renovación encadeada), desconto que se suma ás tarifas, carné na app con QR dinámico asinado (3 min), carné imprimible en PDF etiquetado tamaño tarxeta e anulable, lector do persoal (entrada e bonos), «Ler carné» na tableta (a lista por nome mantense), adaptador simulado `municipal_card` e docs/carne-municipal.md.

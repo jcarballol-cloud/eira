@@ -13,6 +13,7 @@
       <button type="button" class="kiosk__modebtn" data-mode="in" aria-pressed="true">{% icon 'door' %} {% translate "Entrada" %}</button>
       <button type="button" class="kiosk__modebtn" data-mode="out" aria-pressed="false">{% icon 'smile' %} {% translate "Saída" %}</button>
     </div>
+    {% include "safety/_monitor_alert.html" %}
     <div class="kiosk__stats" aria-live="polite">
       <span class="kiosk__chip" data-stat-in></span>
       <span class="kiosk__chip" data-stat-rpe></span>

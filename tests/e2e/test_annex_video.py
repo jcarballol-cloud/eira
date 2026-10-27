@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: EUPL-1.2
-"""v5 · Vídeo anexo (≈ 60 s): «Eira para o concello e a saúde».
+"""v5 (+ v1.2) · Vídeo anexo (≤ 75 s): «Eira para o concello e a saúde».
 
     python tools/tasks.py annex   → docs/demo/eira-anexo-saude.{mp4,webm,vtt} (ignorados polo git)
 
@@ -67,13 +67,27 @@ def run_annex(page, base, d):
     # 5. Revisión de seguridade
     review = WorkOrder.objects.filter(kind="safety_review", facility=padel).latest("closed_at")
     d.go(f"{c}/xestion/ordes/{review.pk}/")
-    d.say("Revisión de seguridade inicial Eira: dez puntos. Ao pechala, a ficha mostra «Revisada».")
+    d.say(
+        "Revisión de seguridade inicial Eira: trece puntos. Ao pechala, a ficha mostra «Revisada»."
+    )
     # 6. Rexistro de brechas
     breach = DataBreach.objects.filter(municipality__slug="vilardeiras").first()
     d.go(f"{c}/xestion/privacidade/brechas/")
     d.say("Rexistro de brechas: prazo de 72 horas para a AEPD, só para o concello e o DPD.")
     d.go(f"{c}/xestion/privacidade/brechas/{breach.pk}/comunicacion/")
     d.say("E a comunicación ás persoas afectadas, en linguaxe clara.", extra=1.2)
+    # 7. v1.2 · Panel de rendemento (consumo estimado)
+    hall = Facility.objects.get(name="Pavillón municipal de Vilardeiras")
+    d.go(f"{c}/xestion/instalacions/{hall.pk}/rendemento/")
+    d.say(
+        "Novo: rendemento de cada instalación. Ocupación, uso real e consumo estimado en kWh, € e CO₂."
+    )
+    # 8. v1.2 · NPS anual
+    from apps.surveys.models import Survey
+
+    survey = Survey.objects.filter(municipality__slug="vilardeiras").order_by("year").first()
+    d.go(f"{c}/xestion/enquisas/{survey.pk}/")
+    d.say("E a enquisa anual de satisfacción: NPS e sete aspectos, só con dez respostas ou máis.")
     d.say("Eira · para o concello e a saúde · software libre EUPL.", extra=0.6)
 
 

@@ -16,7 +16,7 @@ Cada compoñente vai de 0 a 100. Período: as últimas **8 semanas** (a satisfac
 | **Ocupación real** | Reservas co uso rexistrado (entrada por QR, código, apertura ou chave) | usos ÷ prazas-franxa ofertadas (descontando peches). Un **60 %** de uso real xa puntúa 100: `min(100, uso% × 100 / 60)` | Si (n = usos) |
 | **Diversidade de idades** | Ano de nacemento das contas que usaron a instalación | Persoas distintas repartidas en 5 franxas (0–17, 18–34, 35–54, 55–64, 65+). Entropía de Shannon normalizada: `100 × H / ln 5`. Todas nunha franxa = 0; repartidas por igual = 100 | Si (n = persoas distintas) |
 | **Satisfacción** | «Que tal foi?» | Media con ben = 100, regular = 50, mal = 0 | Si (n = valoracións) |
-| **Accesibilidade física** | Ficha da instalación | Elementos declarados ÷ 7 × 100 | Non |
+| **Accesibilidade física** | Ficha da instalación: **accesibilidade detallada (v1.2)** | Os 7 puntos detallados (aparcamento PMR, itinerario desde o exterior, corredores e portas, aseos, vestiarios, bancadas con prazas reservadas e sinalización): **si = 1, parcial = 0,5, non ou sen datos = 0**; suma ÷ 7 × 100. Se a instalación aínda non ten ningún punto detallado, úsase a lista básica da v5 (elementos declarados ÷ 7 × 100) | Non |
 | **Mantemento ao día** | Última orde de mantemento pechada («Última supervisión») | ≤ 30 días = 100; baixa en liña recta ata 0 aos 180 días; sen ningunha = 0. −20 se hai ordes atrasadas; v1.1: −10 se algunha zona de limpeza leva máis do previsto sen limpar | Non |
 
 ## Pesos (configurables)
@@ -42,6 +42,11 @@ Cada concello pódeos cambiar en **Configuración → Índice de vida activa** (
 
 - **≥ 67:** alta (icona chea) · **40–66:** media · **< 40:** baixa · sen cifra: «sen datos suficientes».
 - A cor nunca é a única pista: sempre vai a cifra e o texto («Índice de vida activa: 72 de 100»).
+
+## Cambio na v1.2
+
+- O compoñente de accesibilidade usa a **accesibilidade detallada** (si / parcial / non) en lugar da lista básica. A lista básica segue na ficha e enchese soa a partir da detallada (só «si» conta como si).
+- Unha instalación coa lista básica completa pero sen detalle segue puntuando como antes ata que o concello enche os puntos detallados: así o cambio non baixa a nota de ninguén por falta de datos.
 
 ## Limitacións coñecidas
 

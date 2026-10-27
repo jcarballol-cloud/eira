@@ -11,7 +11,14 @@ log = logging.getLogger("eira.notify")
 
 
 def notify(
-    user, title, body="", url="", municipality=None, level=Notification.Level.INFO, email=True
+    user,
+    title,
+    body="",
+    url="",
+    municipality=None,
+    level=Notification.Level.INFO,
+    email=True,
+    telegram=True,
 ):
     if user is None:
         return None
@@ -20,7 +27,7 @@ def notify(
         if email and user.notify_email:
             get_adapter("mail").send(user.email, f"Eira · {title}", f"{body}\n\n{url}".strip())
             channels.append("email")
-        if user.notify_telegram and user.telegram_chat:
+        if telegram and user.notify_telegram and user.telegram_chat:
             get_adapter("telegram").send(user.telegram_chat, f"{title}\n{body}")
             channels.append("telegram")
         for sub in user.push_subscriptions.all()[:5]:

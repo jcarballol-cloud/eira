@@ -1,0 +1,17 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Rendemento" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% icon 'light' %} {% translate "Datos" %}</p><h1>{% translate "Rendemento das instalacións" %}</h1>
+  <p>{% translate "Últimos 30 días. O consumo é unha estimación orientativa." %}</p></div></div>
+<div class="table-wrap" tabindex="0"><table class="data">
+  <caption class="visually-hidden">{% translate "Rendemento por instalación" %}</caption>
+  <thead><tr><th scope="col">{% translate "Instalación" %}</th><th scope="col" class="num">{% translate "Ocupación" %}</th><th scope="col" class="num">{% translate "Uso real" %}</th><th scope="col" class="num">{% translate "Tempo medio" %}</th><th scope="col" class="num">kWh</th><th scope="col" class="num">€</th><th scope="col" class="num">{% translate "kWh por hora de uso" %}</th></tr></thead>
+  <tbody>{% for r in rows %}<tr>
+    <th scope="row"><a href="{% turl 'manage:facility_performance' r.f.pk %}">{{ r.f.name }}</a></th>
+    <td class="num">{{ r.s.occupancy_pct }} %</td><td class="num">{{ r.s.real_use_pct }} %</td>
+    <td class="num">{% if r.s.avg_use_min is not None %}{{ r.s.avg_use_min }} min{% else %}—{% endif %}</td>
+    <td class="num">{% if r.s.has_equipment %}{{ r.s.kwh }}{% else %}<span class="muted">{% translate "sen equipos" %}</span>{% endif %}</td>
+    <td class="num">{% if r.s.has_equipment %}{{ r.s.cost_eur }}{% else %}—{% endif %}</td>
+    <td class="num">{{ r.s.kwh_per_use_h|default:"—" }}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}

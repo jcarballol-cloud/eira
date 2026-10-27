@@ -2,6 +2,7 @@
 """Concellos (tenants) e agrupacións supramunicipais (deputacións, mancomunidades)."""
 
 import datetime as dt
+from decimal import Decimal
 
 from django.conf import settings
 from django.core.validators import RegexValidator
@@ -24,6 +25,9 @@ DEFAULT_MODULES = {
     "health": True,
     "ai_summary": False,
     "opendata": True,
+    # v1.2
+    "open_games": True,
+    "cards": True,
 }
 
 
@@ -193,6 +197,63 @@ class Municipality(models.Model):
     # v5 · Índice de vida activa: pesos de cada compoñente (ver docs/indice-vida-activa.md)
     vitality_weights = models.JSONField(
         _("pesos do índice de vida activa"), default=dict, blank=True
+    )
+    # v1.2 · A: rexistro de accidentes
+    accident_retention_months = models.PositiveIntegerField(
+        _("conservación do rexistro de accidentes (meses)"),
+        default=24,
+        help_text=_("Pasado este prazo, os rexistros pechados bórranse automaticamente."),
+    )
+    # v1.2 · B: escalado se non se confirma o peche
+    close_reminder_minutes = models.PositiveIntegerField(
+        _("primeiro recordatorio do peche (min despois do fin)"), default=10
+    )
+    close_second_minutes = models.PositiveIntegerField(
+        _("segundo recordatorio (min despois do primeiro)"), default=10
+    )
+    close_escalate_minutes = models.PositiveIntegerField(
+        _("aviso á persoa responsable (min despois do segundo)"), default=10
+    )
+    police_phone = models.CharField(
+        _("teléfono da Policía Local"),
+        max_length=20,
+        blank=True,
+        help_text=_("Só aparece como botón para que decida unha persoa. Nunca se chama soa."),
+    )
+    close_breach_enabled = models.BooleanField(
+        _("o peche sen confirmar conta como incumprimento"),
+        default=False,
+        help_text=_("Desactivado por defecto. Queda anotado na reserva igualmente."),
+    )
+    # v1.2 · E: NPS opcional despois de cada uso (desactivado para non cansar)
+    nps_after_use = models.BooleanField(_("preguntar o NPS despois de cada uso"), default=False)
+    # v1.2 · F: confirmación de asistencia e lista de espera nas reservas
+    confirm_release_enabled = models.BooleanField(
+        _("liberar as reservas sen confirmar"),
+        default=False,
+        help_text=_("Se hai lista de espera e a persoa non confirmou a tempo, a franxa ofrécese."),
+    )
+    confirm_release_minutes = models.PositiveIntegerField(
+        _("prazo para confirmar (min antes do inicio)"), default=120
+    )
+    waitlist_offer_minutes = models.PositiveIntegerField(
+        _("tempo para aceptar unha praza liberada (min)"), default=30
+    )
+    checkin_release_minutes = models.PositiveIntegerField(
+        _("liberar sen check-in (min despois do inicio)"),
+        default=15,
+        help_text=_("Só nos niveis 0, 2 e 3 e só se hai alguén na lista de espera."),
+    )
+    # v1.2 · D: rendemento (estimación orientativa)
+    energy_price_eur_kwh = models.DecimalField(
+        _("prezo da enerxía (€/kWh)"), max_digits=6, decimal_places=4, default=Decimal("0.1800")
+    )
+    co2_kg_kwh = models.DecimalField(
+        _("factor de emisión (kg CO₂/kWh)"),
+        max_digits=5,
+        decimal_places=3,
+        default=Decimal("0.150"),
+        help_text=_("Factor orientativo do mix eléctrico. Cámbiao polo da túa comercializadora."),
     )
     is_active = models.BooleanField(_("activo"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)

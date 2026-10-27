@@ -1,0 +1,25 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Partidas abertas" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% icon 'users' %} {{ tenant.name }}</p><h1>{% translate "Partidas abertas" %}</h1>
+  <p>{% translate "Xente que busca compañeiras e compañeiros para xogar, aquí e nos concellos próximos." %}</p></div></div>
+<form method="get" class="filters card-flat games-filter">
+  <div class="field"><label for="g-kind">{% translate "Deporte" %}</label><select id="g-kind" name="deporte"><option value="">{% translate "Todos" %}</option>{% for v, l in kinds %}<option value="{{ v }}" {% if v == kind %}selected{% endif %}>{{ l }}</option>{% endfor %}</select></div>
+  <div class="field"><label for="g-day">{% translate "Día" %}</label><input id="g-day" type="date" name="dia" value="{{ day|date:'Y-m-d' }}"></div>
+  <div class="field"><label for="g-level">{% translate "Nivel" %}</label><select id="g-level" name="nivel"><option value="">{% translate "Todos" %}</option>{% for v, l in levels %}<option value="{{ v }}" {% if v == level %}selected{% endif %}>{{ l }}</option>{% endfor %}</select></div>
+  <div class="form-actions"><button class="btn btn-sm" type="submit">{% translate "Filtrar" %}</button></div>
+</form>
+<ul class="grid grid-2 list" role="list">
+  {% for g, who in games %}
+  <li class="card game-card">
+    <div class="row-between"><h2 class="h3 mb-0"><a href="{% turl 'bookings:game' g.pk %}">{{ g.booking.facility.name }}</a></h2><span class="badge badge-ok">{% blocktranslate count n=g.spots_left %}{{ n }} praza{% plural %}{{ n }} prazas{% endblocktranslate %}</span></div>
+    <p class="mb-0">{{ g.booking.start|date:"l j \d\e F" }} · <strong>{{ g.booking.start|hhmm }}–{{ g.booking.end|hhmm }}</strong></p>
+    <p class="mb-0"><span class="badge">{{ g.booking.facility.get_kind_display }}</span> <span class="badge">{{ g.get_level_display }}</span>{% if g.municipality != tenant %} <span class="badge">{% icon 'map' %} {{ g.municipality.name }}</span>{% endif %}</p>
+    {% if g.message %}<p class="mb-0">«{{ g.message }}»</p>{% endif %}
+    <small class="muted">{% blocktranslate with n=who p=g.price_per_person_cents|euros %}Organiza {{ n }} · ≈ {{ p }} por persoa (orientativo){% endblocktranslate %}</small>
+  </li>
+  {% empty %}
+  <li class="card empty-state empty-state--wide"><p class="mb-0"><strong>{% translate "Agora non hai partidas abertas con eses filtros." %}</strong><br>{% translate "Podes abrir a túa desde calquera reserva: «Busco xente»." %}</p></li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -116,7 +116,9 @@ def test_safety_review_template_and_reviewed_badge(client, admin_a, padel_a, ope
     assert r.status_code == 302
     assert order.title.startswith("Revisión de seguridade inicial Eira")
     labels = [i["label"] for i in order.checklist_state]
-    assert len(labels) == len(SAFETY_CHECKLIST) == 10
+    assert (
+        len(labels) == len(SAFETY_CHECKLIST) == 13
+    )  # v1.2: +3 puntos (accesibilidade, DESA, mobilidade)
     for word in (
         "Pavimento",
         "porterías",

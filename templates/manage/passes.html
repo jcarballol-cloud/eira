@@ -1,0 +1,40 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Abonos e carné" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% icon 'qr' %} {% translate "Servizo" %}</p><h1>{% translate "Abonos e carné municipal" %}</h1>
+  <p>{% blocktranslate count n=active_count %}{{ n }} abono activo.{% plural %}{{ n }} abonos activos.{% endblocktranslate %}</p></div>
+  <a class="btn" href="{% turl 'manage:card_reader' %}">{% icon 'qr' %} {% translate "Ler un carné" %}</a></div>
+<div class="layout-aside">
+  <div class="stack">
+    <section class="card" aria-labelledby="pt-title">
+      <h2 class="h3" id="pt-title">{% translate "Tipos de abono" %}</h2>
+      <div class="table-wrap" tabindex="0"><table class="data"><caption class="visually-hidden">{% translate "Tipos de abono" %}</caption>
+        <thead><tr><th scope="col">{% translate "Nome" %}</th><th scope="col">{% translate "Tipo" %}</th><th scope="col" class="num">{% translate "Prezo" %}</th><th scope="col" class="num">{% translate "Validez" %}</th><th scope="col" class="num">{% translate "Desconto" %}</th><th scope="col">{% translate "Estado" %}</th></tr></thead>
+        <tbody>{% for t in types %}<tr><th scope="row">{{ t.name }}</th><td>{{ t.get_kind_display }}</td><td class="num">{{ t.price_cents|euros }}</td><td class="num">{% blocktranslate with d=t.valid_days %}{{ d }} días{% endblocktranslate %}</td><td class="num">{{ t.discount_pct }} %</td>
+          <td><form method="post" class="inline-form">{% csrf_token %}<input type="hidden" name="accion" value="alternar"><input type="hidden" name="tipo" value="{{ t.pk }}"><button class="btn btn-sm btn-ghost" type="submit">{% if t.active %}{% translate "Á venda · retirar" %}{% else %}{% translate "Retirado · pór á venda" %}{% endif %}<span class="visually-hidden"> {{ t.name }}</span></button></form></td></tr>
+        {% empty %}<tr><td colspan="6">{% translate "Aínda non hai tipos de abono." %}</td></tr>{% endfor %}</tbody></table></div>
+      <h3 class="h4">{% translate "Novo tipo" %}</h3>
+      <form method="post" novalidate>{% csrf_token %}<input type="hidden" name="accion" value="tipo">
+        <div class="form-grid">{% for field in type_form %}{% include "includes/field.html" %}{% endfor %}</div>
+        <div class="form-actions"><button class="btn btn-secondary" type="submit">{% icon 'plus' %} {% translate "Crear" %}</button></div></form>
+    </section>
+    <section class="card" aria-labelledby="sold-title">
+      <h2 class="h3" id="sold-title">{% translate "Últimos abonos" %}</h2>
+      <div class="table-wrap" tabindex="0"><table class="data"><caption class="visually-hidden">{% translate "Últimos abonos" %}</caption>
+        <thead><tr><th scope="col">{% translate "Persoa" %}</th><th scope="col">{% translate "Abono" %}</th><th scope="col">{% translate "Validez" %}</th><th scope="col">{% translate "Canle" %}</th><th scope="col">{% translate "Estado" %}</th></tr></thead>
+        <tbody>{% for p in passes %}<tr><td>{{ p.user }}</td><td>{{ p.type.name }}</td><td class="nowrap">{% if p.starts_on %}{{ p.starts_on|date:"d/m/Y" }}–{{ p.expires_on|date:"d/m/Y" }}{% else %}—{% endif %}</td><td>{% if p.channel == 'office' %}{% translate "Oficina" %}{% else %}{% translate "TPV en liña" %}{% endif %}</td><td><span class="badge {% if p.status == 'active' %}badge-ok{% elif p.status == 'pending' %}badge-warn{% endif %}">{{ p.get_status_display }}</span></td></tr>
+        {% empty %}<tr><td colspan="5">{% translate "Aínda non hai abonos." %}</td></tr>{% endfor %}</tbody></table></div>
+    </section>
+  </div>
+  <aside class="stack">
+    <section class="card" aria-labelledby="sell-title">
+      <h2 class="h3" id="sell-title">{% translate "Alta ou renovación na oficina" %}</h2>
+      <form method="post" novalidate>{% csrf_token %}<input type="hidden" name="accion" value="vender">
+        {% for field in sell_form %}{% include "includes/field.html" %}{% endfor %}
+        <div class="form-actions"><button class="btn" type="submit">{% translate "Cobrar e activar" %}</button></div></form>
+      <p class="help mb-0">{% translate "Se xa ten un abono activo, o novo empeza cando remata o actual." %}</p>
+    </section>
+    <section class="card-flat"><p class="help mb-0">{% translate "Vincular cun carné xa existente do concello (biblioteca, piscina…): adaptador municipal_card, só simulado. Ver docs/carne-municipal.md." %}</p></section>
+  </aside>
+</div>
+{% endblock %}

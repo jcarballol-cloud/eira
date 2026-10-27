@@ -1,0 +1,33 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{{ survey.label }}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow"><a href="{% turl 'manage:surveys' %}">{% translate "Enquisas de satisfacción" %}</a></p><h1>{{ survey.label }}</h1>
+  <p>{{ survey.opens_on|date:"d/m/Y" }}–{{ survey.closes_on|date:"d/m/Y" }} · {% blocktranslate count n=r.n %}{{ n }} resposta{% plural %}{{ n }} respostas{% endblocktranslate %}{% if survey.announced_at %} · {% blocktranslate with d=survey.announced_at|date:"d/m/Y" %}avisada o {{ d }}{% endblocktranslate %}{% endif %}</p></div>
+  {% if survey.is_open %}<form method="post" action="{% turl 'manage:survey_announce' survey.pk %}">{% csrf_token %}<button class="btn" type="submit">{% icon 'bell' %} {% translate "Avisar por app, correo e Telegram" %}</button></form>{% endif %}</div>
+{% if not r.enough %}
+<div class="alert alert-warn">{% blocktranslate trimmed with n=min_n %}Os resultados móstranse a partir de {{ n }} respostas, para que ninguén se poida identificar.{% endblocktranslate %}</div>
+{% else %}
+<div class="grid grid-3 nps-cards">
+  <section class="card stat nps-card" aria-labelledby="nps-t"><h2 class="label h4" id="nps-t">NPS</h2><p class="value mb-0">{{ r.nps.nps|signed }}</p><p class="help mb-0">{% translate "De −100 a +100" %}</p></section>
+  <section class="card stat" aria-labelledby="pro-t"><h2 class="label h4" id="pro-t">{% translate "Promotoras (9–10)" %}</h2><p class="value mb-0">{{ r.nps.promoters }} %</p></section>
+  <section class="card stat" aria-labelledby="det-t"><h2 class="label h4" id="det-t">{% translate "Detractoras (0–6)" %}</h2><p class="value mb-0">{{ r.nps.detractors }} %</p><p class="help mb-0">{% blocktranslate with p=r.nps.passives %}Pasivas (7–8): {{ p }} %{% endblocktranslate %}</p></section>
+</div>
+<section class="card mt-2" aria-labelledby="asp-title">
+  <h2 class="h3" id="asp-title">{% translate "Aspectos (media do 1 ao 5)" %}</h2>
+  <figure class="mb-0 hbars" aria-labelledby="asp-fig"><figcaption id="asp-fig" class="visually-hidden">{% translate "Media de cada aspecto do 1 ao 5" %}</figcaption>
+    <ul class="list">{% for a in r.aspects %}<li class="hbar-row"><span class="hbar-label">{{ a.label }}</span><span class="hbar-track" aria-hidden="true"><span class="hbar-fill w-{{ a.pct|bucket5 }}"></span></span><span class="hbar-value">{% if a.avg is not None %}{{ a.avg }}{% else %}<span class="muted">{% translate "n < 10" %}</span>{% endif %}</span></li>{% endfor %}</ul>
+    <p class="hbar-scale">{% translate "Escala de 1 a 5." %}</p></figure>
+</section>
+{% if r.facilities %}<section class="card mt-2" aria-labelledby="fac-title">
+  <h2 class="h3" id="fac-title">{% translate "NPS pola instalación que máis usan" %}</h2>
+  <div class="table-wrap" tabindex="0"><table class="data"><caption class="visually-hidden">{% translate "NPS por instalación" %}</caption>
+    <thead><tr><th scope="col">{% translate "Instalación" %}</th><th scope="col">{% translate "Respostas" %}</th><th scope="col" class="num">NPS</th></tr></thead>
+    <tbody>{% for f in r.facilities %}<tr><th scope="row">{{ f.name }}</th><td>{{ f.n }}</td><td class="num">{{ f.nps|signed }}</td></tr>{% endfor %}</tbody></table></div>
+</section>{% endif %}
+{% if r.comments %}<section class="card mt-2" aria-labelledby="com-title">
+  <h2 class="h3" id="com-title">{% translate "Comentarios" %}</h2>
+  <p class="help">{% translate "Sen nome nin data, en orde aleatoria." %}</p>
+  <ul class="list survey-comments">{% for c in r.comments %}<li>«{{ c }}»</li>{% endfor %}</ul>
+</section>{% endif %}
+{% endif %}
+{% endblock %}

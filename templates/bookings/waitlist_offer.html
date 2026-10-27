@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Lista de espera" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% translate "Lista de espera" %}</p><h1>{{ entry.facility.name }}</h1>
+  <p>{{ entry.start|date:"l j \d\e F" }} · <strong>{{ entry.start|hhmm }}–{{ entry.end|hhmm }}</strong></p></div>
+  <span class="badge big {% if entry.is_live_offer %}badge-ok{% else %}badge-warn{% endif %}">{% if entry.is_live_offer %}{% translate "Quedou libre!" %}{% else %}{{ entry.get_status_display }}{% endif %}</span></div>
+{% if entry.is_live_offer %}
+<section class="card card-attention">
+  <p class="big">{% blocktranslate with h=entry.offer_expires_at|date:"H:i" %}É para ti ata as {{ h }}. Se non a colles, pasa á seguinte persoa.{% endblocktranslate %}</p>
+  <form method="post" class="row">{% csrf_token %}
+    <button class="btn btn-lg" type="submit" name="accion" value="aceptar">{% icon 'check' %} {% translate "Quérola" %}</button>
+    <button class="btn btn-ghost" type="submit" name="accion" value="deixar">{% translate "Non, grazas" %}</button>
+  </form>
+  <p class="help mt-1 mb-0">{% translate "Ao collela pagas como nunha reserva normal." %}</p>
+</section>
+{% elif entry.status == 'waiting' %}
+<section class="card"><p>{% translate "Estás na lista. Avisarémoste se queda libre." %}</p>
+  <form method="post">{% csrf_token %}<button class="btn btn-secondary" type="submit" name="accion" value="deixar">{% translate "Saír da lista" %}</button></form></section>
+{% else %}
+<section class="card"><p class="mb-0">{% translate "Esta oferta xa non está dispoñible." %}</p></section>
+{% endif %}
+{% endblock %}

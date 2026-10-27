@@ -28,9 +28,12 @@
           {% endif %}{% endfor %}
           </div>
         </fieldset>
-        {% for field in g.fields %}{% if not field.feature_icon %}{% include "includes/field.html" %}{% endif %}{% endfor %}
+        <div class="form-grid acc-detail">{% for field in g.fields %}{% if not field.feature_icon %}{% include "includes/field.html" %}{% endif %}{% endfor %}</div>
+        <p class="help">{% translate "A lista de arriba enchese soa a partir dos puntos detallados: só «Si» conta como si." %}</p>
       {% else %}
         <div class="form-grid">{% for field in g.fields %}{% include "includes/field.html" %}{% endfor %}</div>
+        {% if g.key == 'seguridade' %}<p class="help">{% translate "Sen DESA na instalación? Busca o máis próximo no rexistro configurado (datos abertos ou CSV)." %}</p>
+        <button class="btn btn-secondary" type="submit" name="accion" value="desa" formnovalidate>{% icon 'heart' %} {% translate "Buscar o DESA máis próximo" %}</button>{% endif %}
       {% endif %}
     </section>
     {% endfor %}

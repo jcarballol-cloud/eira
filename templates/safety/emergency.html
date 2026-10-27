@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Emerxencia de seguridade" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% icon 'shield' %} {{ tenant.name }}</p><h1>{% translate "Emerxencia de seguridade" %}</h1></div></div>
+<a class="emergency-call emergency-call--huge" href="tel:112">
+  <span class="emergency-call__num" aria-hidden="true">112</span>
+  <span><strong>{% translate "Chamar ao 112" %}</strong><br>{% translate "Di onde estás e que pasa. Non colgues ata que cho indiquen." %}</span>
+</a>
+{% if alert %}
+<div class="alert alert-success" role="status" data-announce>{% icon 'check' %} {% blocktranslate trimmed with h=alert.created_at|date:"H:i" %}Avisamos ao concello ás {{ h }}.{% endblocktranslate %}{% if alert.notified %} {% blocktranslate with w=alert.notified|join:", " %}Recibiron o aviso: {{ w }}.{% endblocktranslate %}{% endif %}</div>
+{% else %}
+<div class="alert alert-warn" role="status">{% translate "Non puidemos avisar ao concello desde aquí. Chama ao 112." %}</div>
+{% endif %}
+<ul class="list">
+  <li>{% translate "Afástate do perigo e axuda a outras persoas a saír se podes facelo sen risco." %}</li>
+  <li>{% translate "Non te enfrontes a ninguén. Agarda ás autoridades nun lugar seguro." %}</li>
+</ul>
+{% if tenant.contact_phone %}<p class="help">{% translate "Concello" %}: <a href="tel:{{ tenant.contact_phone|cut:' ' }}">{{ tenant.contact_phone }}</a></p>{% endif %}
+{% endblock %}

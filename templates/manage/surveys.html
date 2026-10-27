@@ -1,0 +1,41 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Enquisas de satisfacción" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% icon 'smile' %} {% translate "Satisfacción" %}</p><h1>{% translate "Enquisas de satisfacción (NPS)" %}</h1>
+  <p>{% translate "Unha enquisa ao ano, cunha xanela de datas. «Que tal foi?» segue despois de cada uso." %}</p></div></div>
+
+<section class="card" aria-labelledby="evo-title">
+  <h2 class="h3" id="evo-title">{% translate "Evolución do NPS por ano" %}</h2>
+  <p class="help">{% translate "NPS = % de promotoras (9–10) − % de detractoras (0–6). Vai de −100 a +100. Só se calcula con 10 respostas ou máis." %}</p>
+  <div class="table-wrap" tabindex="0"><table class="data">
+    <caption class="visually-hidden">{% translate "Evolución do NPS por ano" %}</caption>
+    <thead><tr><th scope="col">{% translate "Ano" %}</th><th scope="col">{% translate "Respostas" %}</th><th scope="col" class="num">NPS</th><th scope="col" class="num">{% translate "Promotoras" %}</th><th scope="col" class="num">{% translate "Pasivas" %}</th><th scope="col" class="num">{% translate "Detractoras" %}</th></tr></thead>
+    <tbody>{% for row in evolution %}<tr>
+      <th scope="row"><a href="{% turl 'manage:survey' row.survey.pk %}">{{ row.year }}</a></th>
+      {% if row.nps %}<td>{{ row.nps.n }}</td><td class="num"><strong>{{ row.nps.nps|signed }}</strong></td><td class="num">{{ row.nps.promoters }} %</td><td class="num">{{ row.nps.passives }} %</td><td class="num">{{ row.nps.detractors }} %</td>
+      {% else %}<td colspan="5" class="muted">{% translate "Sen datos suficientes (menos de 10 respostas)" %}</td>{% endif %}
+    </tr>{% empty %}<tr><td colspan="6">{% translate "Aínda non hai enquisas." %}</td></tr>{% endfor %}</tbody>
+  </table></div>
+</section>
+
+<section class="card mt-2" aria-labelledby="list-title">
+  <h2 class="h3" id="list-title">{% translate "Enquisas" %}</h2>
+  <ul class="list">{% for s, n in surveys %}<li class="row-between"><span><a href="{% turl 'manage:survey' s.pk %}"><strong>{{ s.label }}</strong></a> · {{ s.opens_on|date:"d/m/Y" }}–{{ s.closes_on|date:"d/m/Y" }} · {% blocktranslate count n=n %}{{ n }} resposta{% plural %}{{ n }} respostas{% endblocktranslate %}</span>
+    <span class="badge {% if s.is_open %}badge-ok{% elif s.is_closed %}badge-muted{% else %}badge-warn{% endif %}">{% if s.is_open %}{% translate "Aberta" %}{% elif s.is_closed %}{% translate "Pechada" %}{% else %}{% translate "Programada" %}{% endif %}</span></li>
+  {% empty %}<li class="muted">{% translate "Aínda non hai enquisas." %}</li>{% endfor %}</ul>
+  <h3 class="h4">{% translate "Nova enquisa" %}</h3>
+  <form method="post" novalidate>{% csrf_token %}
+    <div class="form-grid">{% for field in form %}{% include "includes/field.html" %}{% endfor %}</div>
+    <div class="form-actions"><button class="btn" type="submit">{% icon 'plus' %} {% translate "Crear" %}</button></div>
+  </form>
+</section>
+
+<section class="card mt-2" aria-labelledby="use-title">
+  <h2 class="h3" id="use-title">{% translate "NPS despois de cada uso (últimos 12 meses)" %}</h2>
+  {% if not tenant.nps_after_use %}<p class="help">{% translate "Desactivado (por defecto, para non cansar). Actívase en Configuración → Satisfacción (NPS)." %}</p>{% endif %}
+  {% if use_nps %}<div class="table-wrap" tabindex="0"><table class="data"><caption class="visually-hidden">{% translate "NPS despois do uso por instalación" %}</caption>
+    <thead><tr><th scope="col">{% translate "Instalación" %}</th><th scope="col">{% translate "Respostas" %}</th><th scope="col" class="num">NPS</th></tr></thead>
+    <tbody>{% for f in use_nps %}<tr><th scope="row">{{ f.name }}</th><td>{{ f.n }}</td><td class="num">{{ f.nps|signed }}</td></tr>{% endfor %}</tbody></table></div>
+  {% elif tenant.nps_after_use %}<p class="muted">{% translate "Sen datos suficientes (menos de 10 respostas por instalación)." %}</p>{% endif %}
+</section>
+{% endblock %}

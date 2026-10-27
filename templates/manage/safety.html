@@ -1,0 +1,55 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Seguridade" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% icon 'shield' %} {% translate "Seguridade" %}</p><h1>{% translate "Alertas e peches" %}</h1>
+  <p>{% translate "Alertas da veciñanza e das persoas monitoras, peches sen confirmar e quen recibe os avisos." %}</p></div>
+  <div class="row"><a class="btn btn-secondary" href="{% turl 'manage:safety_protocol' %}">{% translate "Protocolo de accidente" %}</a>
+  <a class="btn btn-secondary" href="{% turl 'manage:accidents' %}">{% translate "Rexistro de accidentes" %}</a></div></div>
+
+<section class="card" aria-labelledby="alerts-title">
+  <h2 class="h3" id="alerts-title">{% translate "Alertas recentes" %}</h2>
+  <div class="table-wrap" tabindex="0"><table class="data">
+    <caption class="visually-hidden">{% translate "Alertas recentes" %}</caption>
+    <thead><tr><th scope="col">{% translate "Cando" %}</th><th scope="col">{% translate "Tipo" %}</th><th scope="col">{% translate "Instalación" %}</th><th scope="col">{% translate "Desde" %}</th><th scope="col">{% translate "Avisadas" %}</th><th scope="col">{% translate "Estado" %}</th></tr></thead>
+    <tbody>{% for a in alerts %}<tr>
+      <td class="nowrap">{{ a.created_at|date:"d/m H:i" }}</td>
+      <td><span class="badge {% if a.kind == 'security' %}badge-alert{% else %}badge-warn{% endif %}">{{ a.get_kind_display }}</span></td>
+      <td>{{ a.facility.name|default:"—" }}</td>
+      <td>{{ a.get_origin_display }}</td>
+      <td>{{ a.notified|join:", "|default:"—" }}</td>
+      <td>{% if a.acknowledged_at %}<span class="badge badge-ok">{% translate "Atendida" %}</span>{% else %}<form method="post" class="inline-form">{% csrf_token %}<input type="hidden" name="accion" value="recibida"><input type="hidden" name="alerta" value="{{ a.pk }}"><button class="btn btn-sm" type="submit">{% translate "Marcar atendida" %}</button></form>{% endif %}
+        {% if a.incident %}<a href="{% turl 'manage:incident_detail' a.incident.pk %}">{% translate "Incidencia" %} #{{ a.incident.pk }}</a>{% endif %}</td>
+    </tr>{% empty %}<tr><td colspan="6">{% translate "Non hai alertas." %}</td></tr>{% endfor %}</tbody>
+  </table></div>
+</section>
+
+<section class="card mt-2" aria-labelledby="esc-title">
+  <h2 class="h3" id="esc-title">{% translate "Peches sen confirmar" %}</h2>
+  <p class="help">{% blocktranslate trimmed with a=tenant.close_reminder_minutes b=tenant.close_second_minutes c=tenant.close_escalate_minutes %}1.º recordatorio aos {{ a }} min do fin, 2.º {{ b }} min despois e aviso á persoa responsable {{ c }} min máis tarde. A Policía Local nunca se avisa soa.{% endblocktranslate %} <a href="{% turl 'manage:settings' %}#cfg-peche">{% translate "Cambiar" %}</a></p>
+  <div class="table-wrap" tabindex="0"><table class="data">
+    <caption class="visually-hidden">{% translate "Peches sen confirmar" %}</caption>
+    <thead><tr><th scope="col">{% translate "Reserva" %}</th><th scope="col">{% translate "Instalación" %}</th><th scope="col">{% translate "Fase" %}</th><th scope="col">{% translate "Persoa responsable" %}</th><th scope="col">{% translate "Resultado" %}</th></tr></thead>
+    <tbody>{% for e in escalations %}<tr>
+      <td class="nowrap"><a href="{% turl 'manage:safety_escalation' e.pk %}">{{ e.booking.reference }}</a> · {{ e.booking.end|date:"d/m H:i" }}</td>
+      <td>{{ e.booking.facility.name }}</td>
+      <td>{{ e.get_stage_display }}</td>
+      <td>{{ e.contact.name|default:"—" }}</td>
+      <td>{% if e.resolved_at %}<span class="badge badge-ok">{{ e.get_outcome_display }}</span>{% else %}<span class="badge badge-warn">{% translate "Pendente" %}</span>{% endif %}{% if e.counted_as_breach %} <span class="badge badge-alert">{% translate "Incumprimento" %}</span>{% endif %}</td>
+    </tr>{% empty %}<tr><td colspan="5">{% translate "Ningún peche sen confirmar." %}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% if police %}<h3 class="h4">{% translate "Contactos coa Policía Local (rexistro)" %}</h3>
+  <ul class="list">{% for p in police %}<li>{{ p.at|date:"d/m/Y H:i" }} · {{ p.escalation.booking.facility.name }} · {% if p.by_contact %}{{ p.by_contact.name }}{% elif p.by_user %}{{ p.by_user }}{% else %}{% translate "persoa responsable" %}{% endif %} · {{ p.phone }}</li>{% endfor %}</ul>{% endif %}
+</section>
+
+<section class="card mt-2" aria-labelledby="responsables">
+  <h2 class="h3" id="responsables">{% translate "Persoas responsables (orde e horario)" %}</h2>
+  <p class="help">{% translate "Reciben as alertas e os peches sen confirmar. Avísase á primeira que estea de servizo nese momento." %}{% if on_duty %} {% blocktranslate with n=on_duty.0.name %}Agora: {{ n }}.{% endblocktranslate %}{% endif %}</p>
+  <ul class="list">{% for c in contacts %}<li class="row-between"><span><strong>{{ c.order }}. {{ c.name }}</strong>{% if c.role_label %} · {{ c.role_label }}{% endif %} · {{ c.hours_label }}{% if c.phone %} · {{ c.phone }}{% endif %}{% if not c.active %} <span class="badge">{% translate "inactiva" %}</span>{% endif %}</span>
+    <form method="post" action="{% turl 'manage:safety_contact_delete' c.pk %}" class="inline-form">{% csrf_token %}<button class="btn btn-sm btn-ghost" type="submit">{% translate "Eliminar" %}<span class="visually-hidden"> {{ c.name }}</span></button></form></li>
+  {% empty %}<li class="muted">{% translate "Aínda non hai persoas responsables: só se avisa á administración." %}</li>{% endfor %}</ul>
+  <form method="post" class="mt-1" novalidate>{% csrf_token %}<input type="hidden" name="accion" value="contacto">
+    <div class="form-grid">{% for field in form %}{% include "includes/field.html" %}{% endfor %}</div>
+    <div class="form-actions"><button class="btn" type="submit">{% icon 'plus' %} {% translate "Engadir" %}</button></div>
+  </form>
+</section>
+{% endblock %}

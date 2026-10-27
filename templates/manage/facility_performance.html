@@ -1,0 +1,82 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Rendemento" %} · {{ facility.name }}{% endblock %}
+{% block content %}
+{% include "manage/_facility_tabs.html" %}
+<div class="alert estimate-note" role="note">{% icon 'light' %} <strong>{% translate "Estimación orientativa." %}</strong> {% blocktranslate trimmed with p=tenant.energy_price_eur_kwh c=tenant.co2_kg_kwh %}O consumo calcúlase co inventario de equipos, os horarios reais, as reservas usadas e os suplementos de luz; non é unha lectura do contador. Prezo {{ p }} €/kWh e {{ c }} kg CO₂/kWh (Configuración).{% endblocktranslate %}</div>
+
+{% with s=p.month %}
+<h2 class="h3">{% translate "Últimos 30 días" %}</h2>
+<div class="grid grid-4 mb-2 perf-kpis">
+  <div class="stat"><div class="label">{% translate "Ocupación (reservada)" %}</div><div class="value">{{ s.occupancy_pct }} %</div><div class="delta muted">{% blocktranslate with b=s.booked_h a=s.available_h %}{{ b }} h de {{ a }} h{% endblocktranslate %}</div></div>
+  <div class="stat"><div class="label">{% translate "Uso real (con check-in)" %}</div><div class="value">{{ s.real_use_pct }} %</div><div class="delta muted">{% blocktranslate count n=s.uses %}{{ n }} uso{% plural %}{{ n }} usos{% endblocktranslate %}</div></div>
+  <div class="stat"><div class="label">{% translate "Tempo medio de uso" %}</div><div class="value">{% if s.avg_use_min is not None %}{{ s.avg_use_min }} <small>min</small>{% else %}—{% endif %}</div></div>
+  <div class="stat"><div class="label">{% translate "Por hora de uso" %}</div><div class="value">{% if s.kwh_per_use_h is not None %}{{ s.kwh_per_use_h }} <small>kWh</small>{% else %}—{% endif %}</div><div class="delta muted">{% if s.eur_per_use_h is not None %}{{ s.eur_per_use_h }} €{% endif %}</div></div>
+</div>
+{% endwith %}
+
+<section class="card" aria-labelledby="energy-title">
+  <h2 class="h3" id="energy-title">{% translate "Consumo estimado" %} <span class="badge">{% translate "estimación orientativa" %}</span></h2>
+  {% if not p.year.has_equipment %}<p class="muted">{% translate "Engade os equipos da instalación (abaixo) para estimar o consumo." %}</p>{% endif %}
+  <div class="table-wrap" tabindex="0"><table class="data">
+    <caption class="visually-hidden">{% translate "Consumo estimado por período" %}</caption>
+    <thead><tr><th scope="col">{% translate "Período" %}</th><th scope="col" class="num">kWh</th><th scope="col" class="num">€</th><th scope="col" class="num">kg CO₂</th><th scope="col" class="num">{% translate "Horas de uso" %}</th><th scope="col" class="num">{% translate "kWh por hora de uso" %}</th><th scope="col" class="num">{% translate "€ por hora de uso" %}</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">{% translate "Semana" %}</th><td class="num">{{ p.week.kwh }}</td><td class="num">{{ p.week.cost_eur }}</td><td class="num">{{ p.week.co2_kg }}</td><td class="num">{{ p.week.used_h }}</td><td class="num">{{ p.week.kwh_per_use_h|default:"—" }}</td><td class="num">{{ p.week.eur_per_use_h|default:"—" }}</td></tr>
+      <tr><th scope="row">{% translate "Mes" %}</th><td class="num">{{ p.month.kwh }}</td><td class="num">{{ p.month.cost_eur }}</td><td class="num">{{ p.month.co2_kg }}</td><td class="num">{{ p.month.used_h }}</td><td class="num">{{ p.month.kwh_per_use_h|default:"—" }}</td><td class="num">{{ p.month.eur_per_use_h|default:"—" }}</td></tr>
+      <tr><th scope="row">{% translate "Ano" %}</th><td class="num">{{ p.year.kwh }}</td><td class="num">{{ p.year.cost_eur }}</td><td class="num">{{ p.year.co2_kg }}</td><td class="num">{{ p.year.used_h }}</td><td class="num">{{ p.year.kwh_per_use_h|default:"—" }}</td><td class="num">{{ p.year.eur_per_use_h|default:"—" }}</td></tr>
+    </tbody>
+  </table></div>
+  {% if p.year.kwh_by_kind %}<p class="help mb-0">{% translate "Ano, por tipo de equipo" %}: {% for k, v in p.year.kwh_by_kind.items %}{{ k }} {{ v }} kWh{% if not forloop.last %} · {% endif %}{% endfor %}</p>{% endif %}
+</section>
+
+<div class="grid grid-3 mt-2">
+  <section class="card" aria-labelledby="t-occ"><h2 id="t-occ" class="h3">{% translate "Ocupación por mes" %}</h2>{% include "includes/hbar.html" with chart=occ_chart cid="occm" title=_("Ocupación reservada por mes (%)") %}</section>
+  <section class="card" aria-labelledby="t-use"><h2 id="t-use" class="h3">{% translate "Uso real por mes" %}</h2>{% include "includes/hbar.html" with chart=use_chart cid="usem" title=_("Uso real con check-in por mes (%)") %}</section>
+  <section class="card" aria-labelledby="t-kwh"><h2 id="t-kwh" class="h3">{% translate "kWh estimados por mes" %}</h2>{% include "includes/hbar.html" with chart=kwh_chart cid="kwhm" title=_("Consumo estimado por mes (kWh)") %}</section>
+</div>
+
+<section class="card mt-2" aria-labelledby="prof-title">
+  <h2 class="h3" id="prof-title">{% translate "Perfil das persoas usuarias (último ano)" %}</h2>
+  {% if p.profile.enough %}
+  <p class="help">{% blocktranslate with n=p.profile.n %}{{ n }} persoas distintas. Só cifras agregadas.{% endblocktranslate %}</p>
+  <figure class="mb-0 hbars" aria-labelledby="prof-fig"><figcaption id="prof-fig" class="visually-hidden">{% translate "Persoas por franxa de idade (%)" %}</figcaption>
+    <ul class="list">{% for b in p.profile.bands %}<li class="hbar-row"><span class="hbar-label">{{ b.label }}</span><span class="hbar-track" aria-hidden="true"><span class="hbar-fill w-{{ b.pct|bucket5 }}"></span></span><span class="hbar-value">{{ b.pct }} %</span></li>{% endfor %}</ul></figure>
+  <p class="mb-0">{% blocktranslate with r=p.profile.resident_pct n=p.profile.network_pct %}Empadroadas: {{ r }} % · Doutros concellos da rede: {{ n }} %{% endblocktranslate %}</p>
+  {% else %}<p class="muted mb-0">{% translate "Sen datos suficientes (menos de 10 persoas distintas)." %}</p>{% endif %}
+</section>
+
+<section class="card mt-2" aria-labelledby="lecturas">
+  <h2 class="h3" id="lecturas">{% translate "Lecturas reais (facturas) fronte á estimación" %}</h2>
+  <div class="table-wrap" tabindex="0"><table class="data">
+    <caption class="visually-hidden">{% translate "Lecturas reais e estimación" %}</caption>
+    <thead><tr><th scope="col">{% translate "Período" %}</th><th scope="col" class="num">{% translate "Real (kWh)" %}</th><th scope="col" class="num">{% translate "Estimado (kWh)" %}</th><th scope="col" class="num">{% translate "Diferenza" %}</th><th scope="col" class="num">{% translate "Importe" %}</th></tr></thead>
+    <tbody>{% for r in p.readings %}<tr><th scope="row">{{ r.reading.period_start|date:"d/m/Y" }}–{{ r.reading.period_end|date:"d/m/Y" }}</th><td class="num">{{ r.reading.kwh }}</td><td class="num">{{ r.estimate }}</td><td class="num">{% if r.diff_pct is not None %}{{ r.diff_pct|signed }} %{% else %}—{% endif %}</td><td class="num">{% if r.reading.cost_cents %}{{ r.reading.cost_cents|euros }}{% else %}—{% endif %}</td></tr>
+    {% empty %}<tr><td colspan="5">{% translate "Aínda non hai lecturas." %}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% if can_edit %}<form method="post" class="mt-1" novalidate>{% csrf_token %}<input type="hidden" name="accion" value="lectura">
+    <div class="form-grid">{% for field in reading_form %}{% include "includes/field.html" %}{% endfor %}</div>
+    <div class="form-actions"><button class="btn btn-secondary" type="submit">{% icon 'plus' %} {% translate "Engadir lectura" %}</button></div></form>{% endif %}
+</section>
+
+<section class="card mt-2" aria-labelledby="equipos">
+  <h2 class="h3" id="equipos">{% translate "Inventario de equipos" %}</h2>
+  <p class="help">{% translate "Potencia en kW e modo de uso: durante a apertura, só con reserva, só con suplemento de luz ou continuo. O factor de uso (0–1) é a parte do tempo que funciona a esa potencia." %}</p>
+  {% if can_edit %}
+  <form method="post" novalidate>{% csrf_token %}<input type="hidden" name="accion" value="equipos">
+    {{ formset.management_form }}
+    {% if formset.non_form_errors %}<div class="alert alert-error" role="alert">{{ formset.non_form_errors }}</div>{% endif %}
+    {% for form in formset %}
+    <fieldset class="equipment-row">
+      <legend>{% if form.instance.pk %}{{ form.instance }}{% else %}{% translate "Novo equipo" %}{% endif %}</legend>
+      {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+      <div class="form-grid">{% for field in form.visible_fields %}{% include "includes/field.html" %}{% endfor %}</div>
+    </fieldset>
+    {% endfor %}
+    <div class="form-actions"><button class="btn" type="submit">{% translate "Gardar equipos" %}</button></div>
+  </form>
+  {% else %}
+  <ul class="list">{% for e in facility.energy_equipment.all %}<li>{{ e }} · {{ e.power_kw }} kW · {{ e.get_mode_display }} · {{ e.use_factor }}</li>{% empty %}<li class="muted">{% translate "Sen equipos." %}</li>{% endfor %}</ul>
+  {% endif %}
+</section>
+<p class="help mt-1">{% translate "Fórmulas: docs/rendemento-instalacions.md." %}</p>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Rexistrar o accidente" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{{ facility.name }}</p><h1>{% translate "Rexistrar o accidente" %}</h1></div></div>
+<div class="alert">{% icon 'shield' %} {% translate "Só datos básicos. Non escribas diagnósticos, lesións concretas nin datos de saúde. Só o ven a administración do concello e a persoa delegada de protección de datos." %}</div>
+<form method="post" class="card" novalidate>
+  {% csrf_token %}
+  {% if form.errors %}<div class="alert alert-error" role="alert" tabindex="-1" data-focus>{% translate "Revisa os campos marcados." %}</div>{% endif %}
+  {% for field in form %}{% include "includes/field.html" %}{% endfor %}
+  <div class="form-actions"><button class="btn" type="submit">{% translate "Rexistrar" %}</button>
+    <a class="btn btn-ghost" href="{% turl 'safety:protocol_facility' facility.pk %}{% if alert %}?alerta={{ alert.pk }}{% endif %}">{% translate "Volver ao protocolo" %}</a></div>
+</form>
+{% endblock %}

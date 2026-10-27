@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Accidente rexistrado" %}{% endblock %}
+{% block content %}
+<div class="result result--ok" role="status" data-announce>
+  <span class="result__icon" aria-hidden="true">{% icon 'check' %}</span>
+  <h1>{% translate "Accidente rexistrado" %}</h1>
+  <p>{% blocktranslate trimmed with f=facility.name %}Grazas. O concello revisará se a instalación ({{ f }}) tivo que ver.{% endblocktranslate %}</p>
+  <p><a class="btn btn-secondary" href="{% url 'safety' tenant.slug %}">{% translate "Volver" %}</a></p>
+</div>
+{% endblock %}

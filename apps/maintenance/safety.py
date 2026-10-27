@@ -25,6 +25,16 @@ SAFETY_CHECKLIST = [
     gettext_lazy("Vías de evacuación: libres e ben sinalizadas"),
     gettext_lazy("Accesibilidade física: acceso sen chanzos, aseo e aparcadoiro como se declaran"),
     gettext_lazy("Protocolo na porta: cartel de Eira co 112, o DEA e o teléfono do concello"),
+    # v1.2 · C
+    gettext_lazy(
+        "Accesibilidade detallada: revisar os 7 puntos (aparcamento PMR, itinerario, corredores e "
+        "portas, aseos, vestiarios, bancadas e sinalización) e anotar si, parcial ou non"
+    ),
+    gettext_lazy(
+        "DESA: se está na instalación, ubicación exacta e horario de acceso; se non, o máis "
+        "próximo con nome, enderezo, distancia e horario"
+    ),
+    gettext_lazy("Aparcabicis e puntos de recarga: número de prazas, tipo e estado"),
 ]
 
 

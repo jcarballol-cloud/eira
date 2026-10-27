@@ -39,6 +39,9 @@ MODULE_LABELS = {
     "health": gettext_lazy("Saúde no dispositivo"),
     "ai_summary": gettext_lazy("Resumo semanal con IA autoaloxada"),
     "opendata": gettext_lazy("Datos abertos"),
+    # v1.2
+    "open_games": gettext_lazy("Partidas abertas (buscar xente)"),
+    "cards": gettext_lazy("Carné municipal e abonos"),
 }
 
 
@@ -90,6 +93,38 @@ SETTINGS_SECTIONS = [
         ["w_occupancy", "w_diversity", "w_satisfaction", "w_accessibility", "w_maintenance"],
         False,
     ),
+    # v1.2
+    (
+        "peche",
+        gettext_lazy("Seguridade e peche"),
+        [
+            "police_phone",
+            "close_reminder_minutes",
+            "close_second_minutes",
+            "close_escalate_minutes",
+            "close_breach_enabled",
+            "accident_retention_months",
+        ],
+        False,
+    ),
+    (
+        "confirmacion",
+        gettext_lazy("Confirmación e lista de espera"),
+        [
+            "confirm_release_enabled",
+            "confirm_release_minutes",
+            "waitlist_offer_minutes",
+            "checkin_release_minutes",
+        ],
+        False,
+    ),
+    ("enquisas", gettext_lazy("Satisfacción (NPS)"), ["nps_after_use"], False),
+    (
+        "rendemento",
+        gettext_lazy("Rendemento (estimación orientativa)"),
+        ["energy_price_eur_kwh", "co2_kg_kwh"],
+        False,
+    ),
     ("mapa", gettext_lazy("Mapa"), ["tile_url", "tile_attribution", "tile_attribution_url"], True),
     (
         "legal",
@@ -130,6 +165,20 @@ class SettingsForm(forms.ModelForm):
             "network_open",
             "network_max_active",
             "network_advance_days",
+            # v1.2
+            "police_phone",
+            "close_reminder_minutes",
+            "close_second_minutes",
+            "close_escalate_minutes",
+            "close_breach_enabled",
+            "accident_retention_months",
+            "confirm_release_enabled",
+            "confirm_release_minutes",
+            "waitlist_offer_minutes",
+            "checkin_release_minutes",
+            "nps_after_use",
+            "energy_price_eur_kwh",
+            "co2_kg_kwh",
         ]
         widgets = {
             "lighting_from": forms.TimeInput(attrs={"type": "time"}),
@@ -179,6 +228,16 @@ class SettingsForm(forms.ModelForm):
         "lighting_from",
         "lighting_until",
         "network_max_active",
+        # v1.2: se non veñen no formulario, mantense o que había
+        "close_reminder_minutes",
+        "close_second_minutes",
+        "close_escalate_minutes",
+        "accident_retention_months",
+        "confirm_release_minutes",
+        "waitlist_offer_minutes",
+        "checkin_release_minutes",
+        "energy_price_eur_kwh",
+        "co2_kg_kwh",
     )
 
     def clean(self):

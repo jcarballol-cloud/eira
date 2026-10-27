@@ -48,5 +48,23 @@
       <td class="num">{{ r.network_in }}</td></tr>{% endfor %}</tbody>
   </table></div>
 </section>
+<section class="card mt-2" aria-labelledby="nps-title">{# v1.2 · E #}
+  <h2 id="nps-title" class="h3">{% icon 'smile' %} {% translate "Satisfacción anual (NPS)" %}</h2>
+  <p class="help">{% translate "Última enquisa anual de cada concello con 10 respostas ou máis. Só agregados." %}</p>
+  <div class="table-wrap" tabindex="0"><table class="data">
+    <caption class="visually-hidden">{% translate "NPS por concello" %}</caption>
+    <thead><tr><th scope="col">{% translate "Concello" %}</th><th scope="col">{% translate "Ano" %}</th><th scope="col" class="num">NPS</th><th scope="col" class="num">{% translate "Respostas" %}</th></tr></thead>
+    <tbody>{% for r in rows %}<tr><th scope="row">{{ r.m.name }}</th>{% if r.nps is not None %}<td>{{ r.nps_year }}</td><td class="num"><strong>{{ r.nps|signed }}</strong></td><td class="num">{{ r.nps_n }}</td>{% else %}<td colspan="3" class="muted">{% translate "sen datos suficientes" %}</td>{% endif %}</tr>{% endfor %}</tbody>
+  </table></div>
+</section>
+<section class="card mt-2" aria-labelledby="perf-title">{# v1.2 · D #}
+  <h2 id="perf-title" class="h3">{% icon 'light' %} {% translate "Rendemento (últimos 30 días)" %}</h2>
+  <p class="help">{% translate "Só agregados por concello. O consumo é unha estimación orientativa a partir do inventario de equipos." %}</p>
+  <div class="table-wrap" tabindex="0"><table class="data">
+    <caption class="visually-hidden">{% translate "Rendemento por concello" %}</caption>
+    <thead><tr><th scope="col">{% translate "Concello" %}</th><th scope="col" class="num">{% translate "Ocupación" %}</th><th scope="col" class="num">{% translate "Uso real" %}</th><th scope="col" class="num">{% translate "kWh estimados" %}</th><th scope="col" class="num">{% translate "kWh por hora de uso" %}</th></tr></thead>
+    <tbody>{% for r in rows %}<tr><th scope="row">{{ r.m.name }}</th><td class="num">{{ r.perf.occupancy_pct }} %</td><td class="num">{{ r.perf.real_use_pct }} %</td><td class="num">{{ r.perf.kwh }}</td><td class="num">{{ r.perf.kwh_per_use_h|default:"—" }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+</section>
 <p class="help mt-1">{% translate "Frechas: variación fronte ás 4 semanas anteriores. A satisfacción calcúlase coas valoracións «Que tal foi?» (Ben = 100, Regular = 50, Mal = 0); entre parénteses, número de valoracións." %}</p>
 {% endblock %}

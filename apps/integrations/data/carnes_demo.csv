@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: EUPL-1.2
+# Carnés municipais xa existentes: TODOS FICTICIOS (só para o adaptador simulado municipal_card).
+municipality,external_id,service,valid
+vilardeiras,BIB-00012,Biblioteca municipal,1
+vilardeiras,BIB-00077,Biblioteca municipal,0
+pontedouro,PIS-1201,Piscina climatizada,1

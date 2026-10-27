@@ -80,6 +80,27 @@ def page_sets():
         .first()
     )
     hall = zone.facility
+    # v1.2
+    from apps.safety.models import ClosingEscalation
+
+    esc = ClosingEscalation.objects.filter(municipality__slug="vilardeiras").first()
+    from apps.bookings.models import SlotRelease, WaitlistEntry
+    from apps.surveys.models import Survey
+
+    surveys = Survey.objects.filter(municipality__slug="vilardeiras").order_by("year")
+    released = SlotRelease.objects.filter(municipality__slug="vilardeiras").first()
+    wait = WaitlistEntry.objects.get(user__email="uxia@demo.eira.example")
+    padel_v = Facility.objects.get(municipality__slug="vilardeiras", kind="padel")
+    from apps.bookings.models import OpenGame
+
+    game = OpenGame.objects.filter(municipality__slug="vilardeiras", joins__isnull=False).first()
+    uxia_next_padel = (
+        Booking.objects.filter(
+            user__email="uxia@demo.eira.example", facility=padel_v, status="confirmed"
+        )
+        .order_by("start")
+        .first()
+    )
     return {
         None: [
             "/",
@@ -107,6 +128,10 @@ def page_sets():
             # v1.1: QR de limpeza visto por quen non é persoal, e a ficha coa última limpeza
             f"{c}/operario/limpeza/{zone.token}/",
             f"{c}/instalacions/{hall.pk}/",
+            # v1.2 · A–C: protocolo sen sesión, páxina da persoa responsable e busca con filtros
+            f"{c}/seguridade/accidente/{hall.pk}/",
+            f"{c}/seguridade/peche/{esc.token}/",
+            f"{c}/?full_access=on&bikes=on&aed=on",
         ],
         "uxia@demo.eira.example": [
             f"{c}/app/",
@@ -138,6 +163,24 @@ def page_sets():
             f"{c}/incidencias/nova/?risco=1",
             f"{c}/reservas/{upcoming.pk}/estado-inicial/",
             "/axuda/",
+            # v1.2 · A e C
+            f"{c}/seguridade/alerta/",
+            f"{c}/seguridade/alerta/?instalacion={hall.pk}",
+            f"{c}/seguridade/accidente/{hall.pk}/",
+            f"{c}/seguridade/accidente/{hall.pk}/rexistrar/",
+            f"{c}/seguridade/emerxencia/",
+            f"{c}/instalacions/{hall.pk}/",
+            # v1.2 · E e F
+            f"{c}/enquisa/",
+            f"{c}/reservas/lista-de-espera/{wait.pk}/",
+            f"{c}/reservas/agardar/{padel_v.pk}/?inicio="
+            + wait.start.isoformat().replace("+", "%2B"),
+            f"{c}/instalacions/{padel_v.pk}/",
+            # v1.2 · G e H
+            f"{c}/reservas/partidas/",
+            f"{c}/reservas/partidas/{game.pk}/",
+            f"{c}/reservas/{uxia_next_padel.pk}/busco-xente/",
+            f"{c}/carne/",
         ],
         "admin@vilardeiras.demo.eira.example": [
             # v5
@@ -183,6 +226,23 @@ def page_sets():
             # v1.1
             f"{c}/xestion/limpeza/",
             f"{c}/xestion/limpeza/zona/{zone.pk}/qr/",
+            # v1.2 · A–C
+            f"{c}/xestion/seguridade/",
+            f"{c}/xestion/seguridade/accidentes/",
+            f"{c}/xestion/seguridade/protocolo/",
+            f"{c}/xestion/seguridade/protocolo/?instalacion={hall.pk}",
+            f"{c}/xestion/instalacions/{hall.pk}/",
+            # v1.2 · E e F
+            f"{c}/xestion/enquisas/",
+            f"{c}/xestion/enquisas/{surveys[0].pk}/",
+            f"{c}/xestion/enquisas/{surveys[1].pk}/",
+            f"{c}/xestion/reservas/{released.released_booking_id}/",
+            # v1.2 · D
+            f"{c}/xestion/instalacions/{hall.pk}/rendemento/",
+            f"{c}/xestion/rendemento/",
+            # v1.2 · H
+            f"{c}/xestion/abonos/",
+            f"{c}/xestion/carne/",
         ],
         "noela@demo.eira.example": [
             f"{c}/operario/",

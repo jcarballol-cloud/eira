@@ -48,6 +48,10 @@
           <a class="pill pill-mine" href="{% turl 'bookings:detail' s.mine.pk %}" aria-label="{{ day_label }}, {{ when }}, {% translate 'a túa reserva' %}">
             <span class="pill__star" aria-hidden="true">✓</span><span class="pill__time" aria-hidden="true">{{ when }}</span><span class="pill__price" aria-hidden="true">{% translate "A túa" %}</span>
           </a>
+          {% elif s.status == 'busy' and is_neighbour and not staff_mode and not modify_mode %}{# v1.2 · F: «Avísame se queda libre» #}
+          <a class="pill pill-busy pill-wait" href="{% turl 'bookings:waitlist_join' facility.pk %}?inicio={{ s.start|date:'c'|urlencode }}" aria-label="{{ day_label }}, {{ when }}, {% translate 'ocupada' %}. {% translate 'Avísame se queda libre' %}">
+            <span class="pill__time" aria-hidden="true">{{ when }}</span><span class="pill__price" aria-hidden="true">{% icon 'bell' %} {% translate "Avísame" %}</span>
+          </a>
           {% else %}
           <span class="pill pill-{{ s.status }}" {% if s.closure_reason %}title="{{ s.closure_reason }}"{% endif %}>
             <span class="visually-hidden">{{ day_label }}, {{ when }}, {{ s.label|lower }}{% if s.closure_reason %} ({{ s.closure_reason }}){% endif %}</span>

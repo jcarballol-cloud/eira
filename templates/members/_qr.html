@@ -1,0 +1,4 @@
+{% load i18n eira %}<div class="card-qr" id="card-qr" hx-get="{% turl 'members:card_qr' %}" hx-trigger="every 60s" hx-swap="outerHTML">
+  <div class="card-qr__code" role="img" aria-label="{% blocktranslate with n=card.display_number %}Código QR do carné {{ n }}. Renóvase só cada minuto.{% endblocktranslate %}">{{ qr|safe }}</div>
+  <p class="card-qr__hint">{% icon 'clock' %} {% blocktranslate trimmed with m=valid_seconds|floatformat:0 h=generated|date:"H:i" %}QR dinámico: renóvase só e caduca en poucos minutos (xerado ás {{ h }}). Unha captura non serve.{% endblocktranslate %}</p>
+</div>

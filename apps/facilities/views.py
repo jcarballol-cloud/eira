@@ -21,6 +21,10 @@ class FilterForm(forms.Form):
     accessible = forms.BooleanField(label=_("Acceso sen chanzos"), required=False)
     lighting = forms.BooleanField(label=_("Con iluminación"), required=False)
     indoor = forms.BooleanField(label=_("Cuberta"), required=False)
+    # v1.2 · C
+    full_access = forms.BooleanField(label=_("Accesible"), required=False)
+    bikes = forms.BooleanField(label=_("Con aparcabicis"), required=False)
+    aed = forms.BooleanField(label=_("Con DESA"), required=False)
 
     def __init__(self, *args, tenant=None, **kwargs):
         super().__init__(*args, **kwargs)
@@ -53,6 +57,15 @@ def home(request):
             qs = qs.filter(lighting=True)
         if d["indoor"]:
             qs = qs.filter(indoor=True)
+        # v1.2 · C: «accesible» = itinerario desde o exterior e corredores/portas con «si»
+        if d["full_access"]:
+            qs = qs.filter(
+                accessibility_detail__route__value="yes", accessibility_detail__widths__value="yes"
+            )
+        if d["bikes"]:
+            qs = qs.filter(bike_parking_spaces__gt=0)
+        if d["aed"]:
+            qs = qs.filter(aed_on_site=True)
     facilities = list(qs)
     tiles = tile_settings(tenant)
     # v5: selector de concello (o propio e os da rede abertos)
@@ -63,7 +76,16 @@ def home(request):
     active = []
     if form.is_valid():
         d = form.cleaned_data
-        for name in ("kind", "parish", "accessible", "lighting", "indoor"):
+        for name in (
+            "kind",
+            "parish",
+            "accessible",
+            "lighting",
+            "indoor",
+            "full_access",
+            "bikes",
+            "aed",
+        ):
             if d.get(name):
                 field = form.fields[name]
                 label = (

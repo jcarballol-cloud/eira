@@ -280,6 +280,10 @@ class Command(BaseCommand):
             from apps.tenants.demo_v11 import seed as seed_v11
 
             seed_v11()
+            # v1.2: aportacións da terceira rolda (seguridade, ficha ampliada, rendemento, NPS…)
+            from apps.tenants.demo_v12 import seed as seed_v12
+
+            seed_v12()
         self.stdout.write(
             self.style.SUCCESS(
                 f"Demo lista: {Municipality.objects.count()} concellos, {Facility.objects.count()} instalacións, "

@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Avísame se queda libre" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{{ facility.name }}</p><h1>{% translate "Avísame se queda libre" %}</h1>
+  <p>{{ start|date:"l j \d\e F" }} · <strong>{{ start|hhmm }}</strong></p></div></div>
+<section class="card">
+  <p>{% translate "Esta franxa está ocupada. Se alguén cancela, non confirma a tempo ou non chega, ofrecémoscha por orde de chegada á lista." %}</p>
+  <ul class="list">
+    <li>{% blocktranslate with n=tenant.waitlist_offer_minutes %}Terás {{ n }} minutos para collela: a primeira persoa que acepta quédaa.{% endblocktranslate %}</li>
+    <li>{% translate "Pagas como nunha reserva normal, só se a colles." %}</li>
+    <li>{% blocktranslate count n=ahead %}Agora hai {{ n }} persoa diante.{% plural %}Agora hai {{ n }} persoas diante.{% endblocktranslate %}</li>
+  </ul>
+  <form method="post">{% csrf_token %}<input type="hidden" name="inicio" value="{{ start|date:'c' }}">
+    <button class="btn btn-lg" type="submit">{% icon 'bell' %} {% translate "Avísame" %}</button>
+    <a class="btn btn-ghost" href="{% turl 'facilities:detail' facility.pk %}">{% translate "Volver" %}</a></form>
+</section>
+{% endblock %}

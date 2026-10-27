@@ -10,6 +10,20 @@
   <span class="badge {% if booking.status == 'confirmed' or booking.status == 'used' %}badge-ok{% elif booking.status == 'pending_payment' or booking.status == 'pending_approval' or booking.status == 'pending_office' %}badge-warn{% elif booking.status == 'cancelled' or booking.status == 'no_show' or booking.status == 'declined' %}badge-alert{% endif %} big">{{ booking.get_status_display }}</span>
 </div>
 
+{% if booking.is_active_now %}{# v1.2 · A: durante a reserva, Aviso e Alerta sen abrir o menú #}
+{% include "safety/_two_buttons.html" with facility=booking.facility booking=booking compact=True %}
+{% endif %}
+{% if can_confirm %}{# v1.2 · F: recordatorio con acción #}
+<section class="card card-attention confirm-box" id="confirmar" aria-labelledby="confirm-title">
+  <h2 class="h3" id="confirm-title">{% translate "Vés?" %}</h2>
+  <p>{% translate "Confirma que vés ou cancela cun toque: se non podes, a franxa queda para quen a agarda." %}</p>
+  <div class="row">
+    <form method="post" action="{% turl 'bookings:confirm' booking.pk %}">{% csrf_token %}<button class="btn btn-lg" type="submit">{% icon 'check' %} {% translate "Confirmo" %}</button></form>
+    <form method="post" action="{% turl 'bookings:quick_cancel' booking.pk %}">{% csrf_token %}<button class="btn btn-lg btn-danger" type="submit">{% icon 'x' %} {% translate "Cancelo" %}</button></form>
+  </div>
+  <p class="help mt-1 mb-0">{% if penalty %}{% blocktranslate with p=penalty|euros %}Se cancelas agora, a penalización é de {{ p }} (devólveseche se outra persoa colle a franxa).{% endblocktranslate %}{% else %}{% translate "Cancelar agora non ten penalización." %}{% endif %}</p>
+</section>
+{% endif %}
 {% if booking.status == 'pending_payment' %}
 <div class="alert alert-warn">{% translate "Falta completar o pagamento. Gardamos a franxa uns minutos." %} <a class="btn btn-sm" href="{% turl 'bookings:retry_payment' booking.pk %}">{% translate "Pagar agora" %}</a></div>
 {% endif %}
@@ -48,6 +62,14 @@
       </div>
       {% if booking.can_cancel %}<p class="help mt-1">{% if penalty %}{% blocktranslate with p=penalty|euros %}Se cancelas agora, a penalización é de {{ p }}.{% endblocktranslate %}{% else %}{% blocktranslate with h=tenant.cancellation_hours %}Cancelación gratuíta ata {{ h }} h antes.{% endblocktranslate %}{% endif %}</p>{% endif %}
     </section>
+    {% if booking.status == 'confirmed' and booking.is_upcoming %}{% include "bookings/_game_card.html" %}{% endif %}
+    {% if todo %}{# v1.2 · F: que tes que facer e cando #}
+    <section class="card" aria-labelledby="todo-title">
+      <h2 id="todo-title">{% translate "Que tes que facer e cando" %}</h2>
+      <ol class="todo-list">{% for t in todo %}<li class="todo-list__item{% if t.done %} is-done{% endif %}"><span class="todo-list__when">{% if t.when %}{{ t.when|date:"D j/n" }} · {{ t.when|date:"H:i" }}{% else %}—{% endif %}</span><span>{% if t.done %}{% icon 'check' %} {% endif %}{{ t.text }}</span></li>{% endfor %}</ol>
+    </section>
+    {% endif %}
+    {% for r in releases %}{% include "bookings/_release_log.html" %}{% endfor %}
     {% if booking.closed_at or booking.start_state_at %}
     <section class="card" aria-labelledby="close-title"><h2 id="close-title">{% translate "Estado ao entrar e ao saír" %}</h2>
       {% include "bookings/_states.html" with b=booking %}</section>

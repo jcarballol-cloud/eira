@@ -1,0 +1,25 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Rexistro de accidentes" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% icon 'shield' %} {% translate "Seguridade" %}</p><h1>{% translate "Rexistro de accidentes" %}</h1>
+  <p>{% translate "Datos mínimos: sen diagnósticos nin datos clínicos." %} {% blocktranslate count n=retention %}Consérvase {{ n }} mes despois de pechalo.{% plural %}Consérvase {{ n }} meses despois de pechalo.{% endblocktranslate %}</p></div>
+  {% if open_count %}<span class="badge badge-warn big">{% blocktranslate count n=open_count %}{{ n }} aberto{% plural %}{{ n }} abertos{% endblocktranslate %}</span>{% endif %}</div>
+<p class="help">{% translate "Só o ven a administración do concello e a persoa delegada de protección de datos. A deputación só recibe cifras agregadas." %}</p>
+<div class="table-wrap" tabindex="0"><table class="data">
+  <caption class="visually-hidden">{% translate "Accidentes rexistrados" %}</caption>
+  <thead><tr><th scope="col">{% translate "Data e hora" %}</th><th scope="col">{% translate "Instalación" %}</th><th scope="col">{% translate "Tipo" %}</th><th scope="col">{% translate "Gravidade" %}</th><th scope="col">112</th><th scope="col">{% translate "Comunica" %}</th><th scope="col">{% translate "Estado" %}</th></tr></thead>
+  <tbody>{% for r in reports %}<tr>
+    <td class="nowrap">{{ r.occurred_at|date:"d/m/Y H:i" }}</td>
+    <td>{{ r.facility.name }}</td>
+    <td>{{ r.get_kind_display }}</td>
+    <td><span class="badge {% if r.severity == 'emergency' %}badge-alert{% elif r.severity == 'care' %}badge-warn{% endif %}">{{ r.get_severity_display }}</span></td>
+    <td>{{ r.called_112|yesno:_("Si,Non") }}</td>
+    <td>{{ r.get_reporter_role_display }}</td>
+    <td>{% if r.closed_at %}<span class="badge badge-ok">{% translate "Pechado" %}</span>{% if r.facility_related is not None %}<br><small>{% if r.facility_related %}{% translate "A instalación tivo que ver" %}{% else %}{% translate "Sen relación coa instalación" %}{% endif %}</small>{% endif %}
+      {% else %}<form method="post" class="row">{% csrf_token %}<input type="hidden" name="accidente" value="{{ r.pk }}">
+        <label for="fr-{{ r.pk }}" class="visually-hidden">{% translate "A instalación tivo que ver?" %}</label>
+        <select id="fr-{{ r.pk }}" name="facility_related">{% for v, l in close_form.fields.facility_related.choices %}<option value="{{ v }}">{{ l }}</option>{% endfor %}</select>
+        <button class="btn btn-sm" type="submit">{% translate "Pechar" %}</button></form>{% endif %}</td>
+  </tr>{% empty %}<tr><td colspan="7">{% translate "Non hai accidentes rexistrados." %}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}

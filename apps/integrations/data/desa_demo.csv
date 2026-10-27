@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: EUPL-1.2
+# DESA de demostración: TODOS FICTICIOS (nomes, enderezos e coordenadas inventados). Formato
+# pensado para un rexistro oficial con datos abertos (non verificado: ver docs/DECISIONS.md).
+name,address,latitude,longitude,hours
+Farmacia da Praza (ficticia),"Praza do Concello, 1, Vilardeiras",42.77180,-7.89210,Luns a sábado 9:00–21:00
+Centro de saúde de Vilardeiras (ficticio),"Rúa do Hospital, 4, Vilardeiras",42.77420,-7.89620,Luns a venres 8:00–20:00
+Casa do Concello de Vilardeiras (ficticia),"Praza do Concello, 2, Vilardeiras",42.77120,-7.89280,Luns a venres 8:00–15:00
+Gasolineira O Cruce (ficticia),"Estrada xeral, km 3, Bustelo",42.78310,-7.90410,24 horas
+Centro cívico da Pereira (ficticio),"Lugar da Pereira, 7",42.76020,-7.88180,Luns a venres 10:00–20:00
+Policía Local de Pontedouro (ficticia),"Avenida da Ribeira, 12, Pontedouro",42.43200,-8.64100,24 horas
+Centro de saúde de Pontedouro (ficticio),"Rúa Nova, 30, Pontedouro",42.42880,-8.64560,Luns a venres 8:00–21:00
+Biblioteca de Pontedouro (ficticia),"Praza da Igrexa, 3, Pontedouro",42.43410,-8.63880,Luns a sábado 9:00–20:00

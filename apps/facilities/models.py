@@ -135,6 +135,38 @@ class Facility(TenantModel):
         blank=True,
         help_text=_("Onde está o desfibrilador máis próximo."),
     )
+    # v1.2 · C: accesibilidade detallada {clave: {"value": yes|partial|no, "note": ""}}
+    accessibility_detail = models.JSONField(_("accesibilidade detallada"), default=dict, blank=True)
+    # v1.2 · C: sostibilidade
+    bike_parking_spaces = models.PositiveIntegerField(
+        _("aparcabicis (prazas)"), null=True, blank=True, help_text=_("Baleiro = sen datos.")
+    )
+    ev_chargers = models.PositiveIntegerField(
+        _("puntos de recarga de vehículo eléctrico"), default=0
+    )
+    ev_charger_type = models.CharField(
+        _("tipo de recarga"), max_length=80, blank=True, help_text=_("P. ex. «Tipo 2, 7 kW»")
+    )
+    transit_stop = models.CharField(
+        _("parada de transporte público próxima"),
+        max_length=160,
+        blank=True,
+        help_text=_("Opcional. P. ex. «Bus liña 2, parada Igrexa (200 m)»"),
+    )
+    # v1.2 · C: DESA (desfibrilador)
+    aed_on_site = models.BooleanField(_("DESA na instalación"), null=True, blank=True)
+    aed_inside_location = models.CharField(
+        _("ubicación exacta do DESA"), max_length=200, blank=True
+    )
+    aed_hours = models.CharField(_("horario de acceso ao DESA"), max_length=120, blank=True)
+    aed_near_name = models.CharField(_("DESA máis próximo: nome"), max_length=160, blank=True)
+    aed_near_address = models.CharField(
+        _("DESA máis próximo: enderezo"), max_length=200, blank=True
+    )
+    aed_near_distance_m = models.PositiveIntegerField(
+        _("DESA máis próximo: distancia aproximada (m)"), null=True, blank=True
+    )
+    aed_near_hours = models.CharField(_("DESA máis próximo: horario"), max_length=120, blank=True)
 
     class Meta:
         verbose_name = _("instalación")
@@ -217,6 +249,61 @@ class Facility(TenantModel):
             .order_by("-closed_at")
             .first()
         )
+
+    # v1.2 · C: accesibilidade detallada (clave, etiqueta, icona, campo básico que enche)
+    ACCESSIBILITY_DETAIL = (
+        ("pmr_parking", _("Aparcamento reservado PMR"), "parking", "accessible_parking"),
+        ("route", _("Itinerario accesible desde o exterior"), "ramp", "step_free"),
+        ("widths", _("Corredores e portas con anchura suficiente"), "door", None),
+        ("toilets", _("Aseos adaptados"), "toilet", "adapted_toilet"),
+        ("changing", _("Vestiarios adaptados"), "hanger", "adapted_changing"),
+        ("stands", _("Bancadas con prazas reservadas"), "users", None),
+        ("signage", _("Sinalización accesible"), "braille", "braille_signage"),
+    )
+    DETAIL_VALUES = (("yes", _("Si")), ("partial", _("Parcial")), ("no", _("Non")))
+
+    def accessibility_points(self):
+        """Os 7 puntos con valor (si / parcial / non / sen datos) e nota."""
+        labels = dict(self.DETAIL_VALUES)
+        detail = self.accessibility_detail or {}
+        out = []
+        for key, label, icon, _basic in self.ACCESSIBILITY_DETAIL:
+            item = detail.get(key) or {}
+            value = item.get("value", "")
+            out.append(
+                {
+                    "key": key,
+                    "label": label,
+                    "icon": icon,
+                    "value": value,
+                    "value_label": labels.get(value, _("Sen datos")),
+                    "note": item.get("note", ""),
+                }
+            )
+        return out
+
+    def has_accessibility_detail(self):
+        return any(p["value"] for p in self.accessibility_points())
+
+    def sync_basic_accessibility(self):
+        """A lista básica (v2) enchese a partir da detallada: só «si» conta como si.
+
+        Os puntos sen datos non cambian o valor básico que xa houbese."""
+        detail = self.accessibility_detail or {}
+        for key, _label, _icon, basic in self.ACCESSIBILITY_DETAIL:
+            value = (detail.get(key) or {}).get("value", "")
+            if basic and value:
+                setattr(self, basic, value == "yes")
+
+    @property
+    def is_accessible(self):
+        """Filtro «accesible»: itinerario desde o exterior e corredores/portas con «si»."""
+        d = self.accessibility_detail or {}
+        return all((d.get(k) or {}).get("value") == "yes" for k in ("route", "widths"))
+
+    @property
+    def has_bike_parking(self):
+        return bool(self.bike_parking_spaces)
 
     def accessibility_features(self):
         return [
@@ -341,3 +428,59 @@ class RulesVersion(models.Model):
 
     def lines(self):
         return [line.strip("-• ").strip() for line in self.text.splitlines() if line.strip()]
+
+
+class Equipment(models.Model):
+    """v1.2 · D: inventario de equipos que consomen enerxía (introdúceo o concello)."""
+
+    class Kind(models.TextChoices):
+        LIGHTING = "lighting", _("Iluminación")
+        HVAC = "hvac", _("Calefacción ou climatización")
+        DHW = "dhw", _("Auga quente sanitaria")
+        PUMPS = "pumps", _("Bombas ou depuración")
+        OTHER = "other", _("Outros")
+
+    class Mode(models.TextChoices):
+        OPENING = "opening", _("Durante a apertura")
+        BOOKING = "booking", _("Só con reserva")
+        LIGHT = "light", _("Só con suplemento de luz")
+        CONTINUOUS = "continuous", _("Continuo")
+
+    facility = models.ForeignKey(
+        Facility, on_delete=models.CASCADE, related_name="energy_equipment"
+    )
+    kind = models.CharField(_("tipo"), max_length=10, choices=Kind.choices)
+    name = models.CharField(_("descrición"), max_length=120, blank=True)
+    power_kw = models.DecimalField(_("potencia (kW)"), max_digits=7, decimal_places=2)
+    mode = models.CharField(_("modo de uso"), max_length=12, choices=Mode.choices)
+    use_factor = models.DecimalField(
+        _("factor de uso (0–1)"),
+        max_digits=3,
+        decimal_places=2,
+        default=1,
+        help_text=_("Parte do tempo que está a funcionar a potencia indicada."),
+    )
+
+    class Meta:
+        verbose_name = _("equipo")
+        verbose_name_plural = _("equipos")
+        ordering = ["kind", "pk"]
+
+    def __str__(self):
+        return self.name or self.get_kind_display()
+
+
+class EnergyReading(models.Model):
+    """v1.2 · D: lectura real dunha factura, para comparar co consumo estimado."""
+
+    facility = models.ForeignKey(Facility, on_delete=models.CASCADE, related_name="energy_readings")
+    period_start = models.DateField(_("desde"))
+    period_end = models.DateField(_("ata"))
+    kwh = models.DecimalField(_("consumo facturado (kWh)"), max_digits=10, decimal_places=1)
+    cost_cents = models.PositiveIntegerField(_("importe (céntimos)"), null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("lectura de factura")
+        verbose_name_plural = _("lecturas de facturas")
+        ordering = ["-period_start"]

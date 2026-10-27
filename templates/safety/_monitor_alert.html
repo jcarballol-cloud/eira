@@ -1,0 +1,2 @@
+{% load i18n eira %}{# v1.2 · A: botón «Alerta» da persoa monitora durante a sesión #}
+<a class="monitor-alert" href="{% turl 'safety:alert' %}?sesion={{ session.pk }}{% if session.group.facility_id %}&amp;instalacion={{ session.group.facility_id }}{% endif %}"><span class="big-choice__shape big-choice__shape--octagon" aria-hidden="true">!</span><span>{% translate "Alerta" %}</span></a>

@@ -56,6 +56,9 @@ def new(request):
         initial["facility"] = request.GET["instalacion"]
     if risk:
         initial["category"] = Incident.Category.SAFETY
+    elif request.GET.get("comentario") == "1":
+        # v1.2 · A: «Aviso» → comentario para a persoa xestora
+        initial["category"] = Incident.Category.OTHER
     form = IncidentForm(
         request.POST or None, request.FILES or None, tenant=request.tenant, initial=initial
     )

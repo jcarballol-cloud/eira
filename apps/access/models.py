@@ -32,6 +32,9 @@ class LockDevice(TenantModel):
     locked_until = models.DateTimeField(null=True, blank=True)
     lockout_count = models.PositiveSmallIntegerField(default=0)  # bloqueos seguidos (exponencial)
     lights_on_until = models.DateTimeField(null=True, blank=True)
+    # v1.2 · B: estado da porta que informa a pechadura conectada (nivel 3), se o sabe
+    door_closed = models.BooleanField(null=True, blank=True)
+    door_state_at = models.DateTimeField(null=True, blank=True)
 
     MAX_FAILED = 5
     LOCKOUT_MINUTES = 5

@@ -14,6 +14,10 @@
   <a class="app-alert" href="{{ b|booking_url:'bookings:checklist' }}">{% icon 'door' %}<span><strong>{% translate "Antes de marchar" %}</strong><br>{% blocktranslate with f=b.facility.name %}Confirma que {{ f }} quedou pechada e en orde.{% endblocktranslate %}</span>{% icon 'chevron' %}</a>
 {% endfor %}
 
+{% if survey_pending %}{# v1.2 · E #}
+  <a class="app-alert" href="{% turl 'surveys:answer' %}">{% icon 'smile' %}<span><strong>{{ survey_pending.label }}</strong><br>{% blocktranslate with d=survey_pending.closes_on|date:"j/n" %}Dinos que tal en 2 minutos (anónima, ata o {{ d }}).{% endblocktranslate %}</span>{% icon 'chevron' %}</a>
+{% endif %}
+
 {% if next_booking %}
 <section class="app-card app-card--hero" aria-labelledby="next-title">
   <p class="eyebrow" id="next-title">{% translate "A túa próxima reserva" %}</p>
@@ -51,6 +55,8 @@
   <a href="{% url 'account:household' %}">{% icon 'heart' %}<span>{% translate "A miña familia" %}{% if dependents %} · {{ dependents|length }}{% endif %}</span></a>
   {% if nearby %}<a href="{% turl 'app:nearby' %}">{% icon 'map' %}<span>{% translate "Concellos próximos" %}</span></a>{% endif %}
   <a href="{% turl 'bookings:vouchers' %}">{% icon 'star' %}<span>{% translate "Bonos" %}</span></a>
+  {% if modules.cards %}<a href="{% turl 'members:card' %}">{% icon 'qr' %}<span>{% translate "O meu carné" %}</span></a>{% endif %}
+  {% if modules.open_games %}<a href="{% turl 'bookings:games' %}">{% icon 'users' %}<span>{% translate "Partidas abertas" %}</span></a>{% endif %}
   <a href="{% turl 'privacy_custody' %}">{% icon 'shield' %}<span>{% translate "Os teus datos" %}</span></a>
 </nav>
 

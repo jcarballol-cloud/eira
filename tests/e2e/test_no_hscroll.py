@@ -71,6 +71,11 @@ def pages():
         .first()
     )
     start = timezone.localtime(upcoming.start).isoformat()
+    from apps.bookings.models import OpenGame, WaitlistEntry
+
+    hall = Facility.objects.get(name="Pavillón municipal de Vilardeiras")
+    game = OpenGame.objects.filter(municipality__slug="vilardeiras", joins__isnull=False).first()
+    wait = WaitlistEntry.objects.filter(user__email="uxia@demo.eira.example").first()
     neighbour = [
         f"{c}/app/",
         f"{c}/",
@@ -87,6 +92,17 @@ def pages():
         f"{c}/actividades/",
         f"{c}/app/benvida/?paso=familia",
         f"{c}/avisos/preferencias/",
+        # v1.2
+        f"{c}/seguridade/",
+        f"{c}/seguridade/alerta/?instalacion={hall.pk}",
+        f"{c}/seguridade/accidente/{hall.pk}/",
+        f"{c}/seguridade/emerxencia/",
+        f"{c}/enquisa/",
+        f"{c}/reservas/partidas/",
+        f"{c}/reservas/partidas/{game.pk}/",
+        f"{c}/carne/",
+        f"{c}/reservas/lista-de-espera/{wait.pk}/",
+        f"{c}/instalacions/{hall.pk}/",
     ]
     operator = [f"{c}/operario/", f"{c}/operario/orde/{order.pk}/", f"{c}/operario/calendario/"]
     tablet = [

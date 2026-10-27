@@ -12,6 +12,7 @@ urlpatterns = [
     path("privacidade/", core.privacy, name="privacy"),
     path("privacidade/datos/", core.custody, name="privacy_custody"),
     path("seguridade/", core.safety, name="safety"),
+    path("seguridade/", include("apps.safety.urls")),  # v1.2 · A: Aviso e Alerta
     path("accesibilidade/", core.accessibility, name="accessibility"),
     path("app/", include("eira.app_urls")),
     path("instalacions/", include("apps.facilities.urls")),
@@ -24,4 +25,6 @@ urlpatterns = [
     path("operario/", include("apps.maintenance.urls")),
     path("xestion/", include("eira.manage_urls")),
     path("datos-abertos/", include("apps.analytics.urls_open")),
+    path("enquisa/", include("apps.surveys.urls")),  # v1.2 · E
+    path("carne/", include("apps.members.urls")),  # v1.2 · H
 ]

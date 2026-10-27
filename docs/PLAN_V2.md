@@ -121,3 +121,12 @@ tests, E2E e axe en verde e cun commit. A demo debe arrancar en todos os commits
 2. axe en móbil, tableta e escritorio; revisión do peso das páxinas.
 3. `INFORME_MANANA.md`, sección v2.
 4. Servidor en `0.0.0.0:8000` cos datos rexenerados, nunha xanela independente.
+
+## v1.2 · Folla de ruta (o que queda despois das propostas do equipo)
+Os oito bloques (A–H) están feitos na interface. Queda pendente, sen facelo a medias na app:
+1. **Datos reais de DESA:** confirmar se existe un rexistro oficial galego con datos abertos e a súa licenza, e cargalo co adaptador CSV (`EIRA_DESA_CSV`). Non integrar apps de terceiros (p. ex. ARIANA RCP) sen verificar datos e licenza.
+2. **Carné:** integración real co carné existente dalgún concello (adaptador `municipal_card`); proba con lectores de QR físicos; lectura coa cámara da tableta como opción.
+3. **Purgas programadas** que a matriz xa indica e aínda non se executan soas: denuncias de partidas (1 ano) e rexistros de limpeza (2 anos).
+4. **Rendemento:** importar as lecturas das facturas en CSV da comercializadora e, se o concello ten contadores con telelectura, un adaptador para lelos.
+5. **PDF do carné e do cartel:** validación con PAC/veraPDF e fontes incrustadas.
+6. **Tema escuro no escritorio do concello:** hoxe só no panel Rendemento; estendelo ao resto con revisión de contraste.

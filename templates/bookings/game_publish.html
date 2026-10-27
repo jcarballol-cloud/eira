@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Busco xente" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% translate "Reserva" %} {{ booking.reference }}</p><h1>{% translate "Busco xente" %}</h1>
+  <p>{{ booking.facility.name }} · {{ booking.start|date:"l j \d\e F" }} · {{ booking.start|hhmm }}–{{ booking.end|hhmm }}</p></div></div>
+<form method="post" class="card" novalidate>
+  {% csrf_token %}
+  {% if form.errors %}<div class="alert alert-error" role="alert" tabindex="-1" data-focus>{% translate "Revisa os campos marcados." %}</div>{% endif %}
+  <ul class="list privacy-points">
+    <li>{% icon 'user' %} {% translate "Só se verá o teu nome de pila e a inicial do apelido. Nunca o teléfono nin o correo." %}</li>
+    <li>{% icon 'check' %} {% translate "Ti aceptas ou rexeitas cada solicitude." %}</li>
+    <li>{% icon 'mail' %} {% translate "Sen chat libre: só mensaxes predefinidas («Chego 5 min tarde», «Levo balón»…)." %}</li>
+    <li>{% icon 'euro' %} {% blocktranslate with p=booking.price_cents|euros %}Pagaches {{ p }}: o reparto por persoa é só orientativo.{% endblocktranslate %}</li>
+  </ul>
+  {% for field in form %}{% include "includes/field.html" %}{% endfor %}
+  <p class="help">{% blocktranslate count n=room %}Pode unirse ata {{ n }} persoa máis (máximo da instalación).{% plural %}Poden unirse ata {{ n }} persoas máis (máximo da instalación).{% endblocktranslate %}</p>
+  <div class="form-actions"><button class="btn" type="submit">{% if game and game.active %}{% translate "Gardar cambios" %}{% else %}{% translate "Publicar" %}{% endif %}</button>
+    {% if game and game.active %}<button class="btn btn-ghost" type="submit" name="accion" value="pechar" formnovalidate>{% translate "Deixar de buscar xente" %}</button>{% endif %}</div>
+</form>
+{% endblock %}

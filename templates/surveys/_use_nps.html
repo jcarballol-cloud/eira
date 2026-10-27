@@ -1,0 +1,6 @@
+{% load i18n %}{# v1.2 · E: pregunta NPS opcional despois do uso (só se o concello a activa) #}
+<fieldset class="nps-scale">
+  <legend>{% translate "Do 0 ao 10, recomendarías os servizos deportivos do teu concello?" %} <span class="muted">({% translate "opcional" %})</span></legend>
+  <div class="nps-scale__options">{% for n in nps_range %}<span class="nps-scale__opt"><input type="radio" name="{{ nps_name|default:'nps_uso' }}" id="{{ nps_name|default:'nps_uso' }}-{{ n }}" value="{{ n }}" {% if nps_value|stringformat:'s' == n|stringformat:'s' %}checked{% endif %}{% if nps_required %} required{% endif %}><label for="{{ nps_name|default:'nps_uso' }}-{{ n }}">{{ n }}</label></span>{% endfor %}</div>
+  <p class="nps-scale__ends"><span>0 · {% translate "Nada probable" %}</span><span>10 · {% translate "Moi probable" %}</span></p>
+</fieldset>

@@ -114,6 +114,7 @@ def dashboard(request):
             "to_approve": to_approve,
             "office": office,
             "vitality": _vitality(tenant),
+            **_v12_panel(tenant),
             "forecast": forecast,
             "tips": tips,
             "nav": "manage",
@@ -121,6 +122,24 @@ def dashboard(request):
             "now": timezone.now(),
         },
     )
+
+
+def _v12_panel(tenant):
+    """v1.2: alertas sen atender (A), peches sen confirmar abertos (B) e NPS (E) no panel do día."""
+    from apps.safety.models import Alert, ClosingEscalation
+    from apps.surveys.services import latest_nps, open_survey
+
+    since = timezone.now() - dt.timedelta(hours=24)
+    return {
+        "open_alerts": Alert.objects.filter(
+            municipality=tenant, acknowledged_at__isnull=True, created_at__gte=since
+        ).select_related("facility"),
+        "open_closings": ClosingEscalation.objects.filter(
+            municipality=tenant, resolved_at__isnull=True, stage__gte=1
+        ).select_related("booking__facility"),
+        "nps_latest": latest_nps(tenant),
+        "nps_open": open_survey(tenant),
+    }
 
 
 def _vitality(tenant):

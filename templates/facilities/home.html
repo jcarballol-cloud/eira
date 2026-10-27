@@ -39,6 +39,9 @@
           <span class="chip">{{ form.accessible }}<label for="{{ form.accessible.auto_id }}">{% icon 'accessible' %} {{ form.accessible.label }}</label></span>
           <span class="chip">{{ form.lighting }}<label for="{{ form.lighting.auto_id }}">{% icon 'light' %} {{ form.lighting.label }}</label></span>
           <span class="chip">{{ form.indoor }}<label for="{{ form.indoor.auto_id }}">{{ form.indoor.label }}</label></span>
+          <span class="chip">{{ form.full_access }}<label for="{{ form.full_access.auto_id }}">{% icon 'ramp' %} {{ form.full_access.label }}</label></span>
+          <span class="chip">{{ form.bikes }}<label for="{{ form.bikes.auto_id }}">{% icon 'sun' %} {{ form.bikes.label }}</label></span>
+          <span class="chip">{{ form.aed }}<label for="{{ form.aed.auto_id }}">{% icon 'heart' %} {{ form.aed.label }}</label></span>
         </div>
       </fieldset>
       <div class="form-actions"><button class="btn btn-sm" type="submit">{% translate "Ver resultados" %}</button>{% if active or request.GET.q %}<a class="btn btn-ghost btn-sm" href="?vista={{ view }}">{% translate "Quitar filtros" %}</a>{% endif %}</div>
@@ -70,6 +73,7 @@
           {% if f.step_free %}<li class="badge">{% icon 'accessible' %} {% translate "Sen chanzos" %}</li>{% endif %}
           {% if f.lighting %}<li class="badge">{% icon 'light' %} {% translate "Luz" %}</li>{% endif %}
           {% if f.indoor %}<li class="badge">{% translate "Cuberta" %}</li>{% endif %}
+          {% if f.aed_on_site %}<li class="badge">{% icon 'heart' %} {% translate "DESA" %}</li>{% endif %}
           {% if f.is_shared %}<li class="badge">{% blocktranslate with c=f.capacity %}{{ c }} prazas{% endblocktranslate %}</li>{% endif %}
         </ul>
       </div>

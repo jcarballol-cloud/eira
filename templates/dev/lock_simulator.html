@@ -70,4 +70,15 @@
   </div>
 </div>
 {% endif %}
+{% if connected %}
+<section class="card mt-2" aria-labelledby="door-title">
+  <h2 id="door-title" class="h3">{% translate "Pechaduras conectadas (nivel 3): estado da porta" %}</h2>
+  <p class="help">{% translate "Se a pechadura informa de que a porta está pechada, un peche sen confirmar non se escala á persoa responsable." %}</p>
+  <ul class="list">{% for d in connected %}<li class="row-between"><span>{{ d.municipality.name }} · {{ d.facility.name }}: <strong>{% if d.door_closed is True %}{% translate "pechada" %}{% elif d.door_closed is False %}{% translate "aberta" %}{% else %}{% translate "sen datos" %}{% endif %}</strong></span>
+    <form method="post" class="row">{% csrf_token %}<input type="hidden" name="action" value="door"><input type="hidden" name="door_device" value="{{ d.pk }}">
+      <button class="btn btn-sm btn-secondary" name="door" value="closed" type="submit">{% translate "Pechar" %}<span class="visually-hidden"> {{ d.facility.name }}</span></button>
+      <button class="btn btn-sm btn-secondary" name="door" value="open" type="submit">{% translate "Abrir" %}<span class="visually-hidden"> {{ d.facility.name }}</span></button>
+      <button class="btn btn-sm btn-ghost" name="door" value="" type="submit">{% translate "Sen datos" %}<span class="visually-hidden"> {{ d.facility.name }}</span></button></form></li>{% endfor %}</ul>
+</section>
+{% endif %}
 {% endblock %}

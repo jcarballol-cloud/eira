@@ -41,6 +41,12 @@
     {% endif %}
   </div>
   <aside class="stack">
+    {% if open_alerts or open_closings %}{# v1.2 · A e B #}
+    <section class="card card-alert" aria-labelledby="alerts-title"><h2 id="alerts-title">{% icon 'shield' %} {% translate "Alertas e peches" %}</h2>
+      <ul class="list">{% for a in open_alerts %}<li><span class="badge badge-alert">{{ a.get_kind_display }}</span> {{ a.facility.name|default:"—" }} · {{ a.created_at|date:"H:i" }}</li>{% endfor %}
+      {% for e in open_closings %}<li><span class="badge badge-warn">{% translate "Peche sen confirmar" %}</span> {{ e.booking.facility.name }} · {{ e.booking.end|date:"H:i" }}</li>{% endfor %}</ul>
+      <a href="{% turl 'manage:safety' %}">{% translate "Ver alertas e peches" %}</a></section>
+    {% endif %}
     {% if to_approve %}
     <section class="card card-attention" aria-labelledby="appr-title"><h2 id="appr-title">{% icon 'clock' %} {% translate "Para aprobar" %}</h2>
       <ul class="list">{% for b in to_approve %}<li><a href="{% turl 'manage:booking' b.pk %}">{{ b.facility.name }}</a> {% if b.requested_start %}<span class="badge badge-warn">{% translate "Cambio" %}</span>{% endif %}<br><small>{{ b.start|date:"D j/n" }} · {{ b.start|hhmm }} · {{ b.holder_label|default:"—" }} · {% blocktranslate count n=b.participants %}{{ n }} persoa{% plural %}{{ n }} persoas{% endblocktranslate %}</small></li>{% endfor %}</ul></section>
@@ -56,6 +62,12 @@
     <section class="card" aria-labelledby="vit-title"><h2 id="vit-title">{% icon 'heart' %} {% translate "Índice de vida activa" %}</h2>
       <ul class="list vitality-list">{% for v in vitality %}<li class="row-between"><a href="{% turl 'facilities:detail' v.pk %}">{{ v.name }}</a> {% if v.value is not None %}<span class="vitality vitality--{{ v.level }}"><strong>{{ v.value }}</strong>/100</span>{% else %}<small class="muted">{% translate "sen datos suficientes" %}</small>{% endif %}</li>{% endfor %}</ul>
       <small class="muted">{% translate "0–100 · Ver docs/indice-vida-activa.md" %}</small></section>
+    {% endif %}
+    {% if nps_latest or nps_open %}{# v1.2 · E #}
+    <section class="card" aria-labelledby="nps-title"><h2 id="nps-title">{% icon 'smile' %} {% translate "Satisfacción (NPS)" %}</h2>
+      {% if nps_latest %}<p class="mb-1"><span class="nps-big">{{ nps_latest.nps.nps|signed }}</span> <small class="muted">{% blocktranslate with y=nps_latest.year n=nps_latest.nps.n %}enquisa {{ y }} · {{ n }} respostas{% endblocktranslate %}</small></p>{% endif %}
+      {% if nps_open %}<p class="mb-1"><span class="badge badge-ok">{% translate "Aberta" %}</span> {% blocktranslate with t=nps_open.label d=nps_open.closes_on|date:"d/m" %}{{ t }}, ata o {{ d }}{% endblocktranslate %}</p>{% endif %}
+      <a href="{% turl 'manage:surveys' %}">{% translate "Ver enquisas" %}</a></section>
     {% endif %}
     {% if cleaning_overdue %}
     <section class="card" aria-labelledby="clean-title"><h2 id="clean-title">{% icon 'sparkle' %} {% translate "Limpeza atrasada" %}</h2>

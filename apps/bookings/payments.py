@@ -34,14 +34,18 @@ def new_reference():
     return "EI" + "".join(secrets.choice(alphabet) for _ in range(10))
 
 
-def start_online_payment(*, booking=None, enrollment=None, voucher=None, url_ok, url_ko):
+def start_online_payment(
+    *, booking=None, enrollment=None, voucher=None, sports_pass=None, url_ok, url_ko
+):
     """Crea un pagamento pendente e devolve a URL da pasarela (TPV do concello do destino)."""
-    target = booking or enrollment or voucher
+    target = booking or enrollment or voucher or sports_pass
     pending = Payment.objects.filter(status=Payment.Status.PENDING)
     if booking:
         pending = pending.filter(booking=booking)
     elif enrollment:
         pending = pending.filter(enrollment=enrollment)
+    elif sports_pass:
+        pending = pending.filter(sports_pass=sports_pass)
     else:
         pending = pending.filter(voucher=voucher)
     pending.update(
@@ -53,6 +57,9 @@ def start_online_payment(*, booking=None, enrollment=None, voucher=None, url_ok,
     elif voucher:
         concept = f"{voucher.type.name} · {voucher.uses_total} usos"
         amount = voucher.price_cents
+    elif sports_pass:
+        concept = f"{sports_pass.type.name} · {sports_pass.user}"
+        amount = sports_pass.price_cents
     else:
         concept = f"{enrollment.group} · {enrollment.participant_name}"
         amount = enrollment.group.fee_cents
@@ -61,6 +68,7 @@ def start_online_payment(*, booking=None, enrollment=None, voucher=None, url_ok,
         booking=booking,
         enrollment=enrollment,
         voucher=voucher,
+        sports_pass=sports_pass,
         concept=concept[:200],
         amount_cents=amount,
         reference=new_reference(),
@@ -115,6 +123,11 @@ def _apply_paid(payment):
     if payment.voucher_id:
         activate_voucher(payment.voucher)
         return
+    if payment.sports_pass_id:
+        from apps.members.services import activate_pass
+
+        activate_pass(payment.sports_pass)
+        return
     booking = payment.booking
     if booking is None:
         return
@@ -156,8 +169,8 @@ def _apply_rejected(payment):
             e.save(update_fields=["status"])
             promote_waitlist(e.group)
         return
-    if payment.voucher_id:
-        return  # o bono segue pendente; pódese volver intentar
+    if payment.voucher_id or payment.sports_pass_id:
+        return  # o bono ou o abono seguen pendentes; pódese volver intentar
     booking = payment.booking
     if booking and booking.status == Booking.Status.PENDING_PAYMENT:
         booking.status = Booking.Status.REJECTED

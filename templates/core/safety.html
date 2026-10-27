@@ -2,13 +2,16 @@
 {% block title %}{% translate "Incidencia ou seguridade" %}{% endblock %}
 {% block content %}
 <div class="page-head"><div><p class="eyebrow">{% icon 'shield' %} {{ tenant.name }}</p><h1>{% translate "Incidencia ou seguridade" %}</h1></div></div>
+{% include "safety/_two_buttons.html" with notice_url="#aviso" %}
 <a class="emergency-call" href="tel:112">
   <span class="emergency-call__num" aria-hidden="true">112</span>
   <span><strong>{% translate "Emerxencia: chamar ao 112" %}</strong><br>{% translate "Se alguén está ferido ou hai perigo agora mesmo." %}</span>
 </a>
+<h2 id="aviso" class="h3 mt-2">{% icon 'wrench' %} {% translate "Aviso" %}</h2>
 <ul class="stack list safety-options" role="list">
   <li><a class="app-alert safety-option safety-option--risk" href="{% url 'incidents:new' tenant.slug %}?risco=1">{% icon 'alert' %}<span><strong>{% translate "Avisar dun risco" %}</strong><br>{% translate "Algo que pode facer dano (unha canastra solta, un cable, un chan esvaradío). O concello recibe o aviso ao momento, con prioridade alta." %}</span>{% icon 'chevron' %}</a></li>
   <li><a class="app-alert safety-option" href="{% url 'incidents:new' tenant.slug %}">{% icon 'wrench' %}<span><strong>{% translate "Avisar dun problema na instalación" %}</strong><br>{% translate "Unha avaría, algo roto ou sucio. Avisarémoste cando estea arranxado." %}</span>{% icon 'chevron' %}</a></li>
+  <li><a class="app-alert safety-option" href="{% url 'incidents:new' tenant.slug %}?comentario=1">{% icon 'mail' %}<span><strong>{% translate "Comentario para o concello" %}</strong><br>{% translate "Unha suxestión ou algo que queres que saiba a persoa xestora da instalación." %}</span>{% icon 'chevron' %}</a></li>
 </ul>
 {% if tenant.contact_phone %}<p class="help mt-2">{% blocktranslate trimmed with c=tenant.name %}Para outras dúbidas, o Concello de {{ c }}:{% endblocktranslate %} <a href="tel:{{ tenant.contact_phone|cut:' ' }}">{{ tenant.contact_phone }}</a></p>{% endif %}
 {% endblock %}

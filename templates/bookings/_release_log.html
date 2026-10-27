@@ -1,0 +1,7 @@
+{% load i18n eira %}{# v1.2 · F: ciclo da lista de espera rexistrado na reserva #}
+<section class="card" aria-labelledby="rel-{{ r.pk }}">
+  <h2 class="h3" id="rel-{{ r.pk }}">{% translate "Lista de espera" %}</h2>
+  <p class="mb-1">{% blocktranslate with w=r.get_reason_display|lower d=r.released_at|date:"d/m H:i" %}A franxa liberouse ({{ w }}) o {{ d }}.{% endblocktranslate %}</p>
+  <ul class="timeline">{% for e in r.log %}<li class="done">{% if e.event == 'released' %}{% translate "Liberada" %}{% elif e.event == 'offered' %}{% blocktranslate with n=e.who %}Ofrecida a {{ n }}{% endblocktranslate %}{% elif e.event == 'expired' %}{% blocktranslate with n=e.who %}{{ n }} non respondeu a tempo{% endblocktranslate %}{% elif e.event == 'left' %}{% blocktranslate with n=e.who %}{{ n }} saíu da lista{% endblocktranslate %}{% elif e.event == 'accepted' %}{% blocktranslate with n=e.who %}{{ n }} colleuna{% endblocktranslate %}{% elif e.event == 'penalty_refunded' %}{% translate "Penalización devolta" %}{% elif e.event == 'nobody' %}{% translate "Ninguén a colleu" %}{% else %}{% translate "Pechada" %}{% endif %}</li>{% endfor %}</ul>
+  {% if r.penalty_refunded_cents %}<p class="help mb-0">{% blocktranslate with p=r.penalty_refunded_cents|euros %}Devolución da penalización: {{ p }}.{% endblocktranslate %}</p>{% endif %}
+</section>

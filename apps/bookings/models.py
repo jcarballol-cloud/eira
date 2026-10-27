@@ -134,6 +134,14 @@ class Booking(TenantModel):
     start_state_ok = models.BooleanField(null=True)
     start_state_notes = models.CharField(max_length=500, blank=True)
     start_state_photo = models.ImageField(upload_to="incidents/%Y/%m/", blank=True)
+    # v1.2 · B: peche sen confirmar (queda anotado; conta como incumprimento só se o concello o activa)
+    close_unconfirmed = models.BooleanField(_("peche sen confirmar"), default=False)
+    # v1.2 · F: recordatorios con acción e confirmación de asistencia
+    reminder_24_at = models.DateTimeField(null=True, blank=True)
+    reminder_2_at = models.DateTimeField(null=True, blank=True)
+    attendance_confirmed_at = models.DateTimeField(
+        _("asistencia confirmada"), null=True, blank=True
+    )
 
     objects = BookingQuerySet.as_manager()
 
@@ -282,6 +290,14 @@ class Payment(TenantModel):
     voucher = models.ForeignKey(
         "Voucher", null=True, blank=True, on_delete=models.SET_NULL, related_name="payments"
     )
+    # v1.2 · H: alta ou renovación do abono
+    sports_pass = models.ForeignKey(
+        "members.SportsPass",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="payments",
+    )
     concept = models.CharField(_("concepto"), max_length=200)
     amount_cents = models.PositiveIntegerField(_("importe"))
     refunded_cents = models.PositiveIntegerField(default=0)
@@ -409,3 +425,181 @@ class Voucher(TenantModel):
             and self.municipality_id == facility.municipality_id
             and (self.type.facility_id is None or self.type.facility_id == facility.pk)
         )
+
+
+class SlotRelease(TenantModel):
+    """v1.2 · F: unha franxa ocupada que quedou libre e se ofrece á lista de espera.
+
+    O ciclo (quen a liberou e por que, a quen se ofreceu, quen a colleu) queda rexistrado aquí e
+    vese na reserva orixinal."""
+
+    class Reason(models.TextChoices):
+        CANCELLED = "cancelled", _("Cancelouse")
+        UNCONFIRMED = "unconfirmed", _("Non se confirmou a tempo")
+        NO_CHECKIN = "no_checkin", _("Sen check-in aos minutos de cortesía")
+
+    facility = models.ForeignKey(Facility, on_delete=models.CASCADE, related_name="releases")
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    released_booking = models.ForeignKey(
+        Booking, null=True, blank=True, on_delete=models.SET_NULL, related_name="releases"
+    )
+    reason = models.CharField(max_length=12, choices=Reason.choices)
+    released_at = models.DateTimeField(default=timezone.now)
+    taken_booking = models.ForeignKey(
+        Booking, null=True, blank=True, on_delete=models.SET_NULL, related_name="taken_from"
+    )
+    closed_at = models.DateTimeField(null=True, blank=True)
+    log = models.JSONField(
+        default=list, blank=True
+    )  # [{"at", "event", "who"}] sen datos de contacto
+    penalty_refunded_cents = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        verbose_name = _("franxa liberada")
+        verbose_name_plural = _("franxas liberadas")
+        ordering = ["-released_at"]
+
+    def add(self, event, who=""):
+        self.log = [*self.log, {"at": timezone.now().isoformat(), "event": event, "who": who}]
+
+
+class WaitlistEntry(TenantModel):
+    """v1.2 · F: «Avísame se queda libre» nunha franxa ocupada."""
+
+    class Status(models.TextChoices):
+        WAITING = "waiting", _("Agardando")
+        OFFERED = "offered", _("Ofrecida")
+        ACCEPTED = "accepted", _("Aceptada")
+        EXPIRED = "expired", _("Oferta caducada")
+        LEFT = "left", _("Saíu da lista")
+
+    facility = models.ForeignKey(Facility, on_delete=models.CASCADE, related_name="waitlist")
+    start = models.DateTimeField(db_index=True)
+    end = models.DateTimeField()
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="slot_waitlist"
+    )
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.WAITING)
+    created_at = models.DateTimeField(auto_now_add=True)
+    offered_at = models.DateTimeField(null=True, blank=True)
+    offer_expires_at = models.DateTimeField(null=True, blank=True)
+    release = models.ForeignKey(
+        SlotRelease, null=True, blank=True, on_delete=models.SET_NULL, related_name="offers"
+    )
+    booking = models.ForeignKey(
+        Booking, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+
+    class Meta:
+        verbose_name = _("lista de espera da franxa")
+        verbose_name_plural = _("listas de espera das franxas")
+        ordering = ["created_at", "pk"]
+        constraints = [
+            models.UniqueConstraint(fields=["facility", "start", "user"], name="uniq_slot_waitlist")
+        ]
+
+    @property
+    def is_live_offer(self):
+        return (
+            self.status == self.Status.OFFERED
+            and self.offer_expires_at is not None
+            and self.offer_expires_at > timezone.now()
+        )
+
+
+class OpenGame(TenantModel):
+    """v1.2 · G: «Busco xente» nunha reserva. Só nome de pila e inicial; sen chat libre."""
+
+    class Level(models.TextChoices):
+        BEGINNER = "beginner", _("Iniciación")
+        MEDIUM = "medium", _("Medio")
+        ADVANCED = "advanced", _("Avanzado")
+
+    booking = models.OneToOneField(Booking, on_delete=models.CASCADE, related_name="open_game")
+    spots = models.PositiveSmallIntegerField(_("prazas libres"), default=1)
+    base_participants = models.PositiveSmallIntegerField(default=1)
+    level = models.CharField(_("nivel"), max_length=10, choices=Level.choices, default=Level.MEDIUM)
+    message = models.CharField(_("mensaxe curta (opcional)"), max_length=140, blank=True)
+    consent_at = models.DateTimeField()
+    active = models.BooleanField(default=True)
+    hidden_by_reports = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("partida aberta")
+        verbose_name_plural = _("partidas abertas")
+        ordering = ["booking__start"]
+
+    def accepted(self):
+        return self.joins.filter(status=GameJoin.Status.ACCEPTED)
+
+    @property
+    def spots_left(self):
+        return max(0, self.spots - self.accepted().count())
+
+    @property
+    def price_per_person_cents(self):
+        """Reparto orientativo se se completa (o pagamento segue sendo da organizadora)."""
+        total = self.base_participants + self.spots
+        return round(self.booking.price_cents / total) if total else 0
+
+
+class GameJoin(models.Model):
+    class Status(models.TextChoices):
+        PENDING = "pending", _("Pendente")
+        ACCEPTED = "accepted", _("Aceptada")
+        REJECTED = "rejected", _("Rexeitada")
+        WITHDRAWN = "withdrawn", _("Retirada")
+
+    game = models.ForeignKey(OpenGame, on_delete=models.CASCADE, related_name="joins")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="+")
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
+    consent_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    decided_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = _("solicitude para unirse")
+        verbose_name_plural = _("solicitudes para unirse")
+        ordering = ["created_at"]
+        constraints = [models.UniqueConstraint(fields=["game", "user"], name="uniq_game_join")]
+
+
+# Mensaxes predefinidas: nada de chat libre (clave, texto)
+GAME_MESSAGES = (
+    ("late5", _("Chego 5 min tarde")),
+    ("ball", _("Levo balón")),
+    ("rackets", _("Levo palas ou raquetas")),
+    ("see_you", _("Vémonos alí")),
+    ("cant", _("Ao final non podo ir")),
+)
+
+
+class GameMessage(models.Model):
+    game = models.ForeignKey(OpenGame, on_delete=models.CASCADE, related_name="messages")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="+")
+    code = models.CharField(max_length=10, choices=GAME_MESSAGES)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["created_at"]
+
+
+class GameReport(models.Model):
+    class Reason(models.TextChoices):
+        BEHAVIOUR = "behaviour", _("Comportamento inadecuado")
+        CONTENT = "content", _("Mensaxe inadecuada")
+        FAKE = "fake", _("Partida falsa ou spam")
+        OTHER = "other", _("Outro motivo")
+
+    game = models.ForeignKey(OpenGame, on_delete=models.CASCADE, related_name="reports")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="+")
+    reason = models.CharField(_("motivo"), max_length=10, choices=Reason.choices)
+    created_at = models.DateTimeField(auto_now_add=True)
+    reviewed_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = _("denuncia dunha partida")
+        verbose_name_plural = _("denuncias de partidas")
+        constraints = [models.UniqueConstraint(fields=["game", "user"], name="uniq_game_report")]

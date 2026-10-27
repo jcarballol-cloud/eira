@@ -21,10 +21,12 @@ class Incident(TenantModel):
         STAFF = "staff", _("Persoal municipal")
         START_STATE = "start_state", _("Estado ao entrar (xa estaba antes da reserva)")
         RISK = "risk", _("Aviso de risco")
+        ALERT = "alert", _("Alerta (accidente ou emerxencia)")  # v1.2
 
     class Priority(models.TextChoices):
         NORMAL = "normal", _("Normal")
         HIGH = "high", _("Alta")
+        URGENT = "urgent", _("Máxima")  # v1.2: alertas
 
     class Category(models.TextChoices):
         DAMAGE = "damage", _("Desperfecto")

@@ -1,0 +1,30 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Protocolo de accidente" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% icon 'shield' %} {% translate "Accidente deportivo" %}</p><h1>{% translate "Protocolo de accidente" %}</h1>
+  {% if facility %}<p>{{ facility.name }}</p>{% endif %}</div></div>
+{% if alert %}<div class="alert alert-success" role="status" data-announce>{% icon 'check' %} {% blocktranslate trimmed with h=alert.created_at|date:"H:i" %}Avisamos á persoa responsable do concello ás {{ h }}.{% endblocktranslate %}</div>{% endif %}
+<ol class="protocol" aria-label="{% translate 'Pasos' %}">
+  {% for key, text in steps %}
+  <li class="protocol__step protocol__step--{{ key }}">
+    {% if key == 'protect' %}<h2 class="h3">{% translate "Protexe e non movas se hai dúbida" %}</h2><p class="pre-wrap">{{ text }}</p>
+    {% elif key == 'call' %}<h2 class="h3">{% translate "Se é grave, chama ao 112" %}</h2><p class="pre-wrap">{{ text }}</p>
+      <a class="emergency-call emergency-call--small" href="tel:112"><span class="emergency-call__num" aria-hidden="true">112</span><span><strong>{% translate "Chamar ao 112" %}</strong></span></a>
+    {% elif key == 'aed' %}<h2 class="h3">{% translate "DESA (desfibrilador)" %}</h2><p class="pre-wrap">{{ text }}</p>
+      {% if aed %}{% if aed.on_site %}
+      <p class="aed-box">{% icon 'heart' %} <span><strong>{% translate "Nesta instalación" %}</strong>{% if aed.where %}: {{ aed.where }}{% endif %}{% if aed.hours %}<br><small>{% translate "Horario de acceso" %}: {{ aed.hours }}</small>{% endif %}</span></p>
+      {% else %}
+      <p class="aed-box">{% icon 'heart' %} <span><strong>{% translate "O máis próximo" %}</strong>{% if aed.name %}: {{ aed.name }}{% endif %}{% if aed.address %}<br>{{ aed.address }}{% endif %}{% if aed.distance_m %}<br><small>{% blocktranslate with d=aed.distance_m %}A uns {{ d }} m{% endblocktranslate %}</small>{% endif %}{% if aed.hours %}<br><small>{% translate "Horario" %}: {{ aed.hours }}</small>{% endif %}</span></p>
+      {% endif %}{% else %}<p class="muted">{% translate "Esta instalación non ten anotado ningún DESA. O 112 indicarache o máis próximo." %}</p>{% endif %}
+    {% elif key == 'notify' %}<h2 class="h3">{% translate "Avisar á persoa responsable do concello" %}</h2><p class="pre-wrap">{{ text }}</p>
+      {% if alert %}<p><span class="badge badge-ok">{% icon 'check' %} {% translate "Avisada" %}</span></p>
+      {% else %}<form method="post" action="{% turl 'safety:alert_accident' %}">{% csrf_token %}{% if facility %}<input type="hidden" name="instalacion" value="{{ facility.pk }}">{% endif %}<button class="btn" type="submit">{% icon 'bell' %} {% translate "Avisar agora" %}</button></form>{% endif %}
+    {% elif key == 'register' %}<h2 class="h3">{% translate "Rexistrar o accidente" %}</h2><p class="pre-wrap">{{ text }}</p>
+      {% if facility %}<a class="btn btn-secondary" href="{% turl 'safety:register' facility.pk %}{% if alert %}?alerta={{ alert.pk }}{% endif %}">{% translate "Rexistrar o accidente" %}</a>
+      {% else %}<form method="get" class="row"><label for="proto-facility">{% translate "Instalación" %}</label><select id="proto-facility" name="instalacion">{% for f in facilities %}<option value="{{ f.pk }}">{{ f.name }}</option>{% endfor %}</select><button class="btn btn-secondary" type="submit" formaction="{% turl 'safety:alert' %}">{% translate "Escoller" %}</button></form>{% endif %}
+    {% endif %}
+  </li>
+  {% endfor %}
+</ol>
+{% if facility.accident_protocol %}<section class="card mt-2" aria-labelledby="extra-title"><h2 class="h3" id="extra-title">{% translate "Indicacións desta instalación" %}</h2><p class="pre-wrap">{{ facility.accident_protocol }}</p></section>{% endif %}
+{% endblock %}

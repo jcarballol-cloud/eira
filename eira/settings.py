@@ -79,6 +79,10 @@ INSTALLED_APPS = [
     "apps.notifications",
     "apps.analytics",
     "apps.integrations",
+    # v1.2
+    "apps.safety",
+    "apps.surveys",
+    "apps.members",
 ]
 
 MIDDLEWARE = [
@@ -213,7 +217,15 @@ EIRA_ADAPTERS = {
     "push": env("EIRA_PUSH_ADAPTER", "apps.integrations.push.FakeWebPushAdapter"),
     "ai": env("EIRA_AI_ADAPTER", "apps.integrations.ai.FakeAIAdapter"),
     "padron": env("EIRA_PADRON_ADAPTER", "apps.integrations.padron.CsvPadronAdapter"),
+    # v1.2
+    "defibrillators": env(
+        "EIRA_DEFIBRILLATORS_ADAPTER", "apps.integrations.defibrillators.CsvDefibrillatorAdapter"
+    ),
+    "municipal_card": env(
+        "EIRA_MUNICIPAL_CARD_ADAPTER", "apps.integrations.municipal_card.FakeMunicipalCardAdapter"
+    ),
 }
+EIRA_DESA_CSV = env("EIRA_DESA_CSV", "")  # v1.2: CSV de DESA (baleiro = o da demo, ficticio)
 EIRA_AI_ENABLED = env_bool("EIRA_AI_ENABLED", True)
 EIRA_AI_BASE_URL = env("EIRA_AI_BASE_URL", "http://localhost:11434/v1")
 EIRA_AI_MODEL = env("EIRA_AI_MODEL", "llama3.1")

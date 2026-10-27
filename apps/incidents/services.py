@@ -27,6 +27,19 @@ def notify_staff_new_incident(incident):
     # v1.1 · enrutado por tipo: o de limpeza xera tarefa e aviso ao persoal de limpeza.
     # A administración recibe igualmente o seu aviso (ve todo).
     route_incident(incident)
+    if incident.priority == Incident.Priority.URGENT:
+        # v1.2: alerta → a propia alerta xa avisou ao momento; aquí só a mantemento
+        for user in _staff(incident.municipality, [Role.MAINTENANCE]):
+            notify(
+                user,
+                _("ALERTA: revisar %(f)s") % {"f": incident.facility.name},
+                incident.description[:200],
+                url=treverse(incident.municipality, "maintenance:my_orders"),
+                municipality=incident.municipality,
+                level="warning",
+                email=True,
+            )
+        return
     if incident.priority == Incident.Priority.HIGH:
         # v5: risco → aviso inmediato á administración e a mantemento, tamén por correo
         for user in _staff(incident.municipality, [Role.ADMIN, Role.MAINTENANCE]):

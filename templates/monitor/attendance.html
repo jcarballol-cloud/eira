@@ -4,7 +4,15 @@
 <div class="tablet">
 <p class="eyebrow">{{ session.date|date:"l j" }} · {{ session.start_time|time:"H:i" }}</p>
 <h1>{{ session.group.activity.name }} · {{ session.group.name }}</h1>
+{% include "safety/_monitor_alert.html" %}
 <p>{% translate "Toca o nome de cada persoa presente." %} <span role="status"><strong data-present-count>{{ marked|length }}</strong> {% translate "presentes" %}</span></p>
+{% if modules.cards %}{# v1.2 · H: carné como alternativa á lista por nome #}
+<form method="post" action="{% turl 'monitor:card' session.pk %}" class="card-flat card-scan">{% csrf_token %}
+  <label for="card-qr-in">{% icon 'qr' %} {% translate "Ler carné (QR)" %}</label>
+  <input id="card-qr-in" name="qr" autocomplete="off" spellcheck="false">
+  <button class="btn btn-sm" type="submit">{% translate "Marcar presente" %}</button>
+</form>
+{% endif %}
 <form method="post" class="attendance">
   {% csrf_token %}
   <div class="photo-filter">

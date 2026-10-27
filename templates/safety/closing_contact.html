@@ -1,0 +1,39 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Peche sen confirmar" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% icon 'lock' %} {{ tenant.name }}</p><h1>{% translate "Peche sen confirmar" %}</h1>
+  <p>{{ booking.facility.name }} · {{ booking.start|date:"l j" }} · {{ booking.start|hhmm }}–{{ booking.end|hhmm }}</p></div>
+  <span class="badge {% if esc.is_open %}badge-warn{% else %}badge-ok{% endif %} big">{% if esc.is_open %}{% translate "Pendente de revisar" %}{% else %}{{ esc.get_outcome_display }}{% endif %}</span></div>
+<section class="card" aria-labelledby="esc-title">
+  <h2 class="h3" id="esc-title">{% translate "Que pasou" %}</h2>
+  <ul class="timeline">
+    <li class="done">{% blocktranslate with h=booking.end|hhmm %}A reserva rematou ás {{ h }}.{% endblocktranslate %}</li>
+    {% if esc.first_at %}<li class="done">{% blocktranslate with h=esc.first_at|date:"H:i" %}Primeiro recordatorio pola app ás {{ h }}.{% endblocktranslate %}</li>{% endif %}
+    {% if esc.second_at %}<li class="done">{% blocktranslate with h=esc.second_at|date:"H:i" %}Segundo recordatorio (app e correo ou Telegram) ás {{ h }}.{% endblocktranslate %}</li>{% endif %}
+    {% if esc.escalated_at %}<li class="done">{% blocktranslate with h=esc.escalated_at|date:"H:i" %}Aviso á persoa responsable ás {{ h }}.{% endblocktranslate %}{% if esc.contact %} ({{ esc.contact.name }}){% endif %}</li>{% endif %}
+    {% if esc.resolved_at %}<li class="done">{{ esc.get_outcome_display }} · {{ esc.resolved_at|date:"H:i" }}</li>{% endif %}
+  </ul>
+  {% if booking.facility.access_level == 3 %}<p>{% translate "Estado da porta segundo a pechadura" %}: <strong>{% if esc.door_state == 'closed' %}{% translate "pechada" %}{% elif esc.door_state == 'open' %}{% translate "aberta" %}{% else %}{% translate "sen datos" %}{% endif %}</strong></p>{% endif %}
+  {% if booking.facility.access_level == 1 %}<p>{% translate "Chave custodiada" %}: {{ booking.facility.key_holder_name }}{% if booking.facility.key_holder_phone %} · <a href="tel:{{ booking.facility.key_holder_phone|cut:' ' }}">{{ booking.facility.key_holder_phone }}</a>{% endif %}</p>{% endif %}
+</section>
+{% if esc.is_open %}
+<form method="post" class="card mt-2">
+  {% csrf_token %}<input type="hidden" name="accion" value="revisado">
+  <div class="field"><label for="esc-note">{% translate "Nota (opcional)" %}</label><input id="esc-note" name="nota" maxlength="300"></div>
+  <button class="btn" type="submit">{% icon 'check' %} {% translate "Revisado: todo pechado e en orde" %}</button>
+</form>
+{% endif %}
+{% if tenant.police_phone %}
+<section class="card mt-2 police-box" aria-labelledby="police-title">
+  <h2 class="h3" id="police-title">{% translate "Policía Local" %}</h2>
+  <p>{% translate "Eira nunca avisa á policía soa. Decide ti se fai falta: o contacto queda rexistrado." %}</p>
+  {% if police_logged %}
+  <div class="alert alert-success" role="status" data-announce>{% translate "Contacto rexistrado. Xa podes chamar." %}</div>
+  <a class="btn btn-lg" href="tel:{{ tenant.police_phone|cut:' ' }}">{% icon 'phone' %} {% blocktranslate with p=tenant.police_phone %}Chamar ao {{ p }}{% endblocktranslate %}</a>
+  {% else %}
+  <form method="post">{% csrf_token %}<input type="hidden" name="accion" value="policia"><button class="btn btn-secondary" type="submit">{% icon 'phone' %} {% translate "Contactar coa Policía Local" %}</button></form>
+  {% endif %}
+  {% with n=esc.police.count %}{% if n %}<p class="help mt-1">{% blocktranslate count n=n %}{{ n }} contacto rexistrado.{% plural %}{{ n }} contactos rexistrados.{% endblocktranslate %}</p>{% endif %}{% endwith %}
+</section>
+{% endif %}
+{% endblock %}

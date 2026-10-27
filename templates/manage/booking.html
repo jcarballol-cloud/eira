@@ -26,8 +26,12 @@
       <tbody>{% for p in payments %}<tr><td>{{ p.created_at|date:"d/m H:i" }}</td><td class="mono">{{ p.reference }}</td><td>{{ p.get_method_display }}</td><td>{{ p.get_status_display }}</td><td class="num">{{ p.amount_cents|euros }}</td></tr>{% empty %}<tr><td colspan="5">{% translate "Sen cobros." %}</td></tr>{% endfor %}</tbody></table></div>
     <h3 class="mt-2">{% translate "Estado ao entrar e ao saír" %}</h3>
     {% include "bookings/_states.html" with b=booking %}
+    {% with esc=booking.closing_escalation %}{% if booking.close_unconfirmed %}{# v1.2 · B #}
+    <p class="mt-1"><span class="badge badge-warn">{% translate "Peche sen confirmar" %}</span>{% if esc.counted_as_breach %} <span class="badge badge-alert">{% translate "Incumprimento" %}</span>{% endif %}{% if esc %} · {{ esc.get_stage_display }}{% if esc.resolved_at %} · {{ esc.get_outcome_display }}{% endif %} · <a href="{% turl 'manage:safety_escalation' esc.pk %}">{% translate "Ver o seguimento" %}</a>{% endif %}</p>
+    {% endif %}{% endwith %}
   </section>
   <aside class="stack">
+    {% for r in booking.releases.all %}{% include "bookings/_release_log.html" %}{% endfor %}
     {% if can_act and booking.status == 'pending_approval' or can_act and booking.requested_start %}
     <section class="card" aria-labelledby="appr-title">
       <h2 id="appr-title">{% if booking.requested_start %}{% translate "Cambio para aprobar" %}{% else %}{% translate "Reserva para aprobar" %}{% endif %}</h2>

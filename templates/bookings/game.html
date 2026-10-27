@@ -1,0 +1,63 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Partida aberta" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow"><a href="{% turl 'bookings:games' %}">{% translate "Partidas abertas" %}</a></p><h1>{{ g.booking.facility.name }}</h1>
+  <p>{{ g.booking.start|date:"l j \d\e F" }} · <strong>{{ g.booking.start|hhmm }}–{{ g.booking.end|hhmm }}</strong>{% if g.municipality != tenant %} · {{ g.municipality.name }}{% endif %}</p></div>
+  <span class="badge big {% if g.spots_left %}badge-ok{% else %}badge-muted{% endif %}">{% blocktranslate count n=g.spots_left %}{{ n }} praza libre{% plural %}{{ n }} prazas libres{% endblocktranslate %}</span></div>
+<div class="layout-aside">
+  <div class="stack">
+    <section class="card" aria-labelledby="g-info">
+      <h2 class="h3" id="g-info">{% translate "A partida" %}</h2>
+      <dl class="kv">
+        <dt>{% translate "Organiza" %}</dt><dd>{{ organiser_name }}</dd>
+        <dt>{% translate "Deporte" %}</dt><dd>{{ g.booking.facility.get_kind_display }}</dd>
+        <dt>{% translate "Nivel" %}</dt><dd>{{ g.get_level_display }}</dd>
+        <dt>{% translate "Xogadoras e xogadores" %}</dt><dd>{{ g.booking.participants }}{% if players %} <small>({{ players|join:", " }})</small>{% endif %}</dd>
+        <dt>{% translate "Prezo por persoa" %}</dt><dd>≈ {{ g.price_per_person_cents|euros }} <small class="muted">{% translate "(orientativo: a reserva xa a pagou quen organiza)" %}</small></dd>
+      </dl>
+      {% if g.message %}<p class="mb-0">«{{ g.message }}»</p>{% endif %}
+    </section>
+    {% if organiser %}
+    <section class="card" aria-labelledby="g-req">
+      <h2 class="h3" id="g-req">{% translate "Solicitudes" %}</h2>
+      <ul class="list">{% for j, name in requests %}<li class="row-between"><span><strong>{{ name }}</strong> · {{ j.get_status_display }}</span>
+        {% if j.status == 'pending' %}<form method="post" class="row">{% csrf_token %}<input type="hidden" name="solicitude" value="{{ j.pk }}">
+          <button class="btn btn-sm" type="submit" name="accion" value="aceptar">{% translate "Aceptar" %}<span class="visually-hidden"> {{ name }}</span></button>
+          <button class="btn btn-sm btn-ghost" type="submit" name="accion" value="rexeitar">{% translate "Rexeitar" %}<span class="visually-hidden"> {{ name }}</span></button></form>{% endif %}</li>
+      {% empty %}<li class="muted">{% translate "Aínda non hai solicitudes." %}</li>{% endfor %}</ul>
+      <p><a href="{% turl 'bookings:game_publish' g.booking.pk %}">{% translate "Cambiar a partida ou deixar de buscar xente" %}</a></p>
+    </section>
+    {% elif mine and mine.status != 'withdrawn' %}
+    <section class="card"><p class="mb-1">{% blocktranslate with s=mine.get_status_display %}A túa solicitude: {{ s }}.{% endblocktranslate %}</p>
+      <form method="post">{% csrf_token %}<button class="btn btn-sm btn-ghost" type="submit" name="accion" value="retirarme">{% translate "Retirarme" %}</button></form></section>
+    {% elif g.spots_left %}
+    <form method="post" class="card">{% csrf_token %}<input type="hidden" name="accion" value="unirme">
+      <div class="check"><input type="checkbox" id="g-consent" name="consent" required><label for="g-consent">{% translate "Acepto que quen organiza vexa o meu nome de pila e a inicial do apelido." %}</label></div>
+      <button class="btn btn-lg mt-1" type="submit">{% icon 'users' %} {% translate "Quero unirme" %}</button>
+    </form>
+    {% endif %}
+    {% if member %}
+    <section class="card" aria-labelledby="g-msg">
+      <h2 class="h3" id="g-msg">{% translate "Mensaxes" %}</h2>
+      <ul class="list game-chat">{% for name, m in chat %}<li><strong>{{ name }}</strong>: {{ m.get_code_display }} <small class="muted">{{ m.created_at|date:"d/m H:i" }}</small></li>{% empty %}<li class="muted">{% translate "Sen mensaxes." %}</li>{% endfor %}</ul>
+      <form method="post" class="chips mt-1">{% csrf_token %}<input type="hidden" name="accion" value="mensaxe">
+        {% for code, label in presets %}<button class="chip chip-btn" type="submit" name="codigo" value="{{ code }}">{{ label }}</button>{% endfor %}</form>
+      <p class="help mb-0">{% translate "Só mensaxes predefinidas: sen chat libre." %}</p>
+    </section>
+    {% endif %}
+  </div>
+  <aside class="stack">
+    {% if not organiser %}
+    <details class="card-flat">
+      <summary>{% icon 'alert' %} {% translate "Denunciar" %}</summary>
+      <form method="post" class="mt-1">{% csrf_token %}<input type="hidden" name="accion" value="denunciar">
+        <fieldset class="field"><legend>{% translate "Motivo" %}</legend>
+        {% for v, l in reasons %}<div class="check"><input type="radio" id="r-{{ v }}" name="motivo" value="{{ v }}" {% if forloop.first %}checked{% endif %}><label for="r-{{ v }}">{{ l }}</label></div>{% endfor %}</fieldset>
+        <button class="btn btn-sm btn-danger" type="submit">{% translate "Enviar denuncia" %}</button>
+      </form>
+    </details>
+    {% endif %}
+    <p class="help">{% translate "Partidas abertas: só para maiores de 14 anos. O concello pode retirar unha partida denunciada." %}</p>
+  </aside>
+</div>
+{% endblock %}

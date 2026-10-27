@@ -1,0 +1,26 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Ler un carné" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow"><a href="{% turl 'manage:passes' %}">{% translate "Abonos e carné" %}</a></p><h1>{% translate "Ler un carné" %}</h1>
+  <p>{% translate "Escanea o QR co lector (escribe o código no campo) ou pégao. Vale para a entrada e para ver os bonos." %}</p></div></div>
+<form method="post" class="card" novalidate>{% csrf_token %}
+  <div class="field"><label for="qr">{% translate "Código do QR" %}</label><input id="qr" name="qr" value="{{ token }}" autocomplete="off" spellcheck="false"></div>
+  <div class="form-actions"><button class="btn" type="submit">{% translate "Ler" %}</button></div>
+</form>
+{% if error %}<div class="alert alert-error mt-2" role="alert" data-announce>{{ error }}</div>{% endif %}
+{% if status %}
+<section class="card mt-2 card-status" aria-labelledby="cs-title" data-announce>
+  <h2 class="h3" id="cs-title">{{ status.card.user.display_name|default:status.card.user.email }}</h2>
+  <dl class="kv">
+    <dt>{% translate "Carné" %}</dt><dd class="mono">{{ status.card.display_number }}</dd>
+    <dt>{% translate "Abono" %}</dt><dd>{% if status.pass %}<span class="badge badge-ok">{{ status.pass.type.name }}</span> {% blocktranslate with d=status.pass.expires_on|date:"d/m/Y" %}ata o {{ d }}{% endblocktranslate %}{% else %}<span class="badge">{% translate "Sen abono activo" %}</span>{% endif %}</dd>
+    <dt>{% translate "Bonos" %}</dt><dd>{% for v in status.vouchers %}{{ v.type.name }} ({{ v.uses_left }}){% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</dd>
+    <dt>{% translate "Reserva agora" %}</dt><dd>{% if status.booking %}{{ status.booking.facility.name }} · {{ status.booking.start|hhmm }}–{{ status.booking.end|hhmm }}{% if status.booking.checked_in_at %} · {% icon 'check' %} {% translate "entrada rexistrada" %}{% endif %}{% else %}{% translate "Ningunha" %}{% endif %}</dd>
+  </dl>
+  {% if status.booking and not status.booking.checked_in_at %}
+  <form method="post">{% csrf_token %}<input type="hidden" name="qr" value="{{ token }}"><input type="hidden" name="accion" value="entrada"><button class="btn btn-lg" type="submit">{% icon 'door' %} {% translate "Rexistrar a entrada" %}</button></form>
+  {% endif %}
+  {% if "admin" in request.roles %}<form method="post" action="{% turl 'manage:card_revoke' status.card.pk %}" class="mt-1">{% csrf_token %}<button class="btn btn-sm btn-ghost" type="submit">{% translate "Anular o carné impreso (perda)" %}</button></form>{% endif %}
+</section>
+{% endif %}
+{% endblock %}

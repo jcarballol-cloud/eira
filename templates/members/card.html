@@ -1,0 +1,49 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "O meu carné" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% icon 'qr' %} {{ tenant.name }}</p><h1>{% translate "O meu carné" %}</h1></div></div>
+{% if returned == 'ok' %}<div class="alert alert-success" role="status" data-announce>{% translate "Pagamento recibido. O teu abono xa está activo." %}</div>
+{% elif returned == 'ko' %}<div class="alert alert-warn" role="status" data-announce>{% translate "Non se completou o pagamento. Podes tentalo outra vez." %}</div>{% endif %}
+
+<section class="member-card" aria-labelledby="mc-name">
+  <header class="member-card__head"><span>{% translate "Carné municipal de deportes" %}</span><span>{{ tenant.name }}</span></header>
+  <div class="member-card__body">
+    {% if card.photo %}<img class="member-card__photo" src="{{ card.photo.url }}" alt="{% translate 'Foto do carné' %}" width="72" height="72">{% else %}<span class="member-card__photo member-card__photo--none" aria-hidden="true">{% icon 'user' %}</span>{% endif %}
+    <div class="member-card__id">
+      <h2 class="h3 mb-0" id="mc-name">{{ user.display_name|default:user.email }}</h2>
+      {% if pass %}<p class="mb-0"><span class="badge badge-ok">{{ pass.type.name }}</span></p>
+      <p class="mb-0">{% blocktranslate with d=pass.expires_on|date:"j/n/Y" %}Válido ata o {{ d }}{% endblocktranslate %}</p>
+      {% else %}<p class="mb-0"><span class="badge">{% translate "Sen abono" %}</span></p>{% endif %}
+      <p class="mb-0 mono">{{ card.display_number }}</p>
+    </div>
+  </div>
+  {% include "members/_qr.html" %}
+</section>
+<p class="help">{% translate "Serve para a entrada nas instalacións, a asistencia nas escolas (alternativa á lista) e os bonos." %}</p>
+<div class="row mb-2">
+  <a class="btn btn-secondary" href="{% turl 'members:card_pdf' %}">{% icon 'download' %} {% translate "Carné para imprimir (PDF)" %}</a>
+</div>
+
+{% if vouchers %}<section class="card mb-2" aria-labelledby="mc-v"><h2 class="h3" id="mc-v">{% translate "Os teus bonos" %}</h2>
+  <ul class="list">{% for v in vouchers %}<li>{{ v.type.name }} · {% blocktranslate count n=v.uses_left %}queda {{ n }} uso{% plural %}quedan {{ n }} usos{% endblocktranslate %}</li>{% endfor %}</ul></section>{% endif %}
+
+<section class="card mb-2" aria-labelledby="mc-pass">
+  <h2 class="h3" id="mc-pass">{% if pass %}{% translate "Renovar o abono" %}{% else %}{% translate "Facerme abonada ou abonado" %}{% endif %}</h2>
+  <p class="help">{% translate "Co abono tes desconto nas tarifas, ademais da tarifa de empadroamento e das franxas tranquilas. Tamén podes darte de alta na oficina de deportes." %}</p>
+  <ul class="grid grid-2 list" role="list">{% for t in types %}
+    <li class="card-flat pass-type"><h3 class="h4 mt-0">{{ t.name }}</h3>{% if t.description %}<p class="mb-1">{{ t.description }}</p>{% endif %}
+      <p class="mb-1"><strong>{{ t.price_cents|euros }}</strong> · {% blocktranslate with d=t.valid_days %}{{ d }} días{% endblocktranslate %} · −{{ t.discount_pct }} %</p>
+      <form method="post">{% csrf_token %}<input type="hidden" name="accion" value="abono"><input type="hidden" name="tipo" value="{{ t.pk }}"><button class="btn btn-sm" type="submit">{% translate "Pagar co TPV" %}<span class="visually-hidden"> {{ t.name }}</span></button></form></li>
+  {% empty %}<li class="muted">{% translate "O concello aínda non ofrece abonos." %}</li>{% endfor %}</ul>
+  {% if history %}<p class="help mt-1 mb-0">{% translate "Historial" %}: {% for p in history %}{{ p.type.name }} ({{ p.get_status_display|lower }}{% if p.expires_on %}, {{ p.expires_on|date:"d/m/Y" }}{% endif %}){% if not forloop.last %} · {% endif %}{% endfor %}</p>{% endif %}
+</section>
+
+<section class="card" aria-labelledby="mc-photo">
+  <h2 class="h3" id="mc-photo">{% translate "Foto do carné (opcional)" %}</h2>
+  <p class="help">{% translate "Só a ves ti e o persoal ao ler o carné. Gárdase sen metadatos." %}</p>
+  <form method="post" enctype="multipart/form-data" class="row">{% csrf_token %}<input type="hidden" name="accion" value="foto">
+    <label for="id_photo" class="visually-hidden">{% translate "Foto (opcional)" %}</label><input type="file" id="id_photo" name="photo" accept="image/jpeg,image/png,image/webp">
+    <button class="btn btn-secondary btn-sm" type="submit">{% translate "Gardar foto" %}</button></form>
+  {% if card.photo %}<form method="post" class="mt-1">{% csrf_token %}<input type="hidden" name="accion" value="sen-foto"><button class="btn btn-ghost btn-sm" type="submit">{% translate "Quitar a foto" %}</button></form>{% endif %}
+</section>
+{% endblock %}

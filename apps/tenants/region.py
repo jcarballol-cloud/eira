@@ -88,6 +88,14 @@ def _compare(region, weeks):
         from apps.bookings.models import Booking
 
         indices = municipality_indices(m)
+        # v1.2 · E: NPS da última enquisa anual con n ≥ 10 (só agregado)
+        from apps.surveys.services import latest_nps
+
+        nps_row = latest_nps(m)
+        # v1.2 · D: rendemento agregado (últimos 30 días, estimación orientativa)
+        from apps.analytics.performance import municipality_summary
+
+        perf = municipality_summary(m)
         values = [i["value"] for i in indices if i["value"] is not None]
         since = timezone.now() - dt.timedelta(weeks=weeks)
         rows.append(
@@ -120,6 +128,10 @@ def _compare(region, weeks):
                 "network_in": Booking.objects.filter(
                     municipality=m, network_origin__isnull=False, start__gte=since
                 ).count(),
+                "nps": nps_row["nps"]["nps"] if nps_row else None,
+                "nps_year": nps_row["year"] if nps_row else None,
+                "nps_n": nps_row["nps"]["n"] if nps_row else None,
+                "perf": perf,
             }
         )
     return rows
@@ -147,6 +159,11 @@ def dashboard(request):
                 "ingresos_por_hab_eur",
                 "indice_vida_activa_0_100",
                 "reservas_desde_a_rede",
+                "nps_ultima_enquisa",
+                "nps_ano",
+                "uso_real_pct_30d",
+                "kwh_estimados_30d",
+                "kwh_por_hora_de_uso",
             ],
             [
                 [
@@ -163,6 +180,11 @@ def dashboard(request):
                     r["revenue_per_inh"],
                     r["vitality"],
                     r["network_in"],
+                    r["nps"],
+                    r["nps_year"],
+                    r["perf"]["real_use_pct"],
+                    r["perf"]["kwh"],
+                    r["perf"]["kwh_per_use_h"],
                 ]
                 for r in rows
             ],

@@ -1,0 +1,18 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Protocolo de accidente" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow"><a href="{% turl 'manage:safety' %}">{% translate "Seguridade" %}</a></p><h1>{% translate "Protocolo de accidente" %}</h1>
+  <p>{% if facility %}{% blocktranslate with f=facility.name %}Protocolo propio de {{ f }}. Sen protocolo propio, usa o do concello.{% endblocktranslate %}{% else %}{% translate "Protocolo do concello: vale para todas as instalacións que non teñan un propio." %}{% endif %}</p></div></div>
+<form method="get" class="row mb-2">
+  <label for="proto-f">{% translate "Instalación" %}</label>
+  <select id="proto-f" name="instalacion"><option value="">{% translate "Todo o concello" %}</option>{% for f in facilities %}<option value="{{ f.pk }}" {% if facility == f %}selected{% endif %}>{{ f.name }}</option>{% endfor %}</select>
+  <button class="btn btn-secondary" type="submit">{% translate "Ver" %}</button>
+</form>
+<form method="post" class="card" novalidate>
+  {% csrf_token %}
+  <p class="help">{% translate "Os cinco pasos son fixos (o 112, o DESA, o aviso automático e o rexistro funcionan sós); podes cambiar o texto de cada un." %}</p>
+  {% for field in form %}{% include "includes/field.html" %}{% endfor %}
+  <div class="form-actions"><button class="btn" type="submit">{% translate "Gardar" %}</button>
+  {% if own %}<button class="btn btn-ghost" type="submit" name="accion" value="restablecer">{% if facility %}{% translate "Usar o do concello" %}{% else %}{% translate "Volver á plantilla" %}{% endif %}</button>{% endif %}</div>
+</form>
+{% endblock %}

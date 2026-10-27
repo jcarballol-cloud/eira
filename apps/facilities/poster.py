@@ -313,7 +313,7 @@ def build_poster(municipality, facility=None, url="", *, template=False):
     return _assemble(page, title, lang=lang, logo=logo)
 
 
-def _assemble(page, title, lang, logo=None):
+def _assemble(page, title, lang, logo=None, size=(PAGE_W, PAGE_H)):
     content = zlib.compress("\n".join(page.ops).encode("latin-1"))
     objects = {}
     # 1 Catalog · 2 Pages · 3 Page · 4 F1 · 5 F2 · 6 Contents · 7 Info · 8 StructTreeRoot
@@ -374,7 +374,9 @@ def _assemble(page, title, lang, logo=None):
             "/StructTreeRoot 8 0 R /Metadata 11 0 R /ViewerPreferences << /DisplayDocTitle true >> >>",
             2: "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
             3: f"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 {PAGE_W} {PAGE_H}] "
-            f"/Resources << {resources} >> /Contents 6 0 R /StructParents 0 /Tabs /S >>",
+            f"/Resources << {resources} >> /Contents 6 0 R /StructParents 0 /Tabs /S >>".replace(
+                f"[0 0 {PAGE_W} {PAGE_H}]", f"[0 0 {size[0]} {size[1]}]"
+            ),
             4: "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>",
             5: "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>",
             7: f"<< /Title ({_esc(title)}) /Producer (Eira) /CreationDate (D:{now}) >>",

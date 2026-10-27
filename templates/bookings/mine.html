@@ -20,6 +20,20 @@
     {% endfor %}
   </ul>
 </section>
+{% if waitlist %}{# v1.2 · F #}
+<section aria-labelledby="lista-espera" class="mb-2">
+  <h2 id="lista-espera">{% translate "Listas de espera" %}</h2>
+  <ul class="grid grid-2 list" role="list">
+    {% for w in waitlist %}
+      <li class="card{% if w.is_live_offer %} card-attention{% endif %}">
+        <div class="row-between"><h3 class="mb-0"><a href="{% turl 'bookings:waitlist_offer' w.pk %}">{{ w.facility.name }}</a></h3><span class="badge {% if w.is_live_offer %}badge-ok{% else %}badge-warn{% endif %}">{% if w.is_live_offer %}{% translate "Quedou libre!" %}{% else %}{{ w.get_status_display }}{% endif %}</span></div>
+        <p class="mb-0">{{ w.start|date:"l j \d\e F" }} · <strong>{{ w.start|hhmm }}–{{ w.end|hhmm }}</strong></p>
+        {% if w.is_live_offer %}<small>{% blocktranslate with h=w.offer_expires_at|date:"H:i" %}Tes ata as {{ h }} para collela.{% endblocktranslate %}</small>{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
 {% if elsewhere %}
 <section aria-labelledby="else-title" class="mb-2">
   <h2 id="else-title">{% translate "Noutros concellos" %}</h2>

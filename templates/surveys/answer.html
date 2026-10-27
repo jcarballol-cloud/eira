@@ -1,0 +1,33 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Enquisa de satisfacción" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% icon 'smile' %} {{ tenant.name }}</p><h1>{% if survey %}{{ survey.label }}{% else %}{% translate "Enquisa de satisfacción" %}{% endif %}</h1>
+  {% if survey %}<p>{% blocktranslate trimmed with d=survey.closes_on|date:"j \d\e F" %}Son 2 minutos. Aberta ata o {{ d }}. As respostas son anónimas: o concello só ve os resultados xuntos, e só se responden polo menos 10 persoas.{% endblocktranslate %}</p>{% endif %}</div></div>
+{% if not survey %}
+<div class="card empty-state"><p class="mb-0">{% translate "Agora non hai ningunha enquisa aberta. Grazas igualmente!" %}</p></div>
+{% elif done %}
+<div class="result result--ok" role="status" data-announce><span class="result__icon" aria-hidden="true">{% icon 'check' %}</span>
+  <h2 class="h3">{% translate "Xa respondiches esta enquisa" %}</h2><p>{% translate "Só se pode responder unha vez. Grazas!" %}</p></div>
+{% else %}
+<form method="post" class="card survey-form" novalidate>
+  {% csrf_token %}
+  {% if form.errors %}<div class="alert alert-error" role="alert" tabindex="-1" data-focus>{% translate "Revisa os campos marcados." %}</div>{% endif %}
+  <fieldset class="nps-scale">
+    <legend>{{ form.nps.label }} <span aria-hidden="true">*</span></legend>
+    <div class="nps-scale__options">{% for choice in form.nps %}<span class="nps-scale__opt">{{ choice.tag }}<label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label></span>{% endfor %}</div>
+    <p class="nps-scale__ends"><span>0 · {% translate "Nada probable" %}</span><span>10 · {% translate "Moi probable" %}</span></p>
+    {% if form.nps.errors %}<ul class="errorlist">{% for e in form.nps.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+  </fieldset>
+  <h2 class="h3 mt-2">{% translate "Valora do 1 (moi mal) ao 5 (moi ben)" %}</h2>
+  {% for field in aspects %}
+  <fieldset class="score-row">
+    <legend>{{ field.label }}</legend>
+    <div class="score-row__options">{% for choice in field %}<span class="score-row__opt">{{ choice.tag }}<label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label></span>{% endfor %}</div>
+  </fieldset>
+  {% endfor %}
+  {% with field=form.facility %}{% include "includes/field.html" %}{% endwith %}
+  {% with field=form.comment %}{% include "includes/field.html" %}{% endwith %}
+  <div class="form-actions"><button class="btn btn-lg" type="submit">{% translate "Enviar" %}</button></div>
+</form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% load i18n eira %}{# v1.2 · G: «Busco xente» #}{% if booking.municipality.modules.open_games is not False %}
+<section class="card" aria-labelledby="game-title">
+  <h2 id="game-title" class="h3">{% icon 'users' %} {% translate "Busco xente" %}</h2>
+  {% with g=booking.open_game %}{% if g and g.active %}
+  <p class="mb-1">{% blocktranslate trimmed with n=g.spots_left l=g.get_level_display %}Publicada en «Partidas abertas»: quedan {{ n }} prazas · nivel {{ l }}.{% endblocktranslate %}</p>
+  <a class="btn btn-secondary" href="{% turl 'bookings:game' g.pk %}">{% translate "Ver a partida e as solicitudes" %}</a>
+  {% else %}
+  <p class="mb-1">{% translate "Fáltache xente? Publica a reserva en «Partidas abertas»: só se verá o teu nome de pila e a inicial." %}</p>
+  <a class="btn btn-secondary" href="{% turl 'bookings:game_publish' booking.pk %}">{% translate "Busco xente" %}</a>
+  {% endif %}{% endwith %}
+</section>{% endif %}

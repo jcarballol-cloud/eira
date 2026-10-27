@@ -19,8 +19,8 @@ from apps.integrations.registry import get_adapter
 from apps.integrations.weather import advice
 from apps.tenants.urlutils import neighbour_required, treverse
 
-from . import ics, payments, services
-from .models import Booking
+from . import ics, payments, services, waitlist
+from .models import Booking, WaitlistEntry
 from .ratings import RatingForm, can_rate
 
 
@@ -289,6 +289,15 @@ def mine(request):
             "history": history,
             "pending_checklist": pending_checklist,
             "nav": "bookings",
+            # v1.2 · F: listas de espera (as ofertas vivas primeiro)
+            "waitlist": WaitlistEntry.objects.filter(
+                municipality=request.tenant,
+                user=request.user,
+                status__in=[WaitlistEntry.Status.WAITING, WaitlistEntry.Status.OFFERED],
+                end__gt=now,
+            )
+            .select_related("facility")
+            .order_by("status", "start"),
         },
     )
 
@@ -321,6 +330,10 @@ def detail(request, pk):
             "tips": tips,
             "penalty": booking.penalty_if_cancelled_now(),
             "can_rate": can_rate(booking),
+            # v1.2 · F: «que tes que facer e cando», Confirmo/Cancelo e ciclo da lista de espera
+            "todo": waitlist.todo_for(booking),
+            "can_confirm": waitlist.can_confirm(booking),
+            "releases": booking.releases.all(),
             "now": timezone.now(),
             # Só a propia persoa e só se ela decidiu gardalo na conta (art. 9)
             "account_health": getattr(
@@ -580,6 +593,7 @@ def checklist(request, pk):
     if request.method == "POST" and form.is_valid() and rating_form.is_valid():
         if can_rate(booking):
             rating_form.save(booking)
+            save_use_nps(booking, request.POST.get("nps_uso"))  # v1.2 · E (opcional)
         d = form.cleaned_data
         incident = services.submit_closing_checklist(
             booking,
@@ -602,7 +616,13 @@ def checklist(request, pk):
     return render(
         request,
         "bookings/checklist.html",
-        {"booking": booking, "form": form, "rating_form": rating_form, "nav": "bookings"},
+        {
+            "booking": booking,
+            "form": form,
+            "rating_form": rating_form,
+            "nav": "bookings",
+            "nps_range": range(11),
+        },
     )
 
 
@@ -615,6 +635,7 @@ def rate(request, pk):
     form = RatingForm(request.POST or None, prefix="v", required=True)
     if request.method == "POST" and form.is_valid():
         rating = form.save(booking)
+        save_use_nps(booking, request.POST.get("nps_uso"))  # v1.2 · E (opcional)
         if rating.incident:
             messages.warning(
                 request,
@@ -625,8 +646,33 @@ def rate(request, pk):
             messages.success(request, _("Grazas pola túa valoración!"))
         return redirect(treverse(request.tenant, "bookings:detail", booking.pk))
     return render(
-        request, "bookings/rate.html", {"booking": booking, "rating_form": form, "nav": "bookings"}
+        request,
+        "bookings/rate.html",
+        {"booking": booking, "rating_form": form, "nav": "bookings", "nps_range": range(11)},
     )
+
+
+def save_use_nps(booking, value):
+    """v1.2 · E: NPS despois do uso, só se o concello o activou e se a persoa respondeu."""
+    from apps.surveys.models import UseNps
+
+    if not booking.municipality.nps_after_use or value in (None, ""):
+        return None
+    try:
+        score = int(value)
+    except (TypeError, ValueError):
+        return None
+    if not 0 <= score <= 10:
+        return None
+    obj, _created = UseNps.objects.get_or_create(
+        booking=booking,
+        defaults={
+            "municipality": booking.municipality,
+            "facility": booking.facility,
+            "score": score,
+        },
+    )
+    return obj
 
 
 @neighbour_required

@@ -30,3 +30,12 @@ class Command(BaseCommand):
             f"{expire_holds()} reservas pendentes caducadas, {mark_no_shows()} non presentadas, "
             f"{purge_app_requests()} solicitudes da app borradas por antigüidade"
         )
+        # v1.2 · B: peches sen confirmar (recordatorios e aviso á persoa responsable)
+        from apps.safety.services import escalate_closings, purge_accidents
+
+        self.stdout.write(f"Peches sen confirmar: {escalate_closings()}")
+        # v1.2 · F: recordatorios con acción e lista de espera
+        from apps.bookings.waitlist import process, send_reminders
+
+        self.stdout.write(f"Recordatorios: {send_reminders()} · Lista de espera: {process()}")
+        self.stdout.write(f"Accidentes borrados por conservación: {purge_accidents()}")

@@ -20,6 +20,7 @@
 <div class="layout-aside">
   <section aria-labelledby="disp-title" class="stack">
     <div class="row-between"><h2 id="disp-title" class="mb-0">{% translate "Dispoñibilidade" %}</h2></div>
+    {% include "bookings/_how_to_book.html" %}
     <p class="muted mb-0">{% translate "Escolle unha franxa libre para reservala. As marcadas con ★ adoitan ter pouca demanda." %}</p>
     <div id="week">{% include "facilities/_week.html" %}</div>
   </section>
@@ -38,6 +39,13 @@
       <h2 id="safety-title">{% icon 'shield' %} {% translate "Seguridade" %}</h2>
       <a class="emergency-call emergency-call--small" href="tel:112"><span class="emergency-call__num" aria-hidden="true">112</span><span><strong>{% translate "Emerxencias: 112" %}</strong><br>{% translate "Chamar agora" %}</span></a>
       {% if facility.accident_protocol %}<h3 class="h4">{% translate "En caso de accidente" %}</h3><p class="pre-wrap">{{ facility.accident_protocol }}</p>{% endif %}
+      {% if facility.aed_on_site or facility.aed_near_name %}{# v1.2 · C: DESA #}
+      <h3 class="h4">{% translate "DESA (desfibrilador)" %}</h3>
+      {% if facility.aed_on_site %}
+      <p class="aed-box">{% icon 'heart' %} <span><strong>{% translate "Nesta instalación" %}</strong>{% if facility.aed_inside_location %}: {{ facility.aed_inside_location }}{% endif %}{% if facility.aed_hours %}<br><small>{% translate "Horario de acceso" %}: {{ facility.aed_hours }}</small>{% endif %}</span></p>
+      {% else %}
+      <p class="aed-box">{% icon 'heart' %} <span><strong>{% translate "O máis próximo" %}</strong>: {{ facility.aed_near_name }}{% if facility.aed_near_address %}<br>{{ facility.aed_near_address }}{% endif %}{% if facility.aed_near_distance_m %}<br><small>{% blocktranslate with d=facility.aed_near_distance_m %}A uns {{ d }} m{% endblocktranslate %}</small>{% endif %}{% if facility.aed_near_hours %}<br><small>{% translate "Horario" %}: {{ facility.aed_near_hours }}</small>{% endif %}</span></p>
+      {% endif %}{% endif %}
       <dl class="kv">
         <dt>{% translate "DEA máis próximo" %}</dt><dd>{{ facility.aed_location|default:_("Pregunta no concello") }}</dd>
         {% if tenant.contact_phone %}<dt>{% translate "Concello" %}</dt><dd><a href="tel:{{ tenant.contact_phone|cut:' ' }}">{{ tenant.contact_phone }}</a></dd>{% endif %}
@@ -67,7 +75,23 @@
       {% if feats %}<ul class="feature-list" role="list">{% for f in feats %}<li>{% icon f.icon %}<span>{{ f.label|capfirst }}</span></li>{% endfor %}</ul>{% else %}<p class="muted">{% translate "Sen información de accesibilidade." %}</p>{% endif %}
       {% endwith %}
       {% if facility.accessibility_notes %}<p>{{ facility.accessibility_notes }}</p>{% endif %}
+      {% if facility.has_accessibility_detail %}{# v1.2 · C: os 7 puntos con si / parcial / non #}
+      <h3 class="h4">{% translate "Accesibilidade detallada" %}</h3>
+      <ul class="acc-points" role="list">{% for p in facility.accessibility_points %}
+        <li class="acc-point acc-point--{{ p.value|default:'none' }}">{% icon p.icon %}<span><span class="acc-point__label">{{ p.label }}</span> <span class="acc-point__value">{% if p.value == 'yes' %}✓{% elif p.value == 'partial' %}◐{% elif p.value == 'no' %}✕{% else %}?{% endif %} {{ p.value_label }}</span>{% if p.note %}<br><small>{{ p.note }}</small>{% endif %}</span></li>
+      {% endfor %}</ul>
+      {% endif %}
     </section>
+    {% if facility.bike_parking_spaces is not None or facility.ev_chargers or facility.transit_stop %}
+    <section class="card" aria-labelledby="sust-title">{# v1.2 · C: sostibilidade #}
+      <h2 id="sust-title">{% icon 'sun' %} {% translate "Mobilidade sostible" %}</h2>
+      <dl class="kv">
+        <dt>{% translate "Aparcabicis" %}</dt><dd>{% if facility.bike_parking_spaces %}{% blocktranslate count n=facility.bike_parking_spaces %}{{ n }} praza{% plural %}{{ n }} prazas{% endblocktranslate %}{% elif facility.bike_parking_spaces == 0 %}{% translate "Non" %}{% else %}{% translate "Sen datos" %}{% endif %}</dd>
+        <dt>{% translate "Recarga de vehículo eléctrico" %}</dt><dd>{% if facility.ev_chargers %}{% blocktranslate count n=facility.ev_chargers %}{{ n }} punto{% plural %}{{ n }} puntos{% endblocktranslate %}{% if facility.ev_charger_type %} · {{ facility.ev_charger_type }}{% endif %}{% else %}{% translate "Non" %}{% endif %}</dd>
+        {% if facility.transit_stop %}<dt>{% translate "Transporte público" %}</dt><dd>{{ facility.transit_stop }}</dd>{% endif %}
+      </dl>
+    </section>
+    {% endif %}
     <section class="card" aria-labelledby="tar-title">
       <h2 id="tar-title">{% translate "Tarifas por franxa" %}</h2>
       <table class="data"><caption class="visually-hidden">{% translate "Tarifas" %}</caption>

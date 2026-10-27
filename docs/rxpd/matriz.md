@@ -69,3 +69,43 @@ Son datos do persoal (propio ou da empresa contratada), non da veciñanza; por i
 - Base xurídica: execución do contrato de limpeza e obriga de hixiene das instalacións (art. 6.1.b e 6.1.c RXPD). A empresa contratada é **encargada** do tratamento: o contrato debe recoller o art. 28.
 - Non se rexistra a localización: o QR só proba que a persoa abriu a páxina da zona, non onde estaba. Sen conexión, a hora é a do móbil ao gardar (ata 7 días atrás; nunca no futuro).
 - **Non verificado:** o borrado automático aos 2 anos non está programado (vai coa purga dos avisos cando se implemente para todos os rexistros).
+
+## v1.2 · Alertas, rexistro de accidentes e peche sen confirmar
+
+| Dato | Veciña (propio) | Monitor/a | Mantemento | Concello | DPD | Deputación | Conservación |
+|---|---|---|---|---|---|---|---|
+| Alerta (tipo, instalación, hora, a quen se avisou) | ✔ (ve o aviso enviado) | ✔ (as que dá) | só a incidencia vinculada, sen quen alertou | ✔ | — | agr. | a da incidencia |
+| Rexistro de accidentes (data e hora, instalación, tipo xeral, gravidade percibida, 112 si/non, papel de quen comunica) | — (só o rexistra) | — | — | ✔ | ✔ | **—** (nin co acceso de soporte) | configurable por concello (por defecto 24 meses despois de pechado); purga automática |
+| Peche sen confirmar (fases, persoa responsable avisada, resultado) | ✔ (na súa reserva) | — | — | ✔ | — | só con acceso de soporte (24 h) | o da reserva |
+| Contactos coa Policía Local (quen decidiu, cando, teléfono) | — | — | — | ✔ | — | só con acceso de soporte (24 h) | o da reserva |
+
+| Dato do persoal | Persoa responsable | Mantemento | Concello | Deputación | Veciñanza | Conservación |
+|---|---|---|---|---|---|---|
+| Persoas responsables (nome ou posto, teléfono, correo, horario) | ✔ (os seus) | — | ✔ | — | — | mentres estean designadas |
+
+- **Accidentes sen datos de saúde:** non hai diagnósticos, lesións concretas nin texto libre (un test compróbao). A gravidade é a **percibida** por quen comunica, non unha valoración clínica. Base xurídica: interese público e obrigas de seguridade da instalación (art. 6.1.c e 6.1.e RXPD).
+- **Policía Local:** non hai ningún envío automático de datos. Se unha persoa decide chamar, só queda rexistrado que se contactou, cando e por quen.
+
+## v1.2 · Partidas abertas («Busco xente»)
+
+| Dato | Veciña (propio) | Outras persoas da app | Concello | Deputación | Conservación |
+|---|---|---|---|---|---|
+| Partida aberta (nome de pila e inicial de quen organiza, instalación, día e hora, nivel, prazas e mensaxe curta) | ✔ | ✔ só nome de pila e inicial (do concello e dos concellos próximos da rede) | ✔ | — | ata o fin da reserva; despois só na reserva (2 anos) |
+| Solicitudes para unirse e mensaxes predefinidas (nome de pila e inicial) | ✔ | só quen organiza e quen xoga | ✔ | — | os da reserva (2 anos) |
+| Denuncias dunha partida (motivo) | ✔ | — | ✔ | — | 1 ano |
+
+- **Nunca** se mostran teléfono nin correo; non hai chat libre (só mensaxes predefinidas), así non se poden intercambiar datos de contacto pola app.
+- **Consentimento explícito** para aparecer (ao publicar) e para que quen organiza vexa o nome de pila (ao unirse). Revogable: deixar de buscar xente ou retirarse.
+- **Menores de 14 anos** non poden publicar nin unirse (sen ano de nacemento tampouco). Base: art. 7 LOPDGDD.
+- Tres denuncias ocultan a partida ata que o concello a revise; o concello pode desactivar a función (módulo «Partidas abertas»).
+
+## v1.2 · Carné municipal e abonos
+
+| Dato | Veciña (propio) | Monitor/a | Mantemento | Concello | Deputación | Conservación |
+|---|---|---|---|---|---|---|
+| Abono (tipo, validez, canle de pagamento) | ✔ | — | ✔ (ao ler o carné: tipo e validez) | ✔ | agr. | 6 anos (cobros) |
+| Carné municipal (número e foto opcional) | ✔ | só marca a asistencia (non ve a foto) | ✔ (ao ler o carné) | ✔ | — | mentres teña a conta; a foto bórrase cando a persoa a quita |
+
+- O **QR** só leva o identificador interno do carné, a versión e (no impreso) a data de fin: ningún dato persoal. O dixital caduca aos 3 minutos.
+- **Foto opcional**, gardada sen metadatos; non se usa para nada máis.
+- **Vínculo con outro carné do concello** (biblioteca, piscina): só o número externo, mediante o adaptador `municipal_card` (simulado). Ver `docs/carne-municipal.md`.

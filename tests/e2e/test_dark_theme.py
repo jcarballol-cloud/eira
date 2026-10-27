@@ -22,6 +22,8 @@ APP_PERSONAS = {
     "noela@demo.eira.example": MOBILE,  # v1.1
     NEW_NEIGHBOUR: MOBILE,
     "antia@demo.eira.example": TABLET,
+    # v1.2 · D: o panel Rendemento do escritorio tamén ten tema escuro
+    "admin@vilardeiras.demo.eira.example": DESKTOP,
 }
 
 
@@ -33,6 +35,9 @@ def dark_page_sets():
         "noela@demo.eira.example": sets["noela@demo.eira.example"],
         NEW_NEIGHBOUR: [*sets[NEW_NEIGHBOUR], f"{C}/actividades/"],
         "antia@demo.eira.example": sets["antia@demo.eira.example"],
+        "admin@vilardeiras.demo.eira.example": [
+            p for p in sets["admin@vilardeiras.demo.eira.example"] if "rendemento" in p
+        ],
     }
 
 

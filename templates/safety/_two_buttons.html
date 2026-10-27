@@ -1,0 +1,11 @@
+{% load i18n eira %}{# v1.2 · A: dous botóns grandes e ben diferenciados (forma, cor e texto) #}
+<div class="big-choice{% if compact %} big-choice--compact{% endif %}" role="group" aria-label="{% translate 'Aviso ou alerta' %}">
+  <a class="big-choice__btn big-choice__btn--notice" href="{% if notice_url %}{{ notice_url }}{% else %}{% turl 'safety' %}#aviso{% endif %}">
+    <span class="big-choice__shape big-choice__shape--square" aria-hidden="true">{% icon 'wrench' %}</span>
+    <span class="big-choice__text"><strong>{% translate "Aviso" %}</strong><span>{% translate "Algo roto, sucio ou un comentario para o concello" %}</span></span>
+  </a>
+  <a class="big-choice__btn big-choice__btn--alert" href="{% turl 'safety:alert' %}?{% if facility %}instalacion={{ facility.pk }}{% endif %}{% if booking %}&amp;reserva={{ booking.pk }}{% endif %}{% if session %}&amp;sesion={{ session.pk }}{% endif %}">
+    <span class="big-choice__shape big-choice__shape--octagon" aria-hidden="true">!</span>
+    <span class="big-choice__text"><strong>{% translate "Alerta" %}</strong><span>{% translate "Accidente deportivo ou emerxencia de seguridade" %}</span></span>
+  </a>
+</div>

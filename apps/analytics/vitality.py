@@ -115,7 +115,16 @@ def _satisfaction(facility, today):
     return round(sum(SCORE_VALUE[s] * c for s, c in rows.items()) / n), n
 
 
+DETAIL_SCORE = {"yes": 1.0, "partial": 0.5, "no": 0.0}
+
+
 def _accessibility(facility):
+    """v1.2: accesibilidade detallada (si = 1, parcial = 0,5, non ou sen datos = 0) ÷ 7.
+
+    Se a instalación aínda non ten ningún punto detallado, úsase a lista básica (v5)."""
+    if facility.has_accessibility_detail():
+        points = facility.accessibility_points()
+        return round(100 * sum(DETAIL_SCORE.get(p["value"], 0) for p in points) / len(points))
     total = len(facility.ACCESSIBILITY)
     return round(100 * len(facility.accessibility_features()) / total)
 

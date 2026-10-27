@@ -172,6 +172,17 @@ def lock_simulator(request):
             at = max(mine.start, now)  # en curso: agora; se non, á hora de inicio
     device = device or devices.first()
     code = request.POST.get("code", "").strip()
+    # v1.2 · B: estado da porta das pechaduras conectadas (nivel 3)
+    connected = LockDevice.objects.filter(kind=LockDevice.Kind.CONNECTED).select_related(
+        "facility", "municipality"
+    )
+    if request.method == "POST" and request.POST.get("action") == "door":
+        door = connected.filter(pk=request.POST.get("door_device")).first()
+        if door:
+            value = request.POST.get("door")
+            door.door_closed = {"closed": True, "open": False}.get(value)
+            door.door_state_at = timezone.now()
+            door.save(update_fields=["door_closed", "door_state_at"])
     if request.method == "POST" and device and request.POST.get("action") == "reset":
         device.failed_attempts, device.lockout_count, device.locked_until = 0, 0, None
         device.save(update_fields=["failed_attempts", "lockout_count", "locked_until"])
@@ -191,6 +202,7 @@ def lock_simulator(request):
             "at_value": timezone.localtime(at).strftime("%Y-%m-%dT%H:%M"),
             "locked": bool(device and device.locked_until and device.locked_until > timezone.now()),
             "tool": "lock",
+            "connected": connected,
         },
     )
 

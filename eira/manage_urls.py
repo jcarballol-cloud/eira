@@ -6,6 +6,7 @@ from django.urls import path
 from apps.access import views as access
 from apps.accounts import breaches, signup
 from apps.activities import views as activities
+from apps.analytics import performance_views as performance
 from apps.analytics import views as analytics
 from apps.bookings import manage as bookings
 from apps.bookings import vouchers
@@ -13,7 +14,10 @@ from apps.facilities import manage as facilities
 from apps.incidents import manage as incidents
 from apps.maintenance import cleaning_views as cleaning
 from apps.maintenance import views as maintenance
+from apps.members import views as members
 from apps.notifications import manage as notices
+from apps.safety import manage as safety
+from apps.surveys import views as surveys
 from apps.tenants import manage as tenant
 from apps.tenants import portability
 
@@ -37,6 +41,13 @@ urlpatterns = [
     path("instalacions/<int:pk>/tarifas/", facilities.facility_tariffs, name="facility_tariffs"),
     path("instalacions/<int:pk>/normas/", facilities.facility_rules, name="facility_rules"),
     path("instalacions/<int:pk>/qr/", access.facility_qr, name="facility_qr"),
+    # v1.2 · D: rendemento
+    path(
+        "instalacions/<int:pk>/rendemento/",
+        performance.facility_performance,
+        name="facility_performance",
+    ),
+    path("rendemento/", performance.overview, name="performance"),
     path("instalacions/<int:pk>/cartel.pdf", facilities.facility_poster, name="facility_poster"),
     path("instalacions/cartel-modelo.pdf", facilities.poster_template, name="poster_template"),
     path(
@@ -80,6 +91,24 @@ urlpatterns = [
         breaches.breach_communication,
         name="breach_communication",
     ),
+    # v1.2 · A e B: alertas, responsables, protocolo, peches sen confirmar e accidentes
+    path("seguridade/", safety.safety_home, name="safety"),
+    path(
+        "seguridade/responsables/<int:pk>/eliminar/",
+        safety.contact_delete,
+        name="safety_contact_delete",
+    ),
+    path("seguridade/protocolo/", safety.protocol_edit, name="safety_protocol"),
+    path("seguridade/peches/<int:pk>/", safety.escalation_detail, name="safety_escalation"),
+    path("seguridade/accidentes/", safety.accidents, name="accidents"),
+    # v1.2 · H: abonos e carné
+    path("abonos/", members.manage_passes, name="passes"),
+    path("carne/", members.reader, name="card_reader"),
+    path("carne/<int:pk>/anular/", members.revoke, name="card_revoke"),
+    # v1.2 · E: enquisa anual con NPS
+    path("enquisas/", surveys.manage_list, name="surveys"),
+    path("enquisas/<int:pk>/", surveys.manage_detail, name="survey"),
+    path("enquisas/<int:pk>/avisar/", surveys.announce, name="survey_announce"),
     path("portabilidade/exportar.zip", portability.export_view, name="export"),
     path("portabilidade/importar/", portability.import_view, name="import"),
 ]

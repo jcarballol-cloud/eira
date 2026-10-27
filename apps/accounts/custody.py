@@ -134,6 +134,56 @@ DETAILS = {
         _("6 anos, coma os cobros."),
         _("Non se poden borrar antes por obriga legal."),
     ),
+    # v1.2
+    "Alerta (tipo, instalación, hora, a quen se avisou)": (
+        _("Para avisar ao momento á persoa responsable e revisar se a instalación tivo que ver."),
+        _("Os da incidencia vinculada (2 anos)."),
+        _("Pídeo no concello."),
+    ),
+    "Rexistro de accidentes (data e hora, instalación, tipo xeral, gravidade percibida, 112 si/non, papel de quen comunica)": (
+        _("Para mellorar a seguridade das instalacións. Sen diagnósticos nin datos de saúde."),
+        _("O prazo que fixe o concello (por defecto, 24 meses despois de pechalo)."),
+        _("Pídeo no concello ou á persoa delegada de protección de datos."),
+    ),
+    "Peche sen confirmar (fases, persoa responsable avisada, resultado)": (
+        _("Para comprobar que a instalación quedou pechada cando non se confirma o peche."),
+        _("Os da reserva (2 anos)."),
+        _("Pídeo no concello."),
+    ),
+    "Contactos coa Policía Local (quen decidiu, cando, teléfono)": (
+        _("Para deixar constancia de cada vez que unha persoa decide chamar á Policía Local."),
+        _("Os da reserva (2 anos)."),
+        _("Pídeo no concello."),
+    ),
+    "Partida aberta (nome de pila e inicial de quen organiza, instalación, día e hora, nivel, prazas e mensaxe curta)": (
+        _(
+            "Para que outras persoas poidan unirse á túa partida. Só se ve o nome de pila e a inicial."
+        ),
+        _("Mentres a partida está aberta; despois queda na reserva (2 anos)."),
+        _("Deixa de buscar xente desde a túa reserva."),
+    ),
+    "Solicitudes para unirse e mensaxes predefinidas (nome de pila e inicial)": (
+        _(
+            "Para que quen organiza acepte ou rexeite e para avisarvos entre vós sen datos de contacto."
+        ),
+        _("Os da reserva (2 anos)."),
+        _("Retírate da partida ou pídeo no concello."),
+    ),
+    "Denuncias dunha partida (motivo)": (
+        _("Para que o concello revise partidas inadecuadas."),
+        _("1 ano."),
+        _("Pídeo no concello."),
+    ),
+    "Abono (tipo, validez, canle de pagamento)": (
+        _("Para aplicarche o desconto e comprobar o abono ao ler o carné."),
+        _("6 anos, coma os cobros."),
+        _("Non se poden borrar antes por obriga legal."),
+    ),
+    "Carné municipal (número e foto opcional)": (
+        _("Para entrar nas instalacións, a asistencia nas escolas e os bonos co QR do carné."),
+        _("Mentres teñas a conta. A foto, ata que a quites."),
+        _("Quita a foto desde «O meu carné» ou borra a conta."),
+    ),
     "Rexistro de brechas de seguridade": (
         _("Para cumprir os arts. 33 e 34 do RXPD se algunha vez hai un incidente cos datos."),
         _("5 anos."),

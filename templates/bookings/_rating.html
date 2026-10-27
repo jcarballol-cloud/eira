@@ -20,3 +20,4 @@
     <div class="rating__incident" data-rating-bad>{% with field=rating_form.make_incident %}{% include "includes/field.html" %}{% endwith %}</div>
   </div>
 </fieldset>
+{% if booking.municipality.nps_after_use %}{% include "surveys/_use_nps.html" with nps_range=nps_range %}{% endif %}

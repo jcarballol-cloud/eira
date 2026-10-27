@@ -58,6 +58,18 @@ class FacilityForm(forms.ModelForm):
             "equipment",
             "accident_protocol",
             "aed_location",
+            # v1.2 · C
+            "bike_parking_spaces",
+            "ev_chargers",
+            "ev_charger_type",
+            "transit_stop",
+            "aed_on_site",
+            "aed_inside_location",
+            "aed_hours",
+            "aed_near_name",
+            "aed_near_address",
+            "aed_near_distance_m",
+            "aed_near_hours",
         ]
         widgets = {
             "description": forms.Textarea(attrs={"rows": 3}),
@@ -102,14 +114,43 @@ class FacilityForm(forms.ModelForm):
         (
             "accesibilidade",
             _("Accesibilidade"),
-            tuple(f for f, _i in Facility.ACCESSIBILITY) + ("accessibility_notes",),
+            tuple(f for f, _i in Facility.ACCESSIBILITY)
+            + ("accessibility_notes",)
+            # v1.2 · C: accesibilidade detallada (si / parcial / non + nota)
+            + tuple(
+                name
+                for key, *_r in Facility.ACCESSIBILITY_DETAIL
+                for name in (f"acc_{key}", f"accnote_{key}")
+            ),
         ),
         (
             "reserva",
             _("Reserva e pagamento"),
             ("max_participants", "booking_mode", "payment_methods", "lighting_supplement_cents"),
         ),
-        ("seguridade", _("Seguridade"), ("equipment", "accident_protocol", "aed_location")),
+        (
+            "seguridade",
+            _("Seguridade"),
+            (
+                "equipment",
+                "accident_protocol",
+                "aed_location",
+                # v1.2 · C: DESA
+                "aed_on_site",
+                "aed_inside_location",
+                "aed_hours",
+                "aed_near_name",
+                "aed_near_address",
+                "aed_near_distance_m",
+                "aed_near_hours",
+            ),
+        ),
+        # v1.2 · C
+        (
+            "sostibilidade",
+            _("Sostibilidade"),
+            ("bike_parking_spaces", "ev_chargers", "ev_charger_type", "transit_stop"),
+        ),
     )
 
     def __init__(self, *args, tenant=None, **kwargs):
@@ -130,8 +171,24 @@ class FacilityForm(forms.ModelForm):
             initial=[m for m in (self.instance.payment_methods or []) if m in town],
             help_text=_("Sen marcar ningunha = as do concello (Configuración)."),
         )
+        # v1.2 · C: os 7 puntos de accesibilidade detallada
+        detail = self.instance.accessibility_detail or {}
+        for key, label, _icon, _basic in Facility.ACCESSIBILITY_DETAIL:
+            item = detail.get(key) or {}
+            self.fields[f"acc_{key}"] = forms.ChoiceField(
+                label=label,
+                required=False,
+                choices=[("", _("Sen datos"))] + list(Facility.DETAIL_VALUES),
+                initial=item.get("value", ""),
+            )
+            self.fields[f"accnote_{key}"] = forms.CharField(
+                label=_("Nota: %(p)s") % {"p": label},
+                required=False,
+                max_length=200,
+                initial=item.get("note", ""),
+            )
 
-    V5_DEFAULTED = ("max_participants", "booking_mode", "lighting_supplement_cents")
+    V5_DEFAULTED = ("max_participants", "booking_mode", "lighting_supplement_cents", "ev_chargers")
 
     def _keep_v5_defaults(self, data):
         for name in self.V5_DEFAULTED:
@@ -145,6 +202,16 @@ class FacilityForm(forms.ModelForm):
     def save(self, commit=True):
         obj = super().save(commit=False)
         obj.payment_methods = list(self.cleaned_data.get("payment_methods") or [])
+        # v1.2 · C: só se o formulario trae os puntos detallados (os formularios antigos non)
+        if any(f"acc_{k}" in self.data for k, *_r in Facility.ACCESSIBILITY_DETAIL):
+            detail = {}
+            for key, *_r in Facility.ACCESSIBILITY_DETAIL:
+                value = self.cleaned_data.get(f"acc_{key}") or ""
+                note = (self.cleaned_data.get(f"accnote_{key}") or "").strip()
+                if value or note:
+                    detail[key] = {"value": value, "note": note}
+            obj.accessibility_detail = detail
+            obj.sync_basic_accessibility()
         if commit:
             obj.save()
             self.save_m2m()
@@ -263,6 +330,20 @@ def facility_review(request, pk):
 @role_required(*ADMIN_ROLES)
 def facility_edit(request, pk):
     facility = get_object_or_404(Facility, municipality=request.tenant, pk=pk)
+    if request.method == "POST" and request.POST.get("accion") == "desa":
+        # v1.2 · C: enche o DESA máis próximo co adaptador (CSV de datos abertos ou da demo)
+        found = fill_nearest_aed(facility)
+        if found:
+            messages.success(
+                request,
+                _("DESA máis próximo: %(n)s (%(d)s m).")
+                % {"n": found["name"], "d": found["distance_m"]},
+            )
+        else:
+            messages.warning(request, _("Non atopamos ningún DESA próximo. Revisa as coordenadas."))
+        return redirect(
+            treverse(request.tenant, "manage:facility_edit", facility.pk) + "#panel-seguridade"
+        )
     form = FacilityForm(
         request.POST or None, request.FILES or None, instance=facility, tenant=request.tenant
     )
@@ -300,6 +381,28 @@ HoursFormSet = inlineformset_factory(
         "season_end": forms.DateInput(attrs={"type": "date"}),
     },
 )
+
+
+def fill_nearest_aed(facility):
+    from apps.integrations.registry import get_adapter
+
+    found = next(
+        iter(get_adapter("defibrillators").nearest(facility.latitude, facility.longitude)), None
+    )
+    if found:
+        facility.aed_near_name = found["name"][:160]
+        facility.aed_near_address = found["address"][:200]
+        facility.aed_near_distance_m = found["distance_m"]
+        facility.aed_near_hours = found["hours"][:120]
+        facility.save(
+            update_fields=[
+                "aed_near_name",
+                "aed_near_address",
+                "aed_near_distance_m",
+                "aed_near_hours",
+            ]
+        )
+    return found
 
 
 @role_required(*ADMIN_ROLES)

@@ -68,5 +68,13 @@ def home(request):
             "is_resident": request.user.is_resident(request.tenant),
             "nearby": request.tenant.region_id is not None,
             "nav": "app_home",
+            **_v12(request),
         },
     )
+
+
+def _v12(request):
+    """v1.2: enquisa anual pendente (E)."""
+    from apps.surveys.services import pending_for
+
+    return {"survey_pending": pending_for(request.user, request.tenant)}

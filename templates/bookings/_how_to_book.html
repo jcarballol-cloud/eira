@@ -1,0 +1,7 @@
+{% load i18n eira %}{# v1.2 · F: procedemento de reserva en 3 pasos, sempre visible #}
+<ol class="how-to-book" aria-label="{% translate 'Como se reserva' %}">
+  <li><span class="how-to-book__n" aria-hidden="true">1</span><span><strong>{% translate "Elixe" %}</strong><br><small>{% translate "unha franxa libre" %}</small></span></li>
+  <li><span class="how-to-book__n" aria-hidden="true">2</span><span><strong>{% translate "Paga" %}</strong><br><small>{% translate "en liña, na oficina ou con bono" %}</small></span></li>
+  <li><span class="how-to-book__n" aria-hidden="true">3</span><span><strong>{% translate "Confirma" %}</strong><br><small>{% translate "24 h e 2 h antes: «Confirmo» ou «Cancelo»" %}</small></span></li>
+</ol>
+{% if is_neighbour %}<p class="help mb-0">{% icon 'bell' %} {% translate "Franxa ocupada? Tócaa e avisámoste se queda libre." %}</p>{% endif %}

@@ -272,7 +272,19 @@ def price_for(facility, user, audience=None, start=None):
     base, audience = min(options, key=lambda o: o[0])
     discount = low_demand_discount(facility, start) if (start and base) else 0
     final = base * (100 - discount) // 100 if discount else base
-    return PriceQuote(audience, final, base, discount)
+    # v1.2 · H: desconto de abonado/a, despois da tarifa e da baixa demanda
+    from apps.members.services import member_discount
+
+    member = (
+        member_discount(facility.municipality, user, timezone.localdate(start) if start else None)
+        if base
+        else 0
+    )
+    if member:
+        final = final * (100 - member) // 100
+    quote = PriceQuote(audience, final, base, discount)
+    quote.member_pct = member
+    return quote
 
 
 # ---------------------------------------------------------------- v5 · rede de concellos
@@ -334,6 +346,7 @@ class Quote:
     lighting_auto: bool
     method: str
     light_on: bool = False  # acéndese a luz (pagada ou incluída no bono ou na gratuíta)
+    member_pct: int = 0  # v1.2 · H: desconto de abonado/a
 
     @property
     def total_cents(self):
@@ -355,7 +368,7 @@ def quote(facility, user, start, *, needs_light=False, method=None):
     if method in (PaymentMethod.FREE, PaymentMethod.VOUCHER):
         # Gratuíta: sen taxa. Bono: un uso cobre a franxa, luz incluída (DECISIONS v5).
         slot, light = 0, 0
-    return Quote(q.audience, slot, q.base, q.discount, light, auto, method, light_on)
+    return Quote(q.audience, slot, q.base, q.discount, light, auto, method, light_on, q.member_pct)
 
 
 def usable_vouchers(facility, user):
@@ -411,6 +424,7 @@ def create_booking(
     payment_method=None,
     needs_light=False,
     voucher=None,
+    allow_started=False,
 ):
     from apps.tenants.models import PaymentMethod
 
@@ -441,7 +455,10 @@ def create_booking(
         origin = network_origin(m, user)
     with transaction.atomic():
         Facility.objects.select_for_update().filter(pk=facility.pk).first()
-        _validate_slot(facility, start, end, user=user if guest else None)
+        # v1.2 · F: unha praza liberada da lista de espera pódese coller xa comezada
+        _validate_slot(
+            facility, start, end, user=user if guest else None, check_past=not allow_started
+        )
         if user is not None:
             active = (
                 Booking.objects.filter(municipality=m, user=user, end__gt=timezone.now())
@@ -749,7 +766,9 @@ def _after_confirm(booking):
     on_booking_confirmed(booking)
 
 
-def cancel_booking(booking, by=None, reason="", force_full_refund=False):
+def cancel_booking(
+    booking, by=None, reason="", force_full_refund=False, release_reason="cancelled"
+):
     if booking.status not in Booking.OPEN_STATUSES:
         raise BookingError(_("Esta reserva xa non se pode cancelar."))
     if not force_full_refund and booking.start <= timezone.now():
@@ -784,6 +803,11 @@ def cancel_booking(booking, by=None, reason="", force_full_refund=False):
             municipality=booking.municipality,
             level="warning",
         )
+    # v1.2 · F: a franxa ofrécese á lista de espera (agás nos peches da instalación)
+    if release_reason:
+        from .waitlist import release_slot
+
+        release_slot(booking, release_reason)
     return refund, penalty
 
 
@@ -850,6 +874,10 @@ def submit_closing_checklist(
     booking.save(
         update_fields=["closed_at", "close_door_ok", "close_key_ok", "close_all_ok", "close_notes"]
     )
+    # v1.2 · B: se había un peche sen confirmar en curso, péchase
+    from apps.safety.services import on_checklist_submitted
+
+    on_checklist_submitted(booking)
     problems = []
     if door_ok is False:
         problems.append(_("A porta non quedou pechada."))
@@ -958,7 +986,7 @@ def apply_closure(closure, by=None):
     affected = list(qs.select_related("facility", "user"))
     reason = _("Peche da instalación: %(r)s") % {"r": closure.reason}
     for booking in affected:
-        cancel_booking(booking, by=by, reason=reason, force_full_refund=True)
+        cancel_booking(booking, by=by, reason=reason, force_full_refund=True, release_reason=None)
     audit("closure.apply", by, closure.municipality, closure, affected=len(affected))
     return affected
 

@@ -98,6 +98,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "apps.tenants.middleware.TenantMiddleware",
+    "apps.accounts.twofactor.TwoFactorMiddleware",  # v1.3 · C
+    "apps.accounts.auditlog.ExportAuditMiddleware",  # v1.3 · C
     "apps.tenants.middleware.DemoFrameMiddleware",
 ]
 

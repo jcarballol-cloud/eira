@@ -124,6 +124,21 @@ HELP = {
             "Para cada dato: quen o recibe, para que, canto tempo se garda e como pedir que se borre."
         ),
     ),
+    # v1.3
+    "privacy_dpia": (
+        _("Avaliación de impacto"),
+        _(
+            "Os datos con máis risco (saúde, menores, accidentes e foto do carné): que pode pasar, "
+            "que fai Eira para evitalo e que risco queda."
+        ),
+    ),
+    "account:security": (
+        _("Seguridade da conta"),
+        _(
+            "Activa o dobre factor cunha app de códigos do móbil e garda os códigos de "
+            "recuperación nun lugar seguro."
+        ),
+    ),
     # App do operario
     "maintenance:my_orders": (
         _("As túas ordes"),
@@ -205,6 +220,13 @@ HELP = {
         _(
             "Regras de reserva, formas de pagamento, luz, concellos próximos, pesos do índice de "
             "vida activa e módulos."
+        ),
+    ),
+    "manage:audit": (
+        _("Rexistro de auditoría"),
+        _(
+            "Quen cambiou tarifas ou permisos, quen exportou datos, os accesos de soporte, as "
+            "brechas, os accidentes e o dobre factor. Filtra por categoría e datas."
         ),
     ),
     "manage:breaches": (

@@ -544,3 +544,48 @@ class DataBreach(models.Model):
         if not self.aepd_notified or not self.aepd_notified_at:
             return None
         return self.aepd_notified_at <= self.aepd_deadline
+
+
+class TwoFactorDevice(models.Model):
+    """v1.3 · C: segundo factor TOTP (RFC 6238) das contas de xestión.
+
+    Opcional para calquera persoa; obrigatorio para administración e DPD se o concello o configura
+    (`Municipality.require_2fa_admin`) e para a deputación se a agrupación o configura
+    (`Region.require_2fa`). Só hai un por persoa. Ver docs/seguridade-rxpd.md."""
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="two_factor")
+    secret = models.CharField(max_length=64, editable=False)
+    confirmed_at = models.DateTimeField(null=True, blank=True)
+    # Último paso de tempo aceptado: un mesmo código non vale dúas veces (reprodución)
+    last_step = models.BigIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("dobre factor")
+        verbose_name_plural = _("dobres factores")
+
+    def __str__(self):
+        return f"2FA · {self.user}"
+
+    @property
+    def confirmed(self):
+        return self.confirmed_at is not None
+
+
+def hash_recovery_code(user_id, code):
+    normalized = "".join(ch for ch in code.upper() if ch.isalnum())
+    msg = f"recovery:{user_id}:{normalized}".encode()
+    return hmac.new(settings.SECRET_KEY.encode(), msg, hashlib.sha256).hexdigest()
+
+
+class RecoveryCode(models.Model):
+    """Códigos de recuperación dun só uso. Só se garda o HMAC; móstranse unha única vez."""
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recovery_codes")
+    code_hash = models.CharField(max_length=64)
+    used_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("código de recuperación")
+        verbose_name_plural = _("códigos de recuperación")

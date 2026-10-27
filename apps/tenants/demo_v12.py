@@ -221,6 +221,37 @@ class Seeder:
             facility_related=False,
         )
 
+    def _used_hall_booking(self, day):
+        from apps.accounts.models import User
+
+        user = User.objects.filter(email__startswith="vecinanza").order_by("email").first()
+        if user is None:
+            return None
+        minutes = self.hall.slot_minutes
+        for hour in (20, 19, 21, 18, 17, 16, 12, 11, 10):
+            start = timezone.make_aware(dt.datetime.combine(day, dt.time(hour, 0)))
+            end = start + dt.timedelta(minutes=minutes)
+            busy = Booking.objects.filter(facility=self.hall, start__lt=end, end__gt=start).exclude(
+                status__in=[Booking.Status.CANCELLED, Booking.Status.EXPIRED]
+            )
+            if busy.exists():
+                continue
+            return Booking.objects.create(
+                municipality=self.vil,
+                facility=self.hall,
+                user=user,
+                start=start,
+                end=end,
+                status=Booking.Status.USED,
+                tariff_audience="resident",
+                price_cents=0,
+                base_price_cents=0,
+                checked_in_at=start,
+                rules_version=self.hall.current_rules(),
+                rules_accepted_at=start - dt.timedelta(days=1),
+            )
+        return None
+
     def closing_escalation(self):
         """Un peche sen confirmar onte no pavillón (chave custodiada), escalado á conserxaría."""
         yesterday = timezone.localdate() - dt.timedelta(days=1)
@@ -233,6 +264,10 @@ class Seeder:
             .order_by("-start")
             .first()
         )
+        if booking is None:
+            # v1.3: a demo xera as reservas ao chou e algúns días non hai ningunha usada onte no
+            # pavillón; créase unha para que o exemplo exista sempre (o E2E e as capturas úsano).
+            booking = self._used_hall_booking(yesterday)
         if booking is None:
             return
         booking.closed_at = None

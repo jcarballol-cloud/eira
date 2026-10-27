@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Eira 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-27 18:13+0100\n"
-"PO-Revision-Date: 2026-10-27 18:13+0100\n"
+"POT-Creation-Date: 2026-10-27 20:53+0100\n"
+"PO-Revision-Date: 2026-10-27 20:53+0100\n"
 "Last-Translator: Equipo Eira\n"
 "Language-Team: Equipo Eira\n"
 "Language: es\n"
@@ -107,6 +107,183 @@ msgstr "Posible intento de forzar el teclado: %(f)s"
 #, python-format
 msgid "O teclado bloqueouse %(n)s veces seguidas por códigos incorrectos."
 msgstr "El teclado se bloqueó %(n)s veces seguidas por códigos incorrectos."
+
+#: apps/accounts/auditlog.py:25
+msgid "Tarifas, prezos e configuración"
+msgstr "Tarifas, precios y configuración"
+
+#: apps/accounts/auditlog.py:29
+msgid "Persoal e permisos"
+msgstr "Personal y permisos"
+
+#: apps/accounts/auditlog.py:33
+msgid "Exportacións e descargas"
+msgstr "Exportaciones y descargas"
+
+#: apps/accounts/auditlog.py:36 templates/manage/staff.html:25
+msgid "Acceso de soporte da deputación"
+msgstr "Acceso de soporte de la diputación"
+
+#: apps/accounts/auditlog.py:37
+msgid "Brechas de seguridade"
+msgstr "Brechas de seguridad"
+
+#: apps/accounts/auditlog.py:38
+msgid "Accidentes e alertas"
+msgstr "Accidentes y alertas"
+
+#: apps/accounts/auditlog.py:39
+msgid "Accesos e dobre factor"
+msgstr "Accesos y doble factor"
+
+#: apps/accounts/auditlog.py:43
+msgid "Cambio de tarifas"
+msgstr "Cambio de tarifas"
+
+#: apps/accounts/auditlog.py:44
+msgid "Novas normas de uso"
+msgstr "Nuevas normas de uso"
+
+#: apps/accounts/auditlog.py:45
+msgid "Novo tipo de abono"
+msgstr "Nuevo tipo de abono"
+
+#: apps/accounts/auditlog.py:46
+msgid "Novo tipo de bono"
+msgstr "Nuevo tipo de bono"
+
+#: apps/accounts/auditlog.py:47
+msgid "Cambio na configuración do concello"
+msgstr "Cambio en la configuración del ayuntamiento"
+
+#: apps/accounts/auditlog.py:48
+msgid "Rol asignado"
+msgstr "Rol asignado"
+
+#: apps/accounts/auditlog.py:49
+msgid "Rol retirado"
+msgstr "Rol retirado"
+
+#: apps/accounts/auditlog.py:50
+msgid "Invitación á administración"
+msgstr "Invitación a la administración"
+
+#: apps/accounts/auditlog.py:51
+msgid "Tarifa reducida validada"
+msgstr "Tarifa reducida validada"
+
+#: apps/accounts/auditlog.py:52
+msgid "Código de empadroamento emitido"
+msgstr "Código de empadronamiento emitido"
+
+#: apps/accounts/auditlog.py:53
+msgid "Descarga dun ficheiro"
+msgstr "Descarga de un archivo"
+
+#: apps/accounts/auditlog.py:54
+msgid "Exportación íntegra do concello"
+msgstr "Exportación íntegra del ayuntamiento"
+
+#: apps/accounts/auditlog.py:55
+msgid "Importación de datos"
+msgstr "Importación de datos"
+
+#: apps/accounts/auditlog.py:56
+msgid "Descarga dos datos propios"
+msgstr "Descarga de los datos propios"
+
+#: apps/accounts/auditlog.py:57
+msgid "Descarga do rexistro de auditoría"
+msgstr "Descarga del registro de auditoría"
+
+#: apps/accounts/auditlog.py:58
+msgid "A deputación pide acceso de soporte"
+msgstr "La diputación pide acceso de soporte"
+
+#: apps/accounts/auditlog.py:59
+msgid "Acceso de soporte autorizado"
+msgstr "Acceso de soporte autorizado"
+
+#: apps/accounts/auditlog.py:60
+msgid "Acceso de soporte revogado"
+msgstr "Acceso de soporte revocado"
+
+#: apps/accounts/auditlog.py:61
+msgid "Páxina vista co acceso de soporte"
+msgstr "Página vista con el acceso de soporte"
+
+#: apps/accounts/auditlog.py:62
+msgid "Brecha rexistrada ou actualizada"
+msgstr "Brecha registrada o actualizada"
+
+#: apps/accounts/auditlog.py:63 templates/safety/accident_done.html:2
+#: templates/safety/accident_done.html:6
+msgid "Accidente rexistrado"
+msgstr "Accidente registrado"
+
+#: apps/accounts/auditlog.py:64
+msgid "Accidente pechado no rexistro"
+msgstr "Accidente cerrado en el registro"
+
+#: apps/accounts/auditlog.py:65
+msgid "Alerta: accidente deportivo"
+msgstr "Alerta: accidente deportivo"
+
+#: apps/accounts/auditlog.py:66
+msgid "Alerta: emerxencia de seguridade"
+msgstr "Alerta: emergencia de seguridad"
+
+#: apps/accounts/auditlog.py:67
+msgid "Alerta atendida"
+msgstr "Alerta atendida"
+
+#: apps/accounts/auditlog.py:68
+msgid "Peche sen confirmar: aviso á persoa responsable"
+msgstr "Cierre sin confirmar: aviso a la persona responsable"
+
+#: apps/accounts/auditlog.py:69
+msgid "Contacto coa Policía Local"
+msgstr "Contacto con la Policía Local"
+
+#: apps/accounts/auditlog.py:70
+msgid "Peche sen confirmar resolto"
+msgstr "Cierre sin confirmar resuelto"
+
+#: apps/accounts/auditlog.py:71
+msgid "Inicio de sesión"
+msgstr "Inicio de sesión"
+
+#: apps/accounts/auditlog.py:72
+msgid "Segundo factor correcto"
+msgstr "Segundo factor correcto"
+
+#: apps/accounts/auditlog.py:73 templates/accounts/profile.html:35
+msgid "Dobre factor activado"
+msgstr "Doble factor activado"
+
+#: apps/accounts/auditlog.py:74
+msgid "Dobre factor desactivado"
+msgstr "Doble factor desactivado"
+
+#: apps/accounts/auditlog.py:75
+msgid "Dobre factor restablecido por outra persoa"
+msgstr "Doble factor restablecido por otra persona"
+
+#: apps/accounts/auditlog.py:76
+msgid "Código do segundo factor incorrecto"
+msgstr "Código del segundo factor incorrecto"
+
+#: apps/accounts/auditlog.py:77
+msgid "Segundo factor bloqueado por intentos"
+msgstr "Segundo factor bloqueado por intentos"
+
+#: apps/accounts/auditlog.py:78
+msgid "Códigos de recuperación novos"
+msgstr "Nuevos códigos de recuperación"
+
+#: apps/accounts/auditlog.py:142
+msgid "Sistema"
+msgstr "Sistema"
 
 #: apps/accounts/breaches.py:87
 msgid "Indica cando se notificou á AEPD."
@@ -571,6 +748,233 @@ msgstr "seudonimizado"
 msgid "si"
 msgstr "sí"
 
+#: apps/accounts/dpia.py:12
+msgid "Saúde: consellos, esforzo (RPE), probas físicas e observatorio"
+msgstr "Salud: consejos, esfuerzo (RPE), pruebas físicas y observatorio"
+
+#: apps/accounts/dpia.py:14
+msgid ""
+"Idade, peso e actividade semanal para os consellos; esforzo percibido e "
+"resultados de probas físicas nas escolas deportivas."
+msgstr ""
+"Edad, peso y actividad semanal para los consejos; esfuerzo percibido y "
+"resultados de pruebas físicas en las escuelas deportivas."
+
+#: apps/accounts/dpia.py:17
+msgid ""
+"Que alguén coñeza o teu estado de saúde ou forma física sen que o saibas."
+msgstr ""
+"Que alguien conozca tu estado de salud o forma física sin que lo sepas."
+
+#: apps/accounts/dpia.py:19
+msgid ""
+"Os datos dos consellos quedan no teu dispositivo; só se gardan na conta se o"
+" pides."
+msgstr ""
+"Los datos de los consejos se quedan en tu dispositivo; solo se guardan en la"
+" cuenta si lo pides."
+
+#: apps/accounts/dpia.py:20
+msgid ""
+"Esforzo e probas físicas de menores só con consentimento da familia, "
+"revogable."
+msgstr ""
+"Esfuerzo y pruebas físicas de menores solo con consentimiento de la familia,"
+" revocable."
+
+#: apps/accounts/dpia.py:21
+msgid ""
+"O persoal nunca ve os teus datos de saúde; non van nas exportacións do "
+"concello."
+msgstr ""
+"El personal nunca ve tus datos de salud; no van en las exportaciones del "
+"ayuntamiento."
+
+#: apps/accounts/dpia.py:22
+msgid ""
+"O observatorio só publica grupos de 10 persoas ou máis, por banda de idade."
+msgstr ""
+"El observatorio solo publica grupos de 10 personas o más, por franja de "
+"edad."
+
+#: apps/accounts/dpia.py:23
+msgid ""
+"Os datos para estudos van cun seudónimo (HMAC), nunca co nome nin a idade "
+"exacta."
+msgstr ""
+"Los datos para estudios van con un seudónimo (HMAC), nunca con el nombre ni "
+"la edad exacta."
+
+#: apps/accounts/dpia.py:25 apps/accounts/dpia.py:38 apps/accounts/dpia.py:54
+#: apps/accounts/dpia.py:66 apps/accounts/dpia.py:77
+msgid "Baixo"
+msgstr "Bajo"
+
+#: apps/accounts/dpia.py:29
+msgid "Menores nas escolas deportivas"
+msgstr "Menores en las escuelas deportivas"
+
+#: apps/accounts/dpia.py:30
+msgid ""
+"Nome, apelidos, ano de nacemento, asistencia e consentimentos da familia."
+msgstr ""
+"Nombre, apellidos, año de nacimiento, asistencia y consentimientos de la "
+"familia."
+
+#: apps/accounts/dpia.py:31
+msgid "Exposición de datos ou da imaxe de nenas e nenos."
+msgstr "Exposición de datos o de la imagen de niñas y niños."
+
+#: apps/accounts/dpia.py:33
+msgid "Só nome e ano de nacemento; nin DNI nin enderezo."
+msgstr "Solo nombre y año de nacimiento; ni DNI ni dirección."
+
+#: apps/accounts/dpia.py:34
+msgid ""
+"Consentimentos separados (datos, imaxe, esforzo), con data e revogables nun "
+"clic."
+msgstr ""
+"Consentimientos separados (datos, imagen, esfuerzo), con fecha y revocables "
+"en un clic."
+
+#: apps/accounts/dpia.py:35
+msgid "A tableta da persoa monitora só recibe o nome e o primeiro apelido."
+msgstr ""
+"La tableta de la persona monitora solo recibe el nombre y el primer "
+"apellido."
+
+#: apps/accounts/dpia.py:36
+msgid "As partidas abertas non admiten menores de 14 anos."
+msgstr "Las partidas abiertas no admiten menores de 14 años."
+
+#: apps/accounts/dpia.py:42 templates/includes/shell_desk.html:40
+#: templates/includes/shell_desk.html:50 templates/manage/accidents.html:2
+#: templates/manage/accidents.html:4 templates/manage/safety.html:7
+msgid "Rexistro de accidentes"
+msgstr "Registro de accidentes"
+
+#: apps/accounts/dpia.py:44
+msgid ""
+"Data e hora, instalación, tipo xeral, gravidade percibida, se se chamou ao "
+"112 e o papel de quen comunica."
+msgstr ""
+"Fecha y hora, instalación, tipo general, gravedad percibida, si se llamó al "
+"112 y el papel de quien comunica."
+
+#: apps/accounts/dpia.py:47
+msgid "Que o rexistro acabe tendo datos clínicos dunha persoa."
+msgstr "Que el registro acabe teniendo datos clínicos de una persona."
+
+#: apps/accounts/dpia.py:49
+msgid ""
+"Non hai ningún campo de texto libre: non se poden escribir diagnósticos."
+msgstr ""
+"No hay ningún campo de texto libre: no se pueden escribir diagnósticos."
+
+#: apps/accounts/dpia.py:50
+msgid "Só o ven a administración do concello e o DPD; a deputación, nunca."
+msgstr ""
+"Solo lo ven la administración del ayuntamiento y el DPD; la diputación, "
+"nunca."
+
+#: apps/accounts/dpia.py:51
+msgid ""
+"Bórrase só pasado o prazo configurado (por defecto, 24 meses despois de "
+"pechalo)."
+msgstr ""
+"Se borra solo pasado el plazo configurado (por defecto, 24 meses después de "
+"cerrarlo)."
+
+#: apps/accounts/dpia.py:52
+msgid "Cada consulta e cambio queda no rexistro de auditoría."
+msgstr "Cada consulta y cambio queda en el registro de auditoría."
+
+#: apps/accounts/dpia.py:58
+msgid "Carné municipal con foto"
+msgstr "Carné municipal con foto"
+
+#: apps/accounts/dpia.py:59
+msgid "Número de carné, foto opcional e abono."
+msgstr "Número de carné, foto opcional y abono."
+
+#: apps/accounts/dpia.py:60
+msgid "Suplantación ou uso da foto para outros fins."
+msgstr "Suplantación o uso de la foto para otros fines."
+
+#: apps/accounts/dpia.py:62
+msgid "A foto é opcional e gárdase sen metadatos (sen localización)."
+msgstr "La foto es opcional y se guarda sin metadatos (sin localización)."
+
+#: apps/accounts/dpia.py:63
+msgid "O QR non leva datos persoais e o da app caduca aos poucos minutos."
+msgstr ""
+"El QR no lleva datos personales y el de la app caduca a los pocos minutos."
+
+#: apps/accounts/dpia.py:64
+msgid "O carné impreso pódese anular en calquera momento."
+msgstr "El carné impreso se puede anular en cualquier momento."
+
+#: apps/accounts/dpia.py:70
+msgid "Comprobación do empadroamento"
+msgstr "Comprobación del empadronamiento"
+
+#: apps/accounts/dpia.py:71
+msgid "DNI e data de nacemento, só mentres se revisa a solicitude."
+msgstr "DNI y fecha de nacimiento, solo mientras se revisa la solicitud."
+
+#: apps/accounts/dpia.py:72
+msgid "Que se garde unha copia do padrón ou do DNI."
+msgstr "Que se guarde una copia del padrón o del DNI."
+
+#: apps/accounts/dpia.py:74
+msgid "O padrón cárgase como resumos HMAC: Eira non pode ler os DNI."
+msgstr "El padrón se carga como resúmenes HMAC: Eira no puede leer los DNI."
+
+#: apps/accounts/dpia.py:75
+msgid "O DNI da solicitude bórrase en canto se decide."
+msgstr "El DNI de la solicitud se borra en cuanto se decide."
+
+#: apps/accounts/dpia.py:81
+msgid "Contas do persoal que xestiona datos"
+msgstr "Cuentas del personal que gestiona datos"
+
+#: apps/accounts/dpia.py:82
+msgid "Correo, roles e accións sensibles (rexistro de auditoría)."
+msgstr "Correo, roles y acciones sensibles (registro de auditoría)."
+
+#: apps/accounts/dpia.py:83
+msgid "Que alguén entre cunha conta de administración e vexa datos persoais."
+msgstr ""
+"Que alguien entre con una cuenta de administración y vea datos personales."
+
+#: apps/accounts/dpia.py:85
+msgid ""
+"Dobre factor (app de códigos) opcional, e obrigatorio se o concello o "
+"decide."
+msgstr ""
+"Doble factor (app de códigos) opcional, y obligatorio si el ayuntamiento lo "
+"decide."
+
+#: apps/accounts/dpia.py:86
+msgid ""
+"Rexistro de auditoría de tarifas, permisos, exportacións, soporte, brechas e"
+" accidentes."
+msgstr ""
+"Registro de auditoría de tarifas, permisos, exportaciones, soporte, brechas "
+"y accidentes."
+
+#: apps/accounts/dpia.py:87
+msgid ""
+"A deputación só ve datos persoais cun acceso de soporte de 24 horas "
+"autorizado."
+msgstr ""
+"La diputación solo ve datos personales con un acceso de soporte de 24 horas "
+"autorizado."
+
+#: apps/accounts/dpia.py:89
+msgid "Medio-baixo (depende de que o concello active o dobre factor)"
+msgstr "Medio-bajo (depende de que el ayuntamiento active el doble factor)"
+
 #: apps/accounts/forms.py:11
 msgid "Correo electrónico"
 msgstr "Correo electrónico"
@@ -741,7 +1145,7 @@ msgid "Veciñanza"
 msgstr "Vecindario"
 
 #: apps/accounts/models.py:94 apps/safety/services.py:152
-#: apps/tenants/views.py:262
+#: apps/tenants/views.py:269
 msgid "Administración do concello"
 msgstr "Administración del ayuntamiento"
 
@@ -809,7 +1213,7 @@ msgstr "Mostrador"
 #: apps/bookings/models.py:366 apps/facilities/models.py:14
 #: apps/facilities/models.py:53 apps/maintenance/models.py:30
 #: apps/maintenance/models.py:64 apps/members/models.py:28
-#: apps/tenants/models.py:64 apps/tenants/models.py:78
+#: apps/tenants/models.py:64 apps/tenants/models.py:82
 msgid "nome"
 msgstr "nombre"
 
@@ -1027,6 +1431,22 @@ msgstr "brecha de seguridad"
 msgid "brechas de seguridade"
 msgstr "brechas de seguridad"
 
+#: apps/accounts/models.py:564
+msgid "dobre factor"
+msgstr "doble factor"
+
+#: apps/accounts/models.py:565
+msgid "dobres factores"
+msgstr "dobles factores"
+
+#: apps/accounts/models.py:590
+msgid "código de recuperación"
+msgstr "código de recuperación"
+
+#: apps/accounts/models.py:591
+msgid "códigos de recuperación"
+msgstr "códigos de recuperación"
+
 #: apps/accounts/signup.py:35
 msgid "Vivo no concello e teño o empadroamento aquí"
 msgstr "Vivo en el municipio y tengo el empadronamiento aquí"
@@ -1195,16 +1615,103 @@ msgstr ""
 msgid "Padrón cargado: %(n)s persoas. Liñas rexeitadas: %(r)s."
 msgstr "Padrón cargado: %(n)s personas. Líneas rechazadas: %(r)s."
 
-#: apps/accounts/views.py:100
+#: apps/accounts/twofactor.py:68
+msgid "O dobre factor xa está activado."
+msgstr "El doble factor ya está activado."
+
+#: apps/accounts/twofactor.py:134
+msgid "O código non é correcto. Comproba a hora do móbil e téntao de novo."
+msgstr ""
+"El código no es correcto. Comprueba la hora del móvil e inténtalo de nuevo."
+
+#: apps/accounts/twofactor.py:163
+msgid "O dobre factor non está activado."
+msgstr "El doble factor no está activado."
+
+#: apps/accounts/twofactor.py:166
+#, python-format
+msgid "Non o podes desactivar: %(n)s esíxeo para o teu rol."
+msgstr "No lo puedes desactivar: %(n)s lo exige para tu rol."
+
+#: apps/accounts/twofactor.py:170 apps/accounts/twofactor.py:408
+msgid "O código non é correcto."
+msgstr "El código no es correcto."
+
+#: apps/accounts/twofactor.py:180
+msgid "Non podes restablecer o teu propio dobre factor."
+msgstr "No puedes restablecer tu propio doble factor."
+
+#: apps/accounts/twofactor.py:190
+msgid ""
+"Esta persoa xestiona outros concellos ou a deputación: o restablecemento "
+"faino o soporte técnico da instalación."
+msgstr ""
+"Esta persona gestiona otros ayuntamientos o la diputación: el "
+"restablecimiento lo hace el soporte técnico de la instalación."
+
+#: apps/accounts/twofactor.py:277
+msgid ""
+"Para entrar na xestión tes que activar o dobre factor (esíxeo o teu "
+"concello)."
+msgstr ""
+"Para entrar en la gestión tienes que activar el doble factor (lo exige tu "
+"ayuntamiento)."
+
+#: apps/accounts/twofactor.py:302
+msgid "Código da app ou de recuperación"
+msgstr "Código de la app o de recuperación"
+
+#: apps/accounts/twofactor.py:305
+msgid ""
+"Os 6 díxitos que mostra agora a túa app de códigos, ou un código de "
+"recuperación (p. ex. ABCD-2345)."
+msgstr ""
+"Los 6 dígitos que muestra ahora tu app de códigos, o un código de "
+"recuperación (p. ej. ABCD-2345)."
+
+#: apps/accounts/twofactor.py:320
+msgid "Código de 6 díxitos da app"
+msgstr "Código de 6 dígitos de la app"
+
+#: apps/accounts/twofactor.py:348
+msgid "Demasiados intentos. Agarda 15 minutos antes de volver entrar."
+msgstr "Demasiados intentos. Espera 15 minutos antes de volver a entrar."
+
+#: apps/accounts/twofactor.py:368
+msgid "O código non é correcto ou xa se usou."
+msgstr "El código no es correcto o ya se usó."
+
+#: apps/accounts/twofactor.py:377
+#, python-format
+msgid ""
+"Entraches na túa conta cun código de recuperación. Quédanche %(n)s. Se non "
+"fuches ti, avisa á administración do concello."
+msgstr ""
+"Has entrado en tu cuenta con un código de recuperación. Te quedan %(n)s. Si "
+"no has sido tú, avisa a la administración del ayuntamiento."
+
+#: apps/accounts/twofactor.py:382
+msgid "Usouse un código de recuperación"
+msgstr "Se usó un código de recuperación"
+
+#: apps/accounts/twofactor.py:404
+msgid "Dobre factor activado."
+msgstr "Doble factor activado."
+
+#: apps/accounts/twofactor.py:415
+msgid "Dobre factor desactivado."
+msgstr "Doble factor desactivado."
+
+#: apps/accounts/views.py:101
 msgid "Demasiados intentos. Agarda un pouco antes de pedir outro código."
 msgstr "Demasiados intentos. Espera un poco antes de pedir otro código."
 
-#: apps/accounts/views.py:106
+#: apps/accounts/views.py:107
 #, python-format
 msgid "O teu código de acceso a Eira: %(c)s"
 msgstr "Tu código de acceso a Eira: %(c)s"
 
-#: apps/accounts/views.py:108
+#: apps/accounts/views.py:109
 #, python-format
 msgid ""
 "Introduce este código para entrar: %(c)s\n"
@@ -1215,11 +1722,11 @@ msgstr ""
 "\n"
 "Caduca en 10 minutos. Si no lo has pedido, ignora este mensaje."
 
-#: apps/accounts/views.py:136
+#: apps/accounts/views.py:137
 msgid "Código incorrecto ou caducado."
 msgstr "Código incorrecto o caducado."
 
-#: apps/accounts/views.py:152
+#: apps/accounts/views.py:153
 msgid ""
 "A identificación caducou ou xa se usou (por exemplo, ao volver atrás). "
 "Téntao de novo."
@@ -1227,66 +1734,66 @@ msgstr ""
 "La identificación ha caducado o ya se ha usado (por ejemplo, al volver "
 "atrás). Inténtalo de nuevo."
 
-#: apps/accounts/views.py:177
+#: apps/accounts/views.py:178
 msgid "Saíches da túa conta."
 msgstr "Has salido de tu cuenta."
 
-#: apps/accounts/views.py:189
+#: apps/accounts/views.py:190
 msgid "Datos gardados."
 msgstr "Datos guardados."
 
-#: apps/accounts/views.py:216
+#: apps/accounts/views.py:218
 #, python-format
 msgid "Empadroamento validado en %(m)s."
 msgstr "Empadronamiento validado en %(m)s."
 
-#: apps/accounts/views.py:219
+#: apps/accounts/views.py:221
 msgid "O código non é válido ou xa se usou."
 msgstr "El código no es válido o ya se ha usado."
 
-#: apps/accounts/views.py:369
+#: apps/accounts/views.py:371
 msgid "A túa conta e os teus datos persoais foron eliminados."
 msgstr "Tu cuenta y tus datos personales han sido eliminados."
 
-#: apps/accounts/views.py:404
+#: apps/accounts/views.py:406
 #, python-format
 msgid "Engadiuse a %(n)s á túa unidade familiar."
 msgstr "Se ha añadido a %(n)s a tu unidad familiar."
 
-#: apps/accounts/views.py:435
+#: apps/accounts/views.py:437
 msgid "Consentimento retirado."
 msgstr "Consentimiento retirado."
 
-#: apps/accounts/views.py:439
+#: apps/accounts/views.py:441
 msgid "Consentimento outorgado."
 msgstr "Consentimiento otorgado."
 
-#: apps/accounts/views.py:459
+#: apps/accounts/views.py:461
 msgid "Preferencias de privacidade gardadas."
 msgstr "Preferencias de privacidad guardadas."
 
-#: apps/accounts/views.py:474 apps/tenants/manage.py:31
+#: apps/accounts/views.py:476 apps/tenants/manage.py:32
 #: templates/includes/shell_tabbar.html:9 templates/manage/payments.html:24
 #: templates/region/dashboard.html:23
 msgid "Reservas"
 msgstr "Reservas"
 
-#: apps/accounts/views.py:475
+#: apps/accounts/views.py:477
 msgid "Avisos de avaría"
 msgstr "Avisos de avería"
 
-#: apps/accounts/views.py:476 templates/includes/shell_desk.html:32
+#: apps/accounts/views.py:478 templates/includes/shell_desk.html:32
 #: templates/manage/ratings.html:2 templates/manage/ratings.html:22
 #: templates/manage/ratings.html:32
 msgid "Valoracións"
 msgstr "Valoraciones"
 
-#: apps/accounts/views.py:477 templates/accounts/household.html:7
+#: apps/accounts/views.py:479 templates/accounts/household.html:7
 #: templates/accounts/privacy.html:36
 msgid "Menores ao teu cargo"
 msgstr "Menores a tu cargo"
 
-#: apps/accounts/views.py:479
+#: apps/accounts/views.py:481
 msgid "Empadroamentos validados"
 msgstr "Empadronamientos validados"
 
@@ -1854,7 +2361,7 @@ msgstr "canal"
 msgid "nome da persoa"
 msgstr "nombre de la persona"
 
-#: apps/bookings/models.py:88 apps/tenants/models.py:103
+#: apps/bookings/models.py:88 apps/tenants/models.py:107
 msgid "teléfono de contacto"
 msgstr "teléfono de contacto"
 
@@ -1875,7 +2382,7 @@ msgid "pediu luz"
 msgstr "pidió luz"
 
 #: apps/bookings/models.py:126 apps/bookings/models.py:598
-#: apps/facilities/models.py:365 apps/tenants/models.py:360
+#: apps/facilities/models.py:365 apps/tenants/models.py:373
 msgid "motivo"
 msgstr "motivo"
 
@@ -2891,7 +3398,7 @@ msgid "Todas as que admitan bono"
 msgstr "Todas las que admitan bono"
 
 #: apps/bookings/vouchers.py:34 apps/members/views.py:137
-#: apps/tenants/manage.py:311
+#: apps/tenants/manage.py:318
 msgid "Correo da persoa"
 msgstr "Correo de la persona"
 
@@ -2900,7 +3407,7 @@ msgid "O bono queda na súa conta da app."
 msgstr "El bono queda en su cuenta de la app."
 
 #: apps/bookings/vouchers.py:54 apps/members/views.py:173
-#: apps/tenants/manage.py:336
+#: apps/tenants/manage.py:343
 msgid "Non hai ningunha conta con ese correo."
 msgstr "No hay ninguna cuenta con ese correo."
 
@@ -3297,7 +3804,7 @@ msgstr "Seguridad"
 msgid "Sostibilidade"
 msgstr "Sostenibilidad"
 
-#: apps/facilities/manage.py:167 apps/tenants/manage.py:74
+#: apps/facilities/manage.py:167 apps/tenants/manage.py:76
 msgid "Formas de pagamento"
 msgstr "Formas de pago"
 
@@ -3440,7 +3947,7 @@ msgstr "Cerradura conectada"
 msgid "tipo"
 msgstr "tipo"
 
-#: apps/facilities/models.py:59 apps/tenants/models.py:110
+#: apps/facilities/models.py:59 apps/tenants/models.py:114
 msgid "enderezo"
 msgstr "dirección"
 
@@ -4128,9 +4635,9 @@ msgid "Todos"
 msgstr "Todos"
 
 #: apps/facilities/views.py:32 apps/maintenance/cleaning_views.py:118
-#: templates/activities/observatory.html:16 templates/manage/closures.html:11
-#: templates/manage/payments.html:11 templates/manage/ratings.html:16
-#: templates/manage/vouchers.html:11
+#: templates/activities/observatory.html:16 templates/manage/audit.html:9
+#: templates/manage/closures.html:11 templates/manage/payments.html:11
+#: templates/manage/ratings.html:16 templates/manage/vouchers.html:11
 msgid "Todas"
 msgstr "Todas"
 
@@ -4226,7 +4733,7 @@ msgstr "Desperfecto"
 
 #: apps/incidents/models.py:33 apps/maintenance/models.py:43
 #: apps/maintenance/models.py:204 apps/surveys/models.py:17
-#: apps/surveys/models.py:80 apps/tenants/help.py:226
+#: apps/surveys/models.py:80 apps/tenants/help.py:248
 #: templates/includes/brand.html:3 templates/includes/shell_desk.html:24
 #: templates/maintenance/cleaning_zone.html:2
 #: templates/maintenance/cleaning_zone_public.html:2
@@ -4417,7 +4924,7 @@ msgstr ""
 
 #: apps/integrations/demo.py:40 apps/integrations/demo.py:61
 #: apps/integrations/demo.py:127 apps/safety/models.py:130
-#: apps/tenants/views.py:245
+#: apps/tenants/views.py:252
 msgid "App da veciñanza"
 msgstr "App del vecindario"
 
@@ -4853,13 +5360,14 @@ msgstr "Limpieza registrada. ¡Gracias!"
 msgid "Instalación"
 msgstr "Instalación"
 
-#: apps/maintenance/cleaning_views.py:106 templates/manage/closures.html:10
-#: templates/manage/payments.html:7 templates/manage/safety.html:13
+#: apps/maintenance/cleaning_views.py:106 templates/manage/audit.html:10
+#: templates/manage/closures.html:10 templates/manage/payments.html:7
+#: templates/manage/safety.html:13
 msgid "Desde"
 msgstr "Desde"
 
-#: apps/maintenance/cleaning_views.py:108 templates/manage/closures.html:10
-#: templates/manage/payments.html:8
+#: apps/maintenance/cleaning_views.py:108 templates/manage/audit.html:11
+#: templates/manage/closures.html:10 templates/manage/payments.html:8
 msgid "Ata"
 msgstr "Hasta"
 
@@ -5360,7 +5868,7 @@ msgstr "Presente: %(n)s"
 msgid "App e push"
 msgstr "App y push"
 
-#: apps/notifications/manage.py:23 apps/tenants/manage.py:297
+#: apps/notifications/manage.py:23 apps/tenants/manage.py:304
 #: apps/tenants/templatetags/eira.py:163
 #: templates/manage/_notice_preview.html:6
 #: templates/notifications/preferences.html:24
@@ -5754,7 +6262,7 @@ msgstr "Emergencia de seguridad"
 msgid "Pantalla da reserva"
 msgstr "Pantalla de la reserva"
 
-#: apps/safety/models.py:132 apps/tenants/views.py:261
+#: apps/safety/models.py:132 apps/tenants/views.py:268
 msgid "Tableta da persoa monitora"
 msgstr "Tableta de la persona monitora"
 
@@ -5943,6 +6451,7 @@ msgid "Xa se enviaron varias alertas desde aquí. Se é grave, chama ao 112."
 msgstr "Ya se enviaron varias alertas desde aquí. Si es grave, llama al 112."
 
 #: apps/safety/views.py:178 templates/manage/accidents.html:10
+#: templates/manage/audit.html:17
 msgid "Data e hora"
 msgstr "Fecha y hora"
 
@@ -6095,7 +6604,7 @@ msgstr ""
 "Aquí ves tu próxima reserva y cómo entrar (código, llave o QR). Debajo "
 "tienes atajos para reservar, avisar de una avería o gestionar tu familia."
 
-#: apps/tenants/help.py:21 apps/tenants/manage.py:86
+#: apps/tenants/help.py:21 apps/tenants/manage.py:88
 #: templates/app/home.html:56 templates/app/nearby.html:2
 #: templates/app/nearby.html:6 templates/facilities/home.html:19
 #: templates/notifications/_network.html:3
@@ -6196,7 +6705,7 @@ msgstr ""
 "Tres preguntas antes de marcharte: puerta, llave y orden. Si algo falla, "
 "avisamos al ayuntamiento."
 
-#: apps/tenants/help.py:77 apps/tenants/help.py:179 templates/app/home.html:57
+#: apps/tenants/help.py:77 apps/tenants/help.py:194 templates/app/home.html:57
 #: templates/manage/card_reader.html:17 templates/manage/payments.html:21
 #: templates/manage/vouchers.html:2 templates/manage/vouchers.html:4
 #: templates/manage/vouchers.html:5
@@ -6258,7 +6767,7 @@ msgstr ""
 "Cierres, alertas y cambios en tus reservas y actividades. También puedes ver"
 " las actividades y eventos de los ayuntamientos próximos si lo activas."
 
-#: apps/tenants/help.py:105 apps/tenants/manage.py:35
+#: apps/tenants/help.py:105 apps/tenants/manage.py:36
 #: templates/activities/list.html:2 templates/activities/list.html:4
 msgid "Escolas e actividades"
 msgstr "Escuelas y actividades"
@@ -6294,7 +6803,7 @@ msgstr ""
 "reserva según el tiempo que va a hacer."
 
 #: apps/tenants/help.py:122 templates/core/custody.html:2
-#: templates/core/custody.html:6
+#: templates/core/custody.html:6 templates/core/dpia.html:8
 msgid "Quen custodia os teus datos"
 msgstr "Quién custodia tus datos"
 
@@ -6306,11 +6815,37 @@ msgstr ""
 "Para cada dato: quién lo recibe, para qué, cuánto tiempo se guarda y cómo "
 "pedir que se borre."
 
-#: apps/tenants/help.py:129
+#: apps/tenants/help.py:129 templates/core/dpia.html:2
+msgid "Avaliación de impacto"
+msgstr "Evaluación de impacto"
+
+#: apps/tenants/help.py:131
+msgid ""
+"Os datos con máis risco (saúde, menores, accidentes e foto do carné): que "
+"pode pasar, que fai Eira para evitalo e que risco queda."
+msgstr ""
+"Los datos con más riesgo (salud, menores, accidentes y foto del carné): qué "
+"puede pasar, qué hace Eira para evitarlo y qué riesgo queda."
+
+#: apps/tenants/help.py:136 templates/accounts/profile.html:34
+#: templates/accounts/security.html:2 templates/accounts/security.html:6
+#: templates/accounts/security_codes.html:5
+msgid "Seguridade da conta"
+msgstr "Seguridad de la cuenta"
+
+#: apps/tenants/help.py:138
+msgid ""
+"Activa o dobre factor cunha app de códigos do móbil e garda os códigos de "
+"recuperación nun lugar seguro."
+msgstr ""
+"Activa el doble factor con una app de códigos del móvil y guarda los códigos"
+" de recuperación en un lugar seguro."
+
+#: apps/tenants/help.py:144
 msgid "As túas ordes"
 msgstr "Tus órdenes"
 
-#: apps/tenants/help.py:131
+#: apps/tenants/help.py:146
 msgid ""
 "Tarefas de hoxe e atrasadas. Abre unha, marca o checklist e péchaa. Funciona"
 " sen cobertura: envíase ao recuperar a rede."
@@ -6318,32 +6853,32 @@ msgstr ""
 "Tareas de hoy y atrasadas. Abre una, marca el checklist y ciérrala. Funciona"
 " sin cobertura: se envía al recuperar la red."
 
-#: apps/tenants/help.py:136 templates/maintenance/_calendar_grid.html:1
+#: apps/tenants/help.py:151 templates/maintenance/_calendar_grid.html:1
 #: templates/maintenance/calendar.html:2 templates/manage/dashboard.html:81
 #: templates/manage/maintenance_calendar.html:2
 msgid "Calendario de mantemento"
 msgstr "Calendario de mantenimiento"
 
-#: apps/tenants/help.py:137
+#: apps/tenants/help.py:152
 msgid "As tarefas programadas por día. Toca un día para ver as ordes."
 msgstr "Las tareas programadas por día. Toca un día para ver las órdenes."
 
-#: apps/tenants/help.py:141
+#: apps/tenants/help.py:156
 msgid "Os teus grupos de hoxe"
 msgstr "Tus grupos de hoy"
 
-#: apps/tenants/help.py:142
+#: apps/tenants/help.py:157
 msgid ""
 "Escolle un grupo para pasar lista e recoller o esforzo ao final da sesión."
 msgstr ""
 "Elige un grupo para pasar lista y recoger el esfuerzo al final de la sesión."
 
-#: apps/tenants/help.py:146 templates/includes/shell_desk.html:11
+#: apps/tenants/help.py:161 templates/includes/shell_desk.html:11
 #: templates/manage/dashboard.html:2 templates/manage/dashboard.html:4
 msgid "Panel do día"
 msgstr "Panel del día"
 
-#: apps/tenants/help.py:148
+#: apps/tenants/help.py:163
 msgid ""
 "Reservas de hoxe, chaves, incidencias por validar, reservas para aprobar e "
 "pagamentos pendentes na oficina. É o punto de partida de cada mañá."
@@ -6351,14 +6886,14 @@ msgstr ""
 "Reservas de hoy, llaves, incidencias por validar, reservas por aprobar y "
 "pagos pendientes en la oficina. Es el punto de partida de cada mañana."
 
-#: apps/tenants/help.py:153 templates/includes/shell_desk.html:12
+#: apps/tenants/help.py:168 templates/includes/shell_desk.html:12
 #: templates/manage/agenda.html:2 templates/manage/agenda.html:4
 #: templates/manage/agenda_calendar.html:2
 #: templates/manage/agenda_calendar.html:4 templates/manage/booking.html:4
 msgid "Axenda"
 msgstr "Agenda"
 
-#: apps/tenants/help.py:155
+#: apps/tenants/help.py:170
 msgid ""
 "Todas as reservas por día, semana ou mes. Toca unha para ver a ficha e "
 "cobrar ou cancelar."
@@ -6366,11 +6901,11 @@ msgstr ""
 "Todas las reservas por día, semana o mes. Toca una para ver la ficha y "
 "cobrar o cancelar."
 
-#: apps/tenants/help.py:159
+#: apps/tenants/help.py:174
 msgid "Ficha da reserva"
 msgstr "Ficha de la reserva"
 
-#: apps/tenants/help.py:161
+#: apps/tenants/help.py:176
 msgid ""
 "Datos, cobros e estado ao entrar e ao saír. Se a instalación é con "
 "aprobación, aquí aprobas ou rexeitas (cun motivo; se xa pagou, devólvese "
@@ -6380,11 +6915,11 @@ msgstr ""
 "aprobación, aquí apruebas o rechazas (con un motivo; si ya se pagó, se "
 "devuelve solo)."
 
-#: apps/tenants/help.py:166 templates/includes/shell_desk.html:13
+#: apps/tenants/help.py:181 templates/includes/shell_desk.html:13
 msgid "Reservar por alguén"
 msgstr "Reservar por alguien"
 
-#: apps/tenants/help.py:168
+#: apps/tenants/help.py:183
 msgid ""
 "Para reservas por teléfono ou no mostrador. Escolle instalación e hora e "
 "cobra se fai falla."
@@ -6392,11 +6927,11 @@ msgstr ""
 "Para reservas por teléfono o en el mostrador. Elige instalación y hora y "
 "cobra si hace falta."
 
-#: apps/tenants/help.py:172 templates/manage/payments.html:4
+#: apps/tenants/help.py:187 templates/manage/payments.html:4
 msgid "Cobros e conciliación"
 msgstr "Cobros y conciliación"
 
-#: apps/tenants/help.py:174
+#: apps/tenants/help.py:189
 msgid ""
 "Todos os cobros e, arriba, o resumo por forma de pagamento: TPV, oficina, "
 "gratuíta, bono e aprazado. Exporta a CSV ou ODS para Intervención."
@@ -6404,7 +6939,7 @@ msgstr ""
 "Todos los cobros y, arriba, el resumen por forma de pago: TPV, oficina, "
 "gratuita, bono y aplazado. Exporta a CSV u ODS para Intervención."
 
-#: apps/tenants/help.py:180
+#: apps/tenants/help.py:195
 msgid ""
 "Crea tipos de bono e véndeos na oficina. Tamén se poden comprar na app co "
 "TPV."
@@ -6412,14 +6947,14 @@ msgstr ""
 "Crea tipos de bono y véndelos en la oficina. También se pueden comprar en la"
 " app con el TPV."
 
-#: apps/tenants/help.py:183 apps/tenants/manage.py:33
+#: apps/tenants/help.py:198 apps/tenants/manage.py:34
 #: templates/analytics/dashboard.html:51 templates/includes/shell_desk.html:14
 #: templates/manage/incidents.html:2 templates/manage/incidents.html:4
 #: templates/manage/incidents.html:7
 msgid "Incidencias"
 msgstr "Incidencias"
 
-#: apps/tenants/help.py:185
+#: apps/tenants/help.py:200
 msgid ""
 "Valida os avisos, crea a orde de traballo e marca como resolta. Os riscos "
 "van primeiro."
@@ -6427,7 +6962,7 @@ msgstr ""
 "Valida los avisos, crea la orden de trabajo y marca como resuelta. Los "
 "riesgos van primero."
 
-#: apps/tenants/help.py:189 templates/facilities/detail.html:4
+#: apps/tenants/help.py:204 templates/facilities/detail.html:4
 #: templates/facilities/home.html:2 templates/facilities/home.html:7
 #: templates/includes/shell_desk.html:26
 #: templates/includes/shell_public.html:8
@@ -6436,7 +6971,7 @@ msgstr ""
 msgid "Instalacións"
 msgstr "Instalaciones"
 
-#: apps/tenants/help.py:190
+#: apps/tenants/help.py:205
 msgid ""
 "Alta con plantillas, horarios, tarifas, normas, ficha de seguridade e cartel"
 " da porta."
@@ -6444,11 +6979,11 @@ msgstr ""
 "Alta con plantillas, horarios, tarifas, normas, ficha de seguridad y cartel "
 "de la puerta."
 
-#: apps/tenants/help.py:193
+#: apps/tenants/help.py:208
 msgid "Datos da instalación"
 msgstr "Datos de la instalación"
 
-#: apps/tenants/help.py:195
+#: apps/tenants/help.py:210
 msgid ""
 "Usa as lapelas: datos, foto, acceso, accesibilidade, reserva e pagamento, e "
 "seguridade (material, protocolo de accidentes e DEA)."
@@ -6456,11 +6991,11 @@ msgstr ""
 "Usa las pestañas: datos, foto, acceso, accesibilidad, reserva y pago, y "
 "seguridad (material, protocolo de accidentes y DEA)."
 
-#: apps/tenants/help.py:200
+#: apps/tenants/help.py:215
 msgid "Avisos do concello"
 msgstr "Avisos del ayuntamiento"
 
-#: apps/tenants/help.py:201
+#: apps/tenants/help.py:216
 msgid ""
 "Envía peches, alertas ou novidades por app, correo e Telegram, con vista "
 "previa."
@@ -6468,12 +7003,12 @@ msgstr ""
 "Envía cierres, alertas o novedades por app, correo y Telegram, con vista "
 "previa."
 
-#: apps/tenants/help.py:204 templates/includes/shell_desk.html:41
+#: apps/tenants/help.py:219 templates/includes/shell_desk.html:42
 #: templates/manage/settings.html:2
 msgid "Configuración"
 msgstr "Configuración"
 
-#: apps/tenants/help.py:206
+#: apps/tenants/help.py:221
 msgid ""
 "Regras de reserva, formas de pagamento, luz, concellos próximos, pesos do "
 "índice de vida activa e módulos."
@@ -6481,14 +7016,30 @@ msgstr ""
 "Reglas de reserva, formas de pago, luz, ayuntamientos cercanos, pesos del "
 "índice de vida activa y módulos."
 
-#: apps/tenants/help.py:211 templates/includes/shell_desk.html:39
-#: templates/includes/shell_desk.html:48
+#: apps/tenants/help.py:226 templates/includes/shell_desk.html:41
+#: templates/includes/shell_desk.html:51 templates/manage/audit.html:2
+#: templates/manage/audit.html:4
+msgid "Rexistro de auditoría"
+msgstr "Registro de auditoría"
+
+#: apps/tenants/help.py:228
+msgid ""
+"Quen cambiou tarifas ou permisos, quen exportou datos, os accesos de "
+"soporte, as brechas, os accidentes e o dobre factor. Filtra por categoría e "
+"datas."
+msgstr ""
+"Quién cambió tarifas o permisos, quién exportó datos, los accesos de "
+"soporte, las brechas, los accidentes y el doble factor. Filtra por categoría"
+" y fechas."
+
+#: apps/tenants/help.py:233 templates/includes/shell_desk.html:39
+#: templates/includes/shell_desk.html:49
 #: templates/manage/breach_communication.html:4
 #: templates/manage/breach_edit.html:4 templates/manage/breaches.html:2
 msgid "Rexistro de brechas"
 msgstr "Registro de brechas"
 
-#: apps/tenants/help.py:213
+#: apps/tenants/help.py:235
 msgid ""
 "Anota calquera incidente cos datos persoais. Se hai risco, notifica á AEPD "
 "en 72 horas; se é alto, informa tamén ás persoas afectadas."
@@ -6496,11 +7047,11 @@ msgstr ""
 "Anota cualquier incidente con los datos personales. Si hay riesgo, notifica "
 "a la AEPD en 72 horas; si es alto, informa también a las personas afectadas."
 
-#: apps/tenants/help.py:219 apps/tenants/help.py:265
+#: apps/tenants/help.py:241 apps/tenants/help.py:287
 msgid "Limpeza da zona"
 msgstr "Limpieza de la zona"
 
-#: apps/tenants/help.py:221
+#: apps/tenants/help.py:243
 msgid ""
 "Marca o que fixeches e toca «Rexistrar limpeza». Queda gardado quen, o día e"
 " a hora. Sen cobertura gárdase no móbil e envíase ao volver a rede."
@@ -6509,7 +7060,7 @@ msgstr ""
 " día y la hora. Sin cobertura se guarda en el móvil y se envía al volver la "
 "red."
 
-#: apps/tenants/help.py:228
+#: apps/tenants/help.py:250
 msgid ""
 "Zonas de cada instalación co seu QR, a última limpeza e as atrasadas. "
 "Exporta o rexistro dun período en CSV, ODS ou PDF para unha inspección ou "
@@ -6519,12 +7070,12 @@ msgstr ""
 "Exporta el registro de un período en CSV, ODS o PDF para una inspección o "
 "para la empresa."
 
-#: apps/tenants/help.py:233 templates/includes/brand.html:3
-#: templates/includes/shell_desk.html:53
+#: apps/tenants/help.py:255 templates/includes/brand.html:3
+#: templates/includes/shell_desk.html:55
 msgid "Rede de concellos"
 msgstr "Red de ayuntamientos"
 
-#: apps/tenants/help.py:234
+#: apps/tenants/help.py:256
 msgid ""
 "Indicadores agregados e comparativa dos concellos da rede, co índice de vida"
 " activa."
@@ -6532,18 +7083,18 @@ msgstr ""
 "Indicadores agregados y comparativa de los ayuntamientos de la red, con el "
 "índice de vida activa."
 
-#: apps/tenants/help.py:239
+#: apps/tenants/help.py:261
 msgid ""
 "Usa as lapelas de abaixo para reservar, ver as túas reservas e a túa "
 "familia."
 msgstr ""
 "Usa las pestañas de abajo para reservar, ver tus reservas y tu familia."
 
-#: apps/tenants/help.py:240
+#: apps/tenants/help.py:262
 msgid "Aquí tes as túas ordes de traballo. Funciona tamén sen cobertura."
 msgstr "Aquí tienes tus órdenes de trabajo. Funciona también sin cobertura."
 
-#: apps/tenants/help.py:242
+#: apps/tenants/help.py:264
 msgid ""
 "Aquí tes as túas tarefas de limpeza e as zonas. Escanea o QR da parede de "
 "cada zona para marcar o feito. Funciona tamén sen cobertura."
@@ -6551,11 +7102,11 @@ msgstr ""
 "Aquí tienes tus tareas de limpieza y las zonas. Escanea el QR de la pared de"
 " cada zona para marcar lo hecho. Funciona también sin cobertura."
 
-#: apps/tenants/help.py:245
+#: apps/tenants/help.py:267
 msgid "Escolle un grupo para pasar lista e recoller o esforzo."
 msgstr "Elige un grupo para pasar lista y recoger el esfuerzo."
 
-#: apps/tenants/help.py:247
+#: apps/tenants/help.py:269
 msgid ""
 "No modo básico tes o día a día. Activa o modo avanzado para ver todo o menú;"
 " os permisos son os mesmos."
@@ -6563,19 +7114,19 @@ msgstr ""
 "En el modo básico tienes el día a día. Activa el modo avanzado para ver todo"
 " el menú; los permisos son los mismos."
 
-#: apps/tenants/help.py:250
+#: apps/tenants/help.py:272
 msgid "Ves os concellos da túa rede con datos agregados."
 msgstr "Ves los ayuntamientos de tu red con datos agregados."
 
-#: apps/tenants/help.py:251
+#: apps/tenants/help.py:273
 msgid "Busca unha instalación e consulta as horas libres sen rexistrarte."
 msgstr "Busca una instalación y consulta las horas libres sin registrarte."
 
-#: apps/tenants/help.py:258
+#: apps/tenants/help.py:280
 msgid "As túas tarefas de limpeza"
 msgstr "Tus tareas de limpieza"
 
-#: apps/tenants/help.py:260
+#: apps/tenants/help.py:282
 msgid ""
 "Arriba, as zonas atrasadas. Escanea o QR da zona (ou tócaa) para marcar o "
 "feito; tamén podes abrir unha tarefa e pechala. Funciona sen cobertura."
@@ -6584,7 +7135,7 @@ msgstr ""
 " lo hecho; también puedes abrir una tarea y cerrarla. Funciona sin "
 "cobertura."
 
-#: apps/tenants/help.py:267
+#: apps/tenants/help.py:289
 msgid ""
 "Aquí ves cando se limpou esta zona por última vez. Se algo está sucio ou "
 "estragado, avisa ao concello."
@@ -6592,117 +7143,121 @@ msgstr ""
 "Aquí ves cuándo se limpió esta zona por última vez. Si algo está sucio o "
 "estropeado, avisa al ayuntamiento."
 
-#: apps/tenants/help.py:272
+#: apps/tenants/help.py:294
 msgid "Calendario de limpeza"
 msgstr "Calendario de limpieza"
 
-#: apps/tenants/help.py:273
+#: apps/tenants/help.py:295
 msgid "As limpezas programadas por día. Toca un día para ver as tarefas."
 msgstr "Las limpiezas programadas por día. Toca un día para ver las tareas."
 
-#: apps/tenants/help.py:287 templates/includes/help_button.html:3
+#: apps/tenants/help.py:309 templates/includes/help_button.html:3
 #: templates/includes/help_button.html:4
 msgid "Axuda"
 msgstr "Ayuda"
 
-#: apps/tenants/manage.py:32
+#: apps/tenants/manage.py:33
 msgid "Acceso por niveis"
 msgstr "Acceso por niveles"
 
-#: apps/tenants/manage.py:34 templates/manage/maintenance_plans.html:2
+#: apps/tenants/manage.py:35 templates/manage/maintenance_plans.html:2
 #: templates/manage/maintenance_plans.html:4
 msgid "Mantemento preventivo"
 msgstr "Mantenimiento preventivo"
 
-#: apps/tenants/manage.py:36
+#: apps/tenants/manage.py:37
 msgid "Modo tableta para monitores"
 msgstr "Modo tableta para monitores"
 
-#: apps/tenants/manage.py:37
+#: apps/tenants/manage.py:38
 msgid "Observatorio anónimo"
 msgstr "Observatorio anónimo"
 
-#: apps/tenants/manage.py:38
+#: apps/tenants/manage.py:39
 msgid "Meteoroloxía"
 msgstr "Meteorología"
 
-#: apps/tenants/manage.py:39
+#: apps/tenants/manage.py:40
 msgid "Saúde no dispositivo"
 msgstr "Salud en el dispositivo"
 
-#: apps/tenants/manage.py:40
+#: apps/tenants/manage.py:41
 msgid "Resumo semanal con IA autoaloxada"
 msgstr "Resumen semanal con IA autoalojada"
 
-#: apps/tenants/manage.py:41 templates/analytics/open_data.html:2
+#: apps/tenants/manage.py:42 templates/analytics/open_data.html:2
 #: templates/analytics/open_data.html:5
 #: templates/includes/shell_footer.html:11
 msgid "Datos abertos"
 msgstr "Datos abiertos"
 
-#: apps/tenants/manage.py:43
+#: apps/tenants/manage.py:44
 msgid "Partidas abertas (buscar xente)"
 msgstr "Partidas abiertas (buscar gente)"
 
-#: apps/tenants/manage.py:44
+#: apps/tenants/manage.py:45
 msgid "Carné municipal e abonos"
 msgstr "Carné municipal y abonos"
 
-#: apps/tenants/manage.py:51 templates/dev/clave.html:13
+#: apps/tenants/manage.py:52 templates/dev/clave.html:13
 msgid "Identidade"
 msgstr "Identidad"
 
-#: apps/tenants/manage.py:52 templates/manage/padron.html:2
+#: apps/tenants/manage.py:53 templates/manage/padron.html:2
 #: templates/manage/signups.html:6
 msgid "Padrón"
 msgstr "Padrón"
 
-#: apps/tenants/manage.py:55
+#: apps/tenants/manage.py:56
 msgid "Contacto"
 msgstr "Contacto"
 
-#: apps/tenants/manage.py:61
+#: apps/tenants/manage.py:62
 msgid "Regras de reserva"
 msgstr "Reglas de reserva"
 
-#: apps/tenants/manage.py:80
+#: apps/tenants/manage.py:82
 msgid "Suplemento de iluminación"
 msgstr "Suplemento de iluminación"
 
-#: apps/tenants/manage.py:92 templates/facilities/_vitality.html:1
+#: apps/tenants/manage.py:94 templates/facilities/_vitality.html:1
 #: templates/manage/dashboard.html:62
 msgid "Índice de vida activa"
 msgstr "Índice de vida activa"
 
-#: apps/tenants/manage.py:99
+#: apps/tenants/manage.py:101
 msgid "Seguridade e peche"
 msgstr "Seguridad y cierre"
 
-#: apps/tenants/manage.py:112
+#: apps/tenants/manage.py:114
 msgid "Confirmación e lista de espera"
 msgstr "Confirmación y lista de espera"
 
-#: apps/tenants/manage.py:121 templates/manage/dashboard.html:67
+#: apps/tenants/manage.py:123 templates/manage/dashboard.html:67
 msgid "Satisfacción (NPS)"
 msgstr "Satisfacción (NPS)"
 
-#: apps/tenants/manage.py:124
+#: apps/tenants/manage.py:125
+msgid "Seguridade das contas de xestión"
+msgstr "Seguridad de las cuentas de gestión"
+
+#: apps/tenants/manage.py:128
 msgid "Rendemento (estimación orientativa)"
 msgstr "Rendimiento (estimación orientativa)"
 
-#: apps/tenants/manage.py:128 templates/facilities/home.html:10
+#: apps/tenants/manage.py:132 templates/facilities/home.html:10
 msgid "Mapa"
 msgstr "Mapa"
 
-#: apps/tenants/manage.py:131
+#: apps/tenants/manage.py:135
 msgid "Textos legais"
 msgstr "Textos legales"
 
-#: apps/tenants/manage.py:201
+#: apps/tenants/manage.py:207
 msgid "Formas de pagamento admitidas"
 msgstr "Formas de pago admitidas"
 
-#: apps/tenants/manage.py:206
+#: apps/tenants/manage.py:212
 msgid ""
 "Cada instalación pode restrinxilas. O aprazado só se activa aquí (por "
 "defecto, non)."
@@ -6710,77 +7265,82 @@ msgstr ""
 "Cada instalación puede restringirlas. El aplazado solo se activa aquí (por "
 "defecto, no)."
 
-#: apps/tenants/manage.py:215
+#: apps/tenants/manage.py:221
 msgid "Pesos relativos (0–100). Ver docs/indice-vida-activa.md."
 msgstr "Pesos relativos (0–100). Ver docs/indice-vida-activa.md."
 
-#: apps/tenants/manage.py:275
+#: apps/tenants/manage.py:282
 msgid "Configuración gardada."
 msgstr "Configuración guardada."
 
-#: apps/tenants/manage.py:298
+#: apps/tenants/manage.py:305
 msgid "Rol"
 msgstr "Rol"
 
-#: apps/tenants/manage.py:301
+#: apps/tenants/manage.py:308
 msgid "Empresa (opcional)"
 msgstr "Empresa (opcional)"
 
-#: apps/tenants/manage.py:305
+#: apps/tenants/manage.py:312
 msgid ""
 "Só se a persoa traballa para unha empresa contratada (p. ex. a de limpeza)."
 msgstr ""
 "Solo si la persona trabaja para una empresa contratada (p. ej. la de "
 "limpieza)."
 
-#: apps/tenants/manage.py:312
+#: apps/tenants/manage.py:319
 msgid "Colectivo"
 msgstr "Colectivo"
 
-#: apps/tenants/manage.py:314
+#: apps/tenants/manage.py:321
 msgid "Válido ata"
 msgstr "Válido hasta"
 
-#: apps/tenants/manage.py:347
+#: apps/tenants/manage.py:354
 #, python-format
 msgid "Tarifa reducida validada para %(e)s."
 msgstr "Tarifa reducida validada para %(e)s."
 
-#: apps/tenants/manage.py:355
+#: apps/tenants/manage.py:373
+#, python-format
+msgid "Dobre factor restablecido. %(e)s pode activalo de novo ao entrar."
+msgstr "Doble factor restablecido. %(e)s puede activarlo de nuevo al entrar."
+
+#: apps/tenants/manage.py:394
 msgid "Rol retirado."
 msgstr "Rol retirado."
 
-#: apps/tenants/manage.py:372
+#: apps/tenants/manage.py:411
 msgid "Rol asignado."
 msgstr "Rol asignado."
 
-#: apps/tenants/manage.py:411 templates/manage/staff.html:35
+#: apps/tenants/manage.py:457 templates/manage/staff.html:35
 msgid "Este concello non pertence a ningunha deputación."
 msgstr "Este ayuntamiento no pertenece a ninguna diputación."
 
-#: apps/tenants/manage.py:416
+#: apps/tenants/manage.py:462
 msgid "Indica o motivo do acceso de soporte."
 msgstr "Indica el motivo del acceso de soporte."
 
-#: apps/tenants/manage.py:430
+#: apps/tenants/manage.py:476
 #, python-format
 msgid "Acceso de soporte autorizado ata o %(d)s."
 msgstr "Acceso de soporte autorizado hasta el %(d)s."
 
-#: apps/tenants/manage.py:438
+#: apps/tenants/manage.py:484
 msgid "Acceso de soporte retirado."
 msgstr "Acceso de soporte retirado."
 
-#: apps/tenants/manage.py:447
+#: apps/tenants/manage.py:493
 #, python-format
 msgid "Código de empadroamento xerado: %(c)s"
 msgstr "Código de empadronamiento generado: %(c)s"
 
-#: apps/tenants/manage.py:465
+#: apps/tenants/manage.py:511
 msgid "Aviso laranxa por vento e chuvia (simulado)"
 msgstr "Aviso naranja por viento y lluvia (simulado)"
 
-#: apps/tenants/manage.py:472
+#: apps/tenants/manage.py:518
 #, python-format
 msgid ""
 "Alerta aplicada ás instalacións descubertas. %(n)s reservas canceladas e "
@@ -6830,66 +7390,70 @@ msgid "Outra agrupación"
 msgstr "Otra agrupación"
 
 #: apps/tenants/models.py:69
+msgid "esixir dobre factor ao persoal da agrupación"
+msgstr "exigir doble factor al personal de la agrupación"
+
+#: apps/tenants/models.py:73
 msgid "agrupación supramunicipal"
 msgstr "agrupación supramunicipal"
 
-#: apps/tenants/models.py:70
+#: apps/tenants/models.py:74
 msgid "agrupacións supramunicipais"
 msgstr "agrupaciones supramunicipales"
 
-#: apps/tenants/models.py:79
+#: apps/tenants/models.py:83
 msgid "Identificador na URL: /c/<slug>/"
 msgstr "Identificador en la URL: /c/<slug>/"
 
-#: apps/tenants/models.py:82
+#: apps/tenants/models.py:86
 msgid "agrupación"
 msgstr "agrupación"
 
-#: apps/tenants/models.py:88
+#: apps/tenants/models.py:92
 msgid "código INE"
 msgstr "código INE"
 
-#: apps/tenants/models.py:90
+#: apps/tenants/models.py:94
 msgid "cor de acento"
 msgstr "color de acento"
 
-#: apps/tenants/models.py:92
+#: apps/tenants/models.py:96
 msgid "escudo"
 msgstr "escudo"
 
-#: apps/tenants/models.py:93
+#: apps/tenants/models.py:97
 msgid "idiomas"
 msgstr "idiomas"
 
-#: apps/tenants/models.py:95
+#: apps/tenants/models.py:99
 msgid "dominio propio"
 msgstr "dominio propio"
 
-#: apps/tenants/models.py:100
+#: apps/tenants/models.py:104
 msgid "Opcional: p. ex. deportes.concello.example"
 msgstr "Opcional: p. ej. deportes.concello.example"
 
-#: apps/tenants/models.py:102
+#: apps/tenants/models.py:106
 msgid "correo de contacto"
 msgstr "correo de contacto"
 
-#: apps/tenants/models.py:105
+#: apps/tenants/models.py:109
 msgid "canle pública de Telegram"
 msgstr "canal público de Telegram"
 
-#: apps/tenants/models.py:108
+#: apps/tenants/models.py:112
 msgid "Nome da canle, p. ex. @deportesvilardeiras. Opcional."
 msgstr "Nombre del canal, p. ej. @deportesvilardeiras. Opcional."
 
-#: apps/tenants/models.py:111
+#: apps/tenants/models.py:115
 msgid "poboación"
 msgstr "población"
 
-#: apps/tenants/models.py:113
+#: apps/tenants/models.py:117
 msgid "códigos postais do termo"
 msgstr "códigos postales del término"
 
-#: apps/tenants/models.py:117
+#: apps/tenants/models.py:121
 msgid ""
 "Separados por comas. Informativo: as altas automáticas usan o padrón cargado"
 " en CSV."
@@ -6897,15 +7461,15 @@ msgstr ""
 "Separados por comas. Informativo: las altas automáticas usan el padrón "
 "cargado en CSV."
 
-#: apps/tenants/models.py:120
+#: apps/tenants/models.py:124
 msgid "texto de privacidade"
 msgstr "texto de privacidad"
 
-#: apps/tenants/models.py:122
+#: apps/tenants/models.py:126
 msgid "contacto da persoa delegada de protección de datos"
 msgstr "contacto de la persona delegada de protección de datos"
 
-#: apps/tenants/models.py:126
+#: apps/tenants/models.py:130
 msgid ""
 "Correo ou enderezo do DPD do concello (ou da deputación que presta o "
 "servizo)."
@@ -6913,23 +7477,23 @@ msgstr ""
 "Correo o dirección del DPD del ayuntamiento (o de la diputación que presta "
 "el servicio)."
 
-#: apps/tenants/models.py:129
+#: apps/tenants/models.py:133
 msgid "declaración de accesibilidade"
 msgstr "declaración de accesibilidad"
 
-#: apps/tenants/models.py:130
+#: apps/tenants/models.py:134
 msgid "aviso legal"
 msgstr "aviso legal"
 
-#: apps/tenants/models.py:131
+#: apps/tenants/models.py:135
 msgid "módulos activos"
 msgstr "módulos activos"
 
-#: apps/tenants/models.py:133
+#: apps/tenants/models.py:137
 msgid "servidor de teselas do mapa"
 msgstr "servidor de teselas del mapa"
 
-#: apps/tenants/models.py:137
+#: apps/tenants/models.py:141
 msgid ""
 "Baleiro = o da instalación (EIRA_TILE_URL). P. ex. o servidor propio da "
 "deputación."
@@ -6937,73 +7501,73 @@ msgstr ""
 "Vacío = el de la instalación (EIRA_TILE_URL). P. ej. el servidor propio de "
 "la diputación."
 
-#: apps/tenants/models.py:140
+#: apps/tenants/models.py:144
 msgid "atribución do mapa"
 msgstr "atribución del mapa"
 
-#: apps/tenants/models.py:141
+#: apps/tenants/models.py:145
 msgid "ligazón da atribución"
 msgstr "enlace de la atribución"
 
-#: apps/tenants/models.py:145
+#: apps/tenants/models.py:149
 msgid "horas mínimas para cancelar sen penalización"
 msgstr "horas mínimas para cancelar sin penalización"
 
-#: apps/tenants/models.py:148
+#: apps/tenants/models.py:152
 msgid "penalización por cancelación tardía (%)"
 msgstr "penalización por cancelación tardía (%)"
 
-#: apps/tenants/models.py:150
+#: apps/tenants/models.py:154
 msgid "días máximos de antelación"
 msgstr "días máximos de antelación"
 
-#: apps/tenants/models.py:152
+#: apps/tenants/models.py:156
 msgid "reservas activas máximas por persoa"
 msgstr "reservas activas máximas por persona"
 
-#: apps/tenants/models.py:155
+#: apps/tenants/models.py:159
 msgid "desconto nas franxas de baixa demanda (%)"
 msgstr "descuento en las franjas de baja demanda (%)"
 
-#: apps/tenants/models.py:157
+#: apps/tenants/models.py:161
 msgid "Aplícase ás franxas recomendadas (★). 0 = sen desconto."
 msgstr "Se aplica a las franjas recomendadas (★). 0 = sin descuento."
 
-#: apps/tenants/models.py:160
+#: apps/tenants/models.py:164
 msgid "minutos de cortesía para non presentado"
 msgstr "minutos de cortesía para no presentado"
 
-#: apps/tenants/models.py:164
+#: apps/tenants/models.py:168
 msgid "formas de pagamento"
 msgstr "formas de pago"
 
-#: apps/tenants/models.py:167
+#: apps/tenants/models.py:171
 msgid "prazo para pagar na oficina (horas)"
 msgstr "plazo para pagar en la oficina (horas)"
 
-#: apps/tenants/models.py:169
+#: apps/tenants/models.py:173
 msgid "Se non se paga nese prazo (nin antes do inicio), a franxa queda libre."
 msgstr ""
 "Si no se paga en ese plazo (ni antes del inicio), la franja queda libre."
 
-#: apps/tenants/models.py:173
+#: apps/tenants/models.py:177
 msgid "cando se precisa luz"
 msgstr "cuándo se necesita luz"
 
-#: apps/tenants/models.py:178
+#: apps/tenants/models.py:182
 msgid "luz desde (horario fixo)"
 msgstr "luz desde (horario fijo)"
 
-#: apps/tenants/models.py:179
+#: apps/tenants/models.py:183
 msgid "luz ata (horario fixo, pola mañá)"
 msgstr "luz hasta (horario fijo, por la mañana)"
 
-#: apps/tenants/models.py:182
+#: apps/tenants/models.py:186
 msgid "abrir as instalacións ás persoas doutros concellos da rede"
 msgstr ""
 "abrir las instalaciones a las personas de otros ayuntamientos de la red"
 
-#: apps/tenants/models.py:185
+#: apps/tenants/models.py:189
 msgid ""
 "Poden reservar coa súa conta, pagando a tarifa de persoas non empadroadas "
 "deste concello."
@@ -7011,123 +7575,135 @@ msgstr ""
 "Pueden reservar con su cuenta, pagando la tarifa de personas sin "
 "empadronamiento en este ayuntamiento."
 
-#: apps/tenants/models.py:189
+#: apps/tenants/models.py:193
 msgid "reservas activas máximas por persoa doutro concello"
 msgstr "reservas activas máximas por persona de otro ayuntamiento"
 
-#: apps/tenants/models.py:192
+#: apps/tenants/models.py:196
 msgid "antelación máxima para persoas doutros concellos (días)"
 msgstr "antelación máxima para personas de otros ayuntamientos (días)"
 
-#: apps/tenants/models.py:195
+#: apps/tenants/models.py:199
 msgid "Baleiro = a mesma ca para a veciñanza."
 msgstr "Vacío = la misma que para el vecindario."
 
-#: apps/tenants/models.py:199
+#: apps/tenants/models.py:203
 msgid "pesos do índice de vida activa"
 msgstr "pesos del índice de vida activa"
 
-#: apps/tenants/models.py:203
+#: apps/tenants/models.py:207
 msgid "conservación do rexistro de accidentes (meses)"
 msgstr "conservación del registro de accidentes (meses)"
 
-#: apps/tenants/models.py:205
+#: apps/tenants/models.py:209
 msgid "Pasado este prazo, os rexistros pechados bórranse automaticamente."
 msgstr "Pasado este plazo, los registros cerrados se borran automáticamente."
 
-#: apps/tenants/models.py:209
+#: apps/tenants/models.py:213
 msgid "primeiro recordatorio do peche (min despois do fin)"
 msgstr "primer recordatorio del cierre (min después del fin)"
 
-#: apps/tenants/models.py:212
+#: apps/tenants/models.py:216
 msgid "segundo recordatorio (min despois do primeiro)"
 msgstr "segundo recordatorio (min después del primero)"
 
-#: apps/tenants/models.py:215
+#: apps/tenants/models.py:219
 msgid "aviso á persoa responsable (min despois do segundo)"
 msgstr "aviso a la persona responsable (min después del segundo)"
 
-#: apps/tenants/models.py:218
+#: apps/tenants/models.py:222
 msgid "teléfono da Policía Local"
 msgstr "teléfono de la Policía Local"
 
-#: apps/tenants/models.py:221
+#: apps/tenants/models.py:225
 msgid "Só aparece como botón para que decida unha persoa. Nunca se chama soa."
 msgstr ""
 "Solo aparece como botón para que decida una persona. Nunca se llama sola."
 
-#: apps/tenants/models.py:224
+#: apps/tenants/models.py:228
 msgid "o peche sen confirmar conta como incumprimento"
 msgstr "el cierre sin confirmar cuenta como incumplimiento"
 
-#: apps/tenants/models.py:226
+#: apps/tenants/models.py:230
 msgid "Desactivado por defecto. Queda anotado na reserva igualmente."
 msgstr "Desactivado por defecto. Queda anotado en la reserva igualmente."
 
-#: apps/tenants/models.py:229
+#: apps/tenants/models.py:233
 msgid "preguntar o NPS despois de cada uso"
 msgstr "preguntar el NPS después de cada uso"
 
-#: apps/tenants/models.py:232
+#: apps/tenants/models.py:236
 msgid "liberar as reservas sen confirmar"
 msgstr "liberar las reservas sin confirmar"
 
-#: apps/tenants/models.py:234
+#: apps/tenants/models.py:238
 msgid ""
 "Se hai lista de espera e a persoa non confirmou a tempo, a franxa ofrécese."
 msgstr ""
 "Si hay lista de espera y la persona no confirmó a tiempo, la franja se "
 "ofrece."
 
-#: apps/tenants/models.py:237
+#: apps/tenants/models.py:241
 msgid "prazo para confirmar (min antes do inicio)"
 msgstr "plazo para confirmar (min antes del inicio)"
 
-#: apps/tenants/models.py:240
+#: apps/tenants/models.py:244
 msgid "tempo para aceptar unha praza liberada (min)"
 msgstr "tiempo para aceptar una plaza liberada (min)"
 
-#: apps/tenants/models.py:243
+#: apps/tenants/models.py:247
 msgid "liberar sen check-in (min despois do inicio)"
 msgstr "liberar sin check-in (min después del inicio)"
 
-#: apps/tenants/models.py:245
+#: apps/tenants/models.py:249
 msgid "Só nos niveis 0, 2 e 3 e só se hai alguén na lista de espera."
 msgstr ""
 "Solo en los niveles 0, 2 y 3 y solo si hay alguien en la lista de espera."
 
-#: apps/tenants/models.py:249
+#: apps/tenants/models.py:253
 msgid "prezo da enerxía (€/kWh)"
 msgstr "precio de la energía (€/kWh)"
 
-#: apps/tenants/models.py:252
+#: apps/tenants/models.py:256
 msgid "factor de emisión (kg CO₂/kWh)"
 msgstr "factor de emisión (kg CO₂/kWh)"
 
-#: apps/tenants/models.py:256
+#: apps/tenants/models.py:260
 msgid ""
 "Factor orientativo do mix eléctrico. Cámbiao polo da túa comercializadora."
 msgstr ""
 "Factor orientativo del mix eléctrico. Cámbialo por el de tu "
 "comercializadora."
 
-#: apps/tenants/models.py:258 templates/manage/staff.html:39
+#: apps/tenants/models.py:264
+msgid "esixir dobre factor á administración e ao DPD"
+msgstr "exigir doble factor a la administración y al DPD"
+
+#: apps/tenants/models.py:267
+msgid ""
+"Quen teña eses roles terá que activar unha app de códigos (TOTP) antes de "
+"entrar na xestión. Para o resto de persoas é opcional."
+msgstr ""
+"Quien tenga esos roles tendrá que activar una app de códigos (TOTP) antes de"
+" entrar en la gestión. Para el resto de personas es opcional."
+
+#: apps/tenants/models.py:271 templates/manage/staff.html:39
 msgid "activo"
 msgstr "activo"
 
-#: apps/tenants/models.py:262 apps/tenants/models.py:295
+#: apps/tenants/models.py:275 apps/tenants/models.py:308
 msgid "concello"
 msgstr "ayuntamiento"
 
-#: apps/tenants/models.py:263
+#: apps/tenants/models.py:276
 msgid "concellos"
 msgstr "ayuntamientos"
 
-#: apps/tenants/models.py:370
+#: apps/tenants/models.py:383
 msgid "acceso de soporte da deputación"
 msgstr "acceso de soporte de la diputación"
 
-#: apps/tenants/models.py:371
+#: apps/tenants/models.py:384
 msgid "accesos de soporte da deputación"
 msgstr "accesos de soporte de la diputación"
 
@@ -7425,19 +8001,19 @@ msgstr "No tienes permiso para ver esto"
 msgid "Datos persoais: precisa acceso de soporte"
 msgstr "Datos personales: necesita acceso de soporte"
 
-#: apps/tenants/views.py:260
+#: apps/tenants/views.py:267
 msgid "App de mantemento"
 msgstr "App de mantenimiento"
 
-#: apps/tenants/views.py:263
+#: apps/tenants/views.py:270
 msgid "Deputación"
 msgstr "Diputación"
 
-#: eira/settings.py:143
+#: eira/settings.py:145
 msgid "Galego"
 msgstr "Gallego"
 
-#: eira/settings.py:143
+#: eira/settings.py:145
 msgid "Castelán"
 msgstr "Castellano"
 
@@ -7540,7 +8116,8 @@ msgstr "Prototipo: el correo no sale del servidor."
 msgid "Abrir a bandexa simulada (nova xanela)"
 msgstr "Abrir la bandeja simulada (nueva ventana)"
 
-#: templates/accounts/code.html:12 templates/core/home.html:34
+#: templates/accounts/code.html:12
+#: templates/accounts/two_factor_verify.html:10 templates/core/home.html:34
 msgid "Entrar"
 msgstr "Entrar"
 
@@ -7553,7 +8130,7 @@ msgid "Eliminar a conta"
 msgstr "Eliminar la cuenta"
 
 #: templates/accounts/delete.html:5 templates/accounts/privacy.html:15
-#: templates/accounts/profile.html:39
+#: templates/accounts/profile.html:44
 msgid "Eliminar a miña conta"
 msgstr "Eliminar mi cuenta"
 
@@ -7575,8 +8152,9 @@ msgstr "Antes, puedes descargar una copia de tus datos."
 msgid "Eliminar definitivamente"
 msgstr "Eliminar definitivamente"
 
-#: templates/accounts/delete.html:13 templates/bookings/detail.html:61
-#: templates/manage/agenda.html:11 templates/manage/booking.html:52
+#: templates/accounts/delete.html:13 templates/accounts/security.html:38
+#: templates/bookings/detail.html:61 templates/manage/agenda.html:11
+#: templates/manage/booking.html:52
 msgid "Cancelar"
 msgstr "Cancelar"
 
@@ -7674,7 +8252,7 @@ msgid "No prototipo, Cl@ve está simulada."
 msgstr "En el prototipo, Cl@ve está simulada."
 
 #: templates/accounts/privacy.html:2 templates/accounts/privacy.html:4
-#: templates/accounts/profile.html:35
+#: templates/accounts/profile.html:40
 msgid "Centro de privacidade"
 msgstr "Centro de privacidad"
 
@@ -7700,7 +8278,7 @@ msgstr ""
 "pasarela de la entidad financiera. Los datos de salud se quedan en tu "
 "dispositivo salvo que decidas guardarlos en la cuenta."
 
-#: templates/accounts/privacy.html:14 templates/accounts/profile.html:38
+#: templates/accounts/privacy.html:14 templates/accounts/profile.html:43
 msgid "Descargar todos os meus datos (JSON)"
 msgstr "Descargar todos mis datos (JSON)"
 
@@ -7801,12 +8379,15 @@ msgid "preferencias de lectura"
 msgstr "preferencias de lectura"
 
 #: templates/accounts/profile.html:2 templates/accounts/profile.html:4
+#: templates/accounts/security.html:5
 #: templates/includes/shell_app_header.html:8
 #: templates/includes/shell_desk_top.html:8
 msgid "A miña conta"
 msgstr "Mi cuenta"
 
-#: templates/accounts/profile.html:5 templates/includes/logout_button.html:1
+#: templates/accounts/profile.html:5
+#: templates/accounts/two_factor_verify.html:13
+#: templates/includes/logout_button.html:1
 msgid "Saír"
 msgstr "Salir"
 
@@ -7836,14 +8417,200 @@ msgstr "Validar"
 msgid "Os meus roles"
 msgstr "Mis roles"
 
-#: templates/accounts/profile.html:34 templates/core/privacy.html:2
+#: templates/accounts/profile.html:35
+msgid "Engade un segundo paso ao entrar cunha app de códigos do móbil."
+msgstr "Añade un segundo paso al entrar con una app de códigos del móvil."
+
+#: templates/accounts/profile.html:36 templates/manage/staff.html:8
+msgid "Dobre factor"
+msgstr "Doble factor"
+
+#: templates/accounts/profile.html:39 templates/core/privacy.html:2
 #: templates/core/privacy.html:5 templates/includes/shell_footer.html:9
 msgid "Privacidade"
 msgstr "Privacidad"
 
-#: templates/accounts/profile.html:37
+#: templates/accounts/profile.html:42
 msgid "Unidade familiar e consentimentos"
 msgstr "Unidad familiar y consentimientos"
+
+#: templates/accounts/security.html:7
+msgid ""
+"O dobre factor engade un segundo paso ao entrar: ademais do código ao correo"
+" (ou Cl@ve), un código de 6 díxitos que xera unha app do teu móbil. "
+"Recomendámolo a todo o persoal que xestiona datos."
+msgstr ""
+"El doble factor añade un segundo paso al entrar: además del código al correo"
+" (o Cl@ve), un código de 6 dígitos que genera una app de tu móvil. Lo "
+"recomendamos a todo el personal que gestiona datos."
+
+#: templates/accounts/security.html:8
+msgid "Volver á conta"
+msgstr "Volver a la cuenta"
+
+#: templates/accounts/security.html:9
+#, python-format
+msgid "Obrigatorio para o teu rol en: %(n)s."
+msgstr "Obligatorio para tu rol en: %(n)s."
+
+#: templates/accounts/security.html:9
+msgid "O teu concello esixe o dobre factor para entrar na xestión."
+msgstr "Tu ayuntamiento exige el doble factor para entrar en la gestión."
+
+#: templates/accounts/security.html:12
+msgid "Dobre factor (app de códigos)"
+msgstr "Doble factor (app de códigos)"
+
+#: templates/accounts/security.html:14
+msgid "Activado"
+msgstr "Activado"
+
+#: templates/accounts/security.html:14
+#, python-format
+msgid "desde o %(d)s"
+msgstr "desde el %(d)s"
+
+#: templates/accounts/security.html:15
+#, python-format
+msgid "Quédache %(n)s código de recuperación sen usar."
+msgid_plural "Quédanche %(n)s códigos de recuperación sen usar."
+msgstr[0] "Te queda %(n)s código de recuperación sin usar."
+msgstr[1] "Te quedan %(n)s códigos de recuperación sin usar."
+
+#: templates/accounts/security.html:19
+msgid "Xerar códigos de recuperación novos"
+msgstr "Generar nuevos códigos de recuperación"
+
+#: templates/accounts/security.html:20
+msgid "Desactivar o dobre factor"
+msgstr "Desactivar el doble factor"
+
+#: templates/accounts/security.html:22
+msgid ""
+"Para calquera das dúas cousas escribe primeiro o código que mostra agora a "
+"app."
+msgstr ""
+"Para cualquiera de las dos cosas escribe primero el código que muestra ahora"
+" la app."
+
+#: templates/accounts/security.html:26
+msgid ""
+"Instala unha app de códigos no móbil (calquera compatible con TOTP: por "
+"exemplo, unha de software libre como FreeOTP ou Aegis)."
+msgstr ""
+"Instala una app de códigos en el móvil (cualquiera compatible con TOTP: por "
+"ejemplo, una de software libre como FreeOTP o Aegis)."
+
+#: templates/accounts/security.html:27
+msgid "Escanea este código QR coa app."
+msgstr "Escanea este código QR con la app."
+
+#: templates/accounts/security.html:28
+msgid ""
+"Código QR para engadir a conta á app de códigos. Se non o podes escanear, "
+"usa a clave que está debaixo."
+msgstr ""
+"Código QR para añadir la cuenta a la app de códigos. Si no lo puedes "
+"escanear, usa la clave que está debajo."
+
+#: templates/accounts/security.html:29
+msgid "Se non podes escanear, escribe esta clave na app:"
+msgstr "Si no puedes escanear, escribe esta clave en la app:"
+
+#: templates/accounts/security.html:31
+#, python-format
+msgid "Aparecerá como «%(i)s: %(e)s». Non compartas esta clave con ninguén."
+msgstr "Aparecerá como «%(i)s: %(e)s». No compartas esta clave con nadie."
+
+#: templates/accounts/security.html:32
+msgid "Escribe o código de 6 díxitos que mostra a app para confirmar."
+msgstr "Escribe el código de 6 dígitos que muestra la app para confirmar."
+
+#: templates/accounts/security.html:37
+msgid "Confirmar e activar"
+msgstr "Confirmar y activar"
+
+#: templates/accounts/security.html:42
+msgid "Sen activar"
+msgstr "Sin activar"
+
+#: templates/accounts/security.html:44
+msgid "Activar o dobre factor"
+msgstr "Activar el doble factor"
+
+#: templates/accounts/security.html:50 templates/app/request.html:26
+#: templates/app/request.html:28 templates/dev/lock_simulator.html:59
+msgid "Como funciona"
+msgstr "Cómo funciona"
+
+#: templates/accounts/security.html:52
+msgid "A app xera un código novo cada 30 segundos, mesmo sen conexión."
+msgstr "La app genera un código nuevo cada 30 segundos, incluso sin conexión."
+
+#: templates/accounts/security.html:53
+msgid "Cada código só vale unha vez."
+msgstr "Cada código solo vale una vez."
+
+#: templates/accounts/security.html:54
+msgid ""
+"Se perdes o móbil, entra cun código de recuperación (cada un só vale unha "
+"vez) ou pídelle a outra persoa administradora do concello que cho "
+"restableza."
+msgstr ""
+"Si pierdes el móvil, entra con un código de recuperación (cada uno solo vale"
+" una vez) o pide a otra persona administradora del ayuntamiento que te lo "
+"restablezca."
+
+#: templates/accounts/security.html:55
+msgid "Tras 5 intentos errados hai que agardar 15 minutos."
+msgstr "Tras 5 intentos fallidos hay que esperar 15 minutos."
+
+#: templates/accounts/security_codes.html:2
+#: templates/accounts/security_codes.html:6
+msgid "Códigos de recuperación"
+msgstr "Códigos de recuperación"
+
+#: templates/accounts/security_codes.html:7
+msgid ""
+"Gárdaos nun lugar seguro (en papel ou nun xestor de contrasinais). Cada un "
+"só vale unha vez e serven para entrar se non tes o móbil. Esta é a única vez"
+" que se mostran."
+msgstr ""
+"Guárdalos en un lugar seguro (en papel o en un gestor de contraseñas). Cada "
+"uno solo vale una vez y sirven para entrar si no tienes el móvil. Esta es la"
+" única vez que se muestran."
+
+#: templates/accounts/security_codes.html:10
+msgid "Os teus códigos"
+msgstr "Tus códigos"
+
+#: templates/accounts/security_codes.html:12
+msgid "Se xeras códigos novos, estes deixan de valer."
+msgstr "Si generas códigos nuevos, estos dejan de valer."
+
+#: templates/accounts/security_codes.html:13
+msgid "Xa os gardei"
+msgstr "Ya los he guardado"
+
+#: templates/accounts/two_factor_verify.html:2
+#: templates/accounts/two_factor_verify.html:5
+msgid "Segundo paso"
+msgstr "Segundo paso"
+
+#: templates/accounts/two_factor_verify.html:6
+msgid ""
+"A túa conta ten o dobre factor activado. Abre a app de códigos do móbil e "
+"escribe o código de 6 díxitos."
+msgstr ""
+"Tu cuenta tiene el doble factor activado. Abre la app de códigos del móvil y"
+" escribe el código de 6 dígitos."
+
+#: templates/accounts/two_factor_verify.html:12
+msgid ""
+"Sen o móbil? Usa un dos códigos de recuperación que gardaches ao activalo."
+msgstr ""
+"¿Sin el móvil? Usa uno de los códigos de recuperación que guardaste al "
+"activarlo."
 
 #: templates/activities/enroll.html:2
 msgid "Inscrición"
@@ -8509,7 +9276,7 @@ msgstr ""
 "instalación, día y hora en las últimas 8 semanas. No contiene ningún dato "
 "personal."
 
-#: templates/analytics/open_data.html:8
+#: templates/analytics/open_data.html:8 templates/manage/audit.html:6
 msgid "Descargar CSV"
 msgstr "Descargar CSV"
 
@@ -8883,11 +9650,6 @@ msgstr "Más información"
 #: templates/app/request.html:23
 msgid "Enviarme a app"
 msgstr "Enviarme la app"
-
-#: templates/app/request.html:26 templates/app/request.html:28
-#: templates/dev/lock_simulator.html:59
-msgid "Como funciona"
-msgstr "Cómo funciona"
 
 #: templates/app/request.html:30
 msgid "Recibes un correo coa ligazón e o teu código."
@@ -9974,8 +10736,8 @@ msgstr ""
 "ayuntamientos cercanos."
 
 #: templates/bookings/games.html:10 templates/dev/mailbox.html:11
-#: templates/manage/incidents.html:5 templates/manage/payments.html:12
-#: templates/manage/work_orders.html:6
+#: templates/manage/audit.html:12 templates/manage/incidents.html:5
+#: templates/manage/payments.html:12 templates/manage/work_orders.html:6
 msgid "Filtrar"
 msgstr "Filtrar"
 
@@ -10116,9 +10878,9 @@ msgid "Concello de %(n)s · Servizo municipal de deportes"
 msgstr "Ayuntamiento de %(n)s · Servicio municipal de deportes"
 
 #: templates/bookings/receipt.html:9 templates/manage/agenda.html:9
-#: templates/manage/booking.html:12 templates/manage/dashboard.html:18
-#: templates/manage/passes.html:24 templates/manage/vouchers.html:15
-#: templates/monitor/fitness.html:14
+#: templates/manage/audit.html:17 templates/manage/booking.html:12
+#: templates/manage/dashboard.html:18 templates/manage/passes.html:24
+#: templates/manage/vouchers.html:15 templates/monitor/fitness.html:14
 msgid "Persoa"
 msgstr "Persona"
 
@@ -10415,8 +11177,9 @@ msgstr "Ilustración generada con IA para el proyecto Eira, licencia"
 msgid "Non inclúe obras de terceiros nin persoas reais nin marcas."
 msgstr "No incluye obras de terceros, personas reales ni marcas."
 
-#: templates/core/custody.html:5 templates/includes/shell_desk.html:46
-#: templates/includes/shell_desk.html:47 templates/manage/breaches.html:4
+#: templates/core/custody.html:5 templates/core/dpia.html:5
+#: templates/includes/shell_desk.html:47 templates/includes/shell_desk.html:48
+#: templates/manage/audit.html:4 templates/manage/breaches.html:4
 msgid "Protección de datos"
 msgstr "Protección de datos"
 
@@ -10469,10 +11232,27 @@ msgid "Política de privacidade completa"
 msgstr "Política de privacidad completa"
 
 #: templates/core/custody.html:30
+msgid "Datos con máis risco"
+msgstr "Datos con más riesgo"
+
+#: templates/core/custody.html:31
+msgid ""
+"Para a saúde, os menores, os accidentes e a foto do carné, o concello fai "
+"unha avaliación de impacto: que pode pasar e como se evita."
+msgstr ""
+"Para la salud, los menores, los accidentes y la foto del carné, el "
+"ayuntamiento hace una evaluación de impacto: qué puede pasar y cómo se "
+"evita."
+
+#: templates/core/custody.html:32
+msgid "Ver a avaliación de impacto (EIPD)"
+msgstr "Ver la evaluación de impacto (EIPD)"
+
+#: templates/core/custody.html:34
 msgid "Se hai un incidente"
 msgstr "Si hay un incidente"
 
-#: templates/core/custody.html:31
+#: templates/core/custody.html:35
 msgid ""
 "Se algunha vez hai un incidente de seguridade cos teus datos, o concello "
 "rexístrao, avisa á AEPD nun prazo de 72 horas se hai risco e, se o risco é "
@@ -10481,6 +11261,54 @@ msgstr ""
 "Si alguna vez hay un incidente de seguridad con tus datos, el ayuntamiento "
 "lo registra, avisa a la AEPD en un plazo de 72 horas si hay riesgo y, si el "
 "riesgo es alto, te avisa a ti directamente."
+
+#: templates/core/dpia.html:6
+msgid "Avaliación de impacto (EIPD)"
+msgstr "Evaluación de impacto (EIPD)"
+
+#: templates/core/dpia.html:7
+#, python-format
+msgid ""
+"Algúns datos teñen máis risco: saúde, menores, accidentes e a foto do carné."
+" Antes de usalos, o concello de %(c)s avalía o impacto (art. 35 do RXPD). "
+"Este é o resumo: que pode pasar, que fai Eira para evitalo e que risco "
+"queda."
+msgstr ""
+"Algunos datos tienen más riesgo: salud, menores, accidentes y la foto del "
+"carné. Antes de usarlos, el ayuntamiento de %(c)s evalúa el impacto (art. 35"
+" del RGPD). Este es el resumen: qué puede pasar, qué hace Eira para evitarlo"
+" y qué riesgo queda."
+
+#: templates/core/dpia.html:14
+msgid "Que datos"
+msgstr "Qué datos"
+
+#: templates/core/dpia.html:15
+msgid "Que pode pasar"
+msgstr "Qué puede pasar"
+
+#: templates/core/dpia.html:16
+msgid "Que fai Eira"
+msgstr "Qué hace Eira"
+
+#: templates/core/dpia.html:17
+msgid "Risco que queda"
+msgstr "Riesgo que queda"
+
+#: templates/core/dpia.html:22
+msgid ""
+"Este resumo non substitúe a avaliación formal do concello, que revisa a "
+"persoa delegada de protección de datos (plantilla en docs/rxpd/eipd-"
+"plantilla.md)."
+msgstr ""
+"Este resumen no sustituye a la evaluación formal del ayuntamiento, que "
+"revisa la persona delegada de protección de datos (plantilla en "
+"docs/rxpd/eipd-plantilla.md)."
+
+#: templates/core/dpia.html:22
+#, python-format
+msgid "Contacto do DPD: %(d)s."
+msgstr "Contacto del DPD: %(d)s."
 
 #: templates/core/error.html:8
 #, python-format
@@ -12397,26 +13225,20 @@ msgstr "Altas de la app"
 msgid "Persoal e códigos"
 msgstr "Personal y códigos"
 
-#: templates/includes/shell_desk.html:40 templates/includes/shell_desk.html:49
-#: templates/manage/accidents.html:2 templates/manage/accidents.html:4
-#: templates/manage/safety.html:7
-msgid "Rexistro de accidentes"
-msgstr "Registro de accidentes"
-
-#: templates/includes/shell_desk.html:50 templates/manage/breaches.html:7
+#: templates/includes/shell_desk.html:52 templates/manage/breaches.html:7
 msgid "Quen custodia os datos"
 msgstr "Quién custodia los datos"
 
-#: templates/includes/shell_desk.html:55
+#: templates/includes/shell_desk.html:57
 msgid "Rede"
 msgstr "Red"
 
-#: templates/includes/shell_desk.html:56
+#: templates/includes/shell_desk.html:58
 #: templates/region/new_municipality.html:2
 msgid "Novo concello"
 msgstr "Nuevo ayuntamiento"
 
-#: templates/includes/shell_desk.html:57
+#: templates/includes/shell_desk.html:59
 msgid "Concellos"
 msgstr "Ayuntamientos"
 
@@ -12878,6 +13700,86 @@ msgid ""
 msgstr ""
 "Alternativa accesible: la vista «Lista» muestra cada día en una tabla, con "
 "todos los datos."
+
+#: templates/manage/audit.html:5
+msgid ""
+"Quen fixo cada acción sensible e cando: tarifas, permisos, exportacións, "
+"acceso de soporte, brechas, accidentes e dobre factor. Non se pode editar "
+"nin borrar desde a aplicación."
+msgstr ""
+"Quién hizo cada acción sensible y cuándo: tarifas, permisos, exportaciones, "
+"acceso de soporte, brechas, accidentes y doble factor. No se puede editar ni"
+" borrar desde la aplicación."
+
+#: templates/manage/audit.html:7
+msgid ""
+"Só o ven a administración do concello e a persoa delegada de protección de "
+"datos. A deputación non entra, nin sequera co acceso de soporte. A descarga "
+"tamén queda rexistrada."
+msgstr ""
+"Solo lo ven la administración del ayuntamiento y la persona delegada de "
+"protección de datos. La diputación no entra, ni siquiera con el acceso de "
+"soporte. La descarga también queda registrada."
+
+#: templates/manage/audit.html:8
+msgid "Filtrar o rexistro"
+msgstr "Filtrar el registro"
+
+#: templates/manage/audit.html:9
+msgid "Categoría"
+msgstr "Categoría"
+
+#: templates/manage/audit.html:14
+#, python-format
+msgid "%(n)s entrada"
+msgid_plural "%(n)s entradas"
+msgstr[0] "%(n)s entrada"
+msgstr[1] "%(n)s entradas"
+
+#: templates/manage/audit.html:16
+msgid "Accións sensibles rexistradas"
+msgstr "Acciones sensibles registradas"
+
+#: templates/manage/audit.html:17
+msgid "Acción"
+msgstr "Acción"
+
+#: templates/manage/audit.html:17
+msgid "Obxecto"
+msgstr "Objeto"
+
+#: templates/manage/audit.html:17
+msgid "Detalle"
+msgstr "Detalle"
+
+#: templates/manage/audit.html:24
+msgid "Non hai entradas con estes filtros."
+msgstr "No hay entradas con estos filtros."
+
+#: templates/manage/audit.html:26
+msgid "Páxinas do rexistro"
+msgstr "Páginas del registro"
+
+#: templates/manage/audit.html:27 templates/monitor/effort.html:33
+msgid "Anterior"
+msgstr "Anterior"
+
+#: templates/manage/audit.html:28
+#, python-format
+msgid "Páxina %(n)s de %(t)s"
+msgstr "Página %(n)s de %(t)s"
+
+#: templates/manage/audit.html:29 templates/monitor/effort.html:34
+msgid "Seguinte"
+msgstr "Siguiente"
+
+#: templates/manage/audit.html:31
+msgid ""
+"Máis información: docs/seguridade-rxpd.md (dobre factor e rexistro de "
+"auditoría)."
+msgstr ""
+"Más información: docs/seguridade-rxpd.md (doble factor y registro de "
+"auditoría)."
 
 #: templates/manage/booking.html:12
 #, python-format
@@ -14737,6 +15639,14 @@ msgstr "Personal y empadronamiento"
 msgid "Roles do persoal"
 msgstr "Roles del personal"
 
+#: templates/manage/staff.html:8
+msgid "Sen dobre factor"
+msgstr "Sin doble factor"
+
+#: templates/manage/staff.html:9
+msgid "Restablecer o dobre factor"
+msgstr "Restablecer el doble factor"
+
 #: templates/manage/staff.html:9
 msgid "Retirar"
 msgstr "Retirar"
@@ -14792,10 +15702,6 @@ msgstr ""
 "Valida en el mostrador el derecho a tarifa reducida (discapacidad, "
 "desempleo, familia numerosa). Eira solo guarda el colectivo y la fecha, "
 "nunca la documentación."
-
-#: templates/manage/staff.html:25
-msgid "Acceso de soporte da deputación"
-msgstr "Acceso de soporte de la diputación"
 
 #: templates/manage/staff.html:26
 msgid ""
@@ -15282,17 +16188,9 @@ msgstr ""
 "Sin consentimiento de la familia para registrar el esfuerzo. Pasa a la "
 "siguiente persona."
 
-#: templates/monitor/effort.html:33
-msgid "Anterior"
-msgstr "Anterior"
-
 #: templates/monitor/effort.html:34
 msgid "Saltar"
 msgstr "Saltar"
-
-#: templates/monitor/effort.html:34
-msgid "Seguinte"
-msgstr "Siguiente"
 
 #: templates/monitor/effort.html:37
 msgid "Ninguén marcado como presente."
@@ -16059,10 +16957,6 @@ msgstr "Algo roto, sucio o un comentario para el ayuntamiento"
 #: templates/safety/_two_buttons.html:9
 msgid "Accidente deportivo ou emerxencia de seguridade"
 msgstr "Accidente deportivo o emergencia de seguridad"
-
-#: templates/safety/accident_done.html:2 templates/safety/accident_done.html:6
-msgid "Accidente rexistrado"
-msgstr "Accidente registrado"
 
 #: templates/safety/accident_done.html:7
 #, python-format

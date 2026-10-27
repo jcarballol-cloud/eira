@@ -5,8 +5,8 @@
 <div class="grid grid-2">
   <section class="card" aria-labelledby="st-title">
     <h2 id="st-title">{% translate "Roles do persoal" %}</h2>
-    <ul class="list">{% for m in members %}<li class="row-between"><span>{{ m.user.email }} · {{ m.get_role_display }}{% if m.company %} · {{ m.company }}{% endif %}</span>
-      {% if m.user != user %}<form method="post">{% csrf_token %}<input type="hidden" name="remove" value="{{ m.pk }}"><button class="btn btn-sm btn-secondary" type="submit">{% translate "Retirar" %}<span class="visually-hidden"> {{ m.user.email }}</span></button></form>{% endif %}</li>{% endfor %}</ul>
+    <ul class="list">{% for m in members %}<li class="row-between"><span>{{ m.user.email }} · {{ m.get_role_display }}{% if m.company %} · {{ m.company }}{% endif %}{% if m.user_id in two_factor_users %} <span class="badge badge-ok">{% icon 'shield' %} {% translate "Dobre factor" %}</span>{% elif m.role in management_roles %} <span class="badge">{% translate "Sen dobre factor" %}</span>{% endif %}</span>
+      {% if m.user != user %}<span class="row">{% if m.user_id in two_factor_users %}<form method="post">{% csrf_token %}<input type="hidden" name="reset_2fa" value="{{ m.user_id }}"><button class="btn btn-sm btn-secondary" type="submit">{% translate "Restablecer o dobre factor" %}<span class="visually-hidden"> {{ m.user.email }}</span></button></form>{% endif %}<form method="post">{% csrf_token %}<input type="hidden" name="remove" value="{{ m.pk }}"><button class="btn btn-sm btn-secondary" type="submit">{% translate "Retirar" %}<span class="visually-hidden"> {{ m.user.email }}</span></button></form></span>{% endif %}</li>{% endfor %}</ul>
     <form method="post" novalidate class="mt-2">{% csrf_token %}{% include "includes/form.html" %}<button class="btn" type="submit">{% translate "Asignar rol" %}</button></form>
   </section>
   <section class="card" aria-labelledby="inv-title">

@@ -64,6 +64,10 @@ class Region(models.Model):
     name = models.CharField(_("nome"), max_length=120)
     slug = models.SlugField(unique=True)
     kind = models.CharField(_("tipo"), max_length=20, choices=Kind.choices, default=Kind.PROVINCE)
+    # v1.3 · C: dobre factor obrigatorio para o persoal da deputación (configurable no admin técnico)
+    require_2fa = models.BooleanField(
+        _("esixir dobre factor ao persoal da agrupación"), default=False
+    )
 
     class Meta:
         verbose_name = _("agrupación supramunicipal")
@@ -254,6 +258,15 @@ class Municipality(models.Model):
         decimal_places=3,
         default=Decimal("0.150"),
         help_text=_("Factor orientativo do mix eléctrico. Cámbiao polo da túa comercializadora."),
+    )
+    # v1.3 · C: dobre factor (TOTP) obrigatorio para a administración e o DPD do concello
+    require_2fa_admin = models.BooleanField(
+        _("esixir dobre factor á administración e ao DPD"),
+        default=False,
+        help_text=_(
+            "Quen teña eses roles terá que activar unha app de códigos (TOTP) antes de entrar na "
+            "xestión. Para o resto de persoas é opcional."
+        ),
     )
     is_active = models.BooleanField(_("activo"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)

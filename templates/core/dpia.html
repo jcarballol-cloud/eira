@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Avaliación de impacto" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div>
+  <p class="eyebrow">{% icon 'shield' %} {% translate "Protección de datos" %}</p>
+  <h1>{% translate "Avaliación de impacto (EIPD)" %}</h1>
+  <p>{% blocktranslate trimmed with c=tenant.name %}Algúns datos teñen máis risco: saúde, menores, accidentes e a foto do carné. Antes de usalos, o concello de {{ c }} avalía o impacto (art. 35 do RXPD). Este é o resumo: que pode pasar, que fai Eira para evitalo e que risco queda.{% endblocktranslate %}</p>
+</div><a class="btn btn-secondary" href="{% turl 'privacy_custody' %}">{% translate "Quen custodia os teus datos" %}</a></div>
+<ul class="stack list" role="list">
+  {% for t in treatments %}
+  <li class="card custody-item" id="eipd-{{ t.key }}">
+    <h2 class="h3">{{ t.title }}</h2>
+    <dl class="kv">
+      <dt>{% translate "Que datos" %}</dt><dd>{{ t.data }}</dd>
+      <dt>{% translate "Que pode pasar" %}</dt><dd>{{ t.risk }}</dd>
+      <dt>{% translate "Que fai Eira" %}</dt><dd><ul class="list-plain">{% for m in t.measures %}<li>{% icon 'check' %} {{ m }}</li>{% endfor %}</ul></dd>
+      <dt>{% translate "Risco que queda" %}</dt><dd><span class="badge">{{ t.residual }}</span></dd>
+    </dl>
+  </li>
+  {% endfor %}
+</ul>
+<p class="help mt-2">{% translate "Este resumo non substitúe a avaliación formal do concello, que revisa a persoa delegada de protección de datos (plantilla en docs/rxpd/eipd-plantilla.md)." %}{% if tenant.dpo_contact %} {% blocktranslate with d=tenant.dpo_contact %}Contacto do DPD: {{ d }}.{% endblocktranslate %}{% endif %}</p>
+{% endblock %}

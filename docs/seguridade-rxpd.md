@@ -68,3 +68,84 @@ rexistra todas as peticións de rede e comproba que ningunha contén os valores 
 - O límite de intentos usa a caché local do proceso; nun despregamento con varios procesos convén
   `EIRA_CACHE_DIR` (caché en disco compartida) ou Redis.
 - O admin técnico de Django usa contrasinal: restrinxilo por IP no proxy.
+
+## v1.3 · Seguridade das contas de xestión
+
+### Que había antes da v1.3 (comprobado no código)
+
+| Comprobación | Resultado |
+|---|---|
+| Dobre factor nos roles de xestión (administración, deputación, DPD) | **Non existía.** Todas as contas entraban só co código ao correo ou con Cl@ve (simulada). O admin técnico de Django, con contrasinal |
+| Rexistro de auditoría | **Existía** `AuditLog` (desde a v1) e xa rexistraba tarifas (`facility.tariffs`), asignación de roles (`tenant.staff_add`), exportación íntegra (`tenant.export`), acceso de soporte (`support.*`, cada páxina vista), brechas (`breach.save`) e accidentes (`accident.*`) |
+| Faltaba no rexistro | A **retirada** de roles; as **descargas** de CSV/ODS/PDF/ICS do persoal (cobros, indicadores, microdatos do observatorio, limpeza…); e unha **vista** para consultalo (só se vían os usos do acceso de soporte en «Persoal e códigos») |
+
+### Dobre factor (TOTP, RFC 6238)
+
+- **Que é:** despois do código ao correo ou de Cl@ve, a persoa escribe o código de 6 díxitos dunha
+  app de códigos do móbil (calquera compatible con TOTP: FreeOTP, Aegis…). Pasos de 30 s, SHA-1,
+  6 díxitos (os valores por defecto da RFC 6238 e de todas as apps). Implementación con `pyotp`
+  (MIT), que xa era dependencia de Eira para os códigos sen conexión.
+- **Opcional por persoa:** *A miña conta → Seguridade da conta* (`/conta/seguridade/`). Activación:
+  QR (ou clave en texto) → código de confirmación → **10 códigos de recuperación**.
+- **Obrigatorio por concello:** *Xestión → Configuración → Seguridade das contas de xestión*
+  (`require_2fa_admin`, desactivado por defecto). Afecta a quen ten rol **administración** ou **DPD**
+  nese concello (e á deputación cando entra nese concello). Quen non o teña activado e intente entrar
+  na xestión vai á páxina para activalo. Non o pode desactivar mentres o concello o esixa.
+- **Deputación:** `Region.require_2fa` (desactivado por defecto; configúrase no admin técnico porque
+  a deputación non ten pantalla de configuración propia). Afecta á vista `/rexion/…`.
+- **Como funciona o bloqueo:** `TwoFactorMiddleware`. Unha sesión dunha persoa co dobre factor
+  activado e sen verificar só pode ver `/acceso/…` (incluída a páxina do segundo paso). Tras
+  verificar, a sesión cambia de clave e queda marcada co dispositivo verificado. Ao activalo noutra
+  sesión, **as demais sesións abertas desa persoa piden o segundo paso** na seguinte petición.
+- **Reprodución:** un código non vale dúas veces (gárdase o último paso de tempo aceptado). Admítese
+  un paso de desfase cara a diante e cara a atrás (reloxo do móbil).
+- **Intentos:** 5 erros → peche da sesión e espera de 15 min (por persoa, na caché).
+- **Códigos de recuperación:** 10, de 8 caracteres sen ambigüidades (sen 0/O nin 1/I/L), dun só uso;
+  só se garda o HMAC-SHA256 co segredo do servidor; móstranse unha única vez (`Cache-Control:
+  no-store`). Usar un avisa á persoa (app e correo) e queda no rexistro.
+- **Móbil perdido sen códigos:** outra persoa **administradora do mesmo concello** pode restablecelo
+  en *Persoal e códigos* (`2fa.reset`, rexistrado). Se a persoa xestiona outros concellos ou a
+  deputación, non: faino o soporte técnico da instalación (admin técnico), para que un concello non
+  poida quitarlle o segundo factor a alguén que xestiona outro.
+- **Límites coñecidos:** o segredo TOTP gárdase na base de datos sen cifrado adicional (igual que
+  `django-otp` e a maioría de implementacións): hai que protexer a base de datos e as copias. Non hai
+  WebAuthn/chaves de seguridade (proposto para a v2). O admin técnico de Django tamén pide o segundo
+  paso se a conta o ten activado (está detrás do mesmo middleware).
+- **Tests:** `apps/accounts/tests/test_twofactor.py` (15): vector da RFC 6238, activación,
+  reprodución e xanela, recuperación dun só uso, bloqueo do acceso, aviso ao usar un código de
+  recuperación, límite de intentos, obrigatoriedade por concello e por deputación, imposibilidade de
+  desactivalo se é obrigatorio, restablecemento e os seus límites. E2E: `tests/e2e/test_v13.py`.
+
+### Rexistro de auditoría
+
+- **Onde:** *Xestión → Máis ferramentas → Rexistro de auditoría* (`/c/<concello>/xestion/privacidade/auditoria/`).
+  Na barra da persoa DPD tamén.
+- **Quen:** só a **administración do concello** e a **persoa DPD** (o mesmo control ca o rexistro de
+  brechas, `breach_access`). A deputación **non** entra, nin sequera cun acceso de soporte. O
+  superusuario técnico tampouco pola vía da app (si no admin técnico de Django).
+- **Que mostra:** data, acción en linguaxe clara, categoría, persoa, obxecto e detalle. Filtros por
+  categoría e datas; descarga CSV (que tamén queda rexistrada como `audit.export`). Non se pode
+  editar nin borrar desde a app.
+- **Categorías:**
+
+| Categoría | Accións |
+|---|---|
+| Tarifas, prezos e configuración | `facility.tariffs`, `facility.rules`, `pass_type.*`, `voucher_type.*`, `tenant.settings` |
+| Persoal e permisos | `tenant.staff_add`, **`tenant.staff_remove`** (novo), `tenant.invite`, `eligibility.validate`, `residency.issue`, **`2fa.reset`** (novo) |
+| Exportacións e descargas | **`export.download`** (novo: toda descarga do persoal), `tenant.export`, `tenant.import`, `account.export`, **`audit.export`** (novo) |
+| Acceso de soporte | `support.request`, `support.grant`, `support.revoke`, `support.view` |
+| Brechas | `breach.save` |
+| Accidentes e alertas | `accident.*`, `alert.*`, `closing.*` (incluído o contacto coa Policía Local) |
+| Accesos e dobre factor | `auth.login`, **`auth.2fa`**, **`2fa.*`** (novos) do persoal de xestión do concello |
+
+- **Descargas:** `ExportAuditMiddleware` rexistra calquera resposta `Content-Disposition: attachment`
+  que pida unha persoa con rol de persoal no concello ou na deputación (ficheiro e ruta, nunca o
+  contido). Así quedan cubertas tamén as exportacións futuras sen ter que lembralo en cada vista.
+- **Os inicios de sesión** gárdanse sen concello (son da conta); na vista do concello móstranse os do
+  seu persoal de xestión, nunca os da veciñanza.
+- **Non verificado / pendente:** prazo de conservación do propio rexistro (non hai purga; o concello
+  debe fixalo no RAT); protección contra a manipulación por quen ten acceso directo á base de datos
+  (non hai encadeamento de hashes).
+- **Tests:** `apps/accounts/tests/test_auditlog.py` (permisos por rol, deputación con acceso de
+  soporte → 403, illamento entre concellos, filtros, categorías, retirada de roles, descargas, CSV
+  rexistrado unha soa vez, resumo da EIPD).

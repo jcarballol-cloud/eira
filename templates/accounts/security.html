@@ -1,0 +1,60 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Seguridade da conta" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div>
+  <p class="eyebrow">{% icon 'shield' %} {% translate "A miña conta" %}</p>
+  <h1>{% translate "Seguridade da conta" %}</h1>
+  <p>{% translate "O dobre factor engade un segundo paso ao entrar: ademais do código ao correo (ou Cl@ve), un código de 6 díxitos que xera unha app do teu móbil. Recomendámolo a todo o persoal que xestiona datos." %}</p>
+</div><a class="btn btn-secondary" href="{% url 'account:profile' %}">{% translate "Volver á conta" %}</a></div>
+{% if forced or required_by %}<div class="alert alert-warn" role="status"><p>{% icon 'alert' %} {% if required_by %}{% blocktranslate with n=required_by|join:", " %}Obrigatorio para o teu rol en: {{ n }}.{% endblocktranslate %}{% else %}{% translate "O teu concello esixe o dobre factor para entrar na xestión." %}{% endif %}</p></div>{% endif %}
+<div class="layout-aside">
+<section class="card" aria-labelledby="tf-title">
+  <h2 id="tf-title">{% translate "Dobre factor (app de códigos)" %}</h2>
+  {% if device and device.confirmed %}
+    <p><span class="badge badge-ok">{% icon 'check' %} {% translate "Activado" %}</span> {% blocktranslate with d=device.confirmed_at|date:"d/m/Y" %}desde o {{ d }}{% endblocktranslate %}</p>
+    <p>{% blocktranslate count n=recovery_left %}Quédache {{ n }} código de recuperación sen usar.{% plural %}Quédanche {{ n }} códigos de recuperación sen usar.{% endblocktranslate %}</p>
+    <form method="post" class="stack" novalidate>{% csrf_token %}
+      {% include "includes/form.html" %}
+      <div class="form-actions">
+        <button class="btn btn-secondary" type="submit" name="accion" value="codigos">{% translate "Xerar códigos de recuperación novos" %}</button>
+        {% if not required_by %}<button class="btn btn-danger" type="submit" name="accion" value="desactivar">{% translate "Desactivar o dobre factor" %}</button>{% endif %}
+      </div>
+      <p class="help mb-0">{% translate "Para calquera das dúas cousas escribe primeiro o código que mostra agora a app." %}</p>
+    </form>
+  {% elif pending %}
+    <ol class="setup-steps">
+      <li>{% translate "Instala unha app de códigos no móbil (calquera compatible con TOTP: por exemplo, unha de software libre como FreeOTP ou Aegis)." %}</li>
+      <li>{% translate "Escanea este código QR coa app." %}
+        <div class="qr-box" role="img" aria-label="{% translate 'Código QR para engadir a conta á app de códigos. Se non o podes escanear, usa a clave que está debaixo.' %}">{{ qr_svg|safe }}</div>
+        <p class="mb-0">{% translate "Se non podes escanear, escribe esta clave na app:" %}</p>
+        <p><code class="secret-key" data-secret>{{ secret_groups }}</code></p>
+        <p class="help">{% blocktranslate with i=issuer e=user.email %}Aparecerá como «{{ i }}: {{ e }}». Non compartas esta clave con ninguén.{% endblocktranslate %}</p></li>
+      <li>{% translate "Escribe o código de 6 díxitos que mostra a app para confirmar." %}</li>
+    </ol>
+    <form method="post" novalidate>{% csrf_token %}
+      {% include "includes/form.html" %}
+      <div class="form-actions">
+        <button class="btn" type="submit" name="accion" value="confirmar">{% translate "Confirmar e activar" %}</button>
+        <button class="btn btn-secondary" type="submit" name="accion" value="cancelar" formnovalidate>{% translate "Cancelar" %}</button>
+      </div>
+    </form>
+  {% else %}
+    <p><span class="badge">{% translate "Sen activar" %}</span></p>
+    <form method="post">{% csrf_token %}
+      <button class="btn" type="submit" name="accion" value="activar">{% icon 'shield' %} {% translate "Activar o dobre factor" %}</button>
+    </form>
+  {% endif %}
+</section>
+<aside class="stack">
+  <section class="card" aria-labelledby="tf-how">
+    <h2 id="tf-how" class="h3">{% translate "Como funciona" %}</h2>
+    <ul class="list">
+      <li>{% translate "A app xera un código novo cada 30 segundos, mesmo sen conexión." %}</li>
+      <li>{% translate "Cada código só vale unha vez." %}</li>
+      <li>{% translate "Se perdes o móbil, entra cun código de recuperación (cada un só vale unha vez) ou pídelle a outra persoa administradora do concello que cho restableza." %}</li>
+      <li>{% translate "Tras 5 intentos errados hai que agardar 15 minutos." %}</li>
+    </ul>
+  </section>
+</aside>
+</div>
+{% endblock %}

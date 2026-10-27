@@ -1755,3 +1755,13 @@ html.theme-dark body.themable .member-card__photo--none { background: #26343A; c
 /* v1.2: táboas estreitas da columna lateral (tarifas da ficha) con texto grande a 360 px */
 .layout-aside aside table.data th[scope="row"] { min-width: 0; overflow-wrap: anywhere; }
 html.pref-large-text .layout-aside aside table.data :is(th, td) { padding-left: .45rem; padding-right: .45rem; }
+
+/* v1.3 · C: dobre factor */
+.setup-steps { padding-left: 1.4rem; }
+.setup-steps > li { margin-bottom: 1rem; }
+.qr-box { width: 200px; max-width: 100%; background: #FFFFFF; padding: .5rem; border-radius: var(--radius-sm); margin: .6rem 0; }
+.qr-box svg { display: block; width: 100%; height: auto; }
+.secret-key { font-family: var(--mono, monospace); font-size: 1.05rem; letter-spacing: .06em; overflow-wrap: anywhere; }
+.recovery-codes { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: .5rem; }
+.recovery-codes code { font-family: var(--mono, monospace); font-size: 1.1rem; letter-spacing: .08em; }
+.audit-detail { overflow-wrap: anywhere; max-width: 28rem; }

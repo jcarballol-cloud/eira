@@ -20,6 +20,7 @@ from django.views.decorators.http import require_POST
 
 from apps.integrations.registry import get_adapter
 
+from . import twofactor
 from .forms import (
     CONSENT_FIELDS,
     CodeForm,
@@ -201,6 +202,7 @@ def profile(request):
             "residencies": residencies,
             "nav": "account",
             "residency_form": ResidencyCodeForm(),
+            "two_factor_on": twofactor.enabled(request.user),  # v1.3
         },
     )
 

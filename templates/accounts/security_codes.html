@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Códigos de recuperación" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div>
+  <p class="eyebrow">{% icon 'shield' %} {% translate "Seguridade da conta" %}</p>
+  <h1>{% translate "Códigos de recuperación" %}</h1>
+  <p>{% translate "Gárdaos nun lugar seguro (en papel ou nun xestor de contrasinais). Cada un só vale unha vez e serven para entrar se non tes o móbil. Esta é a única vez que se mostran." %}</p>
+</div></div>
+<section class="card" aria-labelledby="codes-title">
+  <h2 id="codes-title" class="visually-hidden">{% translate "Os teus códigos" %}</h2>
+  <ul class="recovery-codes" role="list">{% for c in codes %}<li><code>{{ c }}</code></li>{% endfor %}</ul>
+  <p class="help">{% translate "Se xeras códigos novos, estes deixan de valer." %}</p>
+  <a class="btn" href="{% url 'account:security' %}">{% translate "Xa os gardei" %}</a>
+</section>
+{% endblock %}

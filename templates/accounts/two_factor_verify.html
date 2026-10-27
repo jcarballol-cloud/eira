@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Segundo paso" %}{% endblock %}
+{% block content %}
+<section class="card prose">
+  <h1>{% translate "Segundo paso" %}</h1>
+  <p>{% translate "A túa conta ten o dobre factor activado. Abre a app de códigos do móbil e escribe o código de 6 díxitos." %}</p>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% include "includes/form.html" %}
+    <div class="form-actions"><button class="btn btn-lg" type="submit">{% translate "Entrar" %}</button></div>
+  </form>
+  <p class="help mt-2">{% translate "Sen o móbil? Usa un dos códigos de recuperación que gardaches ao activalo." %}</p>
+  <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button class="btn btn-secondary" type="submit">{% translate "Saír" %}</button></form>
+</section>
+{% endblock %}

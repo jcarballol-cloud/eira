@@ -231,6 +231,13 @@ def custody(request):
     return render(request, "core/custody.html", {"rows": custody_rows(), "nav": "privacy"})
 
 
+def dpia(request):
+    """v1.3 · B: resumo en linguaxe clara da avaliación de impacto (EIPD)."""
+    from apps.accounts.dpia import TREATMENTS
+
+    return render(request, "core/dpia.html", {"treatments": TREATMENTS, "nav": "privacy"})
+
+
 def safety(request):
     """«Incidencia ou seguridade»: avaría, risco (prioridade alta) ou chamar ao 112."""
     return render(request, "core/safety.html", {"nav": "incident"})

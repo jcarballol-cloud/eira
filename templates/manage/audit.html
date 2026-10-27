@@ -1,0 +1,32 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Rexistro de auditoría" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% icon 'shield' %} {% translate "Protección de datos" %}</p><h1>{% translate "Rexistro de auditoría" %}</h1>
+  <p>{% translate "Quen fixo cada acción sensible e cando: tarifas, permisos, exportacións, acceso de soporte, brechas, accidentes e dobre factor. Non se pode editar nin borrar desde a aplicación." %}</p></div>
+  <a class="btn btn-secondary" href="?{{ query }}{% if query %}&amp;{% endif %}formato=csv">{% icon 'download' %} {% translate "Descargar CSV" %}</a></div>
+<p class="help">{% translate "Só o ven a administración do concello e a persoa delegada de protección de datos. A deputación non entra, nin sequera co acceso de soporte. A descarga tamén queda rexistrada." %}</p>
+<form method="get" class="card mb-2 filters" aria-label="{% translate 'Filtrar o rexistro' %}">
+  <div class="field"><label for="categoria">{% translate "Categoría" %}</label><select id="categoria" name="categoria"><option value="">{% translate "Todas" %}</option>{% for k, l in categories %}<option value="{{ k }}" {% if category == k %}selected{% endif %}>{{ l }}</option>{% endfor %}</select></div>
+  <div class="field"><label for="desde">{% translate "Desde" %}</label><input id="desde" type="date" name="desde" value="{{ day_from|date:'Y-m-d' }}"></div>
+  <div class="field"><label for="ata">{% translate "Ata" %}</label><input id="ata" type="date" name="ata" value="{{ day_to|date:'Y-m-d' }}"></div>
+  <div class="field"><button class="btn" type="submit">{% translate "Filtrar" %}</button></div>
+</form>
+<p class="muted" data-announce>{% blocktranslate count n=page.paginator.count %}{{ n }} entrada{% plural %}{{ n }} entradas{% endblocktranslate %}</p>
+<div class="table-wrap" tabindex="0"><table class="data">
+  <caption class="visually-hidden">{% translate "Accións sensibles rexistradas" %}</caption>
+  <thead><tr><th scope="col">{% translate "Data e hora" %}</th><th scope="col">{% translate "Acción" %}</th><th scope="col">{% translate "Persoa" %}</th><th scope="col">{% translate "Obxecto" %}</th><th scope="col">{% translate "Detalle" %}</th></tr></thead>
+  <tbody>{% for r in rows %}<tr>
+    <td class="nowrap">{{ r.entry.at|date:"d/m/Y H:i" }}</td>
+    <td><strong>{{ r.label }}</strong>{% if r.category %}<br><small class="muted">{{ r.category }}</small>{% endif %}</td>
+    <td>{{ r.actor }}</td>
+    <td>{{ r.object|default:"—" }}</td>
+    <td class="audit-detail">{{ r.detail|default:"—" }}</td>
+  </tr>{% empty %}<tr><td colspan="5">{% translate "Non hai entradas con estes filtros." %}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% if page.has_other_pages %}<nav class="row mt-2" aria-label="{% translate 'Páxinas do rexistro' %}">
+  {% if page.has_previous %}<a class="btn btn-secondary btn-sm" href="?{{ query }}{% if query %}&amp;{% endif %}paxina={{ page.previous_page_number }}">{% translate "Anterior" %}</a>{% endif %}
+  <span>{% blocktranslate with n=page.number t=page.paginator.num_pages %}Páxina {{ n }} de {{ t }}{% endblocktranslate %}</span>
+  {% if page.has_next %}<a class="btn btn-secondary btn-sm" href="?{{ query }}{% if query %}&amp;{% endif %}paxina={{ page.next_page_number }}">{% translate "Seguinte" %}</a>{% endif %}
+</nav>{% endif %}
+<p class="help mt-2">{% translate "Máis información: docs/seguridade-rxpd.md (dobre factor e rexistro de auditoría)." %}</p>
+{% endblock %}

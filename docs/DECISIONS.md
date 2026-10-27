@@ -716,3 +716,38 @@ Regra de sempre: **só se engade**; se algo novo choca co existente, gaña o exi
 - **Corrección (preexistente):** desbordamento horizontal a 360 px no selector de franxas («+luz») e na táboa de tarifas da ficha con texto grande; apareceu ao engadir o pavillón á proba sen scroll horizontal.
 - **Vídeos:** o pitch non se regraba (o guión non se rompe). O anexo regrábase con dous pasos novos (Rendemento e NPS): 65 s.
 - **RAM sen IA** medida con `docker compose -p eira-v12` (PostgreSQL, volumes novos, sen tocar os existentes).
+
+## v1.3 · Documentación para a adopción e preparación para publicar (27/10)
+Regra de sempre: **só se engade**. Tanda case toda de documentación; o código novo é só o do bloque C.
+
+### A · Modelo de ordenanza
+- **Un só ficheiro** `docs/concello/ordenanza-modelo.md` co texto en galego e, debaixo, a versión en castelán (é o que pedía a ruta). Cada artigo leva entre corchetes o campo de configuración de Eira; se Eira non o fai, dino (**suspensión por non presentarse** e **vía de constrinximento**).
+- **Prezo público por defecto** (arts. 41–47 TRLRHL) e **variante de taxa** (arts. 20 e seguintes) ao final de cada artigo e resumida na sección 3. Para Eira son iguais.
+- **Choque:** a ordenanza remite ao desconto das franxas de baixa demanda, pero `low_demand_discount_pct` **non se podía cambiar desde a xestión** (só desde o admin técnico). **Engádese** á sección «Regras de reserva» da configuración; se non vén no formulario, mantense o valor (mesmo criterio que os campos da v5 e v1.2).
+- **Non hai campo de «entidade exenta»**: a ordenanza indica facelo coa forma de pagamento «Gratuíta» ou cunha tarifa 0. Non se crea un campo novo nesta tanda (só documentación).
+- As citas legais (TRLRHL, LBRL, LGT, Lei 40/2015) **revisáronse sen consultar o BOE consolidado** nesta sesión: o propio documento avisa de que require informe xurídico e de Intervención.
+
+### B · EIPD
+- Plantilla en `docs/rxpd/eipd-plantilla.md`, cuberta co que fai Eira e cos tests que o comproban. A valoración de riscos (probabilidade, impacto, residual) é unha **proposta** para o DPD.
+- **Enlace desde «Quen custodia os teus datos»:** a app non pode ligar a un ficheiro do repositorio (aínda sen URL pública), así que se engade un **resumo en linguaxe clara** na propia app (`/c/‹concello›/privacidade/avaliacion-impacto/`, datos en `apps/accounts/dpia.py`) e unha tarxeta «Datos con máis risco» na páxina de custodia. A matriz (`docs/rxpd/matriz.md`) liga á plantilla.
+- A táboa nova da matriz (contas de xestión) usa a cabeceira «Dato do persoal» para que non entre na páxina de custodia da veciñanza (o mesmo criterio ca na v1.1).
+
+### C · Seguridade das contas de xestión
+- **Comprobado:** non había dobre factor. **Había** rexistro de auditoría (`AuditLog`) para tarifas, asignación de roles, exportación íntegra, soporte, brechas e accidentes, pero faltaban a retirada de roles, as descargas do persoal e unha vista para consultalo.
+- **TOTP con `pyotp`** (xa era dependencia polos códigos sen conexión): sen dependencias novas. Valores estándar (30 s, 6 díxitos, SHA-1) porque son os que admiten todas as apps.
+- **Bloqueo por middleware** (`TwoFactorMiddleware`) e non nas vistas de acceso: así cobre o código ao correo, Cl@ve, o cambio de perfil da demo e o admin técnico, e tamén as sesións que xa estaban abertas cando se activa. `/acceso/`, `/static/`, `/i18n/` e `/dev/` quedan fóra (a demo debe poder cambiar de perfil).
+- **Obrigatorio por concello** para administración e DPD (`require_2fa_admin`, **desactivado por defecto** para non cambiar a demo nin os despregamentos existentes). Para a deputación, `Region.require_2fa` no admin técnico: non existe pantalla de configuración da deputación e non se crea nesta tanda.
+- **Restablecemento** por outra persoa administradora do mesmo concello, só se a persoa non xestiona outros concellos nin a deputación (senón, un concello podería quitarlle o segundo factor a quen xestiona outro).
+- **O segredo TOTP gárdase sen cifrado adicional** na base de datos (como `django-otp`). Cifralo cunha clave derivada de `SECRET_KEY` sen unha biblioteca criptográfica auditada sería peor; anótase como risco na EIPD (protexer BD e copias).
+- **Descargas:** un middleware (`ExportAuditMiddleware`) rexistra toda resposta `attachment` pedida polo persoal, en vez de tocar cada vista de exportación. A descarga do propio rexistro márcase para non contala dúas veces.
+- **Vista do rexistro** en `xestion/privacidade/auditoria/`, co mesmo control ca o rexistro de brechas (`breach_access`: administración e DPD do concello; a deputación non, nin co acceso de soporte). Os inicios de sesión gárdanse sen concello; móstranse os do persoal de xestión dese concello, nunca os da veciñanza.
+- **Tema escuro:** o escritorio do concello segue sen tema escuro (decisión da v1.2); as pantallas novas da conta (seguridade, segundo paso, códigos) si se proban en escuro.
+
+### D · Publicación
+- **Non se reescribiu o historial.** Os achados (dominio `demo.eira.example` en commits antigos, un nome de pila nos commits da v1.2, un apelido común na lista ficticia, tamaño das capturas) e a proposta de limpeza están en `docs/AUDITORIA_PUBLICACION.md`.
+- O repositorio xa ten un remoto `origin` con `origin/master` en `5181c06`: non se fixo push (regra da sesión) e non se consultou a rede para saber se é público.
+- `.gitignore` ignora desde agora `*.docx`, `*.doc`, `*.odt` e `*.pdf` (agás en `docs/`), para que a carta de interese ou outros documentos alleos non se poidan versionar por erro.
+- `GOVERNANCE.md` en galego e castelán. Non se inventan persoas mantedoras: figura o «Equipo Eira» e proponse un comité de persoas usuarias cando haxa concellos.
+
+### Corrección
+- **Demo v1.2:** o exemplo de «peche sen confirmar» só se creaba se, ao chou, había unha reserva usada onte no pavillón. Algúns días non a hai e as probas axe fallaban (`esc` baleiro). Agora `demo_v12` crea esa reserva se falta (na primeira hora libre dunha lista: 20 h, 19 h, 21 h… ata as 10 h). Só engade datos á demo.

@@ -27,6 +27,7 @@ description:
       - Incidencias e mantemento preventivo
       - Indicadores, datos abertos DCAT-AP e API OpenAPI 3.1
       - Multi-concello con vista de deputación
+      - Dobre factor (TOTP) para as contas de xestión e rexistro de auditoría
   es:
     shortDescription: Software libre para la gestión deportiva municipal. Reservas, acceso a las instalaciones, mantenimiento y actividades.
     longDescription: >
@@ -38,6 +39,7 @@ description:
       - Acceso sin conserje con códigos temporales sin conexión
       - Incidencias y mantenimiento preventivo
       - Multi-municipio con vista de diputación
+      - Doble factor (TOTP) para las cuentas de gestión y registro de auditoría
 legal:
   license: EUPL-1.2
   mainCopyrightOwner: Equipo Eira

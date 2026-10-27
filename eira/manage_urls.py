@@ -4,7 +4,7 @@
 from django.urls import path
 
 from apps.access import views as access
-from apps.accounts import breaches, signup
+from apps.accounts import auditlog, breaches, signup
 from apps.activities import views as activities
 from apps.analytics import performance_views as performance
 from apps.analytics import views as analytics
@@ -84,6 +84,7 @@ urlpatterns = [
     path("persoal/empadroamento/", tenant.issue_invitation, name="issue_invitation"),
     path("portabilidade/", portability.page, name="portability"),
     path("privacidade/brechas/", breaches.breach_list, name="breaches"),
+    path("privacidade/auditoria/", auditlog.audit_log, name="audit"),  # v1.3 · C
     path("privacidade/brechas/nova/", breaches.breach_edit, name="breach_new"),
     path("privacidade/brechas/<int:pk>/", breaches.breach_edit, name="breach"),
     path(

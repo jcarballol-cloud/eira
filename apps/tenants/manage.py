@@ -5,7 +5,7 @@ import datetime as dt
 
 from django import forms
 from django.contrib import messages
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
@@ -16,6 +16,7 @@ from apps.accounts.models import (
     Membership,
     ResidencyInvitation,
     Role,
+    TwoFactorDevice,
     User,
     audit,
 )
@@ -65,6 +66,7 @@ SETTINGS_SECTIONS = [
             "cancellation_hours",
             "late_cancel_penalty_pct",
             "no_show_grace_minutes",
+            "low_demand_discount_pct",  # v1.3: a ordenanza modelo remite a el
         ],
         False,
     ),
@@ -119,6 +121,8 @@ SETTINGS_SECTIONS = [
         False,
     ),
     ("enquisas", gettext_lazy("Satisfacción (NPS)"), ["nps_after_use"], False),
+    # v1.3 · C
+    ("contas", gettext_lazy("Seguridade das contas de xestión"), ["require_2fa_admin"], False),
     (
         "rendemento",
         gettext_lazy("Rendemento (estimación orientativa)"),
@@ -179,6 +183,8 @@ class SettingsForm(forms.ModelForm):
             "nps_after_use",
             "energy_price_eur_kwh",
             "co2_kg_kwh",
+            "require_2fa_admin",  # v1.3
+            "low_demand_discount_pct",  # v1.3
         ]
         widgets = {
             "lighting_from": forms.TimeInput(attrs={"type": "time"}),
@@ -238,6 +244,7 @@ class SettingsForm(forms.ModelForm):
         "checkin_release_minutes",
         "energy_price_eur_kwh",
         "co2_kg_kwh",
+        "low_demand_discount_pct",  # v1.3
     )
 
     def clean(self):
@@ -348,10 +355,42 @@ def staff(request):
                 )
                 return redirect(treverse(request.tenant, "manage:staff"))
     elif request.method == "POST":
+        if request.POST.get("reset_2fa"):
+            # v1.3 · C: quen perdeu o móbil e os códigos de recuperación
+            from apps.accounts import twofactor
+
+            target = get_object_or_404(
+                User.objects.filter(memberships__municipality=request.tenant).distinct(),
+                pk=request.POST["reset_2fa"],
+            )
+            try:
+                twofactor.reset_for(target, request.user, request.tenant)
+            except twofactor.TwoFactorError as exc:
+                messages.error(request, str(exc))
+            else:
+                messages.success(
+                    request,
+                    _("Dobre factor restablecido. %(e)s pode activalo de novo ao entrar.")
+                    % {"e": target.email},
+                )
+            return redirect(treverse(request.tenant, "manage:staff"))
         if request.POST.get("remove"):
-            Membership.objects.filter(
-                municipality=request.tenant, pk=request.POST["remove"]
-            ).exclude(user=request.user).delete()
+            removed = (
+                Membership.objects.filter(municipality=request.tenant, pk=request.POST["remove"])
+                .exclude(user=request.user)
+                .select_related("user")
+                .first()
+            )
+            if removed is not None:
+                removed.delete()
+                # v1.3 · C: a retirada de permisos tamén queda no rexistro de auditoría
+                audit(
+                    "tenant.staff_remove",
+                    request.user,
+                    request.tenant,
+                    removed.user,
+                    role=removed.role,
+                )
             messages.success(request, _("Rol retirado."))
             return redirect(treverse(request.tenant, "manage:staff"))
         if form.is_valid():
@@ -389,6 +428,13 @@ def staff(request):
             )[:30],
             "form": form,
             "members": members,
+            # v1.3 · C
+            "two_factor_users": set(
+                TwoFactorDevice.objects.filter(
+                    user__in=members.values("user"), confirmed_at__isnull=False
+                ).values_list("user_id", flat=True)
+            ),
+            "management_roles": ("admin", "dpo"),
             "invitations": invitations,
             "support_active": SupportAccess.active_for(
                 request.tenant, [request.tenant.region_id] if request.tenant.region_id else []

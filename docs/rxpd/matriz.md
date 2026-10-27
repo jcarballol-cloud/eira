@@ -3,6 +3,8 @@
 
 Que dato ve cada perfil e onde se comproba. As probas en `apps/*/tests/test_privacy*.py`, `apps/tenants/tests/test_roles.py` e `apps/accounts/tests/test_privacy.py` verifican esta matriz.
 
+**Avaliación de impacto (EIPD):** os tratamentos de maior risco (saúde, menores, accidentes e carné con foto) teñen unha plantilla de EIPD cuberta co que fai Eira: [eipd-plantilla.md](eipd-plantilla.md). Resumo para a veciñanza en *Quen custodia os teus datos → Ver a avaliación de impacto*.
+
 Lenda: **✔** ve o dato · **—** non o ve · **agr.** só agregado (n ≥ 10) · **seud.** seudonimizado.
 
 | Dato | Veciña (propio) | Operario/a | Monitor/a | Concello | Deputación | Observatorio público | Exportacións |
@@ -109,3 +111,14 @@ Son datos do persoal (propio ou da empresa contratada), non da veciñanza; por i
 - O **QR** só leva o identificador interno do carné, a versión e (no impreso) a data de fin: ningún dato persoal. O dixital caduca aos 3 minutos.
 - **Foto opcional**, gardada sen metadatos; non se usa para nada máis.
 - **Vínculo con outro carné do concello** (biblioteca, piscina): só o número externo, mediante o adaptador `municipal_card` (simulado). Ver `docs/carne-municipal.md`.
+
+## v1.3 · Contas de xestión: dobre factor e rexistro de auditoría
+
+| Dato do persoal | Persoa (propio) | Outra administración do concello | DPD | Deputación | Conservación |
+|---|---|---|---|---|---|
+| Segredo TOTP (dobre factor) | só na súa app; en Eira, gardado e nunca mostrado despois de activalo | — (só ve se o ten activado e pode restablecelo) | — | — | mentres o teña activado |
+| Códigos de recuperación | ✔ unha soa vez; en Eira só o HMAC | — | — | — | ata que se usan ou se xeran outros |
+| Rexistro de auditoría (quen, que acción, cando, obxecto, detalle) | — | ✔ (o do seu concello) | ✔ | **—** (nin co acceso de soporte) | ‹definir no RAT; non se borra desde a app› |
+
+- O rexistro inclúe os accesos e o dobre factor do **persoal de xestión** do concello; os inicios de sesión da veciñanza non se mostran.
+- Ver [seguridade-rxpd.md](../seguridade-rxpd.md#v13--seguridade-das-contas-de-xestión).

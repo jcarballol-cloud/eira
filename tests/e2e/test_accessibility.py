@@ -132,6 +132,8 @@ def page_sets():
             f"{c}/seguridade/accidente/{hall.pk}/",
             f"{c}/seguridade/peche/{esc.token}/",
             f"{c}/?full_access=on&bikes=on&aed=on",
+            # v1.3 · B
+            f"{c}/privacidade/avaliacion-impacto/",
         ],
         "uxia@demo.eira.example": [
             f"{c}/app/",
@@ -181,6 +183,9 @@ def page_sets():
             f"{c}/reservas/partidas/{game.pk}/",
             f"{c}/reservas/{uxia_next_padel.pk}/busco-xente/",
             f"{c}/carne/",
+            # v1.3 · B e C
+            "/conta/seguridade/",
+            f"{c}/privacidade/avaliacion-impacto/",
         ],
         "admin@vilardeiras.demo.eira.example": [
             # v5
@@ -243,6 +248,10 @@ def page_sets():
             # v1.2 · H
             f"{c}/xestion/abonos/",
             f"{c}/xestion/carne/",
+            # v1.3 · C
+            f"{c}/xestion/privacidade/auditoria/",
+            f"{c}/xestion/privacidade/auditoria/?categoria=accidentes",
+            "/conta/seguridade/",
         ],
         "noela@demo.eira.example": [
             f"{c}/operario/",

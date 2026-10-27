@@ -103,6 +103,9 @@ def pages():
         f"{c}/carne/",
         f"{c}/reservas/lista-de-espera/{wait.pk}/",
         f"{c}/instalacions/{hall.pk}/",
+        # v1.3
+        "/conta/seguridade/",
+        f"{c}/privacidade/avaliacion-impacto/",
     ]
     operator = [f"{c}/operario/", f"{c}/operario/orde/{order.pk}/", f"{c}/operario/calendario/"]
     tablet = [

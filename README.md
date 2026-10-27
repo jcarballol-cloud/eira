@@ -42,6 +42,33 @@ python tools/tasks.py dev                           # ou: make dev
 
 Abre <http://127.0.0.1:8000> e escolle un perfil de demostración (persoas ficticias).
 
+### A demo en 5 minutos
+
+1. **Arrancar** (1–3 min): `docker compose up --build` (precisa Docker) ou, sen Docker,
+   `python tools/tasks.py dev` (Python 3.12+; usa SQLite e carga a demo). Agarda a que diga que
+   escoita no porto 8000.
+2. **Entrar:** abre <http://localhost:8000>. Non hai contrasinais: escolle o concello (Vilardeiras ou
+   Pontedouro, ficticios) e un perfil. Todas as persoas, correos e datos son inventados.
+3. **Probar como veciña** (perfil *Uxía*): reserva unha franxa no pádel → paga no TPV simulado →
+   recibe o código de acceso → abre a pechadura no simulador. Mira tamén *O meu carné* e *Incidencia
+   ou seguridade*.
+4. **Probar como concello** (perfil *Concello de Vilardeiras*): panel do día, axenda, incidencias,
+   *Máis ferramentas → Rendemento*, *Enquisas (NPS)* e *Rexistro de auditoría*.
+5. **Ver os correos e avisos** que enviaría Eira: na barra da demo, *Bandexa de correo* (`/dev/mailbox/`).
+6. **Volver a empezar:** `python tools/tasks.py seed` rexenera os datos da demo.
+
+O guión completo está en [docs/demo/guion-demo.md](docs/demo/guion-demo.md). Variables de contorno
+en [.env.example](.env.example) (en local abonda con `EIRA_DEBUG=1`).
+
+### Comprobar que todo está ben
+
+```bash
+python tools/tasks.py test      # tests unitarios e de integración
+python tools/tasks.py e2e       # Playwright + axe (WCAG 2.1 AA), arranca un servidor propio
+python tools/tasks.py lint      # ruff
+python tools/tasks.py licenses  # licenzas das dependencias compatibles coa EUPL-1.2
+```
+
 ## Documentación
 
 - [Visión xeral e arquitectura](docs/arquitectura/vision-xeral.md) · [Modelo de datos](docs/arquitectura/modelo-datos.md)
@@ -49,7 +76,19 @@ Abre <http://127.0.0.1:8000> e escolle un perfil de demostración (persoas ficti
 - [Interoperabilidade](docs/interoperabilidade.md) · [Seguridade e RXPD](docs/seguridade-rxpd.md)
 - [Accesibilidade](docs/accesibilidade/criterios.md) · [Despregamento](docs/despregamento.md)
 - [Guión da demostración](docs/demo/guion-demo.md)
+- Para concellos: [modelo de ordenanza de prezos públicos e taxa](docs/concello/ordenanza-modelo.md) ·
+  [plantilla de EIPD](docs/rxpd/eipd-plantilla.md) · [matriz de datos por perfil](docs/rxpd/matriz.md)
 
 ## Licenza
 
 [EUPL-1.2](LICENSE) © Equipo Eira. Contribucións benvidas: le [CONTRIBUTING.md](CONTRIBUTING.md).
+
+- **Licenza:** EUPL-1.2 (Licenza Pública da Unión Europea), compatible con GPL, AGPL, MPL e outras
+  (ver o anexo da licenza). Podes usar, estudar, modificar e redistribuír Eira, tamén para
+  prestar servizos; se distribúes versións modificadas, teñen que seguir baixo EUPL-1.2 (ou unha
+  licenza compatible, nos casos do artigo 5 da EUPL).
+- **Como contribuír:** [CONTRIBUTING.md](CONTRIBUTING.md) (pasos e requisitos técnicos),
+  [GOVERNANCE.md](GOVERNANCE.md) (quen decide, contribucións de concellos e empresas, folla de ruta),
+  [código de conduta](CODE_OF_CONDUCT.md) e [seguridade](SECURITY.md) para comunicar vulnerabilidades.
+- **Metadatos para catálogos públicos:** [publiccode.yml](publiccode.yml) (validado co
+  `publiccode-parser-go` oficial: `python tools/tasks.py publiccode`).

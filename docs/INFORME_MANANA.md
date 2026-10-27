@@ -1,7 +1,58 @@
 # Informe de la sesión nocturna — Eira
 
-**Fecha:** 23/10/2026 (última actualización: 26/10/2026, v1.1) · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
+**Fecha:** 23/10/2026 (última actualización: 27/10/2026, v1.3) · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
 
+
+## v1.3. Documentación para la adopción y preparación para publicar (27/10) · etiqueta `v1.3-certame`
+
+**Servidor:** <http://localhost:8000> y en la LAN (`0.0.0.0:8000`, `EIRA_DEBUG=1`), con los datos regenerados. Commits locales, **sin push**. Concellos ficticios de siempre. Regla: solo se añade (decisiones en `DECISIONS.md`, sección v1.3).
+
+### Qué hay y dónde
+
+| Bloque | Dónde | Verificado |
+|---|---|---|
+| A · Modelo de ordenanza (precio público + variante de tasa), gl y es | `docs/concello/ordenanza-modelo.md`. Cada artículo con su campo de Eira entre corchetes; tabla de correspondencia; aviso de informe jurídico y de Intervención al principio | ✅ campos y menús comprobados contra el código. ❌ citas legales sin contrastar con el BOE consolidado |
+| A · Descuento de baja demanda editable | Xestión → Configuración → Regras de reserva (antes solo en el admin técnico) | ✅ tests de configuración |
+| B · Plantilla de EIPD | `docs/rxpd/eipd-plantilla.md` (descripción, necesidad y proporcionalidad, 12 riesgos con medidas reales y tests, riesgo residual, plan de acción, opinión del DPD) | ✅ cada medida citada existe y tiene test. ❌ la valoración del riesgo es una propuesta, sin revisar por un DPD |
+| B · Enlaces | «Quen custodia os teus datos» → tarjeta «Datos con máis risco» → resumen en la app (`/privacidade/avaliacion-impacto/`); `docs/rxpd/matriz.md` → plantilla | ✅ test + E2E |
+| C · Doble factor TOTP | A miña conta → Seguridade da conta (QR, clave, 10 códigos de recuperación); segundo paso al entrar; obligatorio por concello (Configuración → Seguridade das contas de xestión) y por diputación (admin técnico); restablecer desde Persoal e códigos | ✅ 15 tests + E2E completo (activar, salir, entrar con código de recuperación, auditoría) |
+| C · Registro de auditoría | Xestión → Máis ferramentas → Rexistro de auditoría (también en el menú del DPD): 7 categorías, fechas, CSV | ✅ 14 tests + E2E (permisos, diputación con soporte → 403, descargas registradas) |
+| C · Documentación | `docs/seguridade-rxpd.md` (qué había, qué se añadió, límites) | ✅ |
+| D · Auditoría del historial | `docs/AUDITORIA_PUBLICACION.md`, primera sección | ✅ ver abajo |
+| D · README, publiccode.yml, GOVERNANCE.md | README: «A demo en 5 minutos», licencia y contribuciones; `publiccode.yml` validado; `GOVERNANCE.md` (gl + es) | ✅ validador oficial |
+
+### Resultado de la auditoría del historial (no se reescribió nada)
+
+Se revisaron **los 65 commits de todas las referencias** (`master`, `origin/master`, las tres etiquetas), línea a línea (`git log --all -p`), los nombres de todos los archivos que existieron, los mensajes y las anotaciones de las etiquetas.
+
+- **Sin secretos** (solo `"proba-non-real"` en un test), **sin documentos ajenos** (ningún `.docx`/`.pdf`/… en toda la historia; la carta de interés de un concello que está en la carpeta **nunca se versionó** y ahora `.gitignore` ignora `*.docx`, `*.doc`, `*.odt` y `*.pdf`), **sin rutas locales reales**, **sin correos reales**, autoría siempre «Equipo Eira», 674 PNG sin metadatos.
+- **Para decidir** (propuesta de limpieza en el documento, no ejecutada):
+  1. Correos ficticios `*@demo.eira.example` (dominio que podría ser de un tercero) en los commits `ca22205` → `41a3f1b` (`seed_demo.py`, `apps/integrations/demo.py`, `tests/e2e/test_screenshots.py`…). Propuesta: `git filter-repo --replace-text` a `demo.eira.example`.
+  2. Un nombre de pila en `bf6b51d` y `db4a681` (`DECISIONS.md`, `INFORME_MANANA.md`, `PLAN_V2.md`, `PROGRESS.md`, mensaje de `db4a681` y anotación de `v1.2-certame`). Confirmar que está de acuerdo; esos commits **aún no están en `origin`**.
+  3. Un apellido gallego común en la lista de apellidos ficticios de la demo (`a51fe58`, `apps/activities/demo.py`): no identifica a nadie; se señala por prudencia.
+  4. Tamaño: ~330 MB de *pack* por las capturas regeneradas (616 PNG, 109 MB en el árbol actual). Propuesta: *release assets* o LFS y un historial nuevo, o aceptarlo.
+- **Remoto ya configurado:** `origin` apunta a una cuenta personal de GitHub y `origin/master` está en `5181c06` (24/10): el historial hasta ahí **ya se subió** fuera de esta sesión (incluye los puntos 1 y 3). No consulté la red: **no sé si ese repositorio es público**.
+
+### Cifras
+
+- **Tests unitarios e integración:** 822 en verde (eran 788).
+- **E2E:** 69 en verde (eran 65; +4 de la v1.3).
+- **axe (WCAG 2.1 AA):** 151 páginas × 3 tamaños y 65 en tema oscuro, **0 violaciones**; además, 7 comprobaciones axe dentro del E2E del doble factor (5 en claro y 2 en oscuro: configuración, QR, códigos, segundo paso).
+- **Sin scroll horizontal** (360 y 390 px, texto normal y grande), también en las pantallas nuevas.
+- **Castellano:** 100 % (174 cadenas nuevas).
+- **publiccode.yml:** válido con `publiccode-parser-go` 5.4.3 sin red (salida 0; control negativo con un campo inventado → salida 1).
+- **Corrección encontrada por el camino:** la demo v1.2 creaba el ejemplo de «cierre sin confirmar» solo si, por azar, había una reserva usada ayer en el pabellón; hoy no la había y fallaba la prueba axe (4 E2E). Ahora la demo la crea si falta.
+- **Capturas:** no se hicieron nuevas (no se pedían y engordarían el historial, ver punto 4).
+
+### NO verificado o con límites
+
+- **Citas legales** de la ordenanza (TRLRHL, LBRL, LGT, Ley 40/2015): revisadas de memoria, sin el BOE consolidado. El propio modelo exige informe jurídico y de Intervención.
+- **EIPD:** la valoración de riesgos es una propuesta; falta la opinión del DPD.
+- **Doble factor:** probado con `pyotp` (que implementa la RFC 6238) y el vector oficial de la RFC; **no con una app real** de móvil (FreeOTP, Aegis…), aunque usa los parámetros estándar.
+- El **secreto TOTP** se guarda sin cifrado adicional en la base de datos (riesgo anotado en la EIPD). No hay WebAuthn.
+- El **registro de auditoría** no tiene plazo de conservación ni protección contra quien tenga acceso directo a la base de datos.
+- **Repositorio remoto:** visibilidad y etiquetas sin consultar. Validación de `publiccode.yml` **con red**, pendiente de la URL definitiva.
+- **Traducciones al castellano:** sin revisión externa.
 
 ## v1.2. Aportaciones del equipo: uso diario, seguridad y rendimiento (27/10) · etiqueta `v1.2-certame`
 

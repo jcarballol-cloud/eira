@@ -138,3 +138,11 @@ Regra: só se engade. Choques anotados en DECISIONS (v1.2). Orde de prioridade: 
 - ✅ G · «Busco xente» desde a reserva, «Partidas abertas» (propio concello e próximos, filtros por deporte, día e nivel), solicitudes que acepta quen organiza, mensaxes predefinidas, nome de pila e inicial, menores de 14 fóra, reparto orientativo, denuncias e módulo desactivable.
 - ✅ H · tipos de abono e abonos (TPV e oficina, renovación encadeada), desconto que se suma ás tarifas, carné na app con QR dinámico asinado (3 min), carné imprimible en PDF etiquetado tamaño tarxeta e anulable, lector do persoal (entrada e bonos), «Ler carné» na tableta (a lista por nome mantense), adaptador simulado `municipal_card` e docs/carne-municipal.md.
 - ✅ I · demo v1.2 coherente, 65 capturas en docs/capturas/v1.2/ (A–H en móbil e escritorio; A, D e H tamén en escuro), anexo regrabado (65 s), RAM medida en Docker, sección v1.2 no informe, etiqueta `v1.2-certame`.
+
+## v1.3 · Documentación para a adopción e publicación (27/10)
+Regra: só se engade. Decisións en DECISIONS (v1.3).
+- ✅ A · `docs/concello/ordenanza-modelo.md` (gl + es): prezo público e variante de taxa, cada artigo co campo de Eira. Engadido á configuración o desconto de baixa demanda (non era editable).
+- ✅ B · `docs/rxpd/eipd-plantilla.md` cuberta co que fai Eira; resumo na app (`privacidade/avaliacion-impacto/`) enlazado desde «Quen custodia os teus datos»; ligazón desde a matriz.
+- ✅ C · dobre factor TOTP (opcional por persoa, obrigatorio por concello para administración e DPD, e por agrupación para a deputación), 10 códigos de recuperación, restablecemento por outra administración; rexistro de auditoría consultable (administración e DPD) con categorías, filtros e CSV; retirada de roles e descargas do persoal rexistradas. 34 tests novos + 4 E2E.
+- ✅ D · auditoría de todo o historial (65 commits, todas as referencias): sen segredos, documentos alleos, rutas nin correos reais; 4 puntos para decidir. README (demo en 5 minutos, licenza, contribucións), `publiccode.yml` validado, `GOVERNANCE.md`.
+- ✅ E · sección v1.3 no informe, etiqueta `v1.3-certame`.

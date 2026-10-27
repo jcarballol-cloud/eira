@@ -30,6 +30,11 @@
       <ul class="list">{% for m in memberships %}<li><a href="{% url 'tenant_home' m.municipality.slug %}">{{ m.municipality.name }}</a> · {{ m.get_role_display }}</li>{% endfor %}</ul>
     </section>
     {% endif %}
+    <section class="card" aria-labelledby="p-sec">
+      <h2 id="p-sec">{% translate "Seguridade da conta" %}</h2>
+      <p>{% if two_factor_on %}<span class="badge badge-ok">{% icon 'check' %} {% translate "Dobre factor activado" %}</span>{% else %}{% translate "Engade un segundo paso ao entrar cunha app de códigos do móbil." %}{% endif %}</p>
+      <a class="btn btn-secondary" href="{% url 'account:security' %}">{% icon 'shield' %} {% translate "Dobre factor" %}</a>
+    </section>
     <section class="card" aria-labelledby="p-priv">
       <h2 id="p-priv">{% translate "Privacidade" %}</h2>
       <p><a class="btn btn-secondary" href="{% url 'account:privacy' %}">{% icon 'shield' %} {% translate "Centro de privacidade" %}</a></p>

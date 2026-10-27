@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: EUPL-1.2
 from django.urls import path
 
-from . import views
+from . import twofactor, views
 
 app_name = "account"
 urlpatterns = [
@@ -11,6 +11,9 @@ urlpatterns = [
     path("os-meus-datos.json", views.export_data, name="export"),
     path("eliminar/", views.delete_account, name="delete"),
     path("familia/", views.household, name="household"),
+    # v1.3 · C: dobre factor e códigos de recuperación
+    path("seguridade/", twofactor.security, name="security"),
+    path("seguridade/codigos/", twofactor.security_codes, name="security_codes"),
     path(
         "familia/<int:dependent_id>/consentimento/<slug:kind>/",
         views.consent_toggle,

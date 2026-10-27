@@ -4,7 +4,7 @@
 <div class="page-head"><div><p class="eyebrow">{% icon 'shield' %} {% translate "Protección de datos" %}</p><h1>{% translate "Rexistro de auditoría" %}</h1>
   <p>{% translate "Quen fixo cada acción sensible e cando: tarifas, permisos, exportacións, acceso de soporte, brechas, accidentes e dobre factor. Non se pode editar nin borrar desde a aplicación." %}</p></div>
   <a class="btn btn-secondary" href="?{{ query }}{% if query %}&amp;{% endif %}formato=csv">{% icon 'download' %} {% translate "Descargar CSV" %}</a></div>
-<p class="help">{% translate "Só o ven a administración do concello e a persoa delegada de protección de datos. A deputación non entra, nin sequera co acceso de soporte. A descarga tamén queda rexistrada." %}</p>
+<p class="help">{% translate "Só o ven a administración do concello e a persoa delegada de protección de datos. A deputación non entra, nin sequera co acceso de soporte. A descarga tamén queda rexistrada." %} {% blocktranslate with n=retention_months %}As entradas consérvanse {{ n }} meses e despois bórranse automaticamente (cámbiase en Configuración → Seguridade das contas e rexistro de auditoría).{% endblocktranslate %}</p>
 <form method="get" class="card mb-2 filters" aria-label="{% translate 'Filtrar o rexistro' %}">
   <div class="field"><label for="categoria">{% translate "Categoría" %}</label><select id="categoria" name="categoria"><option value="">{% translate "Todas" %}</option>{% for k, l in categories %}<option value="{{ k }}" {% if category == k %}selected{% endif %}>{{ l }}</option>{% endfor %}</select></div>
   <div class="field"><label for="desde">{% translate "Desde" %}</label><input id="desde" type="date" name="desde" value="{{ day_from|date:'Y-m-d' }}"></div>

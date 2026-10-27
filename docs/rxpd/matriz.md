@@ -118,7 +118,7 @@ Son datos do persoal (propio ou da empresa contratada), non da veciñanza; por i
 |---|---|---|---|---|---|
 | Segredo TOTP (dobre factor) | só na súa app; en Eira, gardado e nunca mostrado despois de activalo | — (só ve se o ten activado e pode restablecelo) | — | — | mentres o teña activado |
 | Códigos de recuperación | ✔ unha soa vez; en Eira só o HMAC | — | — | — | ata que se usan ou se xeran outros |
-| Rexistro de auditoría (quen, que acción, cando, obxecto, detalle) | — | ✔ (o do seu concello) | ✔ | **—** (nin co acceso de soporte) | ‹definir no RAT; non se borra desde a app› |
+| Rexistro de auditoría (quen, que acción, cando, obxecto, detalle) | — | ✔ (o do seu concello) | ✔ | **—** (nin co acceso de soporte) | 2 anos por defecto, configurable por concello (12–120 meses); purga automática (v1.4). Non se borra a man desde a app |
 
 - O rexistro inclúe os accesos e o dobre factor do **persoal de xestión** do concello; os inicios de sesión da veciñanza non se mostran.
 - Ver [seguridade-rxpd.md](../seguridade-rxpd.md#v13--seguridade-das-contas-de-xestión).

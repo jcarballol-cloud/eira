@@ -85,7 +85,7 @@ def _current_step(now=None):
 def check_code(device, code, now=None):
     """True se o código TOTP é válido e non se usou xa. Garda o paso para evitar reprodución."""
     code = "".join(ch for ch in (code or "") if ch.isdigit())
-    if len(code) != DIGITS:
+    if len(code) != DIGITS or not device.secret:  # v1.4: segredo ilexible (chave cambiada)
         return False
     hotp = pyotp.HOTP(device.secret, digits=DIGITS)
     current = _current_step(now)

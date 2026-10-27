@@ -87,7 +87,7 @@ rexistra todas as peticións de rede e comproba que ningunha contén os valores 
   (MIT), que xa era dependencia de Eira para os códigos sen conexión.
 - **Opcional por persoa:** *A miña conta → Seguridade da conta* (`/conta/seguridade/`). Activación:
   QR (ou clave en texto) → código de confirmación → **10 códigos de recuperación**.
-- **Obrigatorio por concello:** *Xestión → Configuración → Seguridade das contas de xestión*
+- **Obrigatorio por concello:** *Xestión → Configuración → Seguridade das contas e rexistro de auditoría* (nome desde a v1.4)
   (`require_2fa_admin`, desactivado por defecto). Afecta a quen ten rol **administración** ou **DPD**
   nese concello (e á deputación cando entra nese concello). Quen non o teña activado e intente entrar
   na xestión vai á páxina para activalo. Non o pode desactivar mentres o concello o esixa.
@@ -107,8 +107,8 @@ rexistra todas as peticións de rede e comproba que ningunha contén os valores 
   en *Persoal e códigos* (`2fa.reset`, rexistrado). Se a persoa xestiona outros concellos ou a
   deputación, non: faino o soporte técnico da instalación (admin técnico), para que un concello non
   poida quitarlle o segundo factor a alguén que xestiona outro.
-- **Límites coñecidos:** o segredo TOTP gárdase na base de datos sen cifrado adicional (igual que
-  `django-otp` e a maioría de implementacións): hai que protexer a base de datos e as copias. Non hai
+- **Límites coñecidos:** desde a v1.4 o segredo TOTP gárdase **cifrado** (ver «v1.4» máis abaixo);
+  os códigos de recuperación seguen dependendo de `EIRA_SECRET_KEY` (HMAC). Non hai
   WebAuthn/chaves de seguridade (proposto para a v2). O admin técnico de Django tamén pide o segundo
   paso se a conta o ten activado (está detrás do mesmo middleware).
 - **Tests:** `apps/accounts/tests/test_twofactor.py` (15): vector da RFC 6238, activación,
@@ -143,9 +143,54 @@ rexistra todas as peticións de rede e comproba que ningunha contén os valores 
   contido). Así quedan cubertas tamén as exportacións futuras sen ter que lembralo en cada vista.
 - **Os inicios de sesión** gárdanse sen concello (son da conta); na vista do concello móstranse os do
   seu persoal de xestión, nunca os da veciñanza.
-- **Non verificado / pendente:** prazo de conservación do propio rexistro (non hai purga; o concello
-  debe fixalo no RAT); protección contra a manipulación por quen ten acceso directo á base de datos
-  (non hai encadeamento de hashes).
+- **Conservación:** desde a v1.4, 2 anos por defecto e configurable por concello (ver «v1.4» máis
+  abaixo).
+- **Non verificado / pendente:** protección contra a manipulación por quen ten acceso directo á base
+  de datos (non hai encadeamento de hashes).
 - **Tests:** `apps/accounts/tests/test_auditlog.py` (permisos por rol, deputación con acceso de
   soporte → 403, illamento entre concellos, filtros, categorías, retirada de roles, descargas, CSV
   rexistrado unha soa vez, resumo da EIPD).
+
+## v1.4 · Segredo TOTP cifrado e conservación do rexistro de auditoría
+
+### Segredo do dobre factor cifrado en repouso
+
+- **Que se cifra:** o segredo TOTP de cada persoa (`TwoFactorDevice.secret`). Gárdase como
+  `enc1:<token Fernet>`; o código da aplicación veo sempre en claro porque o campo
+  (`EncryptedCharField`, `apps/accounts/secretbox.py`) cifra ao gardar e descifra ao ler.
+- **Algoritmo:** Fernet da biblioteca `cryptography` (Apache-2.0 / BSD, compatible coa EUPL-1.2):
+  AES-128-CBC con HMAC-SHA256 e IV aleatorio, así que cada gardado dá un texto cifrado distinto e
+  calquera alteración detéctase.
+- **Chave:**
+  - `EIRA_TOTP_KEY`, se está definida (**recomendado en produción**): a chave queda fóra da base de
+    datos e das súas copias, e cambiar `EIRA_SECRET_KEY` non deixa a ninguén sen dobre factor;
+  - se non, derívase de `EIRA_SECRET_KEY` con HKDF-SHA256 e un contexto propio (non se usa a chave
+    tal cal).
+  - Con `EIRA_TOTP_KEY` definida séguense lendo os valores cifrados coa chave derivada de
+    `EIRA_SECRET_KEY` (MultiFernet). Para pasalos á chave nova: `python manage.py rotate_totp_key`.
+- **Migración:** `accounts/0012_v1_4` cifra os segredos que había en claro (v1.3). Mentres non se
+  migra, o texto claro antigo lese tal cal, así que a actualización non bloquea a ninguén.
+- **Se a chave se perde ou cambia sen rotar:** o segredo non se pode descifrar; a aplicación non
+  falla, pero os códigos desa persoa deixan de valer. Pode entrar cun código de recuperación (se
+  `EIRA_SECRET_KEY` non cambiou) ou que outra persoa administradora llo restableza.
+  `rotate_totp_key` informa de cantos son ilexibles.
+- **O que non protexe:** quen ten a base de datos **e** a chave (o servidor en execución). É unha
+  defensa para as copias de seguridade e as exportacións da base de datos.
+- **Tests:** `apps/accounts/tests/test_v14.py` (cifrado en repouso, texto cifrado novo en cada
+  gardado, migración de ida e volta, lectura cos valores antigos e rotación cara a `EIRA_TOTP_KEY`,
+  chave cambiada sen fallos, valor alterado rexeitado, a páxina de activación segue mostrando a clave).
+
+### Prazo de conservación do rexistro de auditoría
+
+- **Por concello:** *Xestión → Configuración → Seguridade das contas e rexistro de auditoría*
+  (`audit_retention_months`). **2 anos por defecto**, entre 12 e 120 meses. A páxina do rexistro
+  indica o prazo vixente.
+- **Purga:** o comando de mantemento que xa existía (`python manage.py booking_maintenance`, cada
+  15 minutos no cron) borra as entradas máis antigas ca o prazo de cada concello. As entradas sen
+  concello (inicios de sesión e dobre factor das contas, accións da deputación) seguen o prazo por
+  defecto de 2 anos.
+- **Trazabilidade da purga:** cada purga que borra algo deixa unha entrada `audit.purge` («Entradas
+  antigas borradas por conservación») co número de entradas e o prazo aplicado, sen datos persoais.
+- **Tests:** `apps/accounts/tests/test_v14.py` (prazo por defecto, prazo distinto en cada concello,
+  entradas sen concello, comando de mantemento, límites 12–120, cambio desde a configuración e aviso
+  na páxina do rexistro).

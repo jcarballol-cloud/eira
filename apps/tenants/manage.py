@@ -122,7 +122,12 @@ SETTINGS_SECTIONS = [
     ),
     ("enquisas", gettext_lazy("Satisfacción (NPS)"), ["nps_after_use"], False),
     # v1.3 · C
-    ("contas", gettext_lazy("Seguridade das contas de xestión"), ["require_2fa_admin"], False),
+    (
+        "contas",
+        gettext_lazy("Seguridade das contas e rexistro de auditoría"),
+        ["require_2fa_admin", "audit_retention_months"],
+        False,
+    ),
     (
         "rendemento",
         gettext_lazy("Rendemento (estimación orientativa)"),
@@ -185,6 +190,7 @@ class SettingsForm(forms.ModelForm):
             "co2_kg_kwh",
             "require_2fa_admin",  # v1.3
             "low_demand_discount_pct",  # v1.3
+            "audit_retention_months",  # v1.4
         ]
         widgets = {
             "lighting_from": forms.TimeInput(attrs={"type": "time"}),
@@ -245,6 +251,7 @@ class SettingsForm(forms.ModelForm):
         "energy_price_eur_kwh",
         "co2_kg_kwh",
         "low_demand_discount_pct",  # v1.3
+        "audit_retention_months",  # v1.4
     )
 
     def clean(self):

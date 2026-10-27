@@ -39,3 +39,9 @@ class Command(BaseCommand):
 
         self.stdout.write(f"Recordatorios: {send_reminders()} · Lista de espera: {process()}")
         self.stdout.write(f"Accidentes borrados por conservación: {purge_accidents()}")
+        # v1.4 · A1: prazo de conservación do rexistro de auditoría (por concello)
+        from apps.accounts.auditlog import purge_expired
+
+        self.stdout.write(
+            f"Rexistro de auditoría: {purge_expired()} entradas borradas por antigüidade"
+        )

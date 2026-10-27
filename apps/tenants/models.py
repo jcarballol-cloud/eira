@@ -5,7 +5,7 @@ import datetime as dt
 from decimal import Decimal
 
 from django.conf import settings
-from django.core.validators import RegexValidator
+from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -266,6 +266,16 @@ class Municipality(models.Model):
         help_text=_(
             "Quen teña eses roles terá que activar unha app de códigos (TOTP) antes de entrar na "
             "xestión. Para o resto de persoas é opcional."
+        ),
+    )
+    # v1.4 · A1: prazo de conservación do rexistro de auditoría (purga en booking_maintenance)
+    audit_retention_months = models.PositiveSmallIntegerField(
+        _("conservación do rexistro de auditoría (meses)"),
+        default=24,
+        validators=[MinValueValidator(12), MaxValueValidator(120)],
+        help_text=_(
+            "As entradas máis antigas bórranse automaticamente. Entre 12 e 120 meses; por "
+            "defecto, 2 anos."
         ),
     )
     is_active = models.BooleanField(_("activo"), default=True)

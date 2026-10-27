@@ -18,6 +18,8 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.tenants.models import Municipality, Region
 
+from .secretbox import EncryptedCharField
+
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -554,7 +556,8 @@ class TwoFactorDevice(models.Model):
     (`Region.require_2fa`). Só hai un por persoa. Ver docs/seguridade-rxpd.md."""
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="two_factor")
-    secret = models.CharField(max_length=64, editable=False)
+    # v1.4 · A2: cifrado en repouso (apps/accounts/secretbox.py); no código lese en claro
+    secret = EncryptedCharField(max_length=255, editable=False)
     confirmed_at = models.DateTimeField(null=True, blank=True)
     # Último paso de tempo aceptado: un mesmo código non vale dúas veces (reprodución)
     last_step = models.BigIntegerField(default=0)

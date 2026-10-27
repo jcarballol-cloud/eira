@@ -111,8 +111,8 @@ medidas; o residual, despois. Valores propostos: o DPD debe revisalos.
 ## 4. Risco residual e conclusión
 
 - **Risco residual global proposto: baixo**, coa condición de que o concello **active o dobre
-  factor obrigatorio** para a administración e o DPD (*Configuración → Seguridade das contas de
-  xestión*). Sen el, o risco R8 queda en **medio**.
+  factor obrigatorio** para a administración e o DPD (*Configuración → Seguridade das contas e
+  rexistro de auditoría*). Sen el, o risco R8 queda en **medio**.
 - Non se propón consulta previa á AEPD (art. 36) ‹se o DPD está de acordo›.
 - **Medidas pendentes ou fóra de Eira** (responsabilidade do concello ou da entidade que o aloxa):
   - cifrado da base de datos e das copias de seguridade; control de acceso ao servidor;
@@ -120,8 +120,9 @@ medidas; o residual, despois. Valores propostos: o DPD debe revisalos.
   - formación do persoal;
   - borrado automático do rexistro de limpeza aos 2 anos e das denuncias de partidas ao ano
     (**documentado, non programado** en Eira v1.3);
-  - o segredo TOTP gárdase na base de datos sen cifrar á parte (como na maioría de implementacións):
-    protexer as copias de seguridade.
+  - desde a v1.4 o segredo TOTP gárdase cifrado; para que as copias da base de datos non abonden,
+    definir `EIRA_TOTP_KEY` fóra da base de datos (ver `docs/seguridade-rxpd.md`).
+  - o rexistro de auditoría consérvase 2 anos por defecto (configurable) e bórrase só (v1.4).
 
 ## 5. Plan de acción
 

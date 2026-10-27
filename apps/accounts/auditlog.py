@@ -55,6 +55,7 @@ LABELS = {
     "tenant.import": gettext_lazy("Importación de datos"),
     "account.export": gettext_lazy("Descarga dos datos propios"),
     "audit.export": gettext_lazy("Descarga do rexistro de auditoría"),
+    "audit.purge": gettext_lazy("Entradas antigas borradas por conservación"),
     "support.request": gettext_lazy("A deputación pide acceso de soporte"),
     "support.grant": gettext_lazy("Acceso de soporte autorizado"),
     "support.revoke": gettext_lazy("Acceso de soporte revogado"),
@@ -122,6 +123,36 @@ def entries_for(tenant, category="", day_from=None, day_to=None):
     if day_to:
         qs = qs.filter(at__date__lte=day_to)
     return qs
+
+
+DEFAULT_RETENTION_MONTHS = 24
+
+
+def purge_expired(now=None):
+    """v1.4 · A1: borra as entradas máis antigas ca o prazo de conservación de cada concello
+    (`Municipality.audit_retention_months`, 2 anos por defecto). As que non son dun concello
+    (accesos e dobre factor das contas, accións da deputación) seguen o prazo por defecto.
+    Cada purga con borrados deixa á súa vez unha entrada `audit.purge`. Devolve o total."""
+    from apps.tenants.models import Municipality
+
+    now = now or timezone.now()
+    total = 0
+    for muni in Municipality.objects.all():
+        limit = now - dt.timedelta(days=30 * muni.audit_retention_months)
+        deleted = AuditLog.objects.filter(municipality=muni, at__lt=limit).delete()[0]
+        if deleted:
+            audit(
+                "audit.purge",
+                municipality=muni,
+                deleted=deleted,
+                months=muni.audit_retention_months,
+            )
+        total += deleted
+    limit = now - dt.timedelta(days=30 * DEFAULT_RETENTION_MONTHS)
+    deleted = AuditLog.objects.filter(municipality__isnull=True, at__lt=limit).delete()[0]
+    if deleted:
+        audit("audit.purge", deleted=deleted, months=DEFAULT_RETENTION_MONTHS)
+    return total + deleted
 
 
 def _parse_day(value):
@@ -199,6 +230,7 @@ def audit_log(request):
             "query": query,
             "nav": "manage",
             "sub": "audit",
+            "retention_months": request.tenant.audit_retention_months,
         },
     )
 

@@ -50,6 +50,9 @@ DEBUG = env_bool("EIRA_DEBUG", False)
 SECRET_KEY = env("EIRA_SECRET_KEY") or ("dev-insecure-key-only-for-local-use" if DEBUG else None)
 if not SECRET_KEY:
     raise RuntimeError("Define EIRA_SECRET_KEY (ou EIRA_DEBUG=1 en desenvolvemento).")
+# v1.4 · A2: chave propia para cifrar os segredos do dobre factor (recomendada en produción).
+# Se falta, derívase de EIRA_SECRET_KEY. Ver docs/seguridade-rxpd.md.
+EIRA_TOTP_KEY = env("EIRA_TOTP_KEY", "")
 
 ALLOWED_HOSTS = env_list("EIRA_ALLOWED_HOSTS", "localhost,127.0.0.1,.localhost,testserver")
 CSRF_TRUSTED_ORIGINS = env_list("EIRA_CSRF_TRUSTED_ORIGINS", "")

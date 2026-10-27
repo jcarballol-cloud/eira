@@ -141,6 +141,7 @@ TASKS = {
         screenshots,
         video,
         pitch,
+        annex,
     )
 }
 

@@ -3,6 +3,79 @@
 **Fecha:** 23/10/2026 (última actualización: 26/10/2026, v1.1) · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
 
 
+## v1.2. Aportaciones del equipo: uso diario, seguridad y rendimiento (27/10) · etiqueta `v1.2-certame`
+
+**Servidor:** <http://localhost:8000> y en la LAN (`0.0.0.0:8000`, `EIRA_DEBUG=1`), con los datos regenerados justo antes de arrancar. Commits locales, sin push. Los concellos siguen siendo los ficticios (Vilardeiras, Pontedouro, Deputación das Marismas).
+
+**Regla:** solo se añade. Nada existente se quitó ni se hizo menos visible (salud, consejos, observatorio, «Que tal foi?», tableta, avisos, Telegram, limpieza, «Incidencia ou seguridade»…). Choques en `DECISIONS.md`, sección v1.2. **Se hicieron los ocho bloques (A–H) y el cierre (I)**; nada queda a medias en la interfaz. Lo pendiente está como hoja de ruta en `docs/PLAN_V2.md`.
+
+### Propuesta del equipo → dónde está en la app
+
+| Propuesta | Dónde está | Verificado |
+|---|---|---|
+| A · Dos botones grandes «Aviso» y «Alerta» | App → escudo «Incidencia ou seguridade» (`/seguridade/`): arriba los dos botones (cuadrado amarillo con llave / octógono rojo con «!», y texto). Debajo sigue todo lo anterior | ✅ tests + E2E (formas distintas, no solo color) |
+| A · Alerta → accidente deportivo | `/seguridade/alerta/` → «Accidente deportivo» → protocolo paso a paso de la instalación (proteger, 112 con botón, DESA, aviso automático, registro) | ✅ tests + E2E |
+| A · Alerta → emergencia de seguridad | Mismo sitio → 112 en grande (`tel:112`) y aviso inmediato al concello | ✅ tests + E2E |
+| A · Botones durante la reserva en curso | Pantalla de la reserva mientras está en curso | ✅ test |
+| A · Protocolo configurable | Xestión → Alertas e peches → Protocolo de accidente (concello y por instalación; plantilla por defecto) | ✅ test |
+| A · Registro de accidentes mínimo (admin + DPD, conservación) | Xestión → Máis ferramentas → Rexistro de accidentes. Configuración → Seguridade e peche (meses) | ✅ tests (sin texto libre, permisos, purga) |
+| A · Incidencia de prioridad máxima | Se crea sola con cada alerta (prioridad «Máxima»), aviso a mantenimiento | ✅ test |
+| A · Alerta en la tableta | Tableta → lista de asistencia y modo registro → botón rojo «Alerta» | ✅ test |
+| B · Recordatorios y aviso al responsable | Automático (`booking_maintenance`): push → app + correo/Telegram → persona responsable por orden y horario (Xestión → Alertas e peches → Persoas responsables) | ✅ tests con tiempos configurables |
+| B · Policía Local solo por decisión de una persona | Página del aviso al responsable (`/seguridade/peche/‹token›/`): botón «Contactar coa Policía Local», queda registrado | ✅ test (nunca automático; registro) |
+| B · Nivel 3 con estado de la puerta | Simulador de cerradura (`/dev/lock-simulator/`) → «Pechaduras conectadas: estado da porta» | ✅ tests (cerrada no escala; abierta sí) |
+| B · Cierre sin confirmar en la reserva / incumplimiento opcional | Ficha de la reserva (gestión); Configuración → Seguridade e peche (desactivado por defecto) | ✅ test |
+| C · Accesibilidad detallada (sí/parcial/no + nota) | Xestión → Instalación → pestaña Accesibilidade; ficha pública «Accesibilidade detallada». La lista básica se rellena sola | ✅ tests + E2E |
+| C · Sostenibilidad y DESA | Pestañas Sostibilidade y Seguridade; ficha pública «Mobilidade sostible» y «DESA». Botón «Buscar o DESA máis próximo» (adaptador `defibrillators`, CSV ficticio) | ✅ tests |
+| C · Filtros «accesible», «con aparcabicis», «con DESA» | Buscador → Filtros | ✅ tests + E2E |
+| C · Revisión de seguridad e índice de vida activa | Plantilla con 3 puntos más; índice con la accesibilidad detallada (`docs/indice-vida-activa.md`) | ✅ tests |
+| D · Inventario de equipos, consumo estimado, KPI | Xestión → Instalación → pestaña **Rendemento** y Xestión → Máis ferramentas → Rendemento. Siempre «estimación orientativa» | ✅ 8 tests con cuentas a mano |
+| D · Lecturas reales | Mismo panel → «Lecturas reais (facturas) fronte á estimación» | ✅ test |
+| D · Comparativa de la diputación | Rede da deputación → «Rendemento (últimos 30 días)», solo agregados | ✅ test |
+| E · Encuesta anual con NPS | App → aviso en el inicio y `/enquisa/`; Xestión → Máis ferramentas → Enquisas (NPS); panel del día; comparativa de la diputación | ✅ 10 tests (fórmula, n ≥ 10, una respuesta, aviso por canales) + E2E |
+| E · NPS tras cada uso (desactivado por defecto) | Configuración → Satisfacción (NPS); aparece bajo «Que tal foi?» | ✅ tests |
+| F · Paso a paso y «que tes que facer e cando» | Ficha de la instalación (Elixe → Paga → Confirma) y cada reserva | ✅ tests + E2E |
+| F · Recordatorios con «Confirmo» / «Cancelo» | Avisos a las 24 h y 2 h → pantalla de la reserva | ✅ tests |
+| F · Lista de espera en reservas | Franja ocupada → «Avísame»; Reservas → «Listas de espera»; ciclo en la reserva original | ✅ tests del ciclo completo (incluida la devolución) + E2E |
+| G · Partidas abiertas | Reserva → «Busco xente»; App → atajo «Partidas abertas» | ✅ 10 tests (privacidad, menores, solicitudes, mensajes, denuncias) + E2E |
+| H · Carné municipal y abonos | App → atajo «O meu carné» (QR dinámico, PDF); Xestión → Abonos e carné (tipos, venta en oficina, lector) ; tableta → «Ler carné» | ✅ 9 tests + E2E |
+| H · Adaptador `municipal_card` | Solo adaptador simulado + `docs/carne-municipal.md` | ✅ test del simulado |
+
+### Cifras finales
+- **Tests unitarios e integración:** 788 en verde (eran 683 en la v1.1).
+- **E2E:** 65 en verde (sin contar vídeo y capturas, marca `video`).
+- **axe (WCAG 2.1 AA):** 145 páginas × 3 tamaños y 63 en tema oscuro, **0 violaciones**. Están todas las pantallas nuevas de A–H.
+- **Sin scroll horizontal** (360 y 390 px, texto normal y grande): también las pantallas nuevas.
+- **Castellano:** 100 % (677 cadenas nuevas, traducidas en esta tanda).
+- **Capturas:** 65 (29 pantallas en móvil y escritorio y 7 en oscuro) en `docs/capturas/v1.2/` (bloques A–H en móvil y escritorio; A, D y H también en oscuro).
+- **RAM sin IA** (`docker compose`, PostgreSQL, proyecto aparte `eira-v12` con volúmenes nuevos): en reposo app 170 MiB (2 workers), PostgreSQL 87 MiB, bucle de avisos 3 MiB → **≈ 260 MiB**; tras ~150 peticiones anónimas y 56 vistas con sesión (incluidas las páginas nuevas de rendimiento, NPS, carné y alertas): app 228 MiB, PostgreSQL 98 MiB → **≈ 330 MiB**. Sigue valiendo un VPS de 1 GB. Ningún error 5xx en PostgreSQL con las migraciones nuevas.
+
+### Correcciones encontradas por el camino
+- **Regeneración de la demo:** `SportsPass.type` con `PROTECT` impedía borrar un concello con abonos (la regeneración nocturna habría fallado). Ahora `CASCADE`, con test.
+- **«Que tes que facer e cando»** mostraba «Confirma» y «Cancelación gratuita hasta…» en reservas ya empezadas o fuera de plazo. Corregido (se vio en las capturas).
+- **`tools/tasks.py annex`** no estaba registrada desde la v5. Corregido.
+- **Desbordamiento horizontal** con texto grande a 360 px en el selector de franjas del pabellón («+luz») y en la tabla de tarifas de la ficha: ya existía, salió al añadir esas pantallas a la prueba. Corregido.
+- La revisión de seguridad inicial tiene ahora **13 puntos**; el anexo decía «dez puntos» y se corrigió al regrabarlo.
+
+### NO verificado o con límites
+- **DESA:** no sabemos si hay un registro oficial gallego con datos abiertos ni su licencia; el CSV de la demo es ficticio. No se integró ninguna app (p. ej. ARIANA RCP).
+- **Avisos reales** (push, correo, Telegram) a la persona responsable: probados con los adaptadores simulados.
+- **Estado de la puerta (nivel 3):** solo con el simulador; ninguna cerradura real probada.
+- **Consumo estimado:** depende del inventario que meta el concello; las lecturas «reales» de la demo son ficticias. En la demo solo hay ~8 semanas de reservas, así que el «kWh por hora de uso» anual sale muy alto (la calefacción cuenta todo el año de apertura y el uso solo 8 semanas).
+- **`tools/perf.py`** no consigue iniciar sesión con la portada de la demo en dos pasos (ya pasaba antes); la RAM se midió con un script propio de Playwright.
+- **Lectores de QR físicos** y **PDF del carné** (sin validar con PAC/veraPDF, fuentes sin incrustar).
+- **Purga** de las denuncias de partidas (1 año): documentada, no programada.
+- **Tema oscuro del escritorio:** solo en el panel Rendemento (decisión en DECISIONS).
+- **Traducciones al castellano:** sin revisión externa.
+
+### Vídeos
+- **Pitch:** no se regrabó (el guion actual sigue funcionando: Uxía reserva en Pontedouro, donde no tiene abono).
+- **Anexo «Eira para o concello e a saúde»:** regrabado con dos pasos nuevos (panel de Rendemento y NPS anual): **65 s** (máximo pedido: 75 s), en `docs/demo/` (fuera del git).
+
+### Cómo enseñarlo en 1 minuto
+Portada → Vilardeiras → **Uxía** → escudo «Incidencia ou seguridade» → **Alerta → Accidente deportivo** (protocolo con 112 y DESA) → atajo **«O meu carné»** (QR que se renueva) → **Partidas abertas**. Después el concello: **Panel** (alertas, NPS) → instalación del pabellón → **Rendemento** → **Enquisas (NPS)**.
+
+
 ## v1.1. Registro de limpieza (26/10) · etiqueta `v1.1-certame`
 
 **Servidor:** <http://localhost:8000> y en la LAN (`0.0.0.0:8000`, `EIRA_DEBUG=1`), con los datos regenerados justo antes de arrancar. Commits locales, sin push. Los vídeos **no** se han vuelto a grabar (siguen siendo los de la v5).

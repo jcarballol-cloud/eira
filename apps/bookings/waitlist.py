@@ -127,7 +127,7 @@ def todo_for(booking, now=None):
                     "text": _("Asistencia confirmada"),
                 }
             )
-        elif booking.status == Booking.Status.CONFIRMED:
+        elif booking.status == Booking.Status.CONFIRMED and booking.start > now:
             text = _("Confirma que vés (desde 24 h antes)")
             if m.confirm_release_enabled:
                 text = _(
@@ -140,7 +140,7 @@ def todo_for(booking, now=None):
             items.append(
                 {"key": "confirm", "when": booking.start - dt.timedelta(hours=24), "text": text}
             )
-        if booking.can_cancel():
+        if booking.can_cancel() and now < booking.cancellation_cutoff():
             items.append(
                 {
                     "key": "cancel",

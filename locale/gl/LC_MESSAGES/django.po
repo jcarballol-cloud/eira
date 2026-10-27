@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Eira 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-27 17:24+0100\n"
-"PO-Revision-Date: 2026-10-27 17:24+0100\n"
+"POT-Creation-Date: 2026-10-27 18:13+0100\n"
+"PO-Revision-Date: 2026-10-27 18:13+0100\n"
 "Last-Translator: Equipo Eira\n"
 "Language-Team: Equipo Eira\n"
 "Language: gl\n"
@@ -206,7 +206,7 @@ msgstr ""
 #: apps/accounts/custody.py:38 apps/accounts/custody.py:43
 #: apps/accounts/custody.py:78 apps/accounts/custody.py:130
 #: apps/accounts/custody.py:141 apps/accounts/custody.py:151
-#: apps/accounts/custody.py:156 apps/accounts/custody.py:171
+#: apps/accounts/custody.py:156 apps/accounts/custody.py:175
 msgid "Pídeo no concello."
 msgstr "Pídeo no concello."
 
@@ -379,7 +379,7 @@ msgid "6 anos, por obriga tributaria."
 msgstr "6 anos, por obriga tributaria."
 
 #: apps/accounts/custody.py:110 apps/accounts/custody.py:135
-#: apps/accounts/custody.py:176
+#: apps/accounts/custody.py:180
 msgid "Non se poden borrar antes por obriga legal."
 msgstr "Non se poden borrar antes por obriga legal."
 
@@ -401,7 +401,7 @@ msgid "Para saber cantas persoas usan a instalación e, se queres, quen."
 msgstr "Para saber cantas persoas usan a instalación e, se queres, quen."
 
 #: apps/accounts/custody.py:124 apps/accounts/custody.py:150
-#: apps/accounts/custody.py:155 apps/accounts/custody.py:165
+#: apps/accounts/custody.py:155 apps/accounts/custody.py:169
 msgid "Os da reserva (2 anos)."
 msgstr "Os da reserva (2 anos)."
 
@@ -420,7 +420,7 @@ msgstr ""
 msgid "Para descontar os usos das túas reservas."
 msgstr "Para descontar os usos das túas reservas."
 
-#: apps/accounts/custody.py:134 apps/accounts/custody.py:175
+#: apps/accounts/custody.py:134 apps/accounts/custody.py:179
 msgid "6 anos, coma os cobros."
 msgstr "6 anos, coma os cobros."
 
@@ -470,7 +470,7 @@ msgstr ""
 "Para deixar constancia de cada vez que unha persoa decide chamar á Policía "
 "Local."
 
-#: apps/accounts/custody.py:159
+#: apps/accounts/custody.py:160
 msgid ""
 "Para que outras persoas poidan unirse á túa partida. Só se ve o nome de pila"
 " e a inicial."
@@ -478,15 +478,15 @@ msgstr ""
 "Para que outras persoas poidan unirse á túa partida. Só se ve o nome de pila"
 " e a inicial."
 
-#: apps/accounts/custody.py:160
+#: apps/accounts/custody.py:162
 msgid "Mentres a partida está aberta; despois queda na reserva (2 anos)."
 msgstr "Mentres a partida está aberta; despois queda na reserva (2 anos)."
 
-#: apps/accounts/custody.py:161
+#: apps/accounts/custody.py:163
 msgid "Deixa de buscar xente desde a túa reserva."
 msgstr "Deixa de buscar xente desde a túa reserva."
 
-#: apps/accounts/custody.py:164
+#: apps/accounts/custody.py:167
 msgid ""
 "Para que quen organiza acepte ou rexeite e para avisarvos entre vós sen "
 "datos de contacto."
@@ -494,23 +494,23 @@ msgstr ""
 "Para que quen organiza acepte ou rexeite e para avisarvos entre vós sen "
 "datos de contacto."
 
-#: apps/accounts/custody.py:166
+#: apps/accounts/custody.py:170
 msgid "Retírate da partida ou pídeo no concello."
 msgstr "Retírate da partida ou pídeo no concello."
 
-#: apps/accounts/custody.py:169
+#: apps/accounts/custody.py:173
 msgid "Para que o concello revise partidas inadecuadas."
 msgstr "Para que o concello revise partidas inadecuadas."
 
-#: apps/accounts/custody.py:170
+#: apps/accounts/custody.py:174
 msgid "1 ano."
 msgstr "1 ano."
 
-#: apps/accounts/custody.py:174
+#: apps/accounts/custody.py:178
 msgid "Para aplicarche o desconto e comprobar o abono ao ler o carné."
 msgstr "Para aplicarche o desconto e comprobar o abono ao ler o carné."
 
-#: apps/accounts/custody.py:179
+#: apps/accounts/custody.py:183
 msgid ""
 "Para entrar nas instalacións, a asistencia nas escolas e os bonos co QR do "
 "carné."
@@ -518,15 +518,15 @@ msgstr ""
 "Para entrar nas instalacións, a asistencia nas escolas e os bonos co QR do "
 "carné."
 
-#: apps/accounts/custody.py:180
+#: apps/accounts/custody.py:184
 msgid "Mentres teñas a conta. A foto, ata que a quites."
 msgstr "Mentres teñas a conta. A foto, ata que a quites."
 
-#: apps/accounts/custody.py:181
+#: apps/accounts/custody.py:185
 msgid "Quita a foto desde «O meu carné» ou borra a conta."
 msgstr "Quita a foto desde «O meu carné» ou borra a conta."
 
-#: apps/accounts/custody.py:184
+#: apps/accounts/custody.py:188
 msgid ""
 "Para cumprir os arts. 33 e 34 do RXPD se algunha vez hai un incidente cos "
 "datos."
@@ -534,11 +534,11 @@ msgstr ""
 "Para cumprir os arts. 33 e 34 do RXPD se algunha vez hai un incidente cos "
 "datos."
 
-#: apps/accounts/custody.py:185
+#: apps/accounts/custody.py:189
 msgid "5 anos."
 msgstr "5 anos."
 
-#: apps/accounts/custody.py:186
+#: apps/accounts/custody.py:190
 msgid ""
 "Non contén os teus datos: describe o incidente. Se te afectase, "
 "informaríamoste."
@@ -546,15 +546,15 @@ msgstr ""
 "Non contén os teus datos: describe o incidente. Se te afectase, "
 "informaríamoste."
 
-#: apps/accounts/custody.py:191
+#: apps/accounts/custody.py:195
 msgid "só cifras agregadas"
 msgstr "só cifras agregadas"
 
-#: apps/accounts/custody.py:192
+#: apps/accounts/custody.py:196
 msgid "seudonimizado"
 msgstr "seudonimizado"
 
-#: apps/accounts/custody.py:200 apps/maintenance/cleaning.py:426
+#: apps/accounts/custody.py:204 apps/maintenance/cleaning.py:426
 msgid "si"
 msgstr "si"
 
@@ -1271,7 +1271,7 @@ msgstr "Empadroamentos validados"
 
 #: apps/activities/models.py:17 apps/facilities/models.py:58
 #: apps/facilities/models.py:366 apps/facilities/models.py:453
-#: apps/maintenance/models.py:184 apps/members/models.py:38
+#: apps/maintenance/models.py:184 apps/members/models.py:40
 msgid "descrición"
 msgstr "descrición"
 
@@ -1332,7 +1332,7 @@ msgid "grupos"
 msgstr "grupos"
 
 #: apps/activities/models.py:75 apps/bookings/models.py:47
-#: apps/bookings/models.py:391 apps/members/models.py:54
+#: apps/bookings/models.py:391 apps/members/models.py:56
 msgid "Pendente de pagamento"
 msgstr "Pendente de pagamento"
 
@@ -1697,7 +1697,7 @@ msgid "Canle"
 msgstr "Canle"
 
 #: apps/bookings/manage.py:277 apps/bookings/vouchers.py:38
-#: apps/members/views.py:126
+#: apps/members/views.py:140
 msgid "Cobro"
 msgstr "Cobro"
 
@@ -1745,12 +1745,12 @@ msgid "Método"
 msgstr "Método"
 
 #: apps/bookings/manage.py:400 apps/bookings/vouchers.py:40
-#: apps/members/views.py:127
+#: apps/members/views.py:142
 msgid "Efectivo"
 msgstr "Efectivo"
 
 #: apps/bookings/manage.py:401 apps/bookings/models.py:270
-#: apps/bookings/vouchers.py:41 apps/members/views.py:127
+#: apps/bookings/vouchers.py:41 apps/members/views.py:143
 msgid "Tarxeta no TPV físico"
 msgstr "Tarxeta no TPV físico"
 
@@ -1894,7 +1894,7 @@ msgid "Rexeitado"
 msgstr "Rexeitado"
 
 #: apps/bookings/models.py:263 apps/bookings/models.py:394
-#: apps/members/models.py:56 templates/manage/staff.html:16
+#: apps/members/models.py:58 templates/manage/staff.html:16
 msgid "Caducado"
 msgstr "Caducado"
 
@@ -1991,7 +1991,7 @@ msgstr "prezo (céntimos)"
 msgid "validez (días)"
 msgstr "validez (días)"
 
-#: apps/bookings/models.py:378 apps/members/models.py:39
+#: apps/bookings/models.py:378 apps/members/models.py:41
 msgid "á venda"
 msgstr "á venda"
 
@@ -2003,7 +2003,7 @@ msgstr "tipo de bono"
 msgid "tipos de bono"
 msgstr "tipos de bono"
 
-#: apps/bookings/models.py:392 apps/members/models.py:55
+#: apps/bookings/models.py:392 apps/members/models.py:57
 msgid "Activo"
 msgstr "Activo"
 
@@ -2156,72 +2156,72 @@ msgstr "denuncias de partidas"
 msgid "Persoa usuaria"
 msgstr "Persoa usuaria"
 
-#: apps/bookings/opengames.py:35
+#: apps/bookings/opengames.py:36
 msgid ""
 "Indica o teu ano de nacemento na túa conta para usar as partidas abertas."
 msgstr ""
 "Indica o teu ano de nacemento na túa conta para usar as partidas abertas."
 
-#: apps/bookings/opengames.py:37
+#: apps/bookings/opengames.py:39
 msgid "As partidas abertas son para maiores de 14 anos."
 msgstr "As partidas abertas son para maiores de 14 anos."
 
-#: apps/bookings/opengames.py:57
+#: apps/bookings/opengames.py:59
 msgid "Esta reserva non se pode abrir a máis xente."
 msgstr "Esta reserva non se pode abrir a máis xente."
 
-#: apps/bookings/opengames.py:60
+#: apps/bookings/opengames.py:62
 msgid "Tes que aceptar aparecer nas partidas abertas."
 msgstr "Tes que aceptar aparecer nas partidas abertas."
 
-#: apps/bookings/opengames.py:63
+#: apps/bookings/opengames.py:65
 #, python-format
 msgid "Poden unirse ata %(n)s persoas máis."
 msgstr "Poden unirse ata %(n)s persoas máis."
 
-#: apps/bookings/opengames.py:113
+#: apps/bookings/opengames.py:115
 msgid "É a túa partida."
 msgstr "É a túa partida."
 
-#: apps/bookings/opengames.py:116
+#: apps/bookings/opengames.py:118
 msgid "Tes que aceptar que quen organiza vexa o teu nome de pila e inicial."
 msgstr "Tes que aceptar que quen organiza vexa o teu nome de pila e inicial."
 
-#: apps/bookings/opengames.py:118
+#: apps/bookings/opengames.py:120
 msgid "Esta partida xa non ten prazas."
 msgstr "Esta partida xa non ten prazas."
 
-#: apps/bookings/opengames.py:129
+#: apps/bookings/opengames.py:135
 #, python-format
 msgid "%(n)s quere unirse á túa partida"
 msgstr "%(n)s quere unirse á túa partida"
 
-#: apps/bookings/opengames.py:130
+#: apps/bookings/opengames.py:136
 #, python-format
 msgid "%(f)s · Acepta ou rexeita a solicitude."
 msgstr "%(f)s · Acepta ou rexeita a solicitude."
 
-#: apps/bookings/opengames.py:141
+#: apps/bookings/opengames.py:147
 msgid "Só a persoa que organiza pode decidir."
 msgstr "Só a persoa que organiza pode decidir."
 
-#: apps/bookings/opengames.py:143
+#: apps/bookings/opengames.py:149
 msgid "Xa non quedan prazas."
 msgstr "Xa non quedan prazas."
 
-#: apps/bookings/opengames.py:153
+#: apps/bookings/opengames.py:159
 msgid "Aceptáronte na partida"
 msgstr "Aceptáronte na partida"
 
-#: apps/bookings/opengames.py:153
+#: apps/bookings/opengames.py:159
 msgid "Non hai sitio nesta partida"
 msgstr "Non hai sitio nesta partida"
 
-#: apps/bookings/opengames.py:184
+#: apps/bookings/opengames.py:191
 msgid "Só se poden enviar as mensaxes predefinidas da partida."
 msgstr "Só se poden enviar as mensaxes predefinidas da partida."
 
-#: apps/bookings/opengames.py:206
+#: apps/bookings/opengames.py:217
 msgid "Denuncia dunha partida aberta"
 msgstr "Denuncia dunha partida aberta"
 
@@ -2234,16 +2234,16 @@ msgstr "Prazas libres"
 msgid "Nivel"
 msgstr "Nivel"
 
-#: apps/bookings/opengames_views.py:28
+#: apps/bookings/opengames_views.py:30
 msgid "Mensaxe curta (opcional)"
 msgstr "Mensaxe curta (opcional)"
 
-#: apps/bookings/opengames_views.py:31
+#: apps/bookings/opengames_views.py:34
 msgid "P. ex. «Buscamos dúas persoas para dobres». Sen teléfonos nin correos."
 msgstr ""
 "P. ex. «Buscamos dúas persoas para dobres». Sen teléfonos nin correos."
 
-#: apps/bookings/opengames_views.py:35
+#: apps/bookings/opengames_views.py:39
 msgid ""
 "Acepto aparecer nas partidas abertas co meu nome de pila e a inicial do "
 "apelido (nunca o teléfono nin o correo)."
@@ -2251,23 +2251,23 @@ msgstr ""
 "Acepto aparecer nas partidas abertas co meu nome de pila e a inicial do "
 "apelido (nunca o teléfono nin o correo)."
 
-#: apps/bookings/opengames_views.py:61
+#: apps/bookings/opengames_views.py:68
 msgid "A partida xa non aparece en «Partidas abertas»."
 msgstr "A partida xa non aparece en «Partidas abertas»."
 
-#: apps/bookings/opengames_views.py:76
+#: apps/bookings/opengames_views.py:83
 msgid "Publicada en «Partidas abertas»."
 msgstr "Publicada en «Partidas abertas»."
 
-#: apps/bookings/opengames_views.py:131
+#: apps/bookings/opengames_views.py:138
 msgid "Solicitude enviada. Avisarémoste cando responda."
 msgstr "Solicitude enviada. Avisarémoste cando responda."
 
-#: apps/bookings/opengames_views.py:134
+#: apps/bookings/opengames_views.py:141
 msgid "Retiraches a túa solicitude."
 msgstr "Retiraches a túa solicitude."
 
-#: apps/bookings/opengames_views.py:142
+#: apps/bookings/opengames_views.py:149
 msgid "Grazas. O concello revisará a partida."
 msgstr "Grazas. O concello revisará a partida."
 
@@ -2408,196 +2408,196 @@ msgstr "A túa reserva"
 msgid "Pasada"
 msgstr "Pasada"
 
-#: apps/bookings/services.py:396
+#: apps/bookings/services.py:394
 msgid "Esa franxa xa pasou."
 msgstr "Esa franxa xa pasou."
 
-#: apps/bookings/services.py:400
+#: apps/bookings/services.py:398
 msgid "Aínda non se pode reservar con tanta antelación."
 msgstr "Aínda non se pode reservar con tanta antelación."
 
-#: apps/bookings/services.py:404
+#: apps/bookings/services.py:402
 msgid "A instalación non abre nesa franxa."
 msgstr "A instalación non abre nesa franxa."
 
-#: apps/bookings/services.py:406
+#: apps/bookings/services.py:404
 msgid "A instalación está pechada nesa franxa."
 msgstr "A instalación está pechada nesa franxa."
 
-#: apps/bookings/services.py:411
+#: apps/bookings/services.py:409
 msgid "Esa franxa acaba de quedar ocupada. Escolle outra."
 msgstr "Esa franxa acaba de quedar ocupada. Escolle outra."
 
-#: apps/bookings/services.py:436
+#: apps/bookings/services.py:434
 msgid "Debes aceptar as normas de uso vixentes."
 msgstr "Debes aceptar as normas de uso vixentes."
 
-#: apps/bookings/services.py:440
+#: apps/bookings/services.py:438
 #, python-format
 msgid "O número de persoas ten que estar entre 1 e %(n)s."
 msgstr "O número de persoas ten que estar entre 1 e %(n)s."
 
-#: apps/bookings/services.py:448
+#: apps/bookings/services.py:446
 msgid "Esa forma de pagamento non está dispoñible nesta instalación."
 msgstr "Esa forma de pagamento non está dispoñible nesta instalación."
 
-#: apps/bookings/services.py:455 apps/bookings/views.py:140
+#: apps/bookings/services.py:453 apps/bookings/views.py:140
 #, python-format
 msgid "%(c)s non admite agora reservas de persoas doutros concellos."
 msgstr "%(c)s non admite agora reservas de persoas doutros concellos."
 
-#: apps/bookings/services.py:477
+#: apps/bookings/services.py:475
 msgid "Xa tes o máximo de reservas activas permitidas neste concello."
 msgstr "Xa tes o máximo de reservas activas permitidas neste concello."
 
-#: apps/bookings/services.py:495
+#: apps/bookings/services.py:493
 msgid "Non tes un bono válido para esta instalación."
 msgstr "Non tes un bono válido para esta instalación."
 
-#: apps/bookings/services.py:559
+#: apps/bookings/services.py:557
 #, python-format
 msgid "Reserva pendente de aprobación: %(f)s"
 msgstr "Reserva pendente de aprobación: %(f)s"
 
-#: apps/bookings/services.py:560
+#: apps/bookings/services.py:558
 msgid "O concello revisará a túa solicitude e avisarémoste da resposta."
 msgstr "O concello revisará a túa solicitude e avisarémoste da resposta."
 
-#: apps/bookings/services.py:573
+#: apps/bookings/services.py:571
 #, python-format
 msgid "Paga na oficina: %(f)s"
 msgstr "Paga na oficina: %(f)s"
 
-#: apps/bookings/services.py:574
+#: apps/bookings/services.py:572
 #, python-format
 msgid "Gardámosche a franxa ata o %(d)s. Paga %(p)s € na oficina de deportes."
 msgstr ""
 "Gardámosche a franxa ata o %(d)s. Paga %(p)s € na oficina de deportes."
 
-#: apps/bookings/services.py:602
+#: apps/bookings/services.py:600
 #, python-format
 msgid "Cambio para aprobar: %(f)s"
 msgstr "Cambio para aprobar: %(f)s"
 
-#: apps/bookings/services.py:602
+#: apps/bookings/services.py:600
 #, python-format
 msgid "Reserva para aprobar: %(f)s"
 msgstr "Reserva para aprobar: %(f)s"
 
-#: apps/bookings/services.py:606
+#: apps/bookings/services.py:604
 #, python-format
 msgid "%(d)s ás %(h)s · %(n)s persoas · %(p)s"
 msgstr "%(d)s ás %(h)s · %(n)s persoas · %(p)s"
 
-#: apps/bookings/services.py:629
+#: apps/bookings/services.py:627
 #, python-format
 msgid "Cambio aprobado: %(f)s"
 msgstr "Cambio aprobado: %(f)s"
 
-#: apps/bookings/services.py:630
+#: apps/bookings/services.py:628
 #, python-format
 msgid "A túa reserva pasa ao %(d)s ás %(h)s."
 msgstr "A túa reserva pasa ao %(d)s ás %(h)s."
 
-#: apps/bookings/services.py:642 apps/bookings/services.py:671
+#: apps/bookings/services.py:640 apps/bookings/services.py:669
 msgid "Esta reserva non está pendente de aprobación."
 msgstr "Esta reserva non está pendente de aprobación."
 
-#: apps/bookings/services.py:655
+#: apps/bookings/services.py:653
 msgid "Indica o motivo do rexeitamento."
 msgstr "Indica o motivo do rexeitamento."
 
-#: apps/bookings/services.py:662
+#: apps/bookings/services.py:660
 #, python-format
 msgid "Cambio non aprobado: %(f)s"
 msgstr "Cambio non aprobado: %(f)s"
 
-#: apps/bookings/services.py:663
+#: apps/bookings/services.py:661
 #, python-format
 msgid "A túa reserva segue como estaba. Motivo: %(m)s"
 msgstr "A túa reserva segue como estaba. Motivo: %(m)s"
 
-#: apps/bookings/services.py:693
+#: apps/bookings/services.py:691
 #, python-format
 msgid "Motivo: %(m)s"
 msgstr "Motivo: %(m)s"
 
-#: apps/bookings/services.py:695
+#: apps/bookings/services.py:693
 #, python-format
 msgid "Devolvémosche %(r)s € automaticamente."
 msgstr "Devolvémosche %(r)s € automaticamente."
 
-#: apps/bookings/services.py:700
+#: apps/bookings/services.py:698
 #, python-format
 msgid "Reserva non aprobada: %(f)s"
 msgstr "Reserva non aprobada: %(f)s"
 
-#: apps/bookings/services.py:739
+#: apps/bookings/services.py:737
 msgid "Importe pagado insuficiente."
 msgstr "Importe pagado insuficiente."
 
-#: apps/bookings/services.py:756
+#: apps/bookings/services.py:754
 #, python-format
 msgid "Reserva confirmada: %(f)s"
 msgstr "Reserva confirmada: %(f)s"
 
-#: apps/bookings/services.py:757
+#: apps/bookings/services.py:755
 #, python-format
 msgid "%(d)s de %(s)s a %(e)s. Referencia %(r)s."
 msgstr "%(d)s de %(s)s a %(e)s. Referencia %(r)s."
 
-#: apps/bookings/services.py:775 apps/bookings/views.py:350
+#: apps/bookings/services.py:773 apps/bookings/views.py:350
 #: apps/bookings/waitlist_views.py:37
 msgid "Esta reserva xa non se pode cancelar."
 msgstr "Esta reserva xa non se pode cancelar."
 
-#: apps/bookings/services.py:777
+#: apps/bookings/services.py:775
 msgid "A reserva xa comezou."
 msgstr "A reserva xa comezou."
 
-#: apps/bookings/services.py:802
+#: apps/bookings/services.py:800
 #, python-format
 msgid "Reserva cancelada: %(f)s"
 msgstr "Reserva cancelada: %(f)s"
 
-#: apps/bookings/services.py:804
+#: apps/bookings/services.py:802
 #, python-format
 msgid "Devolución: %(r)s €."
 msgstr "Devolución: %(r)s €."
 
-#: apps/bookings/services.py:818 apps/bookings/views.py:382
+#: apps/bookings/services.py:816 apps/bookings/views.py:382
 msgid "Xa non se pode modificar esta reserva (prazo superado)."
 msgstr "Xa non se pode modificar esta reserva (prazo superado)."
 
-#: apps/bookings/services.py:885
+#: apps/bookings/services.py:883
 msgid "A porta non quedou pechada."
 msgstr "A porta non quedou pechada."
 
-#: apps/bookings/services.py:887
+#: apps/bookings/services.py:885
 msgid "A chave non se devolveu."
 msgstr "A chave non se devolveu."
 
-#: apps/bookings/services.py:889
+#: apps/bookings/services.py:887
 msgid "Non todo quedou en orde."
 msgstr "Non todo quedou en orde."
 
-#: apps/bookings/services.py:918
+#: apps/bookings/services.py:916
 msgid "Ao saír: fai falta limpeza."
 msgstr "Ao saír: fai falta limpeza."
 
-#: apps/bookings/services.py:955
+#: apps/bookings/services.py:953
 #, python-format
 msgid ""
 "Ao comezar a reserva %(r)s, a persoa atopou un problema que xa estaba antes."
 msgstr ""
 "Ao comezar a reserva %(r)s, a persoa atopou un problema que xa estaba antes."
 
-#: apps/bookings/services.py:959
+#: apps/bookings/services.py:957
 #, python-format
 msgid "Última reserva anterior: %(r)s (%(d)s)."
 msgstr "Última reserva anterior: %(r)s (%(d)s)."
 
-#: apps/bookings/services.py:989
+#: apps/bookings/services.py:987
 #, python-format
 msgid "Peche da instalación: %(r)s"
 msgstr "Peche da instalación: %(r)s"
@@ -2857,7 +2857,7 @@ msgstr "Grazas! Bo adestramento."
 msgid "Todas as que admitan bono"
 msgstr "Todas as que admitan bono"
 
-#: apps/bookings/vouchers.py:34 apps/members/views.py:123
+#: apps/bookings/vouchers.py:34 apps/members/views.py:137
 #: apps/tenants/manage.py:311
 msgid "Correo da persoa"
 msgstr "Correo da persoa"
@@ -2866,7 +2866,7 @@ msgstr "Correo da persoa"
 msgid "O bono queda na súa conta da app."
 msgstr "O bono queda na súa conta da app."
 
-#: apps/bookings/vouchers.py:54 apps/members/views.py:152
+#: apps/bookings/vouchers.py:54 apps/members/views.py:173
 #: apps/tenants/manage.py:336
 msgid "Non hai ningunha conta con ese correo."
 msgstr "Non hai ningunha conta con ese correo."
@@ -3385,7 +3385,7 @@ msgstr "Con aprobación do concello"
 msgid "Aberta (QR de entrada)"
 msgstr "Aberta (QR de entrada)"
 
-#: apps/facilities/models.py:43 templates/safety/closing_contact.html:17
+#: apps/facilities/models.py:43 templates/safety/closing_contact.html:18
 msgid "Chave custodiada"
 msgstr "Chave custodiada"
 
@@ -3938,12 +3938,12 @@ msgstr "Canastra de baloncesto descuberta co balón no aire"
 msgid "Pista polideportiva cuberta con chan verde e vermello"
 msgstr "Pista polideportiva cuberta con chan verde e vermello"
 
-#: apps/facilities/poster.py:189 apps/members/pdf.py:30
+#: apps/facilities/poster.py:189 apps/members/pdf.py:39
 #, python-format
 msgid "Escudo do Concello de %(c)s"
 msgstr "Escudo do Concello de %(c)s"
 
-#: apps/facilities/poster.py:192 apps/members/pdf.py:34
+#: apps/facilities/poster.py:192 apps/members/pdf.py:43
 #, python-format
 msgid "Concello de %(c)s"
 msgstr "Concello de %(c)s"
@@ -5158,7 +5158,7 @@ msgstr "Familiar"
 msgid "desconto nas tarifas (%)"
 msgstr "desconto nas tarifas (%)"
 
-#: apps/members/models.py:36
+#: apps/members/models.py:37
 msgid ""
 "Aplícase despois da tarifa (empadroada ou non) e do desconto de baixa "
 "demanda."
@@ -5166,78 +5166,78 @@ msgstr ""
 "Aplícase despois da tarifa (empadroada ou non) e do desconto de baixa "
 "demanda."
 
-#: apps/members/models.py:42
+#: apps/members/models.py:44
 msgid "tipo de abono"
 msgstr "tipo de abono"
 
-#: apps/members/models.py:43
+#: apps/members/models.py:45
 msgid "tipos de abono"
 msgstr "tipos de abono"
 
-#: apps/members/models.py:57
+#: apps/members/models.py:59
 msgid "Anulado"
 msgstr "Anulado"
 
-#: apps/members/models.py:74
+#: apps/members/models.py:76
 msgid "abono"
 msgstr "abono"
 
-#: apps/members/models.py:75
+#: apps/members/models.py:77
 msgid "abonos"
 msgstr "abonos"
 
-#: apps/members/models.py:100
+#: apps/members/models.py:102
 msgid "número"
 msgstr "número"
 
-#: apps/members/models.py:101
+#: apps/members/models.py:103
 msgid "foto (opcional)"
 msgstr "foto (opcional)"
 
-#: apps/members/models.py:104
+#: apps/members/models.py:106
 msgid "carné xa existente do concello"
 msgstr "carné xa existente do concello"
 
-#: apps/members/models.py:107
+#: apps/members/models.py:109
 msgid "Vinculado polo adaptador `municipal_card` (biblioteca, piscina…)."
 msgstr "Vinculado polo adaptador `municipal_card` (biblioteca, piscina…)."
 
-#: apps/members/models.py:112
+#: apps/members/models.py:114
 msgid "carné municipal"
 msgstr "carné municipal"
 
-#: apps/members/models.py:113
+#: apps/members/models.py:115
 msgid "carnés municipais"
 msgstr "carnés municipais"
 
-#: apps/members/pdf.py:33 templates/members/card.html:9
+#: apps/members/pdf.py:42 templates/members/card.html:9
 msgid "Carné municipal de deportes"
 msgstr "Carné municipal de deportes"
 
-#: apps/members/pdf.py:44 templates/members/card.html:15
+#: apps/members/pdf.py:53 templates/members/card.html:15
 #, python-format
 msgid "Válido ata o %(d)s"
 msgstr "Válido ata o %(d)s"
 
-#: apps/members/pdf.py:49 templates/manage/card_reader.html:16
+#: apps/members/pdf.py:58 templates/manage/card_reader.html:16
 msgid "Sen abono activo"
 msgstr "Sen abono activo"
 
-#: apps/members/pdf.py:51
+#: apps/members/pdf.py:60
 #, python-format
 msgid "N.º %(n)s"
 msgstr "N.º %(n)s"
 
-#: apps/members/pdf.py:52 templates/facilities/detail.html:40
+#: apps/members/pdf.py:61 templates/facilities/detail.html:40
 msgid "Emerxencias: 112"
 msgstr "Emerxencias: 112"
 
-#: apps/members/pdf.py:56
+#: apps/members/pdf.py:65
 #, python-format
 msgid "Código QR do carné número %(n)s"
 msgstr "Código QR do carné número %(n)s"
 
-#: apps/members/pdf.py:60
+#: apps/members/pdf.py:70
 #, python-format
 msgid "Carné municipal · %(c)s"
 msgstr "Carné municipal · %(c)s"
@@ -5252,62 +5252,62 @@ msgstr "Abono activado: %(n)s"
 msgid "Válido do %(a)s ao %(b)s. O teu carné está na app."
 msgstr "Válido do %(a)s ao %(b)s. O teu carné está na app."
 
-#: apps/members/services.py:167
+#: apps/members/services.py:169
 msgid "O QR caducou: pide que o actualice na app."
 msgstr "O QR caducou: pide que o actualice na app."
 
-#: apps/members/services.py:173
+#: apps/members/services.py:175
 msgid "Este QR non é un carné válido."
 msgstr "Este QR non é un carné válido."
 
-#: apps/members/services.py:175
+#: apps/members/services.py:177
 msgid "O carné impreso caducou."
 msgstr "O carné impreso caducou."
 
-#: apps/members/services.py:182
+#: apps/members/services.py:184
 msgid "Este carné xa non é válido (anulado ou doutro concello)."
 msgstr "Este carné xa non é válido (anulado ou doutro concello)."
 
-#: apps/members/services.py:224
+#: apps/members/services.py:226
 msgid "Esta persoa non ten ningunha reserva agora."
 msgstr "Esta persoa non ten ningunha reserva agora."
 
-#: apps/members/views.py:70
+#: apps/members/views.py:72
 msgid "Foto gardada no teu carné."
 msgstr "Foto gardada no teu carné."
 
-#: apps/members/views.py:76
+#: apps/members/views.py:78
 msgid "Quitamos a foto do teu carné."
 msgstr "Quitamos a foto do teu carné."
 
-#: apps/members/views.py:124 templates/manage/card_reader.html:16
+#: apps/members/views.py:138 templates/manage/card_reader.html:16
 #: templates/manage/passes.html:24
 msgid "Abono"
 msgstr "Abono"
 
-#: apps/members/views.py:147
+#: apps/members/views.py:168
 msgid "Tipo de abono creado."
 msgstr "Tipo de abono creado."
 
-#: apps/members/views.py:159
+#: apps/members/views.py:183
 #, python-format
 msgid "Abono activo ata o %(d)s."
 msgstr "Abono activo ata o %(d)s."
 
-#: apps/members/views.py:199
+#: apps/members/views.py:224
 #, python-format
 msgid "Entrada rexistrada: %(f)s."
 msgstr "Entrada rexistrada: %(f)s."
 
-#: apps/members/views.py:215
+#: apps/members/views.py:241
 msgid "O carné impreso anterior xa non vale."
 msgstr "O carné impreso anterior xa non vale."
 
-#: apps/members/views.py:241
+#: apps/members/views.py:271
 msgid "Este carné non ten ninguén inscrito neste grupo."
 msgstr "Este carné non ten ninguén inscrito neste grupo."
 
-#: apps/members/views.py:251
+#: apps/members/views.py:281
 #, python-format
 msgid "Presente: %(n)s"
 msgstr "Presente: %(n)s"
@@ -11140,17 +11140,17 @@ msgstr ""
 "non se escala á persoa responsable."
 
 #: templates/dev/lock_simulator.html:77
-#: templates/safety/closing_contact.html:16
+#: templates/safety/closing_contact.html:17
 msgid "pechada"
 msgstr "pechada"
 
 #: templates/dev/lock_simulator.html:77
-#: templates/safety/closing_contact.html:16
+#: templates/safety/closing_contact.html:17
 msgid "aberta"
 msgstr "aberta"
 
 #: templates/dev/lock_simulator.html:77
-#: templates/safety/closing_contact.html:16
+#: templates/safety/closing_contact.html:17
 msgid "sen datos"
 msgstr "sen datos"
 
@@ -16038,22 +16038,26 @@ msgid "Aviso á persoa responsable ás %(h)s."
 msgstr "Aviso á persoa responsable ás %(h)s."
 
 #: templates/safety/closing_contact.html:16
+msgid "Nota"
+msgstr "Nota"
+
+#: templates/safety/closing_contact.html:17
 msgid "Estado da porta segundo a pechadura"
 msgstr "Estado da porta segundo a pechadura"
 
-#: templates/safety/closing_contact.html:22
+#: templates/safety/closing_contact.html:23
 msgid "Nota (opcional)"
 msgstr "Nota (opcional)"
 
-#: templates/safety/closing_contact.html:23
+#: templates/safety/closing_contact.html:24
 msgid "Revisado: todo pechado e en orde"
 msgstr "Revisado: todo pechado e en orde"
 
-#: templates/safety/closing_contact.html:28
+#: templates/safety/closing_contact.html:29
 msgid "Policía Local"
 msgstr "Policía Local"
 
-#: templates/safety/closing_contact.html:29
+#: templates/safety/closing_contact.html:30
 msgid ""
 "Eira nunca avisa á policía soa. Decide ti se fai falta: o contacto queda "
 "rexistrado."
@@ -16061,20 +16065,20 @@ msgstr ""
 "Eira nunca avisa á policía soa. Decide ti se fai falta: o contacto queda "
 "rexistrado."
 
-#: templates/safety/closing_contact.html:31
+#: templates/safety/closing_contact.html:32
 msgid "Contacto rexistrado. Xa podes chamar."
 msgstr "Contacto rexistrado. Xa podes chamar."
 
-#: templates/safety/closing_contact.html:32
+#: templates/safety/closing_contact.html:33
 #, python-format
 msgid "Chamar ao %(p)s"
 msgstr "Chamar ao %(p)s"
 
-#: templates/safety/closing_contact.html:34
+#: templates/safety/closing_contact.html:35
 msgid "Contactar coa Policía Local"
 msgstr "Contactar coa Policía Local"
 
-#: templates/safety/closing_contact.html:36
+#: templates/safety/closing_contact.html:37
 #, python-format
 msgid "%(n)s contacto rexistrado."
 msgid_plural "%(n)s contactos rexistrados."

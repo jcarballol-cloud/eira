@@ -49,3 +49,8 @@ O mesmo percorrido está gravado, con subtítulos, en `eira-demo-movil.webm` e `
 2. Toca «Vestiario 2» (é o que abre o QR da parede) → checklist → «Rexistrar limpeza». «Sen cobertura gárdase no móbil coa hora de agora e envíase despois.»
 3. Concello → **Panel** («Limpeza atrasada») → **Máis ferramentas → Limpeza**: quen limpou e cando, empresa, QR para imprimir e **Exportar o rexistro** (PDF para unha inspección).
 4. Ficha pública do pavillón: «Última limpeza: hoxe …» xunto á última supervisión.
+
+## v1.2 · Vídeo anexo regrabado (65 s) e pasos opcionais
+- **Anexo:** ao percorrido da v5 engádense dous pasos curtos ao final: o **panel de Rendemento** do pavillón de Vilardeiras (ocupación, uso real e consumo estimado en kWh, € e CO₂) e o **NPS anual** da enquisa do ano pasado (NPS e sete aspectos, só con 10 respostas ou máis). A revisión de seguridade inicial di agora «trece puntos».
+- **Pitch:** sen cambios nin regrabación (o guión segue funcionando: Uxía reserva en Pontedouro, onde non ten abono).
+- **Pasos opcionais para enseñar a v1.2 en directo (≈ 1 min):** Uxía → escudo «Incidencia ou seguridade» → **Alerta → Accidente deportivo** (protocolo con 112 e DESA) → atallo **«O meu carné»** (QR que se renova cada minuto) → **Partidas abertas**. Concello → **Panel** (alertas e NPS) → pavillón → **Rendemento** → **Enquisas (NPS)**.

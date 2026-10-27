@@ -61,7 +61,7 @@ class SportsPass(TenantModel):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sports_passes"
     )
-    type = models.ForeignKey(PassType, on_delete=models.PROTECT, related_name="passes")
+    type = models.ForeignKey(PassType, on_delete=models.CASCADE, related_name="passes")
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
     starts_on = models.DateField(null=True, blank=True)
     expires_on = models.DateField(null=True, blank=True)

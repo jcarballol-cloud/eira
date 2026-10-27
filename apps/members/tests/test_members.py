@@ -168,3 +168,10 @@ def test_municipal_card_adapter_is_simulated(citizen, muni_a):
     card = services.ensure_card(vil, citizen)
     assert adapter.link(card, "BIB-00012") and card.external_id == "BIB-00012"
     assert not adapter.link(card, "BIB-00077")  # caducado
+
+
+def test_municipality_with_passes_can_be_deleted(citizen, general, muni_a):
+    """A rexeneración da demo (e o borrado dun concello) non se pode bloquear polos abonos."""
+    services.buy_pass(general, citizen, method="cash")
+    muni_a.delete()
+    assert not SportsPass.objects.exists() and not PassType.objects.exists()

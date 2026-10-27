@@ -93,6 +93,11 @@ def test_todo_lists_steps_with_times(citizen, padel_a):
     b = _confirmed(padel_a, citizen, next_slot(padel_a, days=2))
     keys = [t["key"] for t in waitlist.todo_for(b)]
     assert keys == ["confirm", "cancel", "checkin", "close"]
+    # Xa comezada: nin «confirma» nin «cancelación gratuíta»
+    started = timezone.now() - dt.timedelta(minutes=5)
+    Booking.objects.filter(pk=b.pk).update(start=started, end=started + dt.timedelta(hours=1))
+    b.refresh_from_db()
+    assert [t["key"] for t in waitlist.todo_for(b)] == ["checkin", "close"]
 
 
 # ---------------------------------------------------------------- lista de espera

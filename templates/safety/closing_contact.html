@@ -13,6 +13,7 @@
     {% if esc.escalated_at %}<li class="done">{% blocktranslate with h=esc.escalated_at|date:"H:i" %}Aviso á persoa responsable ás {{ h }}.{% endblocktranslate %}{% if esc.contact %} ({{ esc.contact.name }}){% endif %}</li>{% endif %}
     {% if esc.resolved_at %}<li class="done">{{ esc.get_outcome_display }} · {{ esc.resolved_at|date:"H:i" }}</li>{% endif %}
   </ul>
+  {% if esc.note %}<p>{% translate "Nota" %}: «{{ esc.note }}»</p>{% endif %}
   {% if booking.facility.access_level == 3 %}<p>{% translate "Estado da porta segundo a pechadura" %}: <strong>{% if esc.door_state == 'closed' %}{% translate "pechada" %}{% elif esc.door_state == 'open' %}{% translate "aberta" %}{% else %}{% translate "sen datos" %}{% endif %}</strong></p>{% endif %}
   {% if booking.facility.access_level == 1 %}<p>{% translate "Chave custodiada" %}: {{ booking.facility.key_holder_name }}{% if booking.facility.key_holder_phone %} · <a href="tel:{{ booking.facility.key_holder_phone|cut:' ' }}">{{ booking.facility.key_holder_phone }}</a>{% endif %}</p>{% endif %}
 </section>

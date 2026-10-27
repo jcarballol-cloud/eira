@@ -744,7 +744,7 @@ Regra de sempre: **só se engade**. Tanda case toda de documentación; o código
 - **Tema escuro:** o escritorio do concello segue sen tema escuro (decisión da v1.2); as pantallas novas da conta (seguridade, segundo paso, códigos) si se proban en escuro.
 
 ### D · Publicación
-- **Non se reescribiu o historial.** Os achados (dominio `demo.eira.example` en commits antigos, un nome de pila nos commits da v1.2, un apelido común na lista ficticia, tamaño das capturas) e a proposta de limpeza están en `docs/AUDITORIA_PUBLICACION.md`.
+- **Non se reescribiu o historial.** Os achados (subdominio `demo` de `eira.gal` en commits antigos, un nome de pila nos commits da v1.2, un apelido común na lista ficticia, tamaño das capturas) e a proposta de limpeza están en `docs/AUDITORIA_PUBLICACION.md`.
 - O repositorio xa ten un remoto `origin` con `origin/master` en `5181c06`: non se fixo push (regra da sesión) e non se consultou a rede para saber se é público.
 - `.gitignore` ignora desde agora `*.docx`, `*.doc`, `*.odt` e `*.pdf` (agás en `docs/`), para que a carta de interese ou outros documentos alleos non se poidan versionar por erro.
 - `GOVERNANCE.md` en galego e castelán. Non se inventan persoas mantedoras: figura o «Equipo Eira» e proponse un comité de persoas usuarias cando haxa concellos.

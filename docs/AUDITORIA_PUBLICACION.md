@@ -25,7 +25,7 @@ Hai catro cousas que o equipo debe decidir antes de publicar (táboa 2). **Non s
 | Mencións ao concello da carta | `git log --all -p` | 0 ✅ |
 | Rutas locais de Windows (unidade + `Users`, a carpeta do proxecto, `AppData`, `Temp/claude`) | expresións regulares | Só no propio texto da auditoría anterior (lista de patróns buscados, `41a3f1b`). Ningunha ruta real ✅ |
 | Nome de usuario do sistema, apelidos e correo persoal | expresións regulares (usuario de Windows, apelido, `gmail`, `hotmail`, `outlook`, `yahoo`, `icloud`) | Ningún correo persoal. Ver 2.c (un apelido común na lista de apelidos ficticios) |
-| Correos fóra de dominios reservados (RFC 2606 e 6761) | todos os enderezos do historial | Só `LL@li.org` (marcador da plantilla de gettext) e os `*@demo.eira.example` antigos (ver 2.a) |
+| Correos fóra de dominios reservados (RFC 2606 e 6761) | todos os enderezos do historial | Só `LL@li.org` (marcador da plantilla de gettext) e os enderezos antigos do subdominio `demo` de `eira.gal` (ver 2.a) |
 | DNI, teléfonos móbiles, IBAN | expresións regulares | DNI de exemplo (`12345678Z`, `00000001R`…) e teléfono `600000000`: ficticios e documentados como tales. 0 IBAN ✅ |
 | IPs privadas | `192.168.*`, `10.*` | 0 ✅ |
 | Autoría dos commits | `git log --all --format="%an <%ae> \| %cn <%ce>"` | Os 65: `Equipo Eira <equipo@eira.invalid>` ✅ |
@@ -36,7 +36,7 @@ Hai catro cousas que o equipo debe decidir antes de publicar (táboa 2). **Non s
 
 | # | Que | Commit(s) e ficheiro(s) | Risco | Proposta |
 |---|---|---|---|---|
-| a | Correos ficticios en `demo.eira.example` (dominio que podería ser dun terceiro), antes do cambio a `demo.eira.example` | de `ca22205` a `41a3f1b` (23/10/2026): `apps/tenants/management/commands/seed_demo.py`, `apps/integrations/demo.py`, `tests/e2e/test_screenshots.py` e outros | Baixo: non son persoas reais, pero se `eira.gal` ten dono, o historial ten enderezos dese dominio | Opcional: `git filter-repo --replace-text` con `demo.eira.example==>demo.eira.example` |
+| a | Correos ficticios no subdominio `demo` de `eira.gal` (dominio que podería ser dun terceiro), antes do cambio a `demo.eira.example` | de `ca22205` a `41a3f1b` (23/10/2026): `apps/tenants/management/commands/seed_demo.py`, `apps/integrations/demo.py`, `tests/e2e/test_screenshots.py` e outros | Baixo: non son persoas reais, pero se `eira.gal` ten dono, o historial ten enderezos dese dominio | Opcional: `git filter-repo --replace-text` cara a `demo.eira.example` (feito na copia pública da v1.4) |
 | b | Nome de pila dunha persoa real que fixo propostas para a v1.2 | `bf6b51d` e `db4a681`: `docs/DECISIONS.md`, `docs/INFORME_MANANA.md`, `docs/PLAN_V2.md`, `docs/PROGRESS.md`; mensaxe de `db4a681` e anotación da etiqueta `v1.2-certame` | Baixo (só o nome de pila), pero é un dato persoal dun terceiro | Confirmar que está de acordo en aparecer. Se non: substituír por «a persoa colaboradora» nos documentos (cambio normal). Como estes commits **aínda non están en `origin`**, a mensaxe e a etiqueta pódense corrixir antes de subilos, sen tocar nada xa subido |
 | c | Un apelido galego común na lista de apelidos ficticios da demo | `a51fe58`: `apps/activities/demo.py` (lista `SURNAMES`) | Moi baixo: lista de apelidos frecuentes combinados ao chou; ningunha persoa da demo é real | Ningunha, salvo que o equipo prefira cambialo |
 | d | Tamaño do historial | 616 capturas PNG en `docs/capturas/` (109 MB no árbore actual); o *pack* de git ocupa uns 330 MB porque cada rexeneración das capturas engade versións novas (a maior, 4,9 MB, ten tres versións) | Clonar é lento; non é un risco de privacidade | Antes de publicar: ou mover as capturas a *release assets* ou Git LFS e publicar a partir dun historial novo (*squash*), ou aceptar o tamaño. **As dúas primeiras reescriben ou cortan o historial: decisión do equipo** |
@@ -53,7 +53,8 @@ avisando a quen xa clonase):
 
 ```bash
 pip install git-filter-repo                                   # MIT
-echo 'demo.eira.example==>demo.eira.example' > substitucions.txt
+printf 'demo.eira.%s==>demo.eira.example
+' gal > substitucions.txt
 git filter-repo --replace-text substitucions.txt               # 2.a
 git filter-repo --replace-message substitucions-mensaxes.txt   # 2.b (mensaxes de commit)
 git filter-repo --path docs/capturas --invert-paths            # 2.d (se as capturas van a release assets)
@@ -98,7 +99,7 @@ git filter-repo --path docs/capturas --invert-paths            # 2.d (se as capt
 
 ## 2. Cambios feitos nesta auditoría
 
-1. **Dominio dos perfís de demostración:** `demo.eira.example` → `demo.eira.example`. `eira.gal` podería
+1. **Dominio dos perfís de demostración:** subdominio `demo` de `eira.gal` → `demo.eira.example`. `eira.gal` podería
    ser un dominio real dun terceiro; `.example` está reservado (RFC 2606). Afecta a seed, tests e perfís.
 2. **Cabeceiras dos catálogos `.po`:** sen marcadores persoais; `tools/compile_messages.py` reescríbeas sempre.
 3. Revisión de nomes ficticios: ver [DECISIONS.md](DECISIONS.md) (sen coincidencias reais nos tres nomes principais).

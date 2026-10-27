@@ -27,7 +27,7 @@ Se revisaron **los 65 commits de todas las referencias** (`master`, `origin/mast
 
 - **Sin secretos** (solo `"proba-non-real"` en un test), **sin documentos ajenos** (ningún `.docx`/`.pdf`/… en toda la historia; la carta de interés de un concello que está en la carpeta **nunca se versionó** y ahora `.gitignore` ignora `*.docx`, `*.doc`, `*.odt` y `*.pdf`), **sin rutas locales reales**, **sin correos reales**, autoría siempre «Equipo Eira», 674 PNG sin metadatos.
 - **Para decidir** (propuesta de limpieza en el documento, no ejecutada):
-  1. Correos ficticios `*@demo.eira.example` (dominio que podría ser de un tercero) en los commits `ca22205` → `41a3f1b` (`seed_demo.py`, `apps/integrations/demo.py`, `tests/e2e/test_screenshots.py`…). Propuesta: `git filter-repo --replace-text` a `demo.eira.example`.
+  1. Correos ficticios del subdominio `demo` de `eira.gal` (dominio que podría ser de un tercero) en los commits `ca22205` → `41a3f1b` (`seed_demo.py`, `apps/integrations/demo.py`, `tests/e2e/test_screenshots.py`…). Propuesta: `git filter-repo --replace-text` a `demo.eira.example`.
   2. Un nombre de pila en `bf6b51d` y `db4a681` (`DECISIONS.md`, `INFORME_MANANA.md`, `PLAN_V2.md`, `PROGRESS.md`, mensaje de `db4a681` y anotación de `v1.2-certame`). Confirmar que está de acuerdo; esos commits **aún no están en `origin`**.
   3. Un apellido gallego común en la lista de apellidos ficticios de la demo (`a51fe58`, `apps/activities/demo.py`): no identifica a nadie; se señala por prudencia.
   4. Tamaño: ~330 MB de *pack* por las capturas regeneradas (616 PNG, 109 MB en el árbol actual). Propuesta: *release assets* o LFS y un historial nuevo, o aceptarlo.

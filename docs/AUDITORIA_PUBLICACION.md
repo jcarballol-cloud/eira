@@ -1,6 +1,18 @@
 # Auditoría para a publicación do repositorio
 
-**Última revisión: 27/10/2026 (v1.3)**, primeira sección. A auditoría orixinal segue debaixo.
+**Última revisión: 27/10/2026 (v1.4)**, primeira sección. A auditoría orixinal segue debaixo.
+
+## Revisión v1.4 (27/10/2026): copia limpa para publicar
+
+O equipo decidiu **non reescribir este repositorio** (queda como arquivo privado co historial
+completo) e publicar unha **copia limpa** xerada á parte cun script (`git filter-repo` só na copia):
+sen o dominio de demostración antigo, sen o nome de pila da sección 2.b, sen o apelido común da
+2.c e sen `docs/capturas/` (que vai como adxunto da versión). A auditoría completa repetiuse
+**sobre a copia** e o resultado queda fóra do repositorio, xunto ao script
+(`Eira-release/auditoria-copia-publica.md`). Resumo: apta para publicar; `.git` de ≈ 32 MB;
+0 ficheiros > 5 MB; tests, E2E, `publiccode.yml`, licenza e cabeceiras SPDX en verde. Neste
+repositorio, ademais: segredo TOTP cifrado e prazo de conservación do rexistro de auditoría
+(ver `docs/seguridade-rxpd.md`).
 
 **Data:** 23/10/2026 · **Alcance:** ficheiros versionados, historial completo de git (todas as
 ramas), metadatos de imaxes e vídeos, catálogos de tradución e configuración do repositorio.

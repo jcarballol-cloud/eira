@@ -146,3 +146,11 @@ Regra: só se engade. Decisións en DECISIONS (v1.3).
 - ✅ C · dobre factor TOTP (opcional por persoa, obrigatorio por concello para administración e DPD, e por agrupación para a deputación), 10 códigos de recuperación, restablecemento por outra administración; rexistro de auditoría consultable (administración e DPD) con categorías, filtros e CSV; retirada de roles e descargas do persoal rexistradas. 34 tests novos + 4 E2E.
 - ✅ D · auditoría de todo o historial (65 commits, todas as referencias): sen segredos, documentos alleos, rutas nin correos reais; 4 puntos para decidir. README (demo en 5 minutos, licenza, contribucións), `publiccode.yml` validado, `GOVERNANCE.md`.
 - ✅ E · sección v1.3 no informe, etiqueta `v1.3-certame`.
+
+## v1.4 · Copia limpa para publicar (27/10)
+Decisións en DECISIONS (v1.4). Este repositorio e o seu remoto non se reescriben.
+- ✅ A1 · conservación do rexistro de auditoría por concello (2 anos por defecto, 12–120 meses), purga en `booking_maintenance`, rexistrada como `audit.purge`.
+- ✅ A2 · segredo TOTP cifrado en repouso (Fernet, chave `EIRA_TOTP_KEY` ou derivada de `EIRA_SECRET_KEY`), migración dos existentes, comando `rotate_totp_key`. 19 tests novos entre A1 e A2.
+- ✅ A3 · apelido da demo cambiado; sen o dominio de demostración antigo no código nin na documentación.
+- ✅ B · copia pública xerada por script (fóra do repositorio): historial sen o dominio antigo, o nome de pila nin `docs/capturas/`; capturas en `capturas-v1.4.zip`; 6 capturas clave lixeiras; auditoría da copia.
+- ✅ C · sección v1.4 no informe, etiqueta `v1.4-certame`.

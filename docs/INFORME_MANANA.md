@@ -1,7 +1,82 @@
 # Informe de la sesión nocturna — Eira
 
-**Fecha:** 23/10/2026 (última actualización: 27/10/2026, v1.3) · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
+**Fecha:** 23/10/2026 (última actualización: 27/10/2026, v1.4) · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
 
+
+## v1.4. Copia limpia para publicar (sin publicar) (27/10) · etiqueta `v1.4-certame`
+
+**Servidor:** <http://localhost:8000> y en la LAN (`0.0.0.0:8000`, `EIRA_DEBUG=1`), con las migraciones nuevas y los datos regenerados. Commits locales, **sin push** y sin crear repositorios remotos. **Este repositorio y su `origin` no se han reescrito.** Decisiones en `DECISIONS.md` (v1.4).
+
+### Qué hay y dónde
+
+| Bloque | Dónde | Verificado |
+|---|---|---|
+| A1 · Plazo de conservación del registro de auditoría | Xestión → Configuración → «Seguridade das contas e rexistro de auditoría» (`audit_retention_months`: 24 meses por defecto, 12–120). Purga en `booking_maintenance`; cada purga queda como `audit.purge`. La página del registro muestra el plazo | ✅ 9 tests (por concello, entradas sin concello, comando, límites, formulario, aviso) |
+| A2 · Secreto TOTP cifrado en reposo | `apps/accounts/secretbox.py`: Fernet (`cryptography`), clave `EIRA_TOTP_KEY` o derivada de `EIRA_SECRET_KEY` con HKDF; migración `accounts/0012_v1_4` que cifra los existentes; comando `rotate_totp_key`. Documentado en `docs/seguridade-rxpd.md`, EIPD, RAT (fila 13) y matriz | ✅ 8 tests (cifrado en BD, migración de ida y vuelta, rotación a la clave propia, clave cambiada sin error, valor alterado rechazado) |
+| A3 · Demo | Apellido común de la lista ficticia → «Calvo». El dominio de demo antiguo ya no aparece ni en el código ni en la documentación | ✅ `git grep` vacío |
+| B · Copia pública | Carpeta `Eira-publico` (al lado de este repositorio), sin remoto. Se genera con un script en `Eira-release/ferramentas/` | ✅ ver abajo |
+| B · Capturas | `Eira-release/capturas-v1.4.zip` (615 PNG + 1 README, 100 MB) para subir como adjunto de la release. En la copia: `docs/capturas/README.md` y **6 capturas clave rehechas con la demo v1.4** (19–87 KB), mostradas en el README («Como se ve») | ✅ revisadas a ojo una a una |
+| B · Auditoría de la copia | `Eira-release/auditoria-copia-publica.md` | ✅ |
+
+### Tamaño antes y después
+
+| | Este repositorio (privado) | Copia pública |
+|---|---|---|
+| `.git` en disco | **385 MB** (pack de 330 MB) | **≈ 32 MB** (pack de 31 MB) |
+| Commits | 69 | 70 (los mismos reescritos + 1 de publicación) |
+| Objetos PNG en el historial | 1 905 | 235 (fotos, iconos, ilustraciones y las 6 capturas clave) |
+
+### Qué se eliminó del historial (solo en la copia)
+
+- **`docs/capturas/` completo**, en todos los commits (todas las versiones de cada captura). Van en el zip de la release.
+- **Binarios > 5 MB:** fuera de las capturas **no había ninguno** (el mayor, 2,4 MB, en `assets-originais/`). Se aplicó igualmente `--strip-blobs-bigger-than 5M`; no quitó nada más.
+- **Sustituciones de texto** en todos los ficheros de todos los commits, en los mensajes de commit y en las anotaciones de las etiquetas:
+  - el dominio de demo antiguo → `demo.eira.example`;
+  - el nombre de pila de la persona que hizo las propuestas de la v1.2 → «o equipo», con la concordancia de cada frase («Aportacións do equipo», «Propuesta del equipo»…);
+  - **además de lo pedido:** el apellido común de la demo → «Calvo» (si no, seguiría en las versiones antiguas de `apps/activities/demo.py`). Se puede quitar del fichero de sustituciones y regenerar.
+- Los **hashes de los commits cambian**; la correspondencia antiguo → nuevo está en `Eira-release/correspondencia-commits.txt`. Los documentos que citan commits citan los de este repositorio.
+
+### Cifras
+
+- **Tests unitarios e integración:** **841** en verde aquí y **841** en la copia (eran 822; +19 de la v1.4).
+- **E2E:** **69** en verde aquí (Playwright + axe, sobre una copia exacta del commit, 23 min). En la copia pública se repiten después de generarla: resultado en `Eira-release/auditoria-copia-publica.md`.
+- **axe (WCAG 2.1 AA):** las mismas 151 páginas × 3 tamaños y 65 en tema oscuro, **0 violaciones**; la página del registro y la de configuración (con el campo nuevo) ya estaban en la lista.
+- **Castellano:** 100 % (5 cadenas nuevas).
+- **En la copia:** `publiccode.yml` válido (validador oficial sin red, salida 0); **0 ficheros de código sin cabecera SPDX** (`tools/check_spdx.py`); licencias de las dependencias compatibles con la EUPL-1.2, incluida `cryptography` (`tools/check_licenses.py`); `git fsck` sin errores; 0 apariciones del dominio antiguo, del nombre ni del apellido en ficheros, mensajes y etiquetas; 0 blobs > 5 MB; 69 commits con autoría «Equipo Eira».
+
+### Comandos para publicar (NO ejecutados)
+
+Desde la carpeta de la copia pública (`Eira-publico`, al lado de este repositorio), con Git Bash y la CLI de GitHub (`gh`) autenticada. Cambia `ORGANIZACION` por la organización donde vaya a vivir el proyecto (mejor que una cuenta personal):
+
+```bash
+cd ../Eira-publico
+git status                      # limpio, rama master, sin remotos (git remote → nada)
+
+# 1. Crear el repositorio público vacío (sin README ni licencia: ya están en la copia)
+gh repo create ORGANIZACION/eira --public \
+  --description "Eira · Software libre para a xestión deportiva municipal"
+
+# 2. Subir la rama y las etiquetas
+git remote add origin https://github.com/ORGANIZACION/eira.git
+git push -u origin master
+git push origin --tags
+
+# 3. Crear la release v1.4-certame con las capturas como adjunto
+gh release create v1.4-certame ../Eira-release/capturas-v1.4.zip \
+  --repo ORGANIZACION/eira --title "Eira v1.4 (certame)" \
+  --notes-file ../Eira-release/notas-v1.4.md
+```
+
+Después de publicar: poner la URL definitiva en `publiccode.yml` (`url`) y en el README, y validar **con red** (`python tools/tasks.py publiccode` sin `-no-network`). **No** añadas el `origin` antiguo a la copia ni hagas push de este repositorio al nuevo. Los mismos comandos, con rutas absolutas, están en `Eira-release/PUBLICAR.md`.
+
+### NO verificado o con límites
+
+- **Contenido de las 615 capturas del zip:** son las del último commit, tal cual. No se ha comprobado (no hay OCR) si alguna muestra el apellido antiguo de la lista ficticia; el dominio antiguo no debería salir (se regeneraron después del cambio de dominio), pero tampoco se ha comprobado imagen por imagen. Para tenerlas al día: regenerarlas con `tools/tasks.py screenshots` y los `test_screenshots_*.py` y rehacer el zip.
+- **Visibilidad del `origin` antiguo:** no se consultó la red. Si es público, el historial anterior al 24/10 (con el dominio antiguo y el apellido) sigue visible ahí: conviene ponerlo privado (`gh repo view <cuenta>/<repo> --json visibility`).
+- **El cifrado TOTP no protege** si alguien tiene a la vez la base de datos y la clave (el servidor en ejecución): protege copias de seguridad y volcados. Sin `EIRA_TOTP_KEY` la clave sale de `EIRA_SECRET_KEY`, y una copia del `.env` bastaría.
+- **No se ha probado con una app TOTP real** (como en la v1.3).
+- `publiccode.yml` **con red**, la URL definitiva y la página de la release: pendientes de que exista el repositorio.
+- El registro de auditoría sigue **sin protección contra quien tenga acceso directo a la base de datos** (no hay encadenamiento de hashes).
 
 ## v1.3. Documentación para la adopción y preparación para publicar (27/10) · etiqueta `v1.3-certame`
 

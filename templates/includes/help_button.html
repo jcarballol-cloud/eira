@@ -6,6 +6,7 @@
     <p>{{ help_topic.body }}</p>
     <ul class="list-plain help-pop__links">
       <li><a href="{% url 'help_guide' %}{% if help_topic.key %}#{{ help_topic.key|slugify }}{% endif %}">{% translate "Guía completa" %}</a></li>
+      {% if kind == 'admin' or kind == 'region' or kind == 'dpo' %}<li><a href="{% url 'leeme' %}">{% translate "Uso e requisitos legais (LEEME)" %}</a></li>{% endif %}
       {% with t=tenant|default:app_tenant %}{% if t %}
       {% if t.contact_phone %}<li><a href="tel:{{ t.contact_phone|cut:' ' }}">{% icon 'phone' %} {% blocktranslate with c=t.name %}Chamar ao Concello de {{ c }}{% endblocktranslate %}</a></li>{% endif %}
       {% if t.contact_email %}<li><a href="mailto:{{ t.contact_email }}">{% icon 'mail' %} {% translate "Escribir ao concello" %}</a></li>{% endif %}

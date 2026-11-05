@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Uso e requisitos legais" %}{% endblock %}
+{% block content %}
+<article class="doc-text">{{ body }}</article>
+<p class="mt-2"><a href="{% url 'help_guide' %}">{% translate "Guía de Eira" %}</a> · <a href="{{ home_url }}">{% translate "Volver ao inicio" %}</a></p>
+{% endblock %}

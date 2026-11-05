@@ -4,7 +4,7 @@
 import csv
 
 from django.contrib import messages
-from django.core.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.validators import validate_email
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -12,13 +12,13 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
-from apps.accounts.models import audit
+from apps.accounts.models import Membership, Role, audit
 from apps.analytics import observatory
 from apps.bookings.payments import start_online_payment
 from apps.integrations.registry import get_adapter
 from apps.tenants.urlutils import module_required, neighbour_required, role_required, treverse
 
-from . import services
+from . import accreditation, services
 from .models import Activity, Enrollment, Group, PendingParticipant
 
 
@@ -293,6 +293,8 @@ def manage_group(request, pk):
                 "minor": bool(e.dependent),
             }
         )
+    if request.method == "POST" and request.POST.get("action") == "assign":
+        return _assign_monitor(request, group)
     if request.method == "POST" and request.POST.get("action") == "surnames":
         e = get_object_or_404(group.enrollments, pk=request.POST.get("enrollment"))
         e.surnames = request.POST.get("surnames", "").strip()[:80]
@@ -311,7 +313,73 @@ def manage_group(request, pk):
             "total": len(rows),
             "no_photo": no_photo,
             "only": only,
+            # v1.5 · E: asignación da persoa monitora e estado da acreditación
+            "monitor_options": accreditation.monitor_options(request.tenant),
+            "monitor_blocked": accreditation.blocked_message(group, group.monitor)
+            if group.monitor_id
+            else "",
             "nav": "manage",
             "sub": "activities",
+        },
+    )
+
+
+def _assign_monitor(request, group):
+    """v1.5 · E: só a administración do concello. Bloquea se falta a acreditación con menores."""
+    if "admin" not in request.roles:
+        raise PermissionDenied
+    url = treverse(request.tenant, "manage:group", group.pk)
+    value = request.POST.get("monitor", "")
+    if not value:
+        accreditation.assign_monitor(group, None, by=request.user)
+        messages.success(request, _("Grupo sen persoa monitora asignada."))
+        return redirect(url)
+    member = (
+        Membership.objects.filter(municipality=request.tenant, role=Role.MONITOR, user_id=value)
+        .select_related("user")
+        .first()
+        if value.isdigit()
+        else None
+    )
+    if member is None:
+        messages.error(request, _("Escolle unha persoa monitora deste concello."))
+        return redirect(url)
+    try:
+        accreditation.assign_monitor(group, member.user, by=request.user)
+    except accreditation.AssignmentBlocked as exc:
+        messages.error(request, str(exc))
+        return redirect(url)
+    messages.success(request, _("Persoa monitora asignada."))
+    return redirect(url)
+
+
+@role_required("admin")
+def accreditations(request):
+    """v1.5 · E: acreditacións. Só a administración do concello (nin DPD nin deputación)."""
+    if request.method == "POST":
+        member = get_object_or_404(
+            Membership.objects.select_related("user"),
+            municipality=request.tenant,
+            role=Role.MONITOR,
+            pk=request.POST.get("member") if request.POST.get("member", "").isdigit() else 0,
+        )
+        url = treverse(request.tenant, "manage:accreditations")
+        if request.POST.get("action") == "withdraw":
+            accreditation.withdraw(request.tenant, member.user, by=request.user)
+            messages.success(request, _("Marca retirada."))
+        elif request.POST.get("verified") == "1":
+            accreditation.confirm(request.tenant, member.user, by=request.user)
+            messages.success(request, _("Acreditación marcada como verificada na contratación."))
+        else:
+            messages.error(request, _("Marca a casiña para confirmar que o comprobaches."))
+        return redirect(url)
+    return render(
+        request,
+        "manage/accreditations.html",
+        {
+            "rows": accreditation.rows(request.tenant),
+            "review_months": request.tenant.accreditation_review_months,
+            "nav": "manage",
+            "sub": "accreditations",
         },
     )

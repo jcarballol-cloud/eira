@@ -45,3 +45,7 @@ class Command(BaseCommand):
         self.stdout.write(
             f"Rexistro de auditoría: {purge_expired()} entradas borradas por antigüidade"
         )
+        # v1.5 · E: aviso ao concello cando toca volver confirmar unha acreditación
+        from apps.activities.accreditation import notify_due_reviews
+
+        self.stdout.write(f"Acreditacións por revisar: {notify_due_reviews()} avisos")

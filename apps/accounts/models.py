@@ -108,6 +108,8 @@ class Membership(models.Model):
     role = models.CharField(_("rol"), max_length=20, choices=Role.choices)
     # v1.1: persoal de limpeza propio ou dunha empresa contratada (baleiro = persoal do concello)
     company = models.CharField(_("empresa"), max_length=120, blank=True)
+    # v1.5 · E: persoa voluntaria con rol de monitora (a acreditación con menores é a mesma)
+    is_volunteer = models.BooleanField(_("persoa voluntaria"), default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

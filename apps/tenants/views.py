@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: EUPL-1.2
 import json
+from pathlib import Path
 
 from django.conf import settings
 from django.http import HttpResponse
@@ -241,6 +242,18 @@ def dpia(request):
 def safety(request):
     """«Incidencia ou seguridade»: avaría, risco (prioridade alta) ou chamar ao 112."""
     return render(request, "core/safety.html", {"nav": "incident"})
+
+
+def leeme(request):
+    """v1.5 · F: LEEME de uso e legal, dentro da axuda («?»). No idioma activo."""
+    from django.conf import settings as dj_settings
+    from django.utils.translation import get_language
+
+    from .markup import render as render_markup
+
+    name = "LEEME.es.md" if (get_language() or "").startswith("es") else "LEEME.md"
+    text = (Path(dj_settings.BASE_DIR) / name).read_text(encoding="utf-8")
+    return render(request, "core/leeme.html", {"body": render_markup(text)})
 
 
 def help_guide(request):

@@ -17215,5 +17215,161 @@ msgstr "Solo se puede responder una vez. ¡Gracias!"
 msgid "Valora do 1 (moi mal) ao 5 (moi ben)"
 msgstr "Valora del 1 (muy mal) al 5 (muy bien)"
 
+msgid "Uso e requisitos legais (LEEME)"
+msgstr "Uso y requisitos legales (LÉEME)"
+
+msgid "Uso e requisitos legais"
+msgstr "Uso y requisitos legales"
+
+msgid "Persoa voluntaria"
+msgstr "Persona voluntaria"
+
+msgid "persoa voluntaria"
+msgstr "persona voluntaria"
+
+msgid "Marca esta casiña se é unha persoa voluntaria con rol de monitora."
+msgstr "Marca esta casilla si es una persona voluntaria con rol de monitora."
+
+msgid "revisión da acreditación para actividades con menores (meses)"
+msgstr "revisión de la acreditación para actividades con menores (meses)"
+
+msgid ""
+"Pasado este prazo, o concello recibe un aviso para volver confirmala. Por "
+"defecto, cada ano."
+msgstr ""
+"Pasado este plazo, el concello recibe un aviso para volver a confirmarla. "
+"Por defecto, cada año."
+
+msgid "acreditación para actividades con menores"
+msgstr "acreditación para actividades con menores"
+
+msgid "acreditacións para actividades con menores"
+msgstr "acreditaciones para actividades con menores"
+
+msgid "Acreditacións para actividades con menores"
+msgstr "Acreditaciones para actividades con menores"
+
+msgid "Acreditacións (menores)"
+msgstr "Acreditaciones (menores)"
+
+msgid "Acreditación verificada"
+msgstr "Acreditación verificada"
+
+msgid "Revisión pendente"
+msgstr "Revisión pendiente"
+
+msgid "Acreditación pendente"
+msgstr "Acreditación pendiente"
+
+msgid ""
+"%(p)s non pode levar este grupo con menores: pasou o prazo de revisión da "
+"acreditación. A administración do concello debe volver confirmala en "
+"«Acreditacións»."
+msgstr ""
+"%(p)s no puede llevar este grupo con menores: ha pasado el plazo de revisión"
+" de la acreditación. La administración del concello debe volver a "
+"confirmarla en «Acreditaciones»."
+
+msgid ""
+"%(p)s non pode levar este grupo con menores: falta marcar a acreditación "
+"verificada na contratación. Faino a administración do concello en "
+"«Acreditacións»."
+msgstr ""
+"%(p)s no puede llevar este grupo con menores: falta marcar la acreditación "
+"verificada en la contratación. Lo hace la administración del concello en "
+"«Acreditaciones»."
+
+msgid "Toca revisar unha acreditación para actividades con menores"
+msgstr "Toca revisar una acreditación para actividades con menores"
+
+msgid "Volve confirmar a acreditación de %(p)s na contratación."
+msgstr "Vuelve a confirmar la acreditación de %(p)s en la contratación."
+
+msgid "Grupo sen persoa monitora asignada."
+msgstr "Grupo sin persona monitora asignada."
+
+msgid "Escolle unha persoa monitora deste concello."
+msgstr "Elige una persona monitora de este concello."
+
+msgid "Persoa monitora asignada."
+msgstr "Persona monitora asignada."
+
+msgid "Marca retirada."
+msgstr "Marca retirada."
+
+msgid "Acreditación marcada como verificada na contratación."
+msgstr "Acreditación marcada como verificada en la contratación."
+
+msgid "Marca a casiña para confirmar que o comprobaches."
+msgstr "Marca la casilla para confirmar que lo has comprobado."
+
+msgid "Persoal"
+msgstr "Personal"
+
+msgid ""
+"Eira non garda nin sube o certificado do Rexistro Central de Delincuentes "
+"Sexuais."
+msgstr ""
+"Eira no guarda ni sube el certificado del Registro Central de Delincuentes "
+"Sexuales."
+
+msgid ""
+"Son datos penais (art. 10 RGPD) e comprobalo corresponde á contratación do "
+"concello. Aquí só queda quen o marcou e cando."
+msgstr ""
+"Son datos penales (art. 10 RGPD) y comprobarlo corresponde a la contratación"
+" del concello. Aquí solo queda quién lo marcó y cuándo."
+
+msgid ""
+"A marca revísase cada %(n)s mes: pasado ese prazo o concello recibe un aviso"
+" e non se poden facer novas asignacións ata volver confirmala."
+msgid_plural ""
+"A marca revísase cada %(n)s meses: pasado ese prazo o concello recibe un "
+"aviso e non se poden facer novas asignacións ata volver confirmala."
+msgstr[0] ""
+"La marca se revisa cada %(n)s mes: pasado ese plazo el concello recibe un "
+"aviso y no se pueden hacer nuevas asignaciones hasta volver a confirmarla."
+msgstr[1] ""
+"La marca se revisa cada %(n)s meses: pasado ese plazo el concello recibe un "
+"aviso y no se pueden hacer nuevas asignaciones hasta volver a confirmarla."
+
+msgid "Cambiar o prazo"
+msgstr "Cambiar el plazo"
+
+msgid "voluntaria"
+msgstr "voluntaria"
+
+msgid "Marcouno %(w)s o %(d)s. Revisión: %(u)s."
+msgstr "Lo marcó %(w)s el %(d)s. Revisión: %(u)s."
+
+msgid "Acreditación verificada na contratación (LO 1/1996, art. 13.5; LOPIVI)"
+msgstr ""
+"Acreditación verificada en la contratación (LO 1/1996, art. 13.5; LOPIVI)"
+
+msgid "Volver confirmar"
+msgstr "Volver a confirmar"
+
+msgid "Marcar"
+msgstr "Marcar"
+
+msgid "Retirar a marca"
+msgstr "Retirar la marca"
+
+msgid "Aínda non hai persoas monitoras. Engádeas en «Persoal e códigos»."
+msgstr "Aún no hay personas monitoras. Añádelas en «Personal y códigos»."
+
+msgid ""
+"Actividade con menores: para asignar unha persoa, a administración debe "
+"marcar antes a acreditación verificada na contratación."
+msgstr ""
+"Actividad con menores: para asignar una persona, la administración debe "
+"marcar antes la acreditación verificada en la contratación."
+
+msgid "Ver as acreditacións"
+msgstr "Ver las acreditaciones"
+
+msgid "Asignar"
+msgstr "Asignar"
+
 #~ msgid "Frecuencia"
 #~ msgstr "Frecuencia"

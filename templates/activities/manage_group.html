@@ -5,6 +5,22 @@
 <div class="page-head"><div><p class="eyebrow">{{ group.activity.name }}</p><h1>{{ group.name }}</h1>
   <p>{% blocktranslate with m=group.monitor|default:"—" f=group.facility|default:"—" %}Persoa monitora: {{ m }} · Instalación: {{ f }}{% endblocktranslate %}</p></div></div>
 
+<section class="card mb-2" id="monitora" aria-labelledby="mon-title">
+  <h2 id="mon-title" class="h3">{% translate "Persoa monitora" %}</h2>
+  {% if group.has_minors %}<p class="help">{% icon 'shield' %} {% translate "Actividade con menores: para asignar unha persoa, a administración debe marcar antes a acreditación verificada na contratación." %} {% if 'admin' in roles %}<a href="{% turl 'manage:accreditations' %}">{% translate "Ver as acreditacións" %}</a>{% endif %}</p>{% endif %}
+  {% if monitor_blocked %}<p class="alert alert-warn" role="status">{{ monitor_blocked }}</p>{% endif %}
+  {% if 'admin' in roles %}
+  <form method="post" class="row">{% csrf_token %}<input type="hidden" name="action" value="assign">
+    <label for="monitor-select">{% translate "Asignar" %}</label>
+    <select id="monitor-select" name="monitor">
+      <option value="">{% translate "Sen asignar" %}</option>
+      {% for o in monitor_options %}<option value="{{ o.user.pk }}"{% if o.user.pk == group.monitor_id %} selected{% endif %}>{{ o.user }}{% if o.is_volunteer %} ({% translate "voluntaria" %}){% endif %}{% if group.has_minors and o.status != 'current' %} · {{ o.status_label }}{% endif %}</option>{% endfor %}
+    </select>
+    <button class="btn btn-secondary" type="submit">{% translate "Gardar" %}</button>
+  </form>
+  {% endif %}
+</section>
+
 <nav class="row mb-2" aria-label="{% translate 'Filtro de imaxe' %}">
   <a class="btn btn-sm {% if only %}btn-secondary{% endif %}" href="?" {% if not only %}aria-current="page"{% endif %}>{% blocktranslate with n=total %}Todas ({{ n }}){% endblocktranslate %}</a>
   <a class="btn btn-sm {% if not only %}btn-secondary{% endif %}" href="?sen_fotos=1" {% if only %}aria-current="page"{% endif %}>{% icon 'camera-off' %} {% blocktranslate with n=no_photo %}Só quen non pode saír en fotos ({{ n }}){% endblocktranslate %}</a>

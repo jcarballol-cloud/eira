@@ -15,7 +15,7 @@
     <a href="{% turl 'manage:notices' %}" {% if sub == 'notices' %}aria-current="page"{% endif %}>{% icon 'bell' %} {% translate "Avisos" %}</a>
     <a href="{% turl 'manage:safety' %}" {% if sub == 'safety' %}aria-current="page"{% endif %}>{% icon 'shield' %} {% translate "Alertas e peches" %}</a>
     {% with adv=sub|default:'' %}
-    <details class="sidenav__more"{% if desk_mode == 'advanced' or adv in 'payments work_orders facilities closures maintenance activities indicators ratings observatory signups staff settings breaches custody cleaning accidents performance surveys passes audit' and adv %} open{% endif %}>
+    <details class="sidenav__more"{% if desk_mode == 'advanced' or adv in 'payments work_orders facilities closures maintenance activities indicators ratings observatory signups staff settings breaches custody cleaning accidents performance surveys passes audit accreditations legal provenance' and adv %} open{% endif %}>
     <summary>{% if desk_mode == 'advanced' %}{% translate "Todas as ferramentas" %}{% else %}{% translate "Máis ferramentas" %}{% endif %}</summary>
     <p class="sidenav__group">{% translate "Cobros e mantemento" %}</p>
     <a href="{% turl 'manage:payments' %}" {% if sub == 'payments' %}aria-current="page"{% endif %}>{% icon 'euro' %} {% translate "Cobros" %}</a>
@@ -27,6 +27,7 @@
     <a href="{% turl 'manage:closures' %}" {% if sub == 'closures' %}aria-current="page"{% endif %}>{% icon 'lock' %} {% translate "Peches" %}</a>
     <a href="{% turl 'manage:maintenance_plans' %}" {% if sub == 'maintenance' %}aria-current="page"{% endif %}>{% icon 'check' %} {% translate "Mantemento" %}</a>
     <a href="{% turl 'manage:activities' %}" {% if sub == 'activities' %}aria-current="page"{% endif %}>{% icon 'users' %} {% translate "Escolas" %}</a>
+    {% if 'admin' in roles %}<a href="{% turl 'manage:accreditations' %}" {% if sub == 'accreditations' %}aria-current="page"{% endif %}>{% icon 'shield' %} {% translate "Acreditacións (menores)" %}</a>{% endif %}
     <p class="sidenav__group">{% translate "Datos" %}</p>
     <a href="{% turl 'manage:indicators' %}" {% if sub == 'indicators' %}aria-current="page"{% endif %}>{% icon 'chart' %} {% translate "Indicadores" %}</a>
     <a href="{% turl 'manage:ratings' %}" {% if sub == 'ratings' %}aria-current="page"{% endif %}>{% icon 'smile' %} {% translate "Valoracións" %}</a>

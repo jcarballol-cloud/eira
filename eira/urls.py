@@ -21,6 +21,7 @@ urlpatterns = [
     path("offline/", core.offline, name="offline"),
     path("creditos/", core.credits, name="credits"),
     path("axuda/", core.help_guide, name="help_guide"),
+    path("axuda/leeme/", core.leeme, name="leeme"),  # v1.5 · F
     path("modo-xestion/", core.desk_mode, name="desk_mode"),
     path("sw.js", core.service_worker, name="service_worker"),
     path("manifest.webmanifest", core.manifest, name="manifest"),

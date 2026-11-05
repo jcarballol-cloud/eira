@@ -191,6 +191,7 @@ class SettingsForm(forms.ModelForm):
             "require_2fa_admin",  # v1.3
             "low_demand_discount_pct",  # v1.3
             "audit_retention_months",  # v1.4
+            "accreditation_review_months",  # v1.5 · E
         ]
         widgets = {
             "lighting_from": forms.TimeInput(attrs={"type": "time"}),
@@ -252,6 +253,7 @@ class SettingsForm(forms.ModelForm):
         "co2_kg_kwh",
         "low_demand_discount_pct",  # v1.3
         "audit_retention_months",  # v1.4
+        "accreditation_review_months",  # v1.5 · E
     )
 
     def clean(self):
@@ -317,6 +319,14 @@ class StaffForm(forms.Form):
         max_length=120,
         help_text=gettext_lazy(
             "Só se a persoa traballa para unha empresa contratada (p. ex. a de limpeza)."
+        ),
+    )
+    # v1.5 · E: voluntariado con rol de monitora (a acreditación con menores é a mesma)
+    is_volunteer = forms.BooleanField(
+        label=gettext_lazy("Persoa voluntaria"),
+        required=False,
+        help_text=gettext_lazy(
+            "Marca esta casiña se é unha persoa voluntaria con rol de monitora."
         ),
     )
 
@@ -408,6 +418,9 @@ def staff(request):
             if form.cleaned_data.get("company") != membership.company:
                 membership.company = form.cleaned_data.get("company", "")
                 membership.save(update_fields=["company"])
+            if form.cleaned_data.get("is_volunteer") != membership.is_volunteer:
+                membership.is_volunteer = form.cleaned_data["is_volunteer"]
+                membership.save(update_fields=["is_volunteer"])
             audit(
                 "tenant.staff_add",
                 request.user,

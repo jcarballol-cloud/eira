@@ -71,6 +71,8 @@ python tools/tasks.py licenses  # licenzas das dependencias compatibles coa EUPL
 
 ## Documentación
 
+- **[LEEME: uso e requisitos legais](LEEME.md)** ([en castelán](LEEME.es.md)): perfís, primeiros pasos,
+  o que ten que facer o concello para despregala, que pasa se modificas Eira e aviso sobre os modelos de exemplo.
 - [Visión xeral e arquitectura](docs/arquitectura/vision-xeral.md) · [Modelo de datos](docs/arquitectura/modelo-datos.md)
 - [Códigos de acceso sen conexión](docs/access/offline-codes.md)
 - [Interoperabilidade](docs/interoperabilidade.md) · [Seguridade e RXPD](docs/seguridade-rxpd.md)

@@ -72,6 +72,7 @@ urlpatterns = [
     path("limpeza/zona/<int:pk>/qr/", cleaning.zone_qr, name="cleaning_qr"),
     path("actividades/", activities.manage_groups, name="activities"),
     path("actividades/grupo/<int:pk>/", activities.manage_group, name="group"),
+    path("actividades/acreditacions/", activities.accreditations, name="accreditations"),  # v1.5
     path("indicadores/", analytics.dashboard, name="indicators"),
     path("configuracion/", tenant.settings_view, name="settings"),
     path("persoal/", tenant.staff, name="staff"),

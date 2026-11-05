@@ -278,6 +278,15 @@ class Municipality(models.Model):
             "defecto, 2 anos."
         ),
     )
+    # v1.5 · E: revisión da acreditación das persoas que traballan con menores
+    accreditation_review_months = models.PositiveSmallIntegerField(
+        _("revisión da acreditación para actividades con menores (meses)"),
+        default=12,
+        validators=[MinValueValidator(1), MaxValueValidator(60)],
+        help_text=_(
+            "Pasado este prazo, o concello recibe un aviso para volver confirmala. Por defecto, cada ano."
+        ),
+    )
     is_active = models.BooleanField(_("activo"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

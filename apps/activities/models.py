@@ -62,6 +62,30 @@ class Group(TenantModel):
     def weekday_list(self):
         return [int(x) for x in self.weekdays.split(",") if x.strip().isdigit()]
 
+    @property
+    def has_minors(self):
+        """v1.5 · E: actividade con menores: admite menores de 18 ou xa ten algún inscrito."""
+        if self.min_age < 18:
+            return True
+        return self.enrollments.filter(dependent__isnull=False).exists()
+
+    def clean(self):
+        """v1.5 · E: tamén bloquea a asignación desde o admin técnico."""
+        from django.core.exceptions import ValidationError
+
+        from .accreditation import blocked_message
+
+        super().clean()
+        changed = (
+            self.pk is None
+            or Group.objects.filter(pk=self.pk).values_list("monitor_id", flat=True).first()
+            != self.monitor_id
+        )
+        if self.monitor_id and changed and self.municipality_id:
+            message = blocked_message(self, self.monitor)
+            if message:
+                raise ValidationError({"monitor": message})
+
     def enrolled(self):
         return self.enrollments.filter(status=Enrollment.Status.ACTIVE)
 
@@ -272,3 +296,33 @@ class FitnessResult(models.Model):
 
     class Meta:
         ordering = ["-date"]
+
+
+class MinorsAccreditation(TenantModel):
+    """v1.5 · E: o concello deixa constancia de que comprobou, na contratación, a acreditación
+    negativa do Rexistro Central de Delincuentes Sexuais (LO 1/1996, art. 13.5; LOPIVI).
+
+    **Eira nunca garda nin sube o certificado** (datos penais, art. 10 RGPD). Só se garda quen o
+    marcou e cando: nin a data do certificado nin ningún documento nin o resultado."""
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="minors_accreditations"
+    )
+    confirmed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    confirmed_at = models.DateTimeField(default=timezone.now)
+    # Último aviso de revisión enviado ao concello, para non repetilo en cada execución
+    review_notified_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = _("acreditación para actividades con menores")
+        verbose_name_plural = _("acreditacións para actividades con menores")
+        constraints = [
+            models.UniqueConstraint(
+                fields=["municipality", "user"], name="uniq_minors_accreditation"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.user} · {self.confirmed_at:%d/%m/%Y}"

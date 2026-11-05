@@ -815,3 +815,11 @@ Decisións do equipo sobre a auditoría da v1.3: **este repositorio e o seu remo
 - **Cabeceira da xestión en móbil:** agora axústase ao ancho. Xa desbordaba antes e o botón Alerta empeorábao; non se quitou nada.
 - **`tools/i18n_check.py`:** sen GNU gettext, comproba que o catálogo teña todas as cadeas e engade traducións. Unha proba impide deixar cadeas sen catálogo.
 - **Portabilidade:** exporta os datos novos en `v15.json`; a importación queda en `PLAN_V2`.
+
+## 2026-11-05 · v1.5.1: CI de GitHub en verde
+- **Causa:** `docs/api/openapi.yaml` non se rexenerara desde a v5 (faltaban `pending_approval`, `pending_office` e `declined`). O paso OpenAPI paraba o job antes de Tests e E2E. Rexenérase; non cambia ningunha API.
+- **Runner fixo:** `ubuntu-24.04`, non `ubuntu-latest`, para que non cambie só.
+- **Accións:** `actions/checkout@v7` e `actions/setup-python@v7`, as vixentes o 05/11/2026; comprobouse no seu `action.yml` que usan Node 24. Son máis novas que as `@v5` e `@v6` citadas como exemplo.
+- **Caché de pip:** xa estaba `cache: pip`; engádese `cache-dependency-path: requirements*.txt` para que tamén cambie con `requirements-dev.txt`.
+- **E2E con vídeo:** xa ían excluídos (`tools/tasks.py e2e` usa `e2e and not video`). Non se cambia.
+- **Reprodución previa:** en contedor `python:3.13-bookworm` con `postgres:16-alpine`, sobre un clon limpo da copia e cos mesmos comandos. Non é o mesmo sistema ca o runner (Debian, non Ubuntu 24.04): a proba definitiva é o run de GitHub.

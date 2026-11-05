@@ -5,6 +5,12 @@
 > **Capturas:** las rutas `docs/capturas/v…/` citadas aquí son de las capturas completas, que no están en el repositorio: se publicarán en el adjunto `capturas-v1.4.zip` de la versión **v1.4-certame** (ver [capturas/README.md](capturas/README.md)). En el repositorio quedan las 6 capturas clave del README.
 
 
+## v1.5.1. CI de GitHub (05/11) · etiqueta `v1.5.1-certame`
+
+- **Causa:** `docs/api/openapi.yaml` estaba desactualizado desde la v5 y el paso OpenAPI paraba el job, así que Tests y E2E no se habían ejecutado nunca en la CI.
+- **Cambios:** OpenAPI regenerado, `ubuntu-24.04`, `checkout@v7`, `setup-python@v7` (Node 24) y caché de pip también ligada a `requirements-dev.txt`. Sin cambios en la aplicación.
+- **Reproducción previa en Linux con PostgreSQL 16:** lint, licencias, SPDX y OpenAPI ✅; 941 tests y 13 saltados por no haber Node en el contenedor; 89 E2E con axe ✅ (35 min).
+
 ## v1.5. Versión definitiva para la entrega (05/11) · etiqueta `v1.5-certame`
 
 **Servidor:** `0.0.0.0:8000`, `EIRA_DEBUG=1`, con la demo regenerada. Última tanda de funcionalidades: a partir de aquí solo se corrigen errores.

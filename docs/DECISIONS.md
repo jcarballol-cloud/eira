@@ -2,6 +2,8 @@
 
 Formato: data · decisión · motivo · alternativas descartadas.
 
+> **Capturas:** as rutas `docs/capturas/v…/` que se citan aquí son das capturas completas, que non están no repositorio: publicaranse no adxunto `capturas-v1.4.zip` da versión **v1.4-certame** (ver [capturas/README.md](capturas/README.md)). No repositorio quedan as 6 capturas clave do README.
+
 ## 2026-10-23 · Python 3.13 no entorno local
 - **Decisión:** venv con Python 3.13 (a máquina ten 3.13 e 3.14). Docker usa `python:3.13-slim`.
 - **Motivo:** Django 5.2 LTS está probado en 3.13; 3.14 aínda é moi recente para todo o ecosistema.

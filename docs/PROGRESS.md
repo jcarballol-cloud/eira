@@ -2,6 +2,8 @@
 
 Última actualización: 2026-10-26, v5 (versión conxelada `v1.0-certame`).
 
+> **Capturas:** as rutas `docs/capturas/v…/` que se citan aquí son das capturas completas, que non están no repositorio: publicaranse no adxunto `capturas-v1.4.zip` da versión **v1.4-certame** (ver [capturas/README.md](capturas/README.md)). No repositorio quedan as 6 capturas clave do README.
+
 ## Ferramentas da máquina
 - Python 3.13 (venv) ✔ · Docker 29 ✔ (arrancouse Docker Desktop durante a sesión) · Node 24 ✔ · Playwright + Chromium ✔
 - **Non dispoñibles:** `make`, GNU gettext → substitutos en `tools/` (ver DECISIONS). `makemessages` execútase no contedor.

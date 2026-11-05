@@ -3,6 +3,8 @@
 Orde de execución (a prioridade pedida é 1 → 3 → 5 → 2 → 4 → 7 → 8 → 6 → 9). Cada fase remata con
 tests, E2E e axe en verde e cun commit. A demo debe arrancar en todos os commits.
 
+> **Capturas:** as rutas `docs/capturas/v…/` que se citan aquí son das capturas completas, que non están no repositorio: publicaranse no adxunto `capturas-v1.4.zip` da versión **v1.4-certame** (ver [capturas/README.md](capturas/README.md)). No repositorio quedan as 6 capturas clave do README.
+
 ## Fase 1 · Cada perfil, a súa ferramenta
 1. **Roles efectivos no backend:**
    - Defínese «veciñanza» como persoa autenticada **sen** rol de persoal no concello.

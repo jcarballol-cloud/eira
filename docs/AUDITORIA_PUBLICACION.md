@@ -2,6 +2,8 @@
 
 **Última revisión: 27/10/2026 (v1.4)**, primeira sección. A auditoría orixinal segue debaixo.
 
+> **Capturas:** as rutas `docs/capturas/v…/` que se citan aquí son das capturas completas, que non están no repositorio: publicaranse no adxunto `capturas-v1.4.zip` da versión **v1.4-certame** (ver [capturas/README.md](capturas/README.md)). No repositorio quedan as 6 capturas clave do README.
+
 ## Revisión v1.4 (27/10/2026): copia limpa para publicar
 
 O equipo decidiu **non reescribir este repositorio** (queda como arquivo privado co historial

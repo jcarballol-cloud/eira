@@ -2,6 +2,8 @@
 
 **Fecha:** 23/10/2026 (última actualización: 27/10/2026, v1.4) · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
 
+> **Capturas:** las rutas `docs/capturas/v…/` citadas aquí son de las capturas completas, que no están en el repositorio: se publicarán en el adjunto `capturas-v1.4.zip` de la versión **v1.4-certame** (ver [capturas/README.md](capturas/README.md)). En el repositorio quedan las 6 capturas clave del README.
+
 
 ## v1.4. Copia limpia para publicar (sin publicar) (27/10) · etiqueta `v1.4-certame`
 

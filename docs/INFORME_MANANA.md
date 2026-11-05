@@ -1,9 +1,58 @@
 # Informe de la sesión nocturna — Eira
 
-**Fecha:** 23/10/2026 (última actualización: 27/10/2026, v1.4) · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
+**Fecha:** 23/10/2026 (última actualización: 05/11/2026, v1.5) · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
 
 > **Capturas:** las rutas `docs/capturas/v…/` citadas aquí son de las capturas completas, que no están en el repositorio: se publicarán en el adjunto `capturas-v1.4.zip` de la versión **v1.4-certame** (ver [capturas/README.md](capturas/README.md)). En el repositorio quedan las 6 capturas clave del README.
 
+
+## v1.5. Versión definitiva para la entrega (05/11) · etiqueta `v1.5-certame`
+
+**Servidor:** `0.0.0.0:8000`, `EIRA_DEBUG=1`, con la demo regenerada. Última tanda de funcionalidades: a partir de aquí solo se corrigen errores.
+
+### Cifras finales
+
+| Comprobación | Resultado |
+|---|---|
+| Tests unitarios y de integración | **954 en verde** |
+| E2E (Playwright) | **89 en verde**, 10 de vídeo excluidos (31 min) |
+| Páginas axe, tema claro | **522 sin violaciones** (174 pantallas en móvil, tableta y escritorio) |
+| Páginas axe, tema oscuro | **81 sin violaciones** |
+| Recorrido automático por perfil | 72 pantallas, 7 perfiles y sin sesión ([lista](REVISION_V1.5.md)) |
+| RAM sin IA | **≈ 296 MiB** tras 100 peticiones (app 193, PostgreSQL 100, avisos 3), con `docker compose`; ≈ 209 MiB al arrancar |
+| Vídeo anexo | **73 s**, con «Escoitar» y el mapa de procedencia (máximo 75 s) |
+| Pitch | Sin cambios. Se regrabó aparte para comprobar el guion (pasa, 136 s) y se restauró el original |
+| Lint, licencias y SPDX | ✅ |
+
+### Qué hay y dónde
+
+| Bloque | Dónde | Verificado |
+|---|---|---|
+| Paso 0 · `a460ae9` | Notas en los documentos; el README de capturas, en `Eira-release/ferramentas/` | ✅ |
+| F · LEEME | `LEEME.md`, `LEEME.es.md`, README y «?» de la administración (`/axuda/leeme/`) | ✅ `test_leeme` |
+| E · Acreditación con menores | Xestión → Máis ferramentas → Acreditacións (menores); ficha del grupo; `docs/rxpd/acreditacion-menores.md` | ✅ `test_accreditation` y E2E |
+| B · Alerta en todos los perfiles | Cabecera de mantenimiento, limpieza, monitora y administración; aviso al personal de servicio; DESA y ubicación para el 112 | ✅ `test_alert_profiles` y E2E. ⚠️ Canales simulados |
+| D · Documentos legales | Deputación → Documentos legais; Xestión → Documentos legais; app `/legal/`; «A miña conta → Documentos aceptados»; `docs/legal/modelos/` | ✅ `test_legal` y E2E |
+| A · «Escoitar» | Inicio, ficha, código, avisos, consejos y protocolo; ajustes en Preferencias | ✅ con voz **simulada**. ❌ Sin probar con voz real ni con TalkBack/VoiceOver |
+| C · Procedencia | Xestión → Procedencia; Deputación → Mobilidade; app → Concellos próximos; CSV y GeoJSON | ✅ `test_provenance` y E2E |
+| G · Demo | `apps/tenants/demo_v15.py`: flujos sobre y bajo el umbral, documentos en varias versiones, Sabela pendiente, Xián con la revisión vencida, alertas de mantenimiento y limpieza | ✅ |
+
+### Decisiones que conviene revisar
+
+Están en `DECISIONS.md`. Las que más cambian el resultado:
+
+- **Procedencia:** `n` son personas distintas, no reservas, y solo hay periodos de 30, 90 y 365 días, sin fechas libres. Es más protector que lo pedido.
+- **Documentos legales:** no bloquean el uso; un aviso permanente lleva a los pendientes.
+- **Acreditación vencida:** bloquea asignaciones nuevas, pero no deshace las existentes. Tampoco las anteriores a la v1.5; la ficha del grupo muestra el aviso.
+- **«Sesión activa» en las alertas:** sesión abierta (monitora), orden en curso (mantenimiento y limpieza) o registro de limpieza en las últimas 2 h. El conserje es un responsable ligado a una instalación.
+
+### Sin verificar o con límites conocidos
+
+- **Lectores de pantalla y voz real:** «Escoitar» no se ha probado en dispositivos reales.
+- **El recorrido por perfil es automático:** no sustituye el manual de una persona.
+- **Comparar fechas en Procedencia:** puede dejar ver variaciones pequeñas de un flujo visible. Debe valorarlo el DPD en la EIPD.
+- **Importación:** la portabilidad exporta los datos nuevos (`v15.json`), pero aún no los importa. Está en `PLAN_V2.md`.
+- **Validez legal:** ningún modelo es un documento legal válido.
+- **Corregido de paso:** la cabecera de gestión desbordaba en móvil y el calendario tenía poco contraste en tema oscuro, en los días de otro mes.
 
 ## v1.4. Copia limpia para publicar (sin publicar) (27/10) · etiqueta `v1.4-certame`
 

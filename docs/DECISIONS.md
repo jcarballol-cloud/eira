@@ -823,3 +823,4 @@ Decisións do equipo sobre a auditoría da v1.3: **este repositorio e o seu remo
 - **Caché de pip:** xa estaba `cache: pip`; engádese `cache-dependency-path: requirements*.txt` para que tamén cambie con `requirements-dev.txt`.
 - **E2E con vídeo:** xa ían excluídos (`tools/tasks.py e2e` usa `e2e and not video`). Non se cambia.
 - **Reprodución previa:** en contedor `python:3.13-bookworm` con `postgres:16-alpine`, sobre un clon limpo da copia e cos mesmos comandos. Non é o mesmo sistema ca o runner (Debian, non Ubuntu 24.04): a proba definitiva é o run de GitHub.
+- **Disparadores:** a CI execútase só en push a ramas e en pull requests, sen etiquetas: evita runs duplicados do mesmo commit (uns 40 min cada un) nun repositorio privado. O commit etiquetado próbase igual na rama.

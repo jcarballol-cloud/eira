@@ -2,6 +2,7 @@
 name: CI
 on:
   push:
+    branches: ["**"]  # só ramas: as etiquetas non lanzan outro run do mesmo commit
   pull_request:
 
 jobs:

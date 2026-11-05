@@ -38,7 +38,10 @@ def page_sets():
     )
     inc = Incident.objects.filter(municipality__slug="vilardeiras").first()
     order = (
-        WorkOrder.objects.filter(municipality__slug="vilardeiras").exclude(status="done").first()
+        WorkOrder.objects.filter(municipality__slug="vilardeiras")
+        .exclude(status="done")
+        .exclude(kind="cleaning")  # mantemento non ve a limpeza; de madrugada iría a primeira
+        .first()
     )
     group = Group.objects.filter(municipality__slug="vilardeiras").first()
     session = Session.objects.filter(group=group, closed_at__isnull=False).order_by("-date").first()

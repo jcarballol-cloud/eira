@@ -824,3 +824,4 @@ Decisións do equipo sobre a auditoría da v1.3: **este repositorio e o seu remo
 - **E2E con vídeo:** xa ían excluídos (`tools/tasks.py e2e` usa `e2e and not video`). Non se cambia.
 - **Reprodución previa:** en contedor `python:3.13-bookworm` con `postgres:16-alpine`, sobre un clon limpo da copia e cos mesmos comandos. Non é o mesmo sistema ca o runner (Debian, non Ubuntu 24.04): a proba definitiva é o run de GitHub.
 - **Disparadores:** a CI execútase só en push a ramas e en pull requests, sen etiquetas: evita runs duplicados do mesmo commit (uns 40 min cada un) nun repositorio privado. O commit etiquetado próbase igual na rama.
+- **Proba dependente da hora:** a demo deixa abertas as limpezas das últimas 20 h, así que de madrugada a primeira orde pendente é unha limpeza de onte, que mantemento non debe ver (404 correcto). As probas de axe e do recorrido elixen agora unha orde que non sexa de limpeza. A aplicación non cambia.

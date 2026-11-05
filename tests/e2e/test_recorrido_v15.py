@@ -28,7 +28,10 @@ def inventory():
         .first()
     )
     order = (
-        WorkOrder.objects.filter(municipality__slug="vilardeiras").exclude(status="done").first()
+        WorkOrder.objects.filter(municipality__slug="vilardeiras")
+        .exclude(status="done")
+        .exclude(kind="cleaning")  # mantemento non ve a limpeza; de madrugada iría a primeira
+        .first()
     )
     zone = CleaningZone.objects.filter(municipality__slug="vilardeiras").first()
     session = sessions_for_day([Group.objects.get(name="Grupo grande (40)")], timezone.localdate())[

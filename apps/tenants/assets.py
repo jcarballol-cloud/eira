@@ -20,6 +20,8 @@ PRECACHE = [
     "js/eira.js",
     "js/health.js",
     "js/health-engine.js",
+    "js/listen-core.js",  # v1.5 · A: «Escoitar» sen conexión
+    "js/listen.js",
     "vendor/htmx/htmx.min.js",
     "img/eira.svg",
     "img/icons.svg",

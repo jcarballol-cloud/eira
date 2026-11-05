@@ -19,7 +19,8 @@
 {% endif %}
 
 {% if next_booking %}
-<section class="app-card app-card--hero" aria-labelledby="next-title">
+{% include "includes/listen.html" with target="#listen-home" %}
+<section class="app-card app-card--hero" id="listen-home" aria-labelledby="next-title">
   <p class="eyebrow" id="next-title">{% translate "A túa próxima reserva" %}</p>
   <h2 class="mb-0">{{ next_booking.facility.name }}</h2>
   {% if next_booking.municipality != tenant %}<p class="mb-0"><span class="badge">{% icon 'map' %} {{ next_booking.municipality.name }}</span></p>{% endif %}
@@ -40,7 +41,8 @@
   <a class="btn btn-block mt-2" href="{{ next_booking|booking_url }}">{% translate "Ver a reserva" %}</a>
 </section>
 {% else %}
-<section class="app-card app-empty" aria-labelledby="empty-title">
+{% include "includes/listen.html" with target="#listen-home" %}
+<section class="app-card app-empty" id="listen-home" aria-labelledby="empty-title">
   {% illustration "baleiro-reservas" sizes="16rem" css="empty-art" %}
   <h2 id="empty-title">{% translate "Non tes reservas próximas" %}</h2>
   <p class="muted">{% translate "Busca unha pista, o ximnasio ou a piscina e reserva en tres pasos." %}</p>

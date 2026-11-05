@@ -2,8 +2,9 @@
 {% block title %}{{ facility.name }}{% endblock %}
 {% block content %}
 <nav aria-label="{% translate 'Migas' %}" class="mb-1"><a href="{% turl 'tenant_home' %}">{% translate "Instalacións" %}</a> / <span aria-current="page">{{ facility.name }}</span></nav>
+{% include "includes/listen.html" with target="#listen-facility" %}
 <div class="page-head">
-  <div>
+  <div id="listen-facility">
     <p class="eyebrow">{{ facility.get_kind_display }}{% if facility.parish %} · {{ facility.parish.name }}{% endif %}</p>
     <h1>{{ facility.name }}</h1>
     <ul class="badges facility-trust" role="list" aria-label="{% translate 'Seguridade e confianza' %}">

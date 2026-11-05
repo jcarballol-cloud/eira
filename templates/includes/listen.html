@@ -1,0 +1,9 @@
+{% load i18n eira %}{# v1.5 · A: «Escoitar». Oculto ata que o JS comprobe que hai speechSynthesis. `target` = selector da zona que se le #}
+<div class="listen-bar" data-listen-bar hidden>
+  <button type="button" class="btn btn-secondary btn-sm listen-btn" data-listen="{{ target }}"
+    data-text-start="{% translate 'Escoitar' %}" data-text-stop="{% translate 'Deter' %}"
+    data-aria-start="{% translate 'Escoitar esta pantalla en voz alta' %}" data-aria-stop="{% translate 'Deter a lectura' %}"
+    aria-label="{% translate 'Escoitar esta pantalla en voz alta' %}">{% icon 'bell' %} <span data-listen-label>{% translate "Escoitar" %}</span></button>
+  <a class="listen-bar__settings" href="{% url 'preferences' %}#voz">{% translate "Axustes da voz" %}</a>
+  <p class="listen-bar__note help" data-listen-note hidden data-text="{% translate 'Este dispositivo non ten voz en galego: lémolo en castelán.' %}"></p>
+</div>

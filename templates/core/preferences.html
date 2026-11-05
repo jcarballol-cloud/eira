@@ -15,5 +15,17 @@
     </fieldset>
     <div class="form-actions"><button class="btn" type="submit">{% translate "Gardar preferencias" %}</button></div>
   </form>
+  {# v1.5 · A: gárdase só neste navegador (sen name: nunca se envía ao servidor) #}
+  <section class="card mt-2" id="voz" aria-labelledby="voz-title" hidden>
+    <h2 id="voz-title" class="h3">{% translate "Voz de «Escoitar»" %}</h2>
+    <p class="help">{% translate "A lectura faina o teu dispositivo: o texto non se envía a ningún servizo. Funciona sen conexión se o dispositivo ten voces instaladas. Estes axustes gárdanse ao momento neste navegador." %}</p>
+    <fieldset>
+      <legend>{% translate "Velocidade" %}</legend>
+      <div class="check"><input type="radio" id="voz-normal" name="voz-velocidade" form="voz-sen-formulario" data-listen-rate value="normal"><label for="voz-normal">{% translate "Normal" %}</label></div>
+      <div class="check"><input type="radio" id="voz-slow" name="voz-velocidade" form="voz-sen-formulario" data-listen-rate value="slow"><label for="voz-slow">{% translate "Lenta" %}</label></div>
+    </fieldset>
+    <div class="check mt-1"><input type="checkbox" id="voz-auto" data-listen-auto><label for="voz-auto">{% translate "Ler automaticamente o código de acceso" %}</label></div>
+    <p class="help mt-1">{% translate "Desactivado por defecto: o código oiríase en voz alta. Algúns navegadores non permiten ler sen tocar antes a pantalla." %}</p>
+  </section>
 </div>
 {% endblock %}

@@ -17740,5 +17740,51 @@ msgstr ""
 "MODELO DE EJEMPLO — no es un documento legal válido; el concello debe "
 "revisarlo con sus servicios jurídicos y su DPD"
 
+msgid "Voz de «Escoitar»"
+msgstr "Voz de «Escoitar»"
+
+msgid ""
+"A lectura faina o teu dispositivo: o texto non se envía a ningún servizo. "
+"Funciona sen conexión se o dispositivo ten voces instaladas. Estes axustes "
+"gárdanse ao momento neste navegador."
+msgstr ""
+"La lectura la hace tu dispositivo: el texto no se envía a ningún servicio. "
+"Funciona sin conexión si el dispositivo tiene voces instaladas. Estos "
+"ajustes se guardan al momento en este navegador."
+
+msgid "Velocidade"
+msgstr "Velocidad"
+
+msgid "Lenta"
+msgstr "Lenta"
+
+msgid "Ler automaticamente o código de acceso"
+msgstr "Leer automáticamente el código de acceso"
+
+msgid ""
+"Desactivado por defecto: o código oiríase en voz alta. Algúns navegadores "
+"non permiten ler sen tocar antes a pantalla."
+msgstr ""
+"Desactivado por defecto: el código se oiría en voz alta. Algunos navegadores"
+" no permiten leer sin tocar antes la pantalla."
+
+msgid "Escoitar"
+msgstr "Escuchar"
+
+msgid "Deter"
+msgstr "Detener"
+
+msgid "Escoitar esta pantalla en voz alta"
+msgstr "Escuchar esta pantalla en voz alta"
+
+msgid "Deter a lectura"
+msgstr "Detener la lectura"
+
+msgid "Axustes da voz"
+msgstr "Ajustes de la voz"
+
+msgid "Este dispositivo non ten voz en galego: lémolo en castelán."
+msgstr "Este dispositivo no tiene voz en gallego: lo leemos en castellano."
+
 #~ msgid "Frecuencia"
 #~ msgstr "Frecuencia"

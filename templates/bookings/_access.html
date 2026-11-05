@@ -1,6 +1,7 @@
 {% load i18n eira %}
 <section class="card" id="access-card" aria-labelledby="access-title" {% if just_opened %}data-announce="{% translate 'Porta aberta' %}"{% endif %}>
   <h2 id="access-title">{% icon 'door' %} {% translate "Acceso" %}</h2>
+  {% include "includes/listen.html" with target="#access-card" %}
   {% if booking.status == 'cancelled' %}
     <p class="muted">{% translate "Reserva cancelada." %}</p>
   {% elif booking.status == 'pending_payment' %}

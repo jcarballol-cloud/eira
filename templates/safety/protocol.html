@@ -4,6 +4,8 @@
 <div class="page-head"><div><p class="eyebrow">{% icon 'shield' %} {% translate "Accidente deportivo" %}</p><h1>{% translate "Protocolo de accidente" %}</h1>
   {% if facility %}<p>{{ facility.name }}</p>{% endif %}</div></div>
 {% if alert %}<div class="alert alert-success" role="status" data-announce>{% icon 'check' %} {% blocktranslate trimmed with h=alert.created_at|date:"H:i" %}Avisamos á persoa responsable do concello ás {{ h }}.{% endblocktranslate %}</div>{% endif %}
+{% include "includes/listen.html" with target="#listen-protocol" %}
+<div id="listen-protocol">
 {% include "safety/_location_112.html" with hide_aed=True %}
 <ol class="protocol" aria-label="{% translate 'Pasos' %}">
   {% for key, text in steps %}
@@ -27,5 +29,6 @@
   </li>
   {% endfor %}
 </ol>
+</div>
 {% if facility.accident_protocol %}<section class="card mt-2" aria-labelledby="extra-title"><h2 class="h3" id="extra-title">{% translate "Indicacións desta instalación" %}</h2><p class="pre-wrap">{{ facility.accident_protocol }}</p></section>{% endif %}
 {% endblock %}

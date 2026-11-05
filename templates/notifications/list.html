@@ -13,7 +13,8 @@
   {% for c in categories %}<a class="chip" href="?categoria={{ c.value }}" {% if c.current %}aria-current="page"{% endif %}>{% icon c.icon %} {{ c.label }}</a>{% endfor %}
 </nav>
 
-<section aria-labelledby="mine-t" class="mb-2">
+{% include "includes/listen.html" with target="#mine-list" %}
+<section aria-labelledby="mine-t" class="mb-2" id="mine-list">
   <h2 id="mine-t" class="h3">{% translate "Para ti" %}</h2>
   <ul class="notice-list" role="list">
     {% for n in notifications %}

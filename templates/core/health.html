@@ -23,6 +23,7 @@
     </form>
     <section class="card" aria-labelledby="h-advice-title">
       <h2 id="h-advice-title">{% translate "Consellos para ti" %}</h2>
+      {% include "includes/listen.html" with target="#h-advice" %}
       <div id="h-advice" aria-live="polite" data-sprite="{% static 'img/icons.svg' %}"><p class="muted">{% translate "Introduce os teus datos para ver consellos." %}</p></div>
       <p class="help mb-0">{% translate "Dentro de cada reserva verás tamén as recomendacións para esa sesión (hora, duración, se é cuberta e a previsión)." %}</p>
       <p class="alert alert-warn mt-2"><strong>{% translate "Aviso:" %}</strong> {% translate "Información educativa e xeral, non é consello clínico. Se tes unha enfermidade ou dúbidas, consulta co teu centro de saúde." %}</p>

@@ -1796,3 +1796,11 @@ html.theme-dark body.themable .location-112 { background: #1C2B31; color: #F4F1E
 .legal-banner span { flex: 1; }
 html.theme-dark body.themable .legal-example { background: #3A1E17; color: #FBE3DB; border-color: #E08A73; }
 html.theme-dark body.themable .legal-banner { background: #2A2410; color: #F6D79A; }
+
+/* v1.5 · A: botón «Escoitar» */
+.listen-bar { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .75rem; margin: 0 0 .75rem; }
+.listen-bar[hidden] { display: none; }
+.listen-btn { min-height: 44px; }
+.listen-btn.is-speaking { outline: 2px solid currentColor; outline-offset: 1px; }
+.listen-bar__settings { font-size: .9rem; }
+.listen-bar__note { flex-basis: 100%; margin: 0; }

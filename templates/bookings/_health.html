@@ -6,7 +6,8 @@
   data-sprite="{% static 'img/icons.svg' %}"
   {% if forecast %}data-temp="{{ forecast.temperature_c|stringformat:'s' }}" data-feels="{{ forecast.feels_like_c|stringformat:'s' }}" data-humidity="{{ forecast.humidity_pct }}" data-uv="{{ forecast.uv_index }}" data-rain="{{ forecast.precipitation_prob }}" data-wind="{{ forecast.wind_kmh }}"{% endif %}>
   <h2 id="hb-title-{{ booking.pk }}" class="tips-box__title">{% translate "Para esta sesión" %}{% if forecast %} <small>· {{ booking.start|date:"H:i" }}</small>{% endif %}</h2>
-  <div data-health-list aria-live="polite"><noscript><p class="muted">{% translate "Os consellos calcúlanse no teu dispositivo e precisan JavaScript." %}</p></noscript></div>
+  {% if not compact %}{% include "includes/listen.html" with target=".tips-box [data-health-list]" %}{% endif %}
+  <div data-health-list id="hb-list-{{ booking.pk }}" aria-live="polite"><noscript><p class="muted">{% translate "Os consellos calcúlanse no teu dispositivo e precisan JavaScript." %}</p></noscript></div>
   <p class="tips-box__cta" data-health-cta hidden><a href="{% url 'health' %}">{% translate "Engade peso e idade para cantidades concretas" %}</a></p>
   {% if not compact %}<p class="help mb-0">{% translate "Información educativa e xeral, non é consello clínico. Calcúlase no teu dispositivo." %}</p>{% endif %}
 </section>

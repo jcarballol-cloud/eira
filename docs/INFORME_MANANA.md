@@ -17,8 +17,8 @@
 | E2E (Playwright) | **89 en verde**, 10 de vídeo excluidos (31 min) |
 | Páginas axe, tema claro | **522 sin violaciones** (174 pantallas en móvil, tableta y escritorio) |
 | Páginas axe, tema oscuro | **81 sin violaciones** |
-| Recorrido automático por perfil | 72 pantallas, 7 perfiles y sin sesión ([lista](REVISION_V1.5.md)) |
-| RAM sin IA | **≈ 296 MiB** tras 100 peticiones (app 193, PostgreSQL 100, avisos 3), con `docker compose`; ≈ 209 MiB al arrancar |
+| Recorrido automático por perfil | 72 pantallas: sin sesión y 6 perfiles (el DPD no tiene perfil en la demo; sus pantallas están en los tests) ([lista](REVISION_V1.5.md)) |
+| RAM sin IA | **≈ 296 MiB** tras 100 peticiones (app 193, PostgreSQL 100, avisos 3), con `docker compose` |
 | Vídeo anexo | **73 s**, con «Escoitar» y el mapa de procedencia (máximo 75 s) |
 | Pitch | Sin cambios. Se regrabó aparte para comprobar el guion (pasa, 136 s) y se restauró el original |
 | Lint, licencias y SPDX | ✅ |

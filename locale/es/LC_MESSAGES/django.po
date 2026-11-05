@@ -1151,7 +1151,7 @@ msgstr "Vecindario"
 #: apps/accounts/models.py:96 apps/safety/services.py:152
 #: apps/tenants/views.py:269
 msgid "Administración do concello"
-msgstr "Administración del ayuntamiento"
+msgstr "Administración del concello"
 
 #: apps/accounts/models.py:97 apps/maintenance/models.py:42
 #: templates/includes/brand.html:3 templates/includes/shell_desk.html:28
@@ -17370,6 +17370,31 @@ msgstr "Ver las acreditaciones"
 
 msgid "Asignar"
 msgstr "Asignar"
+
+msgid "App de limpeza"
+msgstr "App de limpieza"
+
+msgid "Baleiro = todo o concello. P. ex., conserxe só desta instalación."
+msgstr "Vacío = todo el concello. P. ej., conserje solo de esta instalación."
+
+msgid ""
+"Tamén avisamos ao persoal de servizo nesta instalación, polas canles que "
+"teña cada persoa."
+msgstr ""
+"También avisamos al personal de servicio en esta instalación, por los "
+"canales que tenga cada persona."
+
+msgid "Se chamas ao 112, di isto"
+msgstr "Si llamas al 112, di esto"
+
+msgid "Coordenadas"
+msgstr "Coordenadas"
+
+msgid "DESA nesta instalación"
+msgstr "DESA en esta instalación"
+
+msgid "DESA máis próximo"
+msgstr "DESA más próximo"
 
 #~ msgid "Frecuencia"
 #~ msgstr "Frecuencia"

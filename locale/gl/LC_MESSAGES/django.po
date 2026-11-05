@@ -17253,5 +17253,30 @@ msgstr "Ver as acreditacións"
 msgid "Asignar"
 msgstr "Asignar"
 
+msgid "App de limpeza"
+msgstr "App de limpeza"
+
+msgid "Baleiro = todo o concello. P. ex., conserxe só desta instalación."
+msgstr "Baleiro = todo o concello. P. ex., conserxe só desta instalación."
+
+msgid ""
+"Tamén avisamos ao persoal de servizo nesta instalación, polas canles que "
+"teña cada persoa."
+msgstr ""
+"Tamén avisamos ao persoal de servizo nesta instalación, polas canles que "
+"teña cada persoa."
+
+msgid "Se chamas ao 112, di isto"
+msgstr "Se chamas ao 112, di isto"
+
+msgid "Coordenadas"
+msgstr "Coordenadas"
+
+msgid "DESA nesta instalación"
+msgstr "DESA nesta instalación"
+
+msgid "DESA máis próximo"
+msgstr "DESA máis próximo"
+
 #~ msgid "Frecuencia"
 #~ msgstr "Frecuencia"

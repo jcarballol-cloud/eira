@@ -92,6 +92,16 @@ class ResponsibleContact(TenantModel):
         help_text=_("Baleiro = todo o día. Pode pasar da medianoite."),
     )
     active = models.BooleanField(_("activa"), default=True)
+    # v1.5 · B: p. ex. a conserxe dunha instalación: recibe as alertas desa instalación no seu horario
+    facility = models.ForeignKey(
+        "facilities.Facility",
+        verbose_name=_("instalación"),
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="+",
+        help_text=_("Baleiro = todo o concello. P. ex., conserxe só desta instalación."),
+    )
 
     class Meta:
         verbose_name = _("persoa responsable")
@@ -130,6 +140,10 @@ class Alert(TenantModel):
         APP = "app", _("App da veciñanza")
         BOOKING = "booking", _("Pantalla da reserva")
         MONITOR = "monitor", _("Tableta da persoa monitora")
+        # v1.5 · B: Alerta en todos os perfís
+        OPERATOR = "operator", _("App de mantemento")
+        CLEANING = "cleaning", _("App de limpeza")
+        ADMIN = "admin", _("Administración do concello")
 
     kind = models.CharField(_("tipo"), max_length=10, choices=Kind.choices)
     origin = models.CharField(max_length=10, choices=Origin.choices, default=Origin.APP)

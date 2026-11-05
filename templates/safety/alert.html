@@ -3,7 +3,7 @@
 {% block content %}
 <div class="page-head"><div><p class="eyebrow">{% icon 'shield' %} {{ tenant.name }}</p><h1>{% translate "Alerta" %}</h1>
   {% if facility %}<p>{{ facility.name }}</p>{% endif %}</div></div>
-<p>{% translate "Escolle o que pasa. Ao pulsar avisamos ao momento á persoa responsable do concello." %}</p>
+<p>{% translate "Escolle o que pasa. Ao pulsar avisamos ao momento á persoa responsable do concello." %} {% translate "Tamén avisamos ao persoal de servizo nesta instalación, polas canles que teña cada persoa." %}</p>
 <div class="alert-options">
   <form method="post" action="{% turl 'safety:alert_accident' %}" class="alert-option">
     {% csrf_token %}
@@ -34,4 +34,5 @@
   <span class="emergency-call__num" aria-hidden="true">112</span>
   <span><strong>{% translate "Emerxencia: chamar ao 112" %}</strong><br>{% translate "Se alguén está ferido ou hai perigo agora mesmo." %}</span>
 </a>
+{% include "safety/_location_112.html" %}
 {% endblock %}

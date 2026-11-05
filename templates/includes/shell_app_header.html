@@ -1,6 +1,7 @@
 {% load i18n eira %}<header class="app-header">
   {% include "includes/brand.html" %}
   <div class="app-header__actions">
+    {% if kind == 'operator' or kind == 'cleaning' or kind == 'monitor' %}{% include "includes/alert_button.html" %}{% endif %}
     {% include "includes/safety_button.html" %}
     {% include "includes/help_button.html" %}
     {% if kind == 'neighbour' and app_tenant %}

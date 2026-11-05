@@ -3,6 +3,7 @@
 {% block content %}
 <div class="page-head"><div><p class="eyebrow">{{ today|date:"l j \d\e F" }}</p><h1>{% if kind == 'cleaning' %}{% translate "Tarefas de limpeza" %}{% else %}{% translate "Ordes de traballo" %}{% endif %}</h1></div>
   <a class="btn btn-secondary" href="{% turl 'maintenance:calendar' %}">{% icon 'calendar' %} {% translate "Calendario" %}</a></div>
+{% include "safety/_staff_alert.html" %}
 <p class="alert alert-warn queue-note" data-queue-count hidden>{% translate "Cambios gardados sen conexión pendentes de enviar:" %} <strong data-n>0</strong></p>
 {% if zones %}
 {# v1.1: zonas con QR. As ligazóns gárdanse no móbil para abrilas sen cobertura #}

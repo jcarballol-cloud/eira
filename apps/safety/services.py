@@ -27,6 +27,7 @@ from .models import (
 )
 
 ANON_ALERTS_PER_HOUR = 3
+CLEANING_ACTIVE_HOURS = 2  # v1.5 · B: tras rexistrar unha limpeza, consta como de servizo
 
 
 # ------------------------------------------------------------------ protocolo
@@ -70,6 +71,123 @@ def on_duty(municipality, at=None):
         for c in ResponsibleContact.objects.filter(municipality=municipality, active=True)
         if c.covers(at)
     ]
+
+
+def designated_contact(municipality, facility=None, at=None):
+    """Persoa responsable designada para esta alerta: a primeira de servizo do concello ou desta
+    instalación. Unha conserxe doutra instalación non conta."""
+    for contact in on_duty(municipality, at):
+        if contact.facility_id is None or (facility and contact.facility_id == facility.pk):
+            return contact
+    return None
+
+
+def staff_on_service(municipality, facility, at=None):
+    """v1.5 · B: persoal traballando agora nesta instalación: [(persoa, posto)].
+
+    Monitora con sesión aberta (co seu marxe), operario cunha orde en curso e persoal de limpeza
+    cunha tarefa en curso ou cun rexistro nas últimas CLEANING_ACTIVE_HOURS. O posto, non o nome,
+    é o que queda na alerta, que pode ver quen a lanzou."""
+    from apps.accounts.profiles import STAFF_ROLES
+    from apps.activities.models import Session
+    from apps.maintenance.models import CleaningLog, WorkOrder
+
+    if facility is None:
+        return []
+    at = at or timezone.now()
+    found = {}
+    today = timezone.localtime(at).date()
+    sessions = Session.objects.filter(
+        municipality=municipality,
+        group__facility=facility,
+        group__monitor__isnull=False,
+        date=today,
+    ).select_related("group__monitor")
+    for session in sessions:
+        if session.status_at(at) == Session.OPEN:
+            found[session.group.monitor_id] = (session.group.monitor, _("Persoa monitora"))
+    cleaning = set(
+        Membership.objects.filter(municipality=municipality, role=Role.CLEANING).values_list(
+            "user_id", flat=True
+        )
+    )
+    orders = WorkOrder.objects.filter(
+        municipality=municipality,
+        facility=facility,
+        status=WorkOrder.Status.IN_PROGRESS,
+        assigned_to__isnull=False,
+    ).select_related("assigned_to")
+    for order in orders:
+        label = _("Persoal de limpeza") if order.assigned_to_id in cleaning else _("Mantemento")
+        found.setdefault(order.assigned_to_id, (order.assigned_to, label))
+    since = at - dt.timedelta(hours=CLEANING_ACTIVE_HOURS)
+    logs = CleaningLog.objects.filter(
+        municipality=municipality,
+        facility=facility,
+        user__isnull=False,
+        done_at__gte=since,
+        done_at__lte=at,
+    ).select_related("user")
+    for log in logs:
+        found.setdefault(log.user_id, (log.user, _("Persoal de limpeza")))
+    # Só persoal que segue no concello (non quen xa deixou o servizo)
+    active = set(
+        Membership.objects.filter(municipality=municipality, role__in=STAFF_ROLES).values_list(
+            "user_id", flat=True
+        )
+    )
+    return [value for key, value in found.items() if key in active]
+
+
+def current_facility(user, municipality, at=None):
+    """Instalación onde está a traballar esta persoa, para que a alerta saia co lugar."""
+    from apps.activities.models import Session
+    from apps.facilities.models import Facility
+    from apps.maintenance.models import CleaningLog, WorkOrder
+
+    if not getattr(user, "is_authenticated", False):
+        return None
+    at = at or timezone.now()
+    sessions = Session.objects.filter(
+        municipality=municipality,
+        group__monitor=user,
+        group__facility__isnull=False,
+        date=timezone.localtime(at).date(),
+    ).select_related("group__facility")
+    for session in sessions:
+        if session.status_at(at) == Session.OPEN:
+            return session.group.facility
+    order = WorkOrder.objects.filter(
+        municipality=municipality, assigned_to=user, status=WorkOrder.Status.IN_PROGRESS
+    ).first()
+    if order:
+        return Facility.objects.filter(pk=order.facility_id).first()
+    log = (
+        CleaningLog.objects.filter(
+            municipality=municipality,
+            user=user,
+            done_at__gte=at - dt.timedelta(hours=CLEANING_ACTIVE_HOURS),
+            done_at__lte=at,
+        )
+        .order_by("-done_at")
+        .select_related("facility")
+        .first()
+    )
+    return log.facility if log else None
+
+
+def location_for_112(facility):
+    """Texto que se lle pode ditar ao 112: instalación, enderezo, concello e coordenadas."""
+    if facility is None:
+        return None
+    return {
+        "name": facility.name,
+        "address": facility.address,
+        "parish": facility.parish.name if facility.parish_id else "",
+        "municipality": facility.municipality.name,
+        "latitude": facility.latitude,
+        "longitude": facility.longitude,
+    }
 
 
 def _admins(municipality):
@@ -144,9 +262,32 @@ def raise_alert(
         )
     url = treverse(municipality, "manage:safety")
     notified = []
-    for contact in on_duty(municipality)[:1]:
-        tell_contact(contact, title, body, url)
-        notified.append(contact.name)
+    designated = designated_contact(municipality, facility)
+    if designated:
+        tell_contact(designated, title, body, url)
+        notified.append(designated.name)
+    # v1.5 · B: tamén a conserxe desta instalación e o persoal traballando agora nela
+    told = {alert.raised_by_id, designated.user_id if designated else None}
+    if facility is not None:
+        for contact in on_duty(municipality):
+            if contact.facility_id == facility.pk and contact != designated:
+                tell_contact(contact, title, body, url)
+                notified.append(contact.role_label or contact.name)
+                told.add(contact.user_id)
+    for person, post in staff_on_service(municipality, facility):
+        if person.pk in told:
+            continue
+        told.add(person.pk)
+        notify(
+            person,
+            title,
+            body,
+            url=treverse(municipality, "safety:protocol_facility", facility.pk),
+            municipality=municipality,
+            level="warning",
+            email=True,
+        )
+        notified.append(str(post))
     for admin in _admins(municipality):
         notify(admin, title, body, url=url, municipality=municipality, level="warning", email=True)
         notified.append(str(_("Administración do concello")))

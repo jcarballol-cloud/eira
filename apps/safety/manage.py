@@ -41,11 +41,19 @@ class ContactForm(forms.ModelForm):
             "from_time",
             "until_time",
             "active",
+            "facility",  # v1.5 · B
         ]
         widgets = {
             "from_time": forms.TimeInput(attrs={"type": "time"}, format="%H:%M"),
             "until_time": forms.TimeInput(attrs={"type": "time"}, format="%H:%M"),
         }
+
+    def __init__(self, *args, tenant=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Illamento: só as instalacións deste concello
+        self.fields["facility"].queryset = (
+            Facility.objects.for_tenant(tenant) if tenant else Facility.objects.none()
+        )
 
 
 @role_required(*ADMIN)
@@ -56,7 +64,7 @@ def safety_home(request):
         services.acknowledge(alert, request.user)
         messages.success(request, _("Alerta marcada como atendida."))
         return redirect(treverse(t, "manage:safety"))
-    form = ContactForm(request.POST or None, prefix="c")
+    form = ContactForm(request.POST or None, prefix="c", tenant=t)
     if request.method == "POST" and request.POST.get("accion") == "contacto" and form.is_valid():
         contact = form.save(commit=False)
         contact.municipality = t

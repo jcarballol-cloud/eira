@@ -1775,3 +1775,15 @@ html.pref-large-text .layout-aside aside table.data :is(th, td) { padding-left: 
 .doc-text .table-wrap { margin: 1rem 0; }
 html.theme-dark body.themable .doc-text blockquote.note { background: #2A2410; color: #F6D79A; }
 html.theme-dark body.themable .doc-text .legal-pre { background: #22333A; color: #E8EEEA; }
+
+/* v1.5 · B: botón Alerta en todos os perfís e datos para ditar ao 112 */
+.alert-pill { display: inline-flex; align-items: center; gap: .3rem; min-height: 44px; padding: 0 .7rem 0 .4rem; border-radius: 999px; background: #9E0D0D; color: #FFFFFF; font-weight: 800; font-size: .9rem; text-decoration: none; white-space: nowrap; }
+.alert-pill:hover, .alert-pill:focus-visible { background: #7E0A0A; color: #FFFFFF; }
+.alert-pill .big-choice__shape { width: 1.6rem; height: 1.6rem; font-size: .95rem; }
+@media print { .alert-pill { display: none; } }
+.staff-alert { margin-bottom: 1rem; }
+.staff-alert .big-choice__btn { width: 100%; }
+.location-112 { margin: 1rem 0; padding: 1rem; border: 2px solid var(--arxila); border-radius: var(--radius); background: var(--surface); color: var(--text); }
+.location-112 h2 { margin-top: 0; }
+.location-112__say { font-size: 1.15rem; font-weight: 700; margin-bottom: .5rem; }
+html.theme-dark body.themable .location-112 { background: #1C2B31; color: #F4F1E8; border-color: #E08A73; }

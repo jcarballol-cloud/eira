@@ -1,0 +1,15 @@
+{% load i18n l10n eira %}{# v1.5 · B: ubicación para ditarlla ao 112 e DESA da instalación ou o máis próximo #}
+{% if location %}
+<section class="location-112" aria-labelledby="loc-112">
+  <h2 id="loc-112" class="h3">{% icon 'map' %} {% translate "Se chamas ao 112, di isto" %}</h2>
+  <p class="location-112__say">{{ location.name }}{% if location.address %}, {{ location.address }}{% endif %}{% if location.parish %}, {{ location.parish }}{% endif %}, {{ location.municipality }}</p>
+  {% if location.latitude and location.longitude %}<p class="mb-0">{% translate "Coordenadas" %}: <span class="mono">{{ location.latitude|unlocalize }}, {{ location.longitude|unlocalize }}</span></p>{% endif %}
+  {% if not hide_aed %}
+  {% if aed %}{% if aed.on_site %}
+  <p class="aed-box mt-1">{% icon 'heart' %} <span><strong>{% translate "DESA nesta instalación" %}</strong>{% if aed.where %}: {{ aed.where }}{% endif %}{% if aed.hours %}<br><small>{% translate "Horario de acceso" %}: {{ aed.hours }}</small>{% endif %}</span></p>
+  {% else %}
+  <p class="aed-box mt-1">{% icon 'heart' %} <span><strong>{% translate "DESA máis próximo" %}</strong>{% if aed.name %}: {{ aed.name }}{% endif %}{% if aed.address %}<br>{{ aed.address }}{% endif %}{% if aed.distance_m %}<br><small>{% blocktranslate with d=aed.distance_m %}A uns {{ d }} m{% endblocktranslate %}</small>{% endif %}{% if aed.hours %}<br><small>{% translate "Horario" %}: {{ aed.hours }}</small>{% endif %}</span></p>
+  {% endif %}{% else %}<p class="muted mt-1 mb-0">{% translate "Esta instalación non ten anotado ningún DESA. O 112 indicarache o máis próximo." %}</p>{% endif %}
+  {% endif %}
+</section>
+{% endif %}

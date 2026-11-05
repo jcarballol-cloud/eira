@@ -11,6 +11,7 @@ from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 from django.views.decorators.http import require_POST
 
+from apps.accounts.profiles import STAFF_ROLES
 from apps.bookings.models import Booking
 from apps.facilities.models import Facility
 from apps.tenants.urlutils import treverse
@@ -63,7 +64,24 @@ def _context(request):
     facility = _facility(request, request.GET.get("instalacion") or request.POST.get("instalacion"))
     if facility is None and booking is not None:
         facility = booking.facility
+    if facility is None and request.roles & STAFF_ROLES:
+        # v1.5 · B: o persoal non ten que buscar a instalación onde está a traballar
+        facility = services.current_facility(request.user, request.tenant)
     return facility, booking
+
+
+def _origin_for(request, booking):
+    """v1.5 · B: de que app saíu a alerta, segundo o perfil no concello."""
+    roles = request.roles
+    if "admin" in roles:
+        return Alert.Origin.ADMIN
+    if "maintenance" in roles:
+        return Alert.Origin.OPERATOR
+    if "cleaning" in roles:
+        return Alert.Origin.CLEANING
+    if "monitor" in roles:
+        return Alert.Origin.MONITOR
+    return Alert.Origin.BOOKING if booking else Alert.Origin.APP
 
 
 def alert_choice(request):
@@ -76,6 +94,8 @@ def alert_choice(request):
             "facility": facility,
             "booking": booking,
             "session_id": request.GET.get("sesion", ""),
+            "location": services.location_for_112(facility),
+            "aed": services.aed_info(facility),
             "facilities": Facility.objects.for_tenant(request.tenant).filter(is_published=True),
             "nav": "incident",
         },
@@ -85,7 +105,7 @@ def alert_choice(request):
 def _raise(request, kind):
     facility, booking = _context(request)
     session = None
-    origin = Alert.Origin.BOOKING if booking else Alert.Origin.APP
+    origin = _origin_for(request, booking)
     if request.POST.get("sesion"):
         from apps.activities.models import Session
 
@@ -145,10 +165,17 @@ def _alert_from_query(request):
 
 
 def emergency(request):
+    alert = _alert_from_query(request)
+    facility = alert.facility if alert else None
     return render(
         request,
         "safety/emergency.html",
-        {"alert": _alert_from_query(request), "nav": "incident"},
+        {
+            "alert": alert,
+            "location": services.location_for_112(facility),
+            "aed": services.aed_info(facility),
+            "nav": "incident",
+        },
     )
 
 
@@ -167,6 +194,7 @@ def protocol(request, facility_pk=None):
             "protocol": proto,
             "steps": proto.steps(),
             "aed": services.aed_info(facility),
+            "location": services.location_for_112(facility),
             "facilities": Facility.objects.for_tenant(request.tenant).filter(is_published=True),
             "nav": "incident",
         },

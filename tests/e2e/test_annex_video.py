@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: EUPL-1.2
-"""v5 (+ v1.2) · Vídeo anexo (≤ 75 s): «Eira para o concello e a saúde».
+"""v5 (+ v1.2 e v1.5) · Vídeo anexo (≤ 75 s): «Eira para o concello e a saúde».
 
     python tools/tasks.py annex   → docs/demo/eira-anexo-saude.{mp4,webm,vtt} (ignorados polo git)
 
@@ -43,6 +43,10 @@ def run_annex(page, base, d):
     d.say(
         "Saúde: consellos co tempo real da franxa, calculados no móbil. O peso non sae do teléfono."
     )
+    # v1.5 · «Escoitar»
+    d.go(f"{c}/app/")
+    d.show(".listen-btn")
+    d.say("Novo: «Escoitar». O móbil le a pantalla en voz alta, sen enviar o texto a ninguén.")
     # 2. Valoracións
     d.hide()
     d.login(base, "admin@vilardeiras.demo.eira.example")
@@ -53,6 +57,11 @@ def run_annex(page, base, d):
     d.say(
         "O observatorio segue igual: esforzo, asistencia e probas físicas, só agregados.", extra=1.2
     )
+    # v1.5 · Mapa de procedencia
+    d.go(f"{c}/xestion/procedencia/")
+    d.show(".flow-map svg")
+    d.say("Novo: mapa de procedencia, sempre agregado: só grupos de dez persoas ou máis, sen GPS.")
+    d.hide()
     padel = Facility.objects.get(municipality__slug="vilardeiras", kind="padel")
     d.go(f"{c}/instalacions/{padel.pk}/")
     d.show(".facility-trust")

@@ -50,6 +50,17 @@ O mesmo percorrido está gravado, con subtítulos, en `eira-demo-movil.webm` e `
 3. Concello → **Panel** («Limpeza atrasada») → **Máis ferramentas → Limpeza**: quen limpou e cando, empresa, QR para imprimir e **Exportar o rexistro** (PDF para unha inspección).
 4. Ficha pública do pavillón: «Última limpeza: hoxe …» xunto á última supervisión.
 
+## v1.5 · Novidades no anexo e na demo
+
+O anexo engade dúas escenas: **«Escoitar»** e o **mapa de procedencia**. Máximo 75 s. O pitch non cambia.
+
+Pasos para probalo a man:
+
+1. *Uxía:* no inicio, «Escoitar» e «Axustes da voz». En «Concellos próximos», a súa parroquia (Bustelo) e as distancias. O aviso «Documentos pendentes de aceptar» leva ás condicións novas; en «A miña conta → Documentos aceptados» pode retirar os consentimentos.
+2. *Brais* e *Noela:* botón «Alerta» na cabeceira. A pantalla mostra o que hai que ditar ao 112 e o DESA.
+3. *Concello de Vilardeiras:* *Máis ferramentas → Procedencia*, *Documentos legais* (con CSV do rexistro) e *Acreditacións (menores)*. No grupo «Grupo novo (sen monitora)», asignar a Sabela queda bloqueado ata marcar a acreditación. Xián ten a revisión vencida.
+4. *Deputación:* *Mobilidade* (puntos quentes) e *Documentos legais* (repositorio de modelos).
+
 ## v1.2 · Vídeo anexo regrabado (65 s) e pasos opcionais
 - **Anexo:** ao percorrido da v5 engádense dous pasos curtos ao final: o **panel de Rendemento** do pavillón de Vilardeiras (ocupación, uso real e consumo estimado en kWh, € e CO₂) e o **NPS anual** da enquisa do ano pasado (NPS e sete aspectos, só con 10 respostas ou máis). A revisión de seguridade inicial di agora «trece puntos».
 - **Pitch:** sen cambios nin regrabación (o guión segue funcionando: Uxía reserva en Pontedouro, onde non ten abono).

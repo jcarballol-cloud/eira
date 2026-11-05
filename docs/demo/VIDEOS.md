@@ -6,7 +6,7 @@ Os vídeos do guión pesan máis de 10 MB, así que non se gardan no repositorio
 | Ficheiro | Contido |
 |---|---|
 | `docs/demo/eira-pitch.mp4` (H.264) e `docs/demo/eira-pitch.webm` (VP9) | **Vídeo final do pitch (v5)**, 1920×1080, ≈ 2 min 14 s, co paso novo da reserva en Pontedouro (tarifa de non empadroada e luz). Subtítulos en galego **só queimados na imaxe** (o MP4 xa non leva pista activable); o texto tamén en `eira-pitch.vtt` |
-| `docs/demo/eira-anexo-saude.mp4` e `.webm` | **Anexo v5 «Eira para o concello e a saúde»** (≈ 1 min): consellos de saúde co tempo, valoracións, observatorio e índice de vida activa, cartel da porta, revisión de seguridade e rexistro de brechas. Subtítulos queimados e `eira-anexo-saude.vtt` |
+| `docs/demo/eira-anexo-saude.mp4` e `.webm` | **Anexo v5 «Eira para o concello e a saúde»** (máximo 75 s, con «Escoitar» e o mapa de procedencia desde a v1.5): consellos de saúde co tempo, valoracións, observatorio e índice de vida activa, cartel da porta, revisión de seguridade e rexistro de brechas. Subtítulos queimados e `eira-anexo-saude.vtt` |
 | `eira-demo-movil.webm` | Percorrido do guión co marco de teléfono e de tableta (≈ 88 s, con subtítulos) |
 | `eira-demo-escritorio.webm` | O mesmo percorrido en escritorio |
 

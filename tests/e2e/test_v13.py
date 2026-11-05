@@ -125,4 +125,4 @@ def test_dpia_summary_from_custody_page(new_page, base):
     page.get_by_role("link", name="Ver a avaliación de impacto (EIPD)").click()
     page.wait_for_load_state()
     assert page.url.endswith("/privacidade/avaliacion-impacto/")
-    assert page.locator(".custody-item").count() == 6
+    assert page.locator(".custody-item").count() == 7

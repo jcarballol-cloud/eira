@@ -22,6 +22,8 @@ nun bar, un teclado con código que non necesita internet ou unha pechadura cone
   táboas accesibles e CSV.
 - **Mantemento:** plans preventivos, ordes de traballo, calendario compartido e app do operario que funciona sen cobertura.
 - **Multi-concello:** cada concello illado e configurable; vista de deputación para comparar e dar de alta concellos.
+- **Para todas as persoas (v1.5):** botón «Escoitar» coa voz do dispositivo e «Alerta» en todos os perfís, co DESA e a ubicación para ditar ao 112.
+- **Datos e legalidade (v1.5):** mapa de procedencia só agregado (n ≥ 10), documentos legais versionados (modelos de exemplo) e acreditación con menores sen gardar o certificado.
 - **Soberanía:** exportación íntegra en formatos abertos, API OpenAPI 3.1, datos abertos DCAT-AP, IA opcional só autoaloxada.
 
 ## Probalo

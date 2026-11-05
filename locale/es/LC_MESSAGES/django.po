@@ -18058,5 +18058,8 @@ msgstr ""
 msgid "Ata retirar a marca ou eliminar a conta."
 msgstr "Hasta retirar la marca o eliminar la cuenta."
 
+msgid "Documentos"
+msgstr "Documentos"
+
 #~ msgid "Frecuencia"
 #~ msgstr "Frecuencia"

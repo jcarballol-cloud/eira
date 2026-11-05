@@ -1835,3 +1835,6 @@ html.theme-dark body.themable .flow-map__node--parish circle, html.theme-dark bo
   .desk-top__actions { flex-wrap: wrap; max-width: 100%; }
   .layout-desk .safety-btn__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 }
+/* v1.5: días doutro mes no calendario, en tema escuro */
+html.theme-dark body.themable .cal .day.out { background: #1C2B31; color: #D5DDD8; }
+html.theme-dark body.themable .cal .day.out .n { color: #D5DDD8; }

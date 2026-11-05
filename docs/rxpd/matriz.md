@@ -127,7 +127,7 @@ Son datos do persoal (propio ou da empresa contratada), non da veciñanza; por i
 
 **Finalidade estatística:** planificar transporte, horarios e instalacións. Nunca para decidir nada sobre unha persoa.
 
-| Dato | Persoa (propio) | Monitor/a | Mantemento | Concello | Deputación | Conservación |
+| Dato | Veciña (propio) | Monitor/a | Mantemento | Concello | Deputación | Conservación |
 |---|---|---|---|---|---|---|
 | Parroquia ou concello de residencia | ✔ (vela, cámbiaa e bórraa en «Concellos próximos»; vai na súa exportación) | — | — | só agregada, n ≥ 10 | só fluxos entre concellos, agregados, n ≥ 10 | mentres teña a conta ou ata que a borre |
 | Parroquia na entrada do padrón (columna opcional do CSV) | — | — | — | — (non se mostra) | — | ata a seguinte carga, que a substitúe |
@@ -141,7 +141,7 @@ Son datos do persoal (propio ou da empresa contratada), non da veciñanza; por i
 
 ## v1.5 · Documentos legais
 
-| Dato | Persoa (propio) | Concello | DPD | Deputación | Conservación |
+| Dato | Veciña (propio) | Concello | DPD | Deputación | Conservación |
 |---|---|---|---|---|---|
 | Aceptación: persoa, documento, versión, data, canle, retirada | ✔ («Documentos aceptados») | ✔ (CSV) | ✔ (CSV) | **—** (só o número de aceptacións por documento) | a que fixe o concello para xustificar o consentimento; ao eliminar a conta queda sen persoa |
 

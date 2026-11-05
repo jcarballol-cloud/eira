@@ -22,6 +22,27 @@ ERASE_ACCOUNT = _(
     "Tamén o podes pedir no concello."
 )
 DETAILS = {
+    # v1.5
+    "Parroquia ou concello de residencia": (
+        _("Para estatísticas agregadas de mobilidade e para mostrarche as distancias. Nunca GPS."),
+        _("Mentres teñas a conta ou ata que a borres."),
+        _("Podes cambiala ou borrala en «Concellos próximos»."),
+    ),
+    "Parroquia na entrada do padrón (columna opcional do CSV)": (
+        _("Para propoñer a túa parroquia ao darte de alta. Non se garda ningún outro dato."),
+        _("Ata a seguinte carga do padrón, que a substitúe."),
+        _("Pídeo no concello."),
+    ),
+    "Aceptación: persoa, documento, versión, data, canle, retirada": (
+        _("Para xustificar o que aceptaches e cando."),
+        _("O prazo que fixe o concello; ao eliminar a conta queda sen o teu nome."),
+        _("Retira os consentimentos en «Documentos aceptados»."),
+    ),
+    "Quen marcou a comprobación e cando": (
+        _("Para deixar constancia de que o concello comprobou a acreditación. Sen datos penais."),
+        _("Ata retirar a marca ou eliminar a conta."),
+        _("Pídeo no concello."),
+    ),
     "Correo e teléfono": (
         _("Para entrar sen contrasinal e para avisarte das túas reservas."),
         _("Mentres teñas a conta."),

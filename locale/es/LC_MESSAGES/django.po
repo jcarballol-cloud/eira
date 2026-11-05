@@ -18016,5 +18016,47 @@ msgstr ""
 msgid "Podes cambiar ou borrar a túa parroquia cando queiras."
 msgstr "Puedes cambiar o borrar tu parroquia cuando quieras."
 
+msgid ""
+"Para estatísticas agregadas de mobilidade e para mostrarche as distancias. "
+"Nunca GPS."
+msgstr ""
+"Para estadísticas agregadas de movilidad y para mostrarte las distancias. "
+"Nunca GPS."
+
+msgid "Mentres teñas a conta ou ata que a borres."
+msgstr "Mientras tengas la cuenta o hasta que la borres."
+
+msgid "Podes cambiala ou borrala en «Concellos próximos»."
+msgstr "Puedes cambiarla o borrarla en «Concellos próximos»."
+
+msgid ""
+"Para propoñer a túa parroquia ao darte de alta. Non se garda ningún outro "
+"dato."
+msgstr ""
+"Para proponer tu parroquia al darte de alta. No se guarda ningún otro dato."
+
+msgid "Ata a seguinte carga do padrón, que a substitúe."
+msgstr "Hasta la siguiente carga del padrón, que la sustituye."
+
+msgid "Para xustificar o que aceptaches e cando."
+msgstr "Para justificar lo que has aceptado y cuándo."
+
+msgid "O prazo que fixe o concello; ao eliminar a conta queda sen o teu nome."
+msgstr ""
+"El plazo que fije el concello; al eliminar la cuenta queda sin tu nombre."
+
+msgid "Retira os consentimentos en «Documentos aceptados»."
+msgstr "Retira los consentimientos en «Documentos aceptados»."
+
+msgid ""
+"Para deixar constancia de que o concello comprobou a acreditación. Sen datos"
+" penais."
+msgstr ""
+"Para dejar constancia de que el concello comprobó la acreditación. Sin datos"
+" penales."
+
+msgid "Ata retirar a marca ou eliminar a conta."
+msgstr "Hasta retirar la marca o eliminar la cuenta."
+
 #~ msgid "Frecuencia"
 #~ msgstr "Frecuencia"

@@ -1,0 +1,14 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{{ kind_label }}{% endblock %}
+{% block content %}
+<p><a href="{% turl 'manage:legal' %}">← {% translate "Documentos legais" %}</a></p>
+<div class="page-head"><div><p class="eyebrow">{% translate "Documentos legais" %}</p><h1>{{ kind_label }}</h1>
+  <p class="muted">{% if model.region %}{% blocktranslate trimmed with r=model.region.name n=model.version %}Modelo de {{ r }}, versión {{ n }}.{% endblocktranslate %}{% else %}{% translate "Modelo incluído en Eira." %}{% endif %}{% if current %} {% blocktranslate with n=current.number %}A versión vixente é a {{ n }}.{% endblocktranslate %}{% endif %}</p></div></div>
+{% include "legal/_example_notice.html" %}
+<details class="card mb-2"><summary>{% translate "Ver o modelo" %}</summary><div class="doc-text mt-1">{{ model_html }}</div></details>
+<form method="post" novalidate class="card">{% csrf_token %}
+  {% include "includes/form.html" %}
+  <p class="help">{% translate "Para adoptalo tal cal, cubre os datos e publica. Os datos substitúen [RESPONSABLE], [DPD], [ENDEREZO] e [CONCELLO]. Para adaptalo, marca «Adaptar o texto» e edita os catro campos." %}</p>
+  <div class="form-actions"><button class="btn" type="submit">{% translate "Publicar" %}</button></div>
+</form>
+{% endblock %}

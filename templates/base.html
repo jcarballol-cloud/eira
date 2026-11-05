@@ -51,6 +51,7 @@
           </div>
         {% endif %}
         {% if network_visit %}<div class="wrap"><p class="network-banner" role="note">{% icon 'map' %} <span>{% blocktranslate trimmed with c=network_visit.here.name o=network_visit.home.name %}Estás en <strong>{{ c }}</strong> coa túa conta de {{ o }}. Pagas a tarifa de persoas non empadroadas de {{ c }}.{% endblocktranslate %}</span> <a href="{% url 'app:home' network_visit.home.slug %}">{% blocktranslate with o=network_visit.home.name %}Volver a {{ o }}{% endblocktranslate %}</a></p></div>{% endif %}
+        {% if legal_pending %}<div class="wrap"><a class="legal-banner" href="{% url 'legal:detail' tenant.slug legal_pending.0.document.kind %}">{% icon 'shield' %}<span><strong>{% translate "Documentos pendentes de aceptar" %}</strong><br>{% blocktranslate trimmed count n=legal_pending|length %}Hai {{ n }} documento novo ou actualizado.{% plural %}Hai {{ n }} documentos novos ou actualizados.{% endblocktranslate %}</span>{% icon 'chevron' %}</a></div>{% endif %}
         {% block hero %}{% endblock %}
         <div class="wrap">
           {% block content %}{% endblock %}

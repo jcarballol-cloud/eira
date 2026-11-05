@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Documentos aceptados" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{% translate "Documentos aceptados" %}</h1>
+  <p>{% translate "Que aceptaches e cando. Podes retirar os consentimentos; a retirada non afecta ao tratamento anterior." %}</p></div></div>
+<ul class="stack list" role="list">
+  {% for a in rows %}
+  <li class="card">
+    <div class="row-between"><h2 class="h3 mb-0"><a href="{% url 'legal:detail' a.municipality.slug a.version.document.kind %}?v={{ a.version.number }}">{{ a.version.title }}</a></h2>
+      {% if a.withdrawn_at %}<span class="badge">{% translate "Retirado" %}</span>{% else %}<span class="badge badge-ok">{% icon 'check' %} {% translate "Aceptado" %}</span>{% endif %}</div>
+    <p class="muted mb-1">{{ a.municipality.name }} · {% blocktranslate trimmed with n=a.version.number d=a.accepted_at|date:"d/m/Y H:i" c=a.get_channel_display %}Versión {{ n }} · {{ d }} · {{ c }}{% endblocktranslate %}{% if a.withdrawn_at %} · {% blocktranslate with d=a.withdrawn_at|date:"d/m/Y H:i" %}retirado o {{ d }}{% endblocktranslate %}{% endif %}</p>
+    {% if not a.withdrawn_at and a.version.document.kind in revocable %}
+    <form method="post" action="{% url 'account:legal_withdraw' a.pk %}">{% csrf_token %}<button class="btn btn-sm btn-secondary" type="submit">{% translate "Retirar o consentimento" %}<span class="visually-hidden"> · {{ a.version.title }}</span></button></form>
+    {% if a.version.document.kind == 'minors' %}<p class="help mt-1"><a href="{% url 'account:household' %}">{% translate "Cada autorización concreta está en «Unidade familiar»." %}</a></p>{% endif %}
+    {% if a.version.document.kind == 'health' %}<p class="help mt-1">{% translate "Ao retiralo, os teus datos de saúde bórranse da conta." %}</p>{% endif %}
+    {% endif %}
+  </li>
+  {% empty %}
+  <li class="card"><p class="mb-0">{% translate "Aínda non aceptaches ningún documento." %}</p></li>
+  {% endfor %}
+</ul>
+<p class="mt-2"><a href="{% url 'account:profile' %}">{% translate "Volver á miña conta" %}</a></p>
+{% endblock %}

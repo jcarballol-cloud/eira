@@ -3,6 +3,7 @@
 {% block content %}
 <article class="prose card">
   <h1>{% translate "Privacidade" %}</h1>
+  <p><a href="{% url 'legal:list' tenant.slug %}">{% translate "Documentos legais do concello" %}</a></p>
   {% if tenant.privacy_text %}<div>{{ tenant.privacy_text|linebreaks }}</div>{% endif %}
   <h2>{% translate "Texto modelo" %}</h2>
   <p><strong>{% translate "Responsable:" %}</strong> {% blocktranslate with n=tenant.name %}Concello de {{ n }}.{% endblocktranslate %} {% if tenant.contact_email %}{{ tenant.contact_email }}{% endif %}</p>

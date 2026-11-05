@@ -28,4 +28,5 @@ urlpatterns = [
     path("datos-abertos/", include("apps.analytics.urls_open")),
     path("enquisa/", include("apps.surveys.urls")),  # v1.2 · E
     path("carne/", include("apps.members.urls")),  # v1.2 · H
+    path("legal/", include("apps.legal.urls")),  # v1.5 · D
 ]

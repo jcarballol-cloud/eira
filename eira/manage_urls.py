@@ -12,6 +12,7 @@ from apps.bookings import manage as bookings
 from apps.bookings import vouchers
 from apps.facilities import manage as facilities
 from apps.incidents import manage as incidents
+from apps.legal import views as legal
 from apps.maintenance import cleaning_views as cleaning
 from apps.maintenance import views as maintenance
 from apps.members import views as members
@@ -103,6 +104,10 @@ urlpatterns = [
     path("seguridade/protocolo/", safety.protocol_edit, name="safety_protocol"),
     path("seguridade/peches/<int:pk>/", safety.escalation_detail, name="safety_escalation"),
     path("seguridade/accidentes/", safety.accidents, name="accidents"),
+    # v1.5 · D: documentos legais
+    path("legal/", legal.manage_list, name="legal"),
+    path("legal/rexistro.csv", legal.manage_register, name="legal_register"),
+    path("legal/<slug:kind>/", legal.manage_publish, name="legal_publish"),
     # v1.2 · H: abonos e carné
     path("abonos/", members.manage_passes, name="passes"),
     path("carne/", members.reader, name="card_reader"),

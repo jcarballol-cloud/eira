@@ -37,6 +37,7 @@
     <p class="sidenav__group">{% translate "Concello" %}</p>
     <a href="{% turl 'manage:signups' %}" {% if sub == 'signups' %}aria-current="page"{% endif %}>{% icon 'plus' %} {% translate "Altas da app" %}</a>
     <a href="{% turl 'manage:staff' %}" {% if sub == 'staff' %}aria-current="page"{% endif %}>{% icon 'users' %} {% translate "Persoal e códigos" %}</a>
+    <a href="{% turl 'manage:legal' %}" {% if sub == 'legal' %}aria-current="page"{% endif %}>{% icon 'shield' %} {% translate "Documentos legais" %}</a>
     <a href="{% turl 'manage:breaches' %}" {% if sub == 'breaches' %}aria-current="page"{% endif %}>{% icon 'shield' %} {% translate "Rexistro de brechas" %}</a>
     <a href="{% turl 'manage:accidents' %}" {% if sub == 'accidents' %}aria-current="page"{% endif %}>{% icon 'heart' %} {% translate "Rexistro de accidentes" %}</a>
     <a href="{% turl 'manage:audit' %}" {% if sub == 'audit' %}aria-current="page"{% endif %}>{% icon 'lock' %} {% translate "Rexistro de auditoría" %}</a>
@@ -51,12 +52,14 @@
     <a href="{% turl 'manage:accidents' %}" {% if sub == 'accidents' %}aria-current="page"{% endif %}>{% icon 'heart' %} {% translate "Rexistro de accidentes" %}</a>
     <a href="{% turl 'manage:audit' %}" {% if sub == 'audit' %}aria-current="page"{% endif %}>{% icon 'lock' %} {% translate "Rexistro de auditoría" %}</a>
     <a href="{% turl 'privacy_custody' %}" {% if nav == 'privacy' %}aria-current="page"{% endif %}>{% icon 'user' %} {% translate "Quen custodia os datos" %}</a>
+    <a href="{% turl 'manage:legal' %}" {% if sub == 'legal' %}aria-current="page"{% endif %}>{% icon 'check' %} {% translate "Documentos legais" %}</a>
   </nav>
   {% elif kind == 'region' %}
   <nav class="sidenav" aria-label="{% translate 'Rede de concellos' %}">
     {% if nav_region %}
     <a href="{% url 'region:dashboard' nav_region.slug %}" {% if nav == 'region' %}aria-current="page"{% endif %}>{% icon 'chart' %} {% translate "Rede" %}</a>
     <a href="{% url 'region:new_municipality' nav_region.slug %}" {% if nav == 'region_new' %}aria-current="page"{% endif %}>{% icon 'star' %} {% translate "Novo concello" %}</a>
+    <a href="{% url 'region:legal' nav_region.slug %}" {% if nav == 'region_legal' %}aria-current="page"{% endif %}>{% icon 'shield' %} {% translate "Documentos legais" %}</a>
     <p class="sidenav__group">{% translate "Concellos" %}</p>
     {% for m in nav_region.municipalities.all %}<a href="{% url 'manage:indicators' m.slug %}" {% if tenant == m %}aria-current="page"{% endif %}>{% icon 'map' %} {{ m.name }}</a>{% endfor %}
     {% endif %}

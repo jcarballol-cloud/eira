@@ -338,6 +338,18 @@ def export_user_data(user):
             }
             for n in Notification.objects.filter(user=user)
         ],
+        # v1.5 · D: documentos aceptados
+        "legal_acceptances": [
+            {
+                "municipality": a.municipality.name,
+                "document": a.version.document.kind,
+                "version": a.version.number,
+                "accepted_at": dt(a.accepted_at),
+                "channel": a.channel,
+                "withdrawn_at": dt(a.withdrawn_at),
+            }
+            for a in user.legal_acceptances.select_related("version__document", "municipality")
+        ],
     }
 
 
@@ -457,6 +469,10 @@ def privacy_centre(request):
         if u.photo_consent != before:
             u.photo_consent_at = timezone.now() if u.photo_consent else None
             audit("consent.photo_" + ("grant" if u.photo_consent else "revoke"), user, obj=user)
+            if not u.photo_consent:
+                from apps.legal.services import sync_photo_withdrawal
+
+                sync_photo_withdrawal(user)  # v1.5 · D
         u.save()
         messages.success(request, _("Preferencias de privacidade gardadas."))
         return redirect("account:privacy")

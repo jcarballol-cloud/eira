@@ -215,6 +215,21 @@ HELP = {
         _("Avisos do concello"),
         _("Envía peches, alertas ou novidades por app, correo e Telegram, con vista previa."),
     ),
+    "manage:legal": (
+        _("Documentos legais"),
+        _(
+            "Adopta os modelos tal cal ou adáptaos cos datos do concello. Ao publicar, as apps "
+            "móstranos para aceptalos. Son modelos de exemplo: revísaos cos servizos xurídicos e o "
+            "DPD. O rexistro de aceptacións descárgase en CSV."
+        ),
+    ),
+    "manage:accreditations": (
+        _("Acreditacións"),
+        _(
+            "Marca que comprobaches a acreditación na contratación. Eira non garda o certificado: "
+            "só quen o marcou e cando. Sen a marca non se pode asignar a persoa a un grupo con menores."
+        ),
+    ),
     "manage:settings": (
         _("Configuración"),
         _(

@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     "apps.safety",
     "apps.surveys",
     "apps.members",
+    "apps.legal",  # v1.5 · D
 ]
 
 MIDDLEWARE = [

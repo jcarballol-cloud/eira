@@ -17396,5 +17396,349 @@ msgstr "DESA en esta instalación"
 msgid "DESA máis próximo"
 msgstr "DESA más próximo"
 
+msgid "Información de privacidade"
+msgstr "Información de privacidad"
+
+msgid "Condicións de uso"
+msgstr "Condiciones de uso"
+
+msgid "Consentimento para menores (persoa titora)"
+msgstr "Consentimiento para menores (persona tutora)"
+
+msgid "Dereitos de imaxe"
+msgstr "Derechos de imagen"
+
+msgid "Normas de uso das instalacións"
+msgstr "Normas de uso de las instalaciones"
+
+msgid "Consentimento de datos de saúde"
+msgstr "Consentimiento de datos de salud"
+
+msgid "título en galego"
+msgstr "título en gallego"
+
+msgid "título en castelán"
+msgstr "título en castellano"
+
+msgid "texto en galego"
+msgstr "texto en gallego"
+
+msgid "texto en castelán"
+msgstr "texto en castellano"
+
+msgid "documento"
+msgstr "documento"
+
+msgid "cambios substanciais"
+msgstr "cambios sustanciales"
+
+msgid "modelo de documento legal"
+msgstr "modelo de documento legal"
+
+msgid "modelos de documentos legais"
+msgstr "modelos de documentos legales"
+
+msgid "documento legal"
+msgstr "documento legal"
+
+msgid "documentos legais"
+msgstr "documentos legales"
+
+msgid "versión de documento legal"
+msgstr "versión de documento legal"
+
+msgid "versións de documentos legais"
+msgstr "versiones de documentos legales"
+
+msgid "aceptación de documento legal"
+msgstr "aceptación de documento legal"
+
+msgid "aceptacións de documentos legais"
+msgstr "aceptaciones de documentos legales"
+
+msgid "Adoptado tal cal"
+msgstr "Adoptado tal cual"
+
+msgid "Adaptado polo concello"
+msgstr "Adaptado por el concello"
+
+msgid "Web"
+msgstr "Web"
+
+msgid "Cubre a persoa responsable, o DPD e o enderezo."
+msgstr "Rellena la persona responsable, el DPD y la dirección."
+
+msgid "Este documento non é un consentimento que se poida retirar."
+msgstr "Este documento no es un consentimiento que se pueda retirar."
+
+msgid "(conta eliminada)"
+msgstr "(cuenta eliminada)"
+
+msgid "Consentimento retirado. O rexistro conserva a data."
+msgstr "Consentimiento retirado. El registro conserva la fecha."
+
+msgid "Responsable do tratamento"
+msgstr "Responsable del tratamiento"
+
+msgid "Contacto do DPD"
+msgstr "Contacto del DPD"
+
+msgid "Cambios substanciais: pedir que se volva aceptar"
+msgstr "Cambios sustanciales: pedir que se vuelva a aceptar"
+
+msgid "Adaptar o texto"
+msgstr "Adaptar el texto"
+
+msgid "Título en galego"
+msgstr "Título en gallego"
+
+msgid "Título en castelán"
+msgstr "Título en castellano"
+
+msgid "Texto en galego"
+msgstr "Texto en gallego"
+
+msgid "Texto en castelán"
+msgstr "Texto en castellano"
+
+msgid ""
+"Revisamos este texto adaptado cos servizos xurídicos e o DPD (quita o aviso "
+"de modelo)"
+msgstr ""
+"Hemos revisado este texto adaptado con los servicios jurídicos y el DPD "
+"(quita el aviso de modelo)"
+
+msgid "Cambios substanciais"
+msgstr "Cambios sustanciales"
+
+msgid "Só se pode aceptar a versión vixente."
+msgstr "Solo se puede aceptar la versión vigente."
+
+msgid "Publicada a versión %(n)s. As apps xa a mostran."
+msgstr "Publicada la versión %(n)s. Las apps ya la muestran."
+
+msgid ""
+"Modelo publicado (versión %(n)s). Os concellos da rede xa o poden adoptar."
+msgstr ""
+"Modelo publicado (versión %(n)s). Los concellos de la red ya pueden "
+"adoptarlo."
+
+msgid "Marca a casiña para aceptar o documento."
+msgstr "Marca la casilla para aceptar el documento."
+
+msgid "Aceptado. Podes velo en «A miña conta» → «Documentos aceptados»."
+msgstr "Aceptado. Puedes verlo en «Mi cuenta» → «Documentos aceptados»."
+
+msgid "O aviso de modelo só se quita ao adaptar e revisar o texto."
+msgstr "El aviso de modelo solo se quita al adaptar y revisar el texto."
+
+msgid "Cubre este campo para adaptar o texto."
+msgstr "Rellena este campo para adaptar el texto."
+
+msgid "Documentos legais"
+msgstr "Documentos legales"
+
+msgid ""
+"Adopta os modelos tal cal ou adáptaos cos datos do concello. Ao publicar, as"
+" apps móstranos para aceptalos. Son modelos de exemplo: revísaos cos "
+"servizos xurídicos e o DPD. O rexistro de aceptacións descárgase en CSV."
+msgstr ""
+"Adopta los modelos tal cual o adáptalos con los datos del concello. Al "
+"publicar, las apps los muestran para aceptarlos. Son modelos de ejemplo: "
+"revísalos con los servicios jurídicos y el DPD. El registro de aceptaciones "
+"se descarga en CSV."
+
+msgid "Acreditacións"
+msgstr "Acreditaciones"
+
+msgid ""
+"Marca que comprobaches a acreditación na contratación. Eira non garda o "
+"certificado: só quen o marcou e cando. Sen a marca non se pode asignar a "
+"persoa a un grupo con menores."
+msgstr ""
+"Marca que has comprobado la acreditación en la contratación. Eira no guarda "
+"el certificado: solo quién lo marcó y cuándo. Sin la marca no se puede "
+"asignar a la persona a un grupo con menores."
+
+msgid "Documentos pendentes de aceptar"
+msgstr "Documentos pendientes de aceptar"
+
+msgid "Hai %(n)s documento novo ou actualizado."
+msgid_plural "Hai %(n)s documentos novos ou actualizados."
+msgstr[0] "Hay %(n)s documento nuevo o actualizado."
+msgstr[1] "Hay %(n)s documentos nuevos o actualizados."
+
+msgid "Documentos aceptados"
+msgstr "Documentos aceptados"
+
+msgid "Documentos legais do concello"
+msgstr "Documentos legales del concello"
+
+msgid "Versión %(n)s · %(d)s"
+msgstr "Versión %(n)s · %(d)s"
+
+msgid "Versión anterior"
+msgstr "Versión anterior"
+
+msgid "Normas de cada instalación"
+msgstr "Normas de cada instalación"
+
+msgid "Estas normas seguen aceptándose ao reservar cada instalación."
+msgstr "Estas normas se siguen aceptando al reservar cada instalación."
+
+msgid "versión %(n)s"
+msgstr "versión %(n)s"
+
+msgid "A túa resposta"
+msgstr "Tu respuesta"
+
+msgid "Aceptado"
+msgstr "Aceptado"
+
+msgid "Retiraches este consentimento. Podes volver aceptalo cando queiras."
+msgstr ""
+"Has retirado este consentimiento. Puedes volver a aceptarlo cuando quieras."
+
+msgid ""
+"É un consentimento: podes retiralo en calquera momento desde «A miña conta»."
+msgstr ""
+"Es un consentimiento: puedes retirarlo en cualquier momento desde «Mi "
+"cuenta»."
+
+msgid "Lin o documento e acéptoo"
+msgstr "He leído el documento y lo acepto"
+
+msgid ""
+"Lee cada documento e acepta os que che correspondan. Podes ver o que "
+"aceptaches en «A miña conta»."
+msgstr ""
+"Lee cada documento y acepta los que te correspondan. Puedes ver lo que has "
+"aceptado en «Mi cuenta»."
+
+msgid "Pendente de aceptar"
+msgstr "Pendiente de aceptar"
+
+msgid "Opcional"
+msgstr "Opcional"
+
+msgid "O concello aínda non publicou documentos."
+msgstr "El concello aún no ha publicado documentos."
+
+msgid ""
+"Adopta os modelos tal cal ou adáptaos cos datos do concello. Ao publicar, as"
+" apps móstranos para aceptalos."
+msgstr ""
+"Adopta los modelos tal cual o adáptalos con los datos del concello. Al "
+"publicar, las apps los muestran para aceptarlos."
+
+msgid "Rexistro de aceptacións (CSV)"
+msgstr "Registro de aceptaciones (CSV)"
+
+msgid "Documento"
+msgstr "Documento"
+
+msgid "Versión vixente"
+msgstr "Versión vigente"
+
+msgid "Aceptacións"
+msgstr "Aceptaciones"
+
+msgid "Novo modelo: versión %(n)s"
+msgstr "Nuevo modelo: versión %(n)s"
+
+msgid "modelo de exemplo"
+msgstr "modelo de ejemplo"
+
+msgid "Sen publicar"
+msgstr "Sin publicar"
+
+msgid "Nova versión"
+msgstr "Nueva versión"
+
+msgid "Adoptar ou adaptar"
+msgstr "Adoptar o adaptar"
+
+msgid "Modelo de %(r)s, versión %(n)s."
+msgstr "Modelo de %(r)s, versión %(n)s."
+
+msgid "Modelo incluído en Eira."
+msgstr "Modelo incluido en Eira."
+
+msgid "A versión vixente é a %(n)s."
+msgstr "La versión vigente es la %(n)s."
+
+msgid "Ver o modelo"
+msgstr "Ver el modelo"
+
+msgid ""
+"Para adoptalo tal cal, cubre os datos e publica. Os datos substitúen "
+"[RESPONSABLE], [DPD], [ENDEREZO] e [CONCELLO]. Para adaptalo, marca «Adaptar"
+" o texto» e edita os catro campos."
+msgstr ""
+"Para adoptarlo tal cual, rellena los datos y publica. Los datos sustituyen "
+"[RESPONSABLE], [DPD], [ENDEREZO] y [CONCELLO]. Para adaptarlo, marca "
+"«Adaptar el texto» y edita los cuatro campos."
+
+msgid ""
+"Que aceptaches e cando. Podes retirar os consentimentos; a retirada non "
+"afecta ao tratamento anterior."
+msgstr ""
+"Qué has aceptado y cuándo. Puedes retirar los consentimientos; la retirada "
+"no afecta al tratamiento anterior."
+
+msgid "Versión %(n)s · %(d)s · %(c)s"
+msgstr "Versión %(n)s · %(d)s · %(c)s"
+
+msgid "retirado o %(d)s"
+msgstr "retirado el %(d)s"
+
+msgid "Retirar o consentimento"
+msgstr "Retirar el consentimiento"
+
+msgid "Cada autorización concreta está en «Unidade familiar»."
+msgstr "Cada autorización concreta está en «Unidad familiar»."
+
+msgid "Ao retiralo, os teus datos de saúde bórranse da conta."
+msgstr "Al retirarlo, tus datos de salud se borran de la cuenta."
+
+msgid "Aínda non aceptaches ningún documento."
+msgstr "Aún no has aceptado ningún documento."
+
+msgid "Volver á miña conta"
+msgstr "Volver a mi cuenta"
+
+msgid ""
+"Repositorio de modelos para os concellos da rede. Cada concello adóptaos tal"
+" cal ou adáptaos cos seus datos."
+msgstr ""
+"Repositorio de modelos para los concellos de la red. Cada concello los "
+"adopta tal cual o los adapta con sus datos."
+
+msgid "Modelos da deputación"
+msgstr "Modelos de la diputación"
+
+msgid "Publicado: versión %(n)s · %(d)s"
+msgstr "Publicado: versión %(n)s · %(d)s"
+
+msgid "Sen publicar: os concellos ven o modelo incluído en Eira"
+msgstr "Sin publicar: los concellos ven el modelo incluido en Eira"
+
+msgid "Publicar modelo"
+msgstr "Publicar modelo"
+
+msgid ""
+"Mantén [RESPONSABLE], [DPD], [ENDEREZO] e [CONCELLO]: cada concello énchenos"
+" ao adoptar o modelo."
+msgstr ""
+"Mantén [RESPONSABLE], [DPD], [ENDEREZO] y [CONCELLO]: cada concello los "
+"rellena al adoptar el modelo."
+
+msgid ""
+"MODELO DE EXEMPLO — non é un documento legal válido; o concello debe "
+"revisalo cos seus servizos xurídicos e o seu DPD"
+msgstr ""
+"MODELO DE EJEMPLO — no es un documento legal válido; el concello debe "
+"revisarlo con sus servicios jurídicos y su DPD"
+
 #~ msgid "Frecuencia"
 #~ msgstr "Frecuencia"

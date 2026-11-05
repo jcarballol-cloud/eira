@@ -21,3 +21,17 @@ def test_catalog_complete(lang):
             assert sorted(PLACEHOLDER.findall(entry.msgid)) == sorted(
                 PLACEHOLDER.findall(entry.msgstr)
             ), entry.msgid
+
+
+def test_every_code_string_is_in_the_catalog():
+    """v1.5: sen GNU gettext, comproba que o castelán ten todas as cadeas de plantillas e Python."""
+    import sys
+
+    sys.path.insert(0, str(ROOT / "tools"))
+    import i18n_check
+
+    known = {
+        e.msgid for e in polib.pofile(str(ROOT / "locale" / "es" / "LC_MESSAGES" / "django.po"))
+    }
+    missing = sorted(k for k in i18n_check.collect() if k and k not in known)
+    assert not missing, missing[:10]

@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Documentos legais" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{{ region.name }}</p><h1>{% translate "Documentos legais" %}</h1>
+  <p>{% translate "Repositorio de modelos para os concellos da rede. Cada concello adóptaos tal cal ou adáptaos cos seus datos." %}</p></div></div>
+{% include "legal/_example_notice.html" %}
+<div class="table-wrap" tabindex="0"><table class="data">
+  <caption class="visually-hidden">{% translate "Modelos da deputación" %}</caption>
+  <thead><tr><th scope="col">{% translate "Documento" %}</th><th scope="col">{% translate "Estado" %}</th><th scope="col">{% translate "Accións" %}</th></tr></thead>
+  <tbody>{% for r in rows %}<tr>
+    <th scope="row">{{ r.kind.label }}</th>
+    <td>{% if r.published %}{% blocktranslate trimmed with n=r.model.version d=r.model.published_at|date:"d/m/Y" %}Publicado: versión {{ n }} · {{ d }}{% endblocktranslate %}{% else %}<span class="muted">{% translate "Sen publicar: os concellos ven o modelo incluído en Eira" %}</span>{% endif %}</td>
+    <td><a class="btn btn-sm" href="{% url 'region:legal_publish' region.slug r.kind.value %}">{% translate "Publicar modelo" %}<span class="visually-hidden"> · {{ r.kind.label }}</span></a></td>
+  </tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}

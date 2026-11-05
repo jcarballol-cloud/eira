@@ -1,0 +1,19 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Documentos legais" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% icon 'shield' %} {% translate "Concello" %}</p><h1>{% translate "Documentos legais" %}</h1>
+  <p>{% translate "Adopta os modelos tal cal ou adáptaos cos datos do concello. Ao publicar, as apps móstranos para aceptalos." %}</p></div>
+  {% if 'admin' in roles or 'dpo' in roles %}<a class="btn btn-secondary" href="{% turl 'manage:legal_register' %}">{% icon 'download' %} {% translate "Rexistro de aceptacións (CSV)" %}</a>{% endif %}</div>
+{% include "legal/_example_notice.html" %}
+<div class="table-wrap" tabindex="0"><table class="data">
+  <caption class="visually-hidden">{% translate "Documentos legais do concello" %}</caption>
+  <thead><tr><th scope="col">{% translate "Documento" %}</th><th scope="col">{% translate "Versión vixente" %}</th><th scope="col" class="num">{% translate "Aceptacións" %}</th><th scope="col">{% translate "Accións" %}</th></tr></thead>
+  <tbody>{% for r in rows %}<tr>
+    <th scope="row">{{ r.kind.label }}{% if r.new_model %}<br><span class="badge badge-warn">{% blocktranslate with n=r.model.version %}Novo modelo: versión {{ n }}{% endblocktranslate %}</span>{% endif %}</th>
+    <td>{% if r.current %}<a href="{% turl 'legal:detail' r.kind.value %}">{% blocktranslate trimmed with n=r.current.number d=r.current.published_at|date:"d/m/Y" %}Versión {{ n }} · {{ d }}{% endblocktranslate %}</a><br><small>{{ r.current.get_mode_display }}{% if r.current.is_example %} · {% translate "modelo de exemplo" %}{% endif %}</small>{% else %}<span class="muted">{% translate "Sen publicar" %}</span>{% endif %}</td>
+    <td class="num">{{ r.accepted }}</td>
+    <td>{% if 'admin' in roles %}<a class="btn btn-sm" href="{% turl 'manage:legal_publish' r.kind.value %}">{% if r.current %}{% translate "Nova versión" %}{% else %}{% translate "Adoptar ou adaptar" %}{% endif %}<span class="visually-hidden"> · {{ r.kind.label }}</span></a>{% else %}—{% endif %}</td>
+  </tr>{% endfor %}</tbody>
+</table></div>
+<p class="help mt-1"><a href="{% url 'leeme' %}">{% translate "Uso e requisitos legais (LEEME)" %}</a></p>
+{% endblock %}

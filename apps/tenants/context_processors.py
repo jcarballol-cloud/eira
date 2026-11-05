@@ -61,7 +61,14 @@ def eira(request):
     from .help import help_for
 
     match = getattr(request, "resolver_match", None)
+    # v1.5 · D: documentos pendentes de aceptar na app da veciñanza
+    legal_pending = []
+    if kind == "neighbour" and tenant is not None and user.is_authenticated:
+        from apps.legal.services import pending_versions
+
+        legal_pending = pending_versions(user, tenant)
     return {
+        "legal_pending": legal_pending,
         "help_topic": help_for(match.view_name if match else "", kind),
         "network_visit": network_visit,
         "desk_mode": getattr(user, "desk_mode", "basic") if user.is_authenticated else "basic",

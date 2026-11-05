@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Documentos legais" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% icon 'shield' %} {{ tenant.name }}</p><h1>{% translate "Documentos legais" %}</h1>
+  <p>{% translate "Lee cada documento e acepta os que che correspondan. Podes ver o que aceptaches en «A miña conta»." %}</p></div></div>
+<ul class="stack list" role="list">
+  {% for r in rows %}
+  <li class="card">
+    <div class="row-between"><h2 class="h3 mb-0"><a href="{% turl 'legal:detail' r.document.kind %}">{{ r.current.title }}</a></h2>
+    {% if r.status == 'accepted' %}<span class="badge badge-ok">{% icon 'check' %} {% translate "Aceptado" %}</span>{% elif r.status == 'pending' %}<span class="badge badge-warn">{% translate "Pendente de aceptar" %}</span>{% elif r.status == 'withdrawn' %}<span class="badge">{% translate "Retirado" %}</span>{% elif r.status == 'optional' %}<span class="badge">{% translate "Opcional" %}</span>{% endif %}</div>
+    <p class="muted mb-0">{% blocktranslate trimmed with n=r.current.number d=r.current.published_at|date:"d/m/Y" %}Versión {{ n }} · {{ d }}{% endblocktranslate %}</p>
+    {% if r.current.is_example %}{% include "legal/_example_notice.html" %}{% endif %}
+  </li>
+  {% empty %}
+  <li class="card"><p class="mb-0">{% translate "O concello aínda non publicou documentos." %}</p></li>
+  {% endfor %}
+</ul>
+{% if user.is_authenticated %}<p class="mt-2"><a class="btn btn-secondary" href="{% url 'account:legal' %}">{% translate "Documentos aceptados" %}</a></p>{% endif %}
+{% endblock %}

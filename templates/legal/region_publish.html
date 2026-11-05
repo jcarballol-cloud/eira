@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{{ kind_label }}{% endblock %}
+{% block content %}
+<p><a href="{% url 'region:legal' region.slug %}">← {% translate "Documentos legais" %}</a></p>
+<div class="page-head"><div><p class="eyebrow">{{ region.name }}</p><h1>{{ kind_label }}</h1></div></div>
+{% include "legal/_example_notice.html" %}
+<form method="post" novalidate class="card">{% csrf_token %}
+  {% include "includes/form.html" %}
+  <p class="help">{% translate "Mantén [RESPONSABLE], [DPD], [ENDEREZO] e [CONCELLO]: cada concello énchenos ao adoptar o modelo." %}</p>
+  <div class="form-actions"><button class="btn" type="submit">{% translate "Publicar" %}</button></div>
+</form>
+{% endblock %}

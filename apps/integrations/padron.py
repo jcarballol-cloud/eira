@@ -18,6 +18,7 @@ from dataclasses import dataclass
 class PadronResult:
     found: bool
     reason: str = ""  # "", "no_padron" (aínda sen cargar), "no_match", "invalid"
+    parish: object = None  # v1.5 · C: só a parroquia, se a fonte a dá
 
 
 class PadronAdapter:
@@ -34,7 +35,7 @@ class CsvPadronAdapter(PadronAdapter):
         if padron.current(municipality) is None:
             return PadronResult(False, "no_padron")
         if padron.matches(municipality, id_number, birth_date):
-            return PadronResult(True)
+            return PadronResult(True, parish=padron.parish_for(municipality, id_number, birth_date))
         return PadronResult(False, "no_match")
 
 

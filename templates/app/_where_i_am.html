@@ -1,0 +1,25 @@
+{% load i18n eira %}{# v1.5 · C: parroquia indicada pola persoa e distancias. Nunca GPS #}
+<section class="app-card mb-2" id="onde-estou" aria-labelledby="where-title">
+  <h2 id="where-title" class="h3">{% icon 'map' %} {% translate "Onde estou" %}</h2>
+  {% if nearby_info %}
+    <p>{% blocktranslate trimmed with p=nearby_info.place.name %}Indicaches que vives en <strong>{{ p }}</strong>. As distancias son en liña recta desde aí; nunca usamos o GPS do teu dispositivo.{% endblocktranslate %}</p>
+    {% if nearby_info.rows %}
+    {% translate "Mapa coa túa parroquia e as instalacións máis próximas. As mesmas distancias están na lista." as caption %}{% translate "A túa parroquia ou concello" as lm %}{% translate "Instalación" as lf %}
+    {% include "analytics/_flow_map.html" with map=nearby_info.map caption=caption legend_me=lm legend_facility=lf %}
+    <ol class="list-plain flow-key mt-1">{% for r in nearby_info.rows %}<li><strong>{{ r.number }}.</strong> <a href="{% url 'facilities:detail' r.facility.municipality.slug r.facility.pk %}">{{ r.facility.name }}</a> · {{ r.facility.municipality.name }}: <strong>{% blocktranslate with d=r.km %}{{ d }} km{% endblocktranslate %}</strong></li>{% endfor %}</ol>
+    {% else %}<p class="muted mb-1">{% translate "Aínda non temos a posición do lugar que indicaches." %}</p>{% endif %}
+  {% else %}
+    <p>{% translate "Indica a túa parroquia para ver a que distancia quedan as instalacións." %}</p>
+  {% endif %}
+  <form method="post" action="{% turl 'app:residence' %}" class="stack-sm mt-1">{% csrf_token %}
+    <div class="field"><label for="residence">{% translate "Onde vives (opcional)" %}</label>
+      <select id="residence" name="residence" aria-describedby="residence-help">
+        <option value="">{% translate "Prefiro non indicalo" %}</option>
+        <optgroup label="{% blocktranslate with t=tenant.name %}Parroquias de {{ t }}{% endblocktranslate %}">{% for p in residence_parishes %}<option value="p{{ p.pk }}"{% if p.pk == user.residence_parish_id %} selected{% endif %}>{{ p.name }}</option>{% endfor %}</optgroup>
+        {% if residence_towns %}<optgroup label="{% translate 'Outros concellos' %}">{% for m in residence_towns %}<option value="m{{ m.pk }}"{% if m.pk == user.residence_municipality_id %} selected{% endif %}>{{ m.name }}</option>{% endfor %}</optgroup>{% endif %}
+      </select>
+      <p class="help" id="residence-help">{% blocktranslate trimmed %}Voluntario. Só se usa para estatísticas agregadas de grupos de polo menos 10 persoas e para mostrarche as distancias. Podes cambialo ou borralo cando queiras.{% endblocktranslate %}</p>
+    </div>
+    <div><button class="btn btn-secondary" type="submit">{% translate "Gardar" %}</button></div>
+  </form>
+</section>

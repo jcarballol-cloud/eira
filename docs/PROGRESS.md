@@ -156,3 +156,14 @@ Decisións en DECISIONS (v1.4). Este repositorio e o seu remoto non se reescribe
 - ✅ A3 · apelido da demo cambiado; sen o dominio de demostración antigo no código nin na documentación.
 - ✅ B · copia pública xerada por script (fóra do repositorio): historial sen o dominio antigo, o nome de pila nin `docs/capturas/`; capturas en `capturas-v1.4.zip`; 6 capturas clave lixeiras; auditoría da copia.
 - ✅ C · sección v1.4 no informe, etiqueta `v1.4-certame`.
+
+## v1.5 · Versión definitiva para a entrega
+
+Decisións en DECISIONS (v1.5). Lista de comprobación en `docs/REVISION_V1.5.md`.
+- ✅ Paso 0 · cambio de `a460ae9` incorporado.
+- ✅ F · `LEEME.md` e `LEEME.es.md`, enlazados desde o README e desde a axuda da administración.
+- ✅ E · acreditación con menores sen gardar o certificado.
+- ✅ B · Alerta en mantemento, limpeza, monitora e administración, con aviso ao persoal de servizo.
+- ✅ D · documentos legais versionados e modelos de exemplo.
+- ✅ A · botón «Escoitar».
+- ✅ C · procedencia e mobilidade, só agregadas.

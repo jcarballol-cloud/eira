@@ -215,6 +215,28 @@ HELP = {
         _("Avisos do concello"),
         _("Envía peches, alertas ou novidades por app, correo e Telegram, con vista previa."),
     ),
+    "manage:provenance": (
+        _("Procedencia"),
+        _(
+            "De que parroquias e concellos vén a xente a cada instalación. Só se mostran grupos de "
+            "polo menos 10 persoas, despois de filtrar; o resto vai en «outras procedencias». "
+            "Nunca se usa o GPS."
+        ),
+    ),
+    "region:mobility": (
+        _("Mobilidade entre concellos"),
+        _(
+            "Fluxos entre os concellos da rede, sempre agregados. Os puntos quentes axudan a "
+            "planificar transporte e instalacións."
+        ),
+    ),
+    "region:legal": (
+        _("Documentos legais"),
+        _(
+            "O teu repositorio de modelos. Cada concello adóptaos tal cal ou adáptaos. Son modelos "
+            "de exemplo: revísaos cos servizos xurídicos e o DPD."
+        ),
+    ),
     "manage:legal": (
         _("Documentos legais"),
         _(

@@ -6,6 +6,7 @@
   <h1>{% translate "Concellos próximos" %}</h1>
   <p class="muted">{% blocktranslate trimmed with t=tenant.name %}Coa túa conta de {{ t }} podes reservar nas instalacións dos concellos da túa rede que o permiten, sen crear outra conta.{% endblocktranslate %}</p>
 </div></div>
+{% include "app/_where_i_am.html" %}
 <ul class="stack list" role="list">
   {% for r in rows %}{% with m=r.municipality %}
   <li class="app-card">

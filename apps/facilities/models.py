@@ -12,6 +12,13 @@ from apps.tenants.models import TenantModel
 
 class Parish(TenantModel):
     name = models.CharField(_("nome"), max_length=80)
+    # v1.5 · C: posición aproximada para o mapa de procedencia (centro da parroquia)
+    latitude = models.DecimalField(
+        _("latitude"), max_digits=9, decimal_places=6, null=True, blank=True
+    )
+    longitude = models.DecimalField(
+        _("lonxitude"), max_digits=9, decimal_places=6, null=True, blank=True
+    )
 
     class Meta:
         verbose_name = _("parroquia")

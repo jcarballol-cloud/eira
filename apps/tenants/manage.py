@@ -192,6 +192,8 @@ class SettingsForm(forms.ModelForm):
             "low_demand_discount_pct",  # v1.3
             "audit_retention_months",  # v1.4
             "accreditation_review_months",  # v1.5 · E
+            "latitude",  # v1.5 · C
+            "longitude",
         ]
         widgets = {
             "lighting_from": forms.TimeInput(attrs={"type": "time"}),
@@ -254,6 +256,8 @@ class SettingsForm(forms.ModelForm):
         "low_demand_discount_pct",  # v1.3
         "audit_retention_months",  # v1.4
         "accreditation_review_months",  # v1.5 · E
+        "latitude",
+        "longitude",
     )
 
     def clean(self):

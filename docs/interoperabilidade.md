@@ -40,3 +40,8 @@ test `apps/tenants/tests/test_portability.py` fai a ida e volta completa.
 
 A persoa usuaria pode descargar todos os seus datos en JSON (`/conta/os-meus-datos.json`, art. 20
 RXPD) e eliminar a súa conta.
+
+## v1.5 · Datos novos na exportación
+
+O ZIP de portabilidade inclúe `v15.json`: versións dos documentos legais, aceptacións e marcas de
+acreditación (só quen e cando). A importación aínda non os restaura: consta en `docs/PLAN_V2.md`.

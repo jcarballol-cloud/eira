@@ -1,0 +1,31 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Procedencia" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% icon 'map' %} {% translate "Mobilidade" %}</p><h1>{% translate "Procedencia" %}</h1>
+  <p>{% translate "De que parroquias e concellos vén a xente a cada instalación, para planificar transporte e horarios." %}</p></div></div>
+{% include "analytics/_flow_filters.html" %}
+<div class="layout-aside">
+  <section class="card" aria-labelledby="flow-map-title">
+    <h2 id="flow-map-title" class="h3">{% translate "Mapa de fluxos" %}</h2>
+    {% translate "Mapa de fluxos cara ás instalacións. Os mesmos datos están na táboa." as caption %}{% translate "Parroquia" as lp %}{% translate "Concello da rede" as lt %}{% translate "Instalación" as lf %}
+    {% include "analytics/_flow_map.html" with caption=caption legend_parish=lp legend_town=lt legend_facility=lf %}
+  </section>
+  <aside class="card" aria-labelledby="fac-key">
+    <h2 id="fac-key" class="h3">{% translate "Instalacións" %}</h2>
+    <ol class="list-plain flow-key">{% for f in facilities %}<li><strong>{{ f.map_number }}.</strong> {{ f.name }}</li>{% endfor %}</ol>
+  </aside>
+</div>
+<section class="mt-2" aria-labelledby="flow-table-title">
+  <h2 id="flow-table-title" class="h3">{% translate "Fluxos" %}</h2>
+  <div class="table-wrap" tabindex="0"><table class="data">
+    <caption class="visually-hidden">{% translate "Fluxos por orixe e instalación" %}</caption>
+    <thead><tr><th scope="col">{% translate "Procedencia" %}</th><th scope="col">{% translate "Tipo" %}</th><th scope="col">{% translate "Instalación" %}</th><th scope="col" class="num">{% translate "Persoas" %}</th><th scope="col" class="num">{% translate "Reservas" %}</th></tr></thead>
+    <tbody>
+      {% for r in flows.rows %}<tr><th scope="row">{{ r.origin_name }}</th><td>{% if r.origin_kind == 'parish' %}{% translate "Parroquia" %}{% else %}{% translate "Concello" %}{% endif %}</td><td>{{ r.destination_name }}</td><td class="num">{{ r.people }}</td><td class="num">{{ r.bookings }}</td></tr>{% endfor %}
+      {% for o in flows.others %}<tr class="flow-others"><th scope="row">{% translate "outras procedencias" %}</th><td>—</td><td>{{ o.destination_name }}</td><td class="num">{% if o.people is None %}{% blocktranslate with k=threshold %}menos de {{ k }}{% endblocktranslate %}{% else %}{{ o.people }}{% endif %}</td><td class="num">—</td></tr>{% endfor %}
+      {% if not flows.rows and not flows.others %}<tr><td colspan="5" class="muted">{% translate "Sen datos neste período." %}</td></tr>{% endif %}
+    </tbody>
+  </table></div>
+  <p class="help mt-1">{% translate "As persoas sen parroquia nin concello indicados non contan. Unha persoa pode aparecer en varias instalacións, por iso non hai totais." %}</p>
+</section>
+{% endblock %}

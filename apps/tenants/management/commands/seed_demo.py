@@ -284,6 +284,10 @@ class Command(BaseCommand):
             from apps.tenants.demo_v12 import seed as seed_v12
 
             seed_v12()
+            # v1.5: procedencia, documentos legais, acreditacións e alertas dos novos perfís
+            from apps.tenants.demo_v15 import seed as seed_v15
+
+            seed_v15()
         self.stdout.write(
             self.style.SUCCESS(
                 f"Demo lista: {Municipality.objects.count()} concellos, {Facility.objects.count()} instalacións, "

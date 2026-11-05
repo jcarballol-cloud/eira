@@ -101,6 +101,30 @@ def page_sets():
         .order_by("start")
         .first()
     )
+    # v1.5: pantallas novas (claro e, nos perfís con tema escuro, tamén escuro)
+    v15_group = Group.objects.get(name="Grupo novo (sen monitora)")
+    v15_admin = [
+        f"{c}/xestion/procedencia/",
+        f"{c}/xestion/procedencia/?periodo=30&deporte=gym",
+        f"{c}/xestion/legal/",
+        f"{c}/xestion/legal/terms/",
+        f"{c}/xestion/actividades/acreditacions/",
+        f"{c}/xestion/actividades/grupo/{v15_group.pk}/",
+        f"{c}/seguridade/alerta/?instalacion={f.pk}",
+        f"{c}/seguridade/accidente/{f.pk}/",
+        "/axuda/leeme/",
+    ]
+    v15_neighbour = [
+        f"{c}/legal/",
+        f"{c}/legal/terms/",
+        f"{c}/legal/rules/",
+        "/conta/documentos/",
+        f"{c}/app/proximos/",
+        "/preferencias/",
+        f"{c}/seguridade/alerta/?instalacion={f.pk}",
+        f"{c}/seguridade/accidente/{f.pk}/",
+    ]
+    v15_staff = [f"{c}/seguridade/alerta/?instalacion={f.pk}"]
     return {
         None: [
             "/",
@@ -136,6 +160,7 @@ def page_sets():
             f"{c}/privacidade/avaliacion-impacto/",
         ],
         "uxia@demo.eira.example": [
+            *v15_neighbour,
             f"{c}/app/",
             f"{c}/app/benvida/?paso=familia",
             f"{c}/reservas/",
@@ -188,6 +213,7 @@ def page_sets():
             f"{c}/privacidade/avaliacion-impacto/",
         ],
         "admin@vilardeiras.demo.eira.example": [
+            *v15_admin,
             # v5
             f"{c}/xestion/cobros/",
             f"{c}/xestion/cobros/bonos/",
@@ -254,6 +280,7 @@ def page_sets():
             "/conta/seguridade/",
         ],
         "noela@demo.eira.example": [
+            *v15_staff,
             f"{c}/operario/",
             f"{c}/operario/?dia=manha",
             f"{c}/operario/calendario/",
@@ -262,6 +289,7 @@ def page_sets():
             f"{c}/avisos/",
         ],
         "brais@demo.eira.example": [
+            *v15_staff,
             f"{c}/operario/",
             f"{c}/operario/orde/{order.pk}/",
             f"{c}/operario/calendario/",
@@ -269,6 +297,7 @@ def page_sets():
         ],
         NEW_NEIGHBOUR: [f"{c}/app/", f"{c}/reservas/", f"{c}/avisos/"],
         "antia@demo.eira.example": [
+            *v15_staff,
             f"{c}/monitor/",
             f"{c}/monitor/sesion/{session.pk}/asistencia/",
             f"{c}/monitor/sesion/{kiosk_session.pk}/rexistro/",
@@ -277,6 +306,9 @@ def page_sets():
             f"{c}/monitor/estatisticas/",
         ],
         "deputacion@demo.eira.example": [
+            "/rexion/marismas/mobilidade/",
+            "/rexion/marismas/legal/",
+            "/rexion/marismas/legal/terms/",
             "/rexion/marismas/",
             "/rexion/marismas/novo-concello/",
             "/c/pontedouro/xestion/instalacions/",

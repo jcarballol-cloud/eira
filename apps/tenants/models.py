@@ -113,6 +113,13 @@ class Municipality(models.Model):
     )
     address = models.CharField(_("enderezo"), max_length=200, blank=True)
     population = models.PositiveIntegerField(_("poboación"), null=True, blank=True)
+    # v1.5 · C: posición do concello na rede, para o mapa de procedencia
+    latitude = models.DecimalField(
+        _("latitude"), max_digits=9, decimal_places=6, null=True, blank=True
+    )
+    longitude = models.DecimalField(
+        _("lonxitude"), max_digits=9, decimal_places=6, null=True, blank=True
+    )
     postcodes = models.CharField(
         _("códigos postais do termo"),
         max_length=120,

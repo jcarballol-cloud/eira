@@ -1804,3 +1804,34 @@ html.theme-dark body.themable .legal-banner { background: #2A2410; color: #F6D79
 .listen-btn.is-speaking { outline: 2px solid currentColor; outline-offset: 1px; }
 .listen-bar__settings { font-size: .9rem; }
 .listen-bar__note { flex-basis: 100%; margin: 0; }
+
+/* v1.5 · C: mapa de procedencia. Unha soa cor para os fluxos: o grosor leva a magnitude e a forma
+   do símbolo, o tipo de lugar. Os textos usan as cores de texto, nunca a da serie. */
+.flow-map svg { display: block; width: 100%; max-width: 44rem; height: auto; margin: 0 auto; }
+.flow-map__line { fill: none; stroke: var(--musgo); stroke-opacity: .75; stroke-linecap: round; }
+.flow-map__line:hover { stroke-opacity: 1; }
+.flow-map__arrow { fill: var(--musgo); }
+.flow-map__label { font-size: 17px; font-weight: 600; fill: var(--text); paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; }
+.flow-map__num { font-size: 15px; font-weight: 800; fill: #FFFFFF; }
+.flow-map__node--facility rect, .flow-map__key--facility { fill: var(--granito); stroke: var(--surface); stroke-width: 2; }
+.flow-map__node--parish circle, .flow-map__key--parish { fill: var(--surface); stroke: var(--musgo); stroke-width: 3; }
+.flow-map__node--municipality rect, .flow-map__key--municipality { fill: var(--millo); stroke: var(--granito); stroke-width: 2; }
+.flow-map__node--me circle, .flow-map__key--me { fill: var(--arxila); stroke: var(--surface); stroke-width: 3; }
+.flow-map__legend { display: flex; flex-wrap: wrap; gap: .25rem 1rem; margin-top: .5rem; font-size: .9rem; color: var(--text-muted); }
+.flow-map__legend span { display: inline-flex; align-items: center; gap: .35rem; }
+.flow-map__legend svg { width: 1.1rem; height: 1.1rem; }
+.flow-key li { padding: .15rem 0; }
+.flow-others th, .flow-others td { font-style: italic; }
+.flow-filters { align-items: center; }
+.flow-filters label { font-weight: 600; margin: 0; }
+.flow-filters select { width: auto; max-width: 100%; }
+html.theme-dark body.themable .flow-map__line { stroke: #7FC4A1; }
+html.theme-dark body.themable .flow-map__arrow { fill: #7FC4A1; }
+html.theme-dark body.themable .flow-map__node--facility rect, html.theme-dark body.themable .flow-map__key--facility { fill: #E8EEEA; stroke: #16252B; }
+html.theme-dark body.themable .flow-map__num { fill: #16252B; }
+html.theme-dark body.themable .flow-map__node--parish circle, html.theme-dark body.themable .flow-map__key--parish { stroke: #7FC4A1; }
+@media (max-width: 960px) {
+  .desk-top { flex-wrap: wrap; }
+  .desk-top__actions { flex-wrap: wrap; max-width: 100%; }
+  .layout-desk .safety-btn__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}

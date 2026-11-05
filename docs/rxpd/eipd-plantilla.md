@@ -74,6 +74,15 @@ WP248 do Grupo do art. 29) son os que entran nesta EIPD:
 | Base | Execución da relación co servizo (art. 6.1.b) e interese público; a foto, **opcional** |
 | Quen accede | A persoa; persoal que le o carné (tipo e validez); administración |
 
+### E. Procedencia e mobilidade (v1.5)
+
+| | |
+|---|---|
+| Finalidade | **Estatística:** planificar transporte, horarios e instalacións |
+| Datos | Parroquia ou concello de residencia, voluntarios. **Nunca GPS, ubicación do dispositivo nin enderezo** |
+| Base | Misión de interese público (art. 6.1.e) e fins estatísticos (art. 89); o DPD debe confirmala |
+| Quen accede | A persoa ao seu dato. Concello e deputación: só agregados, n ≥ 10 persoas distintas despois de cada filtro |
+
 ## 2. Necesidade e proporcionalidade
 
 | Pregunta | Resposta (Eira v1.3) | Onde se comproba |
@@ -107,6 +116,9 @@ medidas; o residual, despois. Valores propostos: o DPD debe revisalos.
 | R10 | Exportacións masivas de datos sen control | todos | M/A | Toda descarga do persoal queda en `AuditLog` (`export.download`); as exportacións do concello non levan saúde | B/M → **Baixo** |
 | R11 | Brecha de seguridade non xestionada en prazo | todos | M/A | Rexistro de brechas con prazo de 72 h e texto de comunicación | B/M → **Baixo** |
 | R12 | Copia do padrón ou do DNI | padrón | M/A | HMAC por concello; DNI da solicitude borrado ao decidir | B/M → **Baixo** |
+| R13 | Reidentificar unha persoa cruzando filtros de procedencia | E | M/A | n = persoas distintas; limiar **despois de cada filtro**; «outras procedencias» sen cifra se n < 10; sen totais; períodos pechados; só concello para quen vén de fóra; exportacións rexistradas. Queda o risco de comparar datas distintas nun fluxo visible | B/M → **Baixo (o DPD debe revisalo)** |
+| R14 | Asignar a menores unha persoa sen a comprobación da contratación, ou gardar datos penais | B | M/A | Eira **non garda o certificado**; só quen marcou e cando; asignación bloqueada e revisión periódica. A marca é unha declaración do concello, non unha comprobación de Eira | B/A → **Medio-baixo (depende do concello)** |
+| R15 | Aceptar un modelo de exemplo como se fose un texto legal revisado | todos | M/M | Aviso visible na app e nos ficheiros; só desaparece se o concello adapta o texto e declara que o revisou | B/M → **Baixo** |
 
 ## 4. Risco residual e conclusión
 

@@ -122,3 +122,41 @@ Son datos do persoal (propio ou da empresa contratada), non da veciñanza; por i
 
 - O rexistro inclúe os accesos e o dobre factor do **persoal de xestión** do concello; os inicios de sesión da veciñanza non se mostran.
 - Ver [seguridade-rxpd.md](../seguridade-rxpd.md#v13--seguridade-das-contas-de-xestión).
+
+## v1.5 · Procedencia (mobilidade): só agregada
+
+**Finalidade estatística:** planificar transporte, horarios e instalacións. Nunca para decidir nada sobre unha persoa.
+
+| Dato | Persoa (propio) | Monitor/a | Mantemento | Concello | Deputación | Conservación |
+|---|---|---|---|---|---|---|
+| Parroquia ou concello de residencia | ✔ (vela, cámbiaa e bórraa en «Concellos próximos»; vai na súa exportación) | — | — | só agregada, n ≥ 10 | só fluxos entre concellos, agregados, n ≥ 10 | mentres teña a conta ou ata que a borre |
+| Parroquia na entrada do padrón (columna opcional do CSV) | — | — | — | — (non se mostra) | — | ata a seguinte carga, que a substitúe |
+
+- **Minimización:** só parroquia ou concello. **Nunca GPS, ubicación do dispositivo nin enderezo.** Sen parroquia nin concello indicados, a persoa non conta. Para persoas doutro concello úsase o concello, nunca a súa parroquia.
+- **Voluntaria:** ou a indica a persoa ou sae do cruce co padrón no alta, gardando só a parroquia. En ambos casos pódese cambiar ou borrar nun paso.
+- **Limiar:** `n` son persoas distintas, non reservas. Aplícase **despois de cada filtro** (período e deporte). O resto vai a «outras procedencias» e, se tampouco chega a 10, móstrase «menos de 10», sen cifra.
+- **Sen restas:** sen totais por destino nin por orixe; os puntos quentes da deputación só suman fluxos visibles. Só períodos pechados (30, 90 e 365 días).
+- **Risco residual:** comparar dúas datas distintas pode deixar ver variacións pequenas dun fluxo xa visible. Non identifica a ninguén por si só, pero con coñecemento externo podería axudar: por iso a páxina non admite datas libres e a exportación queda rexistrada. Debe revisalo o DPD na EIPD.
+- Exportacións CSV e GeoJSON: os mesmos datos agregados; quedan en `AuditLog`.
+
+## v1.5 · Documentos legais
+
+| Dato | Persoa (propio) | Concello | DPD | Deputación | Conservación |
+|---|---|---|---|---|---|
+| Aceptación: persoa, documento, versión, data, canle, retirada | ✔ («Documentos aceptados») | ✔ (CSV) | ✔ (CSV) | **—** (só o número de aceptacións por documento) | a que fixe o concello para xustificar o consentimento; ao eliminar a conta queda sen persoa |
+
+- Retirar un consentimento conserva a data no rexistro e aplica o efecto: imaxe → retira a autorización; saúde → borra os datos da conta.
+- **Todos os modelos incluídos son modelos de exemplo, non documentos legais válidos.**
+
+## v1.5 · Acreditación con menores
+
+| Dato | Persoa monitora | Administración do concello | DPD | Deputación | Conservación |
+|---|---|---|---|---|---|
+| Quen marcou a comprobación e cando | — | ✔ | — (no rexistro de auditoría, sen datos penais) | — | ata retirar a marca ou eliminar a conta |
+
+- **Eira non garda nin sube o certificado do Rexistro Central de Delincuentes Sexuais (art. 10 RGPD).** Ver [acreditacion-menores.md](acreditacion-menores.md).
+
+## v1.5 · Alertas
+
+- A alerta avisa á persoa responsable designada e ao persoal de servizo nesa instalación, polas canles de cada persoa. Na alerta queda o **posto** de quen a recibiu, nunca o nome nin o correo do persoal.
+- O rexistro de accidentes non cambia: datos mínimos e sen texto libre.

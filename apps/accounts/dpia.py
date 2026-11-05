@@ -68,6 +68,19 @@ TREATMENTS = [
         "residual": _("Baixo"),
     },
     {
+        "key": "procedencia",
+        "title": _("Procedencia: de que parroquia ou concello vén a xente"),
+        "data": _("A parroquia ou o concello onde vives, só se o indicas ou se consta no padrón."),
+        "risk": _("Que alguén deduza quen vai a unha instalación cruzando filtros."),
+        "measures": [
+            _("Nunca o GPS nin a ubicación do dispositivo, nin o enderezo."),
+            _("Só grupos de 10 persoas ou máis, contados despois de cada filtro."),
+            _("O resto agrúpase en «outras procedencias», sen totais cos que restar."),
+            _("Podes cambiar ou borrar a túa parroquia cando queiras."),
+        ],
+        "residual": _("Baixo"),
+    },
+    {
         "key": "padron",
         "title": _("Comprobación do empadroamento"),
         "data": _("DNI e data de nacemento, só mentres se revisa a solicitude."),

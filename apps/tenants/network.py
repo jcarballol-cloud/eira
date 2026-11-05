@@ -55,11 +55,45 @@ def nearby(request):
                 "following": m.slug in (request.user.network_feed or []),
             }
         )
+    from apps.analytics.provenance import nearby_for
+    from apps.facilities.models import Parish
+
     return render(
         request,
         "app/nearby.html",
-        {"rows": rows, "region": home.region, "nav": "app_home"},
+        {
+            "rows": rows,
+            "region": home.region,
+            "nav": "app_home",
+            # v1.5 · C: a súa parroquia e as distancias
+            "nearby_info": nearby_for(request.user, home),
+            "residence_parishes": Parish.objects.filter(municipality=home),
+            "residence_towns": network_of(home),
+        },
     )
+
+
+@neighbour_required
+@require_POST
+def residence(request):
+    """v1.5 · C: parroquia ou concello de residencia, voluntario. Nunca GPS."""
+    from apps.accounts.models import audit
+    from apps.facilities.models import Parish
+
+    value = request.POST.get("residence", "")
+    user = request.user
+    parish = town = None
+    if value[:1] == "p" and value[1:].isdigit():
+        parish = Parish.objects.filter(municipality=request.tenant, pk=int(value[1:])).first()
+    elif value[:1] == "m" and value[1:].isdigit():
+        town = network_of(request.tenant).filter(pk=int(value[1:])).first()
+    if value and parish is None and town is None:
+        raise Http404
+    user.residence_parish, user.residence_municipality = parish, town
+    user.save(update_fields=["residence_parish", "residence_municipality"])
+    audit("residence.update", user, request.tenant, user, removed=not value)
+    messages.success(request, _("Gardado.") if value else _("Borrado: xa non consta onde vives."))
+    return redirect(treverse(request.tenant, "app:nearby") + "#onde-estou")
 
 
 def go(request):

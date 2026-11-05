@@ -64,6 +64,24 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     # v5 · Actividades e eventos dos concellos próximos (opcional): slugs dos concellos escollidos
     network_feed = models.JSONField(default=list, blank=True)
+    # v1.5 · C: residencia voluntaria para estatísticas agregadas. Só parroquia ou concello: nunca
+    # GPS, enderezo nin ubicación do dispositivo. Ver docs/rxpd/matriz.md.
+    residence_parish = models.ForeignKey(
+        "facilities.Parish",
+        verbose_name=_("parroquia de residencia"),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    residence_municipality = models.ForeignKey(
+        Municipality,
+        verbose_name=_("concello de residencia"),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -149,6 +167,10 @@ class ResidencyInvitation(models.Model):
     expires_at = models.DateTimeField()
     used_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     used_at = models.DateTimeField(null=True, blank=True)
+    # v1.5 · C: parroquia detectada no cruce co padrón; pásase á conta ao usar o código
+    parish = models.ForeignKey(
+        "facilities.Parish", null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
 
     @classmethod
     def issue(cls, municipality, note="", days=30, email=""):
@@ -183,6 +205,9 @@ class ResidencyInvitation(models.Model):
         )
         inv.used_by, inv.used_at = user, timezone.now()
         inv.save(update_fields=["used_by", "used_at"])
+        if inv.parish_id and not (user.residence_parish_id or user.residence_municipality_id):
+            user.residence_parish_id = inv.parish_id  # a persoa pode cambiala ou borrala
+            user.save(update_fields=["residence_parish"])
         audit("residency.redeem", user, inv.municipality, inv)
         return inv.municipality
 
@@ -271,6 +296,10 @@ class PadronEntry(models.Model):
     )
     digest = models.CharField(max_length=64)
     batch = models.ForeignKey(PadronImport, on_delete=models.CASCADE, related_name="entries")
+    # v1.5 · C: só a parroquia, se o CSV a trae. Nin enderezo nin ningún outro dato
+    parish = models.ForeignKey(
+        "facilities.Parish", null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
 
     class Meta:
         constraints = [

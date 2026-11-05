@@ -36,7 +36,9 @@ def dark_page_sets():
         NEW_NEIGHBOUR: [*sets[NEW_NEIGHBOUR], f"{C}/actividades/"],
         "antia@demo.eira.example": sets["antia@demo.eira.example"],
         "admin@vilardeiras.demo.eira.example": [
-            p for p in sets["admin@vilardeiras.demo.eira.example"] if "rendemento" in p
+            p
+            for p in sets["admin@vilardeiras.demo.eira.example"]
+            if "rendemento" in p or "procedencia" in p or "/legal/" in p or "acreditacions" in p
         ],
     }
 

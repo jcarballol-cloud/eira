@@ -31,12 +31,14 @@ DATE_HEADERS = {
     "nacimiento",
     "birth_date",
 }
+PARISH_HEADERS = {"parroquia", "parish"}  # v1.5 · C: columna opcional
 MAX_ROWS = 200_000
 
 TEMPLATE = (
     "dni_nie;data_nacemento\n"
     "# Unha persoa por liña. Data en DD/MM/AAAA ou AAAA-MM-DD. Só se usan estas dúas columnas.\n"
     "# Exemplo (borra esta liña): 12345678Z;31/12/1980\n"
+    "# Opcional: unha terceira columna «parroquia». Só se garda a parroquia, para estatísticas.\n"
 )
 
 
@@ -94,6 +96,19 @@ def matches(municipality, id_number, birth_date):
     return bool(h) and PadronEntry.objects.filter(municipality=municipality, digest=h).exists()
 
 
+def parish_for(municipality, id_number, birth_date):
+    """v1.5 · C: parroquia da persoa no padrón cargado, ou None. Non se garda nada máis."""
+    h = digest(municipality, id_number, birth_date)
+    if not h:
+        return None
+    entry = (
+        PadronEntry.objects.filter(municipality=municipality, digest=h)
+        .select_related("parish")
+        .first()
+    )
+    return entry.parish if entry else None
+
+
 class _Semicolon(csv.excel):
     delimiter = ";"
 
@@ -111,12 +126,17 @@ def _rows(text):
     head = [h.strip().lower() for h in rows[0]]
     id_col = next((i for i, h in enumerate(head) if h in ID_HEADERS), None)
     date_col = next((i for i, h in enumerate(head) if h in DATE_HEADERS), None)
+    parish_col = next((i for i, h in enumerate(head) if h in PARISH_HEADERS), None)
     if id_col is None or date_col is None:  # sen cabeceira: primeira columna DNI, segunda data
         id_col, date_col, data = 0, 1, rows
     else:
         data = rows[1:]
     return [
-        (r[id_col] if len(r) > id_col else "", r[date_col] if len(r) > date_col else "")
+        (
+            r[id_col] if len(r) > id_col else "",
+            r[date_col] if len(r) > date_col else "",
+            r[parish_col].strip() if parish_col is not None and len(r) > parish_col else "",
+        )
         for r in data
     ]
 
@@ -134,11 +154,15 @@ def import_csv(municipality, uploaded, by=None):
     del raw
     rows = _rows(text)[:MAX_ROWS]
     del text
-    digests, rejected = set(), 0
-    for id_number, birth in rows:
+    from apps.facilities.models import Parish
+
+    parishes = {p.name.casefold(): p for p in Parish.objects.filter(municipality=municipality)}
+    digests, rejected = {}, 0
+    for id_number, birth, parish_name in rows:
         h = digest(municipality, id_number, birth)
         if h:
-            digests.add(h)
+            # Unha parroquia que non existe no concello ignórase: non se crean datos novos
+            digests[h] = parishes.get(parish_name.casefold())
         else:
             rejected += 1
     del rows
@@ -147,7 +171,10 @@ def import_csv(municipality, uploaded, by=None):
         municipality=municipality, imported_by=by, count=len(digests), rejected=rejected
     )
     PadronEntry.objects.bulk_create(
-        [PadronEntry(municipality=municipality, digest=h, batch=batch) for h in digests],
+        [
+            PadronEntry(municipality=municipality, digest=h, batch=batch, parish=parish)
+            for h, parish in digests.items()
+        ],
         batch_size=2000,
     )
     audit("padron.import", by, municipality, batch, count=len(digests), rejected=rejected)

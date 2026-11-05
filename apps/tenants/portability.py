@@ -146,6 +146,53 @@ def _dump(obj):
     return out
 
 
+def _export_v15(tenant):
+    """v1.5: documentos legais, aceptacións e marcas de acreditación (só quen e cando)."""
+    from apps.activities.models import MinorsAccreditation
+    from apps.legal.models import LegalAcceptance, LegalVersion
+
+    return {
+        "legal_versions": [
+            {
+                "kind": v.document.kind,
+                "number": v.number,
+                "title_gl": v.title_gl,
+                "title_es": v.title_es,
+                "body_gl": v.body_gl,
+                "body_es": v.body_es,
+                "mode": v.mode,
+                "substantial": v.substantial,
+                "is_example": v.is_example,
+                "published_at": v.published_at.isoformat(),
+            }
+            for v in LegalVersion.objects.filter(municipality=tenant).select_related("document")
+        ],
+        "legal_acceptances": [
+            {
+                "email": a.user.email if a.user else None,
+                "kind": a.version.document.kind,
+                "number": a.version.number,
+                "accepted_at": a.accepted_at.isoformat(),
+                "channel": a.channel,
+                "withdrawn_at": a.withdrawn_at.isoformat() if a.withdrawn_at else None,
+            }
+            for a in LegalAcceptance.objects.filter(municipality=tenant).select_related(
+                "user", "version__document"
+            )
+        ],
+        "minors_accreditations": [
+            {
+                "email": r.user.email,
+                "confirmed_by": r.confirmed_by.email if r.confirmed_by else None,
+                "confirmed_at": r.confirmed_at.isoformat(),
+            }
+            for r in MinorsAccreditation.objects.filter(municipality=tenant).select_related(
+                "user", "confirmed_by"
+            )
+        ],
+    }
+
+
 def export_municipality(tenant):
     buf = io.BytesIO()
     files = []
@@ -167,6 +214,7 @@ def export_municipality(tenant):
                     if isinstance(f, models.FileField) and getattr(obj, f.name):
                         files.append(getattr(obj, f.name))
         zf.writestr("eira.json", json.dumps(data, ensure_ascii=False, indent=1))
+        zf.writestr("v15.json", json.dumps(_export_v15(tenant), ensure_ascii=False, indent=1))
         # Formatos abertos adicionais para reutilización directa
         out = io.StringIO()
         w = csv.writer(out)

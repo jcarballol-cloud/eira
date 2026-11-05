@@ -7,6 +7,7 @@ from apps.access import views as access
 from apps.accounts import auditlog, breaches, signup
 from apps.activities import views as activities
 from apps.analytics import performance_views as performance
+from apps.analytics import provenance_views as provenance
 from apps.analytics import views as analytics
 from apps.bookings import manage as bookings
 from apps.bookings import vouchers
@@ -75,6 +76,7 @@ urlpatterns = [
     path("actividades/grupo/<int:pk>/", activities.manage_group, name="group"),
     path("actividades/acreditacions/", activities.accreditations, name="accreditations"),  # v1.5
     path("indicadores/", analytics.dashboard, name="indicators"),
+    path("procedencia/", provenance.panel, name="provenance"),  # v1.5 · C
     path("configuracion/", tenant.settings_view, name="settings"),
     path("persoal/", tenant.staff, name="staff"),
     path("altas/", signup.signups, name="signups"),

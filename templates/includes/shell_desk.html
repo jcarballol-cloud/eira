@@ -30,6 +30,7 @@
     {% if 'admin' in roles %}<a href="{% turl 'manage:accreditations' %}" {% if sub == 'accreditations' %}aria-current="page"{% endif %}>{% icon 'shield' %} {% translate "Acreditacións (menores)" %}</a>{% endif %}
     <p class="sidenav__group">{% translate "Datos" %}</p>
     <a href="{% turl 'manage:indicators' %}" {% if sub == 'indicators' %}aria-current="page"{% endif %}>{% icon 'chart' %} {% translate "Indicadores" %}</a>
+    <a href="{% turl 'manage:provenance' %}" {% if sub == 'provenance' %}aria-current="page"{% endif %}>{% icon 'map' %} {% translate "Procedencia" %}</a>
     <a href="{% turl 'manage:ratings' %}" {% if sub == 'ratings' %}aria-current="page"{% endif %}>{% icon 'smile' %} {% translate "Valoracións" %}</a>
     <a href="{% turl 'manage:performance' %}" {% if sub == 'performance' %}aria-current="page"{% endif %}>{% icon 'light' %} {% translate "Rendemento" %}</a>
     <a href="{% turl 'activities:observatory' %}" {% if sub == 'observatory' %}aria-current="page"{% endif %}>{% icon 'heart' %} {% translate "Observatorio" %}</a>
@@ -59,6 +60,7 @@
     {% if nav_region %}
     <a href="{% url 'region:dashboard' nav_region.slug %}" {% if nav == 'region' %}aria-current="page"{% endif %}>{% icon 'chart' %} {% translate "Rede" %}</a>
     <a href="{% url 'region:new_municipality' nav_region.slug %}" {% if nav == 'region_new' %}aria-current="page"{% endif %}>{% icon 'star' %} {% translate "Novo concello" %}</a>
+    <a href="{% url 'region:mobility' nav_region.slug %}" {% if nav == 'region_mobility' %}aria-current="page"{% endif %}>{% icon 'map' %} {% translate "Mobilidade" %}</a>
     <a href="{% url 'region:legal' nav_region.slug %}" {% if nav == 'region_legal' %}aria-current="page"{% endif %}>{% icon 'shield' %} {% translate "Documentos legais" %}</a>
     <p class="sidenav__group">{% translate "Concellos" %}</p>
     {% for m in nav_region.municipalities.all %}<a href="{% url 'manage:indicators' m.slug %}" {% if tenant == m %}aria-current="page"{% endif %}>{% icon 'map' %} {{ m.name }}</a>{% endfor %}

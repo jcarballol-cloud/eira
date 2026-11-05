@@ -1,0 +1,9 @@
+{% load i18n eira %}<form method="get" class="row mb-2 flow-filters" data-auto-submit>
+  <label for="f-period">{% translate "Período" %}</label>
+  <select id="f-period" name="periodo">{% for p in periods %}<option value="{{ p }}"{% if p == filters.days %} selected{% endif %}>{% blocktranslate with d=p %}Últimos {{ d }} días{% endblocktranslate %}</option>{% endfor %}</select>
+  <label for="f-kind">{% translate "Deporte ou instalación" %}</label>
+  <select id="f-kind" name="deporte"><option value="">{% translate "Todos" %}</option>{% for value, label in kinds %}<option value="{{ value }}"{% if value == filters.kind %} selected{% endif %}>{{ label }}</option>{% endfor %}</select>
+  <button class="btn btn-secondary" type="submit">{% translate "Filtrar" %}</button>
+  <span class="nowrap"><a href="?periodo={{ filters.days }}&amp;deporte={{ filters.kind }}&amp;formato=csv">{% icon 'download' %} CSV</a> · <a href="?periodo={{ filters.days }}&amp;deporte={{ filters.kind }}&amp;formato=geojson">GeoJSON</a></span>
+</form>
+<p class="estimate-note alert">{% blocktranslate trimmed with k=threshold %}Só datos agregados de persoas distintas: cada fluxo móstrase se ten polo menos {{ k }} persoas, despois de aplicar os filtros. O resto agrúpase en «outras procedencias». Nunca se usa o GPS nin a ubicación do dispositivo.{% endblocktranslate %}</p>

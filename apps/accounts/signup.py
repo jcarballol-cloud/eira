@@ -121,7 +121,7 @@ def forget_identity(app_request):
     app_request.id_number, app_request.birth_date, app_request.address = "", None, ""
 
 
-def send_app_code(request, app_request, actor=None):
+def send_app_code(request, app_request, actor=None, parish=None):
     """Xera o código de empadroamento (ligado ao correo se o hai) e envía a ligazón da app."""
     tenant = app_request.municipality
     inv = ResidencyInvitation.issue(
@@ -129,6 +129,9 @@ def send_app_code(request, app_request, actor=None):
         note=_("Solicitude da app · %(n)s") % {"n": app_request.name},
         email=app_request.email,
     )
+    if parish is not None:  # v1.5 · C: só a parroquia do padrón; a persoa pode cambiala
+        inv.parish = parish
+        inv.save(update_fields=["parish"])
     app_request.invitation = inv
     app_request.status = AppRequest.Status.SENT
     app_request.resolved_at = timezone.now()
@@ -187,7 +190,7 @@ def request_app(request):
                 forget_identity(app_request)  # sen padrón, a identidade non fai falta
             app_request.save()
             if app_request.padron_match:
-                send_app_code(request, app_request)
+                send_app_code(request, app_request, parish=getattr(result, "parish", None))
                 outcome = "sent"
             elif d["resident"]:
                 outcome = "review"

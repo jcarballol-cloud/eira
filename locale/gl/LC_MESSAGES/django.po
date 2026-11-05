@@ -17664,5 +17664,232 @@ msgstr "Axustes da voz"
 msgid "Este dispositivo non ten voz en galego: lémolo en castelán."
 msgstr "Este dispositivo non ten voz en galego: lémolo en castelán."
 
+msgid "parroquia de residencia"
+msgstr "parroquia de residencia"
+
+msgid "concello de residencia"
+msgstr "concello de residencia"
+
+msgid "outras procedencias"
+msgstr "outras procedencias"
+
+msgid "%(a)s → %(b)s: %(n)s persoas"
+msgstr "%(a)s → %(b)s: %(n)s persoas"
+
+msgid "Procedencia"
+msgstr "Procedencia"
+
+msgid ""
+"De que parroquias e concellos vén a xente a cada instalación. Só se mostran "
+"grupos de polo menos 10 persoas, despois de filtrar; o resto vai en «outras "
+"procedencias». Nunca se usa o GPS."
+msgstr ""
+"De que parroquias e concellos vén a xente a cada instalación. Só se mostran "
+"grupos de polo menos 10 persoas, despois de filtrar; o resto vai en «outras "
+"procedencias». Nunca se usa o GPS."
+
+msgid "Mobilidade entre concellos"
+msgstr "Mobilidade entre concellos"
+
+msgid ""
+"Fluxos entre os concellos da rede, sempre agregados. Os puntos quentes "
+"axudan a planificar transporte e instalacións."
+msgstr ""
+"Fluxos entre os concellos da rede, sempre agregados. Os puntos quentes "
+"axudan a planificar transporte e instalacións."
+
+msgid ""
+"O teu repositorio de modelos. Cada concello adóptaos tal cal ou adáptaos. "
+"Son modelos de exemplo: revísaos cos servizos xurídicos e o DPD."
+msgstr ""
+"O teu repositorio de modelos. Cada concello adóptaos tal cal ou adáptaos. "
+"Son modelos de exemplo: revísaos cos servizos xurídicos e o DPD."
+
+msgid "Gardado."
+msgstr "Gardado."
+
+msgid "Borrado: xa non consta onde vives."
+msgstr "Borrado: xa non consta onde vives."
+
+msgid "Mobilidade"
+msgstr "Mobilidade"
+
+msgid ""
+"De que parroquias e concellos vén a xente a cada instalación, para "
+"planificar transporte e horarios."
+msgstr ""
+"De que parroquias e concellos vén a xente a cada instalación, para "
+"planificar transporte e horarios."
+
+msgid "Mapa de fluxos"
+msgstr "Mapa de fluxos"
+
+msgid "Mapa de fluxos cara ás instalacións. Os mesmos datos están na táboa."
+msgstr "Mapa de fluxos cara ás instalacións. Os mesmos datos están na táboa."
+
+msgid "Concello da rede"
+msgstr "Concello da rede"
+
+msgid "Fluxos"
+msgstr "Fluxos"
+
+msgid "Fluxos por orixe e instalación"
+msgstr "Fluxos por orixe e instalación"
+
+msgid "menos de %(k)s"
+msgstr "menos de %(k)s"
+
+msgid "Sen datos neste período."
+msgstr "Sen datos neste período."
+
+msgid ""
+"As persoas sen parroquia nin concello indicados non contan. Unha persoa pode"
+" aparecer en varias instalacións, por iso non hai totais."
+msgstr ""
+"As persoas sen parroquia nin concello indicados non contan. Unha persoa pode"
+" aparecer en varias instalacións, por iso non hai totais."
+
+msgid "Últimos %(d)s días"
+msgstr "Últimos %(d)s días"
+
+msgid "Deporte ou instalación"
+msgstr "Deporte ou instalación"
+
+msgid ""
+"Só datos agregados de persoas distintas: cada fluxo móstrase se ten polo "
+"menos %(k)s persoas, despois de aplicar os filtros. O resto agrúpase en "
+"«outras procedencias». Nunca se usa o GPS nin a ubicación do dispositivo."
+msgstr ""
+"Só datos agregados de persoas distintas: cada fluxo móstrase se ten polo "
+"menos %(k)s persoas, despois de aplicar os filtros. O resto agrúpase en "
+"«outras procedencias». Nunca se usa o GPS nin a ubicación do dispositivo."
+
+msgid "O grosor da liña é proporcional ao número de persoas."
+msgstr "O grosor da liña é proporcional ao número de persoas."
+
+msgid "Aínda non hai posicións anotadas para debuxar o mapa."
+msgstr "Aínda non hai posicións anotadas para debuxar o mapa."
+
+msgid "Onde estou"
+msgstr "Onde estou"
+
+msgid ""
+"Indicaches que vives en <strong>%(p)s</strong>. As distancias son en liña "
+"recta desde aí; nunca usamos o GPS do teu dispositivo."
+msgstr ""
+"Indicaches que vives en <strong>%(p)s</strong>. As distancias son en liña "
+"recta desde aí; nunca usamos o GPS do teu dispositivo."
+
+msgid ""
+"Mapa coa túa parroquia e as instalacións máis próximas. As mesmas distancias"
+" están na lista."
+msgstr ""
+"Mapa coa túa parroquia e as instalacións máis próximas. As mesmas distancias"
+" están na lista."
+
+msgid "A túa parroquia ou concello"
+msgstr "A túa parroquia ou concello"
+
+msgid "%(d)s km"
+msgstr "%(d)s km"
+
+msgid "Aínda non temos a posición do lugar que indicaches."
+msgstr "Aínda non temos a posición do lugar que indicaches."
+
+msgid ""
+"Indica a túa parroquia para ver a que distancia quedan as instalacións."
+msgstr ""
+"Indica a túa parroquia para ver a que distancia quedan as instalacións."
+
+msgid "Onde vives (opcional)"
+msgstr "Onde vives (opcional)"
+
+msgid "Prefiro non indicalo"
+msgstr "Prefiro non indicalo"
+
+msgid "Parroquias de %(t)s"
+msgstr "Parroquias de %(t)s"
+
+msgid "Outros concellos"
+msgstr "Outros concellos"
+
+msgid ""
+"Voluntario. Só se usa para estatísticas agregadas de grupos de polo menos 10"
+" persoas e para mostrarche as distancias. Podes cambialo ou borralo cando "
+"queiras."
+msgstr ""
+"Voluntario. Só se usa para estatísticas agregadas de grupos de polo menos 10"
+" persoas e para mostrarche as distancias. Podes cambialo ou borralo cando "
+"queiras."
+
+msgid ""
+"Opcional: se o CSV leva unha columna «parroquia», gárdase só a parroquia "
+"para as estatísticas agregadas de procedencia. A persoa pode cambiala ou "
+"borrala."
+msgstr ""
+"Opcional: se o CSV leva unha columna «parroquia», gárdase só a parroquia "
+"para as estatísticas agregadas de procedencia. A persoa pode cambiala ou "
+"borrala."
+
+msgid ""
+"Fluxos entre os concellos da rede, para planificar transporte e "
+"instalacións."
+msgstr ""
+"Fluxos entre os concellos da rede, para planificar transporte e "
+"instalacións."
+
+msgid "Mapa de fluxos entre concellos. Os mesmos datos están na táboa."
+msgstr "Mapa de fluxos entre concellos. Os mesmos datos están na táboa."
+
+msgid "Puntos quentes"
+msgstr "Puntos quentes"
+
+msgid ""
+"Concellos que reciben máis persoas doutros concellos, sumando só os fluxos "
+"visibles."
+msgstr ""
+"Concellos que reciben máis persoas doutros concellos, sumando só os fluxos "
+"visibles."
+
+msgid "%(n)s persoas"
+msgstr "%(n)s persoas"
+
+msgid "Ningún fluxo chega ao limiar neste período."
+msgstr "Ningún fluxo chega ao limiar neste período."
+
+msgid "Fluxos entre concellos"
+msgstr "Fluxos entre concellos"
+
+msgid "%(n)s (%(d)s km)"
+msgstr "%(n)s (%(d)s km)"
+
+msgid "Os concellos afastados móstranse na súa dirección, fóra de escala."
+msgstr "Os concellos afastados móstranse na súa dirección, fóra de escala."
+
+msgid "Procedencia: de que parroquia ou concello vén a xente"
+msgstr "Procedencia: de que parroquia ou concello vén a xente"
+
+msgid ""
+"A parroquia ou o concello onde vives, só se o indicas ou se consta no "
+"padrón."
+msgstr ""
+"A parroquia ou o concello onde vives, só se o indicas ou se consta no "
+"padrón."
+
+msgid "Que alguén deduza quen vai a unha instalación cruzando filtros."
+msgstr "Que alguén deduza quen vai a unha instalación cruzando filtros."
+
+msgid "Nunca o GPS nin a ubicación do dispositivo, nin o enderezo."
+msgstr "Nunca o GPS nin a ubicación do dispositivo, nin o enderezo."
+
+msgid "Só grupos de 10 persoas ou máis, contados despois de cada filtro."
+msgstr "Só grupos de 10 persoas ou máis, contados despois de cada filtro."
+
+msgid "O resto agrúpase en «outras procedencias», sen totais cos que restar."
+msgstr "O resto agrúpase en «outras procedencias», sen totais cos que restar."
+
+msgid "Podes cambiar ou borrar a túa parroquia cando queiras."
+msgstr "Podes cambiar ou borrar a túa parroquia cando queiras."
+
 #~ msgid "Frecuencia"
 #~ msgstr "Frecuencia"

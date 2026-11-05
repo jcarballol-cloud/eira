@@ -775,3 +775,43 @@ Decisións do equipo sobre a auditoría da v1.3: **este repositorio e o seu remo
 - **Binarios > 5 MB:** fóra de `docs/capturas/` non hai ningún no historial (o maior é de 2,4 MB, en `assets-originais/`). Igualmente pásase `--strip-blobs-bigger-than 5M` como rede de seguridade.
 - Os **hashes dos commits cambian** na copia: os documentos que citan commits (auditoría, informe) refírense aos deste repositorio. A correspondencia vella → nova gárdase en `Eira-release/correspondencia-commits.txt`.
 - **Etiqueta `v1.4-certame`:** aquí, no último commit da tanda; na copia, no commit de publicación (README con capturas), coa mesma anotación.
+
+## 2026-11-05 · v1.5: versión definitiva
+
+### A · «Escoitar»
+- **Só `speechSynthesis`.** Ningún servizo externo. Sen a API, o botón non aparece (oculto ata que o JS o comprobe).
+- **Interface en castelán → voz en castelán, sen aviso.** O aviso «non hai voz en galego» só aparece unha vez por dispositivo.
+- **Lectura automática do código desactivada por defecto:** o código oiríase en voz alta e pode pisar o lector de pantalla. Algúns navegadores non deixan falar sen tocar antes a pantalla.
+- **Non verificado:** TalkBack e VoiceOver en dispositivos reais; as probas usan unha voz simulada. Para non interferir: só fala se se lle pide, non move o foco e non usa `aria-live` mentres le.
+
+### B · Alerta
+- **«Sesión activa» defínese así:** monitora con sesión aberta nesa instalación (co seu marxe), persoal cunha orde «en curso» nela e persoal de limpeza cun rexistro nas últimas 2 h. **Conserxe:** `ResponsibleContact.facility`, nova, opcional. Non se usa ningunha ubicación do móbil.
+- **Na alerta queda o posto, non o nome**, porque a pantalla de confirmación pode vela quen a lanzou.
+- **Botón Alerta na cabeceira e na pantalla principal** de mantemento, limpeza e monitora; na cabeceira da administración. A deputación en consulta non o ten. O acceso anterior «Incidencia ou seguridade» mantense.
+
+### C · Procedencia
+- **`n` son persoas distintas**, non reservas: máis protector ca o pedido literal.
+- **Só períodos de 30, 90 e 365 días**, sen datas libres, para dificultar comparar dúas ventás case iguais.
+- **«Outras procedencias» sen cifra se n < 10; sen totais; puntos quentes só con fluxos visibles**, para que non se poida restar.
+- **Concellos fóra da rede:** non se nomean; van a «outras procedencias».
+- **Mapa SVG no servidor, sen teselas:** funciona sen conexión e sen terceiros. Os concellos afastados móstranse na súa dirección real, fóra de escala e coa distancia no nome. A táboa é a alternativa accesible.
+- **Límite coñecido:** comparar datas distintas pode deixar ver variacións pequenas dun fluxo visible. Documentado na matriz e na EIPD para que o revise o DPD. Non se redondean as cifras.
+
+### D · Documentos legais
+- **Non bloquea o uso:** un aviso permanente na app leva aos pendentes. Bloquear podería impedir chegar á propia reserva ou ao código nun momento crítico. Opción de bloqueo en `PLAN_V2`.
+- **Obrigatorios para mostrar:** privacidade, condicións, normas e, con menores ao cargo, o de menores. **Imaxe e saúde son opcionais**: nunca se pide aceptalos con insistencia, e retirados non volven aparecer.
+- **O aviso «MODELO DE EXEMPLO» só se quita ao adaptar o texto e declarar que se revisou.** Un modelo adoptado tal cal seguiría sendo un modelo.
+- **Normas:** as normas versionadas de cada instalación seguen igual e móstranse dentro do documento xeral.
+- **Ao eliminar a conta** a aceptación queda sen persoa, para que o rexistro siga cadrando sen datos persoais.
+- **O texto do concello pasa por un Markdown mínimo que escapa o HTML** (`apps/tenants/markup.py`), sen dependencias novas.
+
+### E · Acreditación
+- **Grupo con menores:** admite menores de 18 ou xa ten menores inscritos.
+- **Revisión vencida:** bloquea novas asignacións e avisa, pero non desfai as existentes, para non deixar un grupo sen persoa á vista. Tampouco se desfán as anteriores á v1.5: a ficha mostra o aviso.
+- **Voluntariado:** `Membership.is_volunteer` no rol de monitora, sen crear un rol novo.
+- **Límite:** o bloqueo está na interface e no admin técnico (`Group.clean`), non na base de datos.
+
+### Outros
+- **Cabeceira da xestión en móbil:** agora axústase ao ancho. Xa desbordaba antes e o botón Alerta empeorábao; non se quitou nada.
+- **`tools/i18n_check.py`:** sen GNU gettext, comproba que o catálogo teña todas as cadeas e engade traducións. Unha proba impide deixar cadeas sen catálogo.
+- **Portabilidade:** exporta os datos novos en `v15.json`; a importación queda en `PLAN_V2`.

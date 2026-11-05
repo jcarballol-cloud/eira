@@ -16,4 +16,5 @@ urlpatterns = [
     path("proximos/", network.nearby, name="nearby"),
     path("proximos/ir/", network.go, name="nearby_go"),
     path("proximos/seguir/", network.follow, name="nearby_follow"),
+    path("proximos/residencia/", network.residence, name="residence"),  # v1.5 · C
 ]

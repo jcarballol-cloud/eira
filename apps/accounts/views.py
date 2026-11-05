@@ -338,6 +338,13 @@ def export_user_data(user):
             }
             for n in Notification.objects.filter(user=user)
         ],
+        # v1.5 · C: residencia indicada (só parroquia ou concello)
+        "residence": {
+            "parish": user.residence_parish.name if user.residence_parish else None,
+            "municipality": user.residence_municipality.name
+            if user.residence_municipality
+            else None,
+        },
         # v1.5 · D: documentos aceptados
         "legal_acceptances": [
             {

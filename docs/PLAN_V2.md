@@ -132,3 +132,10 @@ Os oito bloques (A–H) están feitos na interface. Queda pendente, sen facelo a
 4. **Rendemento:** importar as lecturas das facturas en CSV da comercializadora e, se o concello ten contadores con telelectura, un adaptador para lelos.
 5. **PDF do carné e do cartel:** validación con PAC/veraPDF e fontes incrustadas.
 6. **Tema escuro no escritorio do concello:** hoxe só no panel Rendemento; estendelo ao resto con revisión de contraste.
+
+## Despois da v1.5 (non entrou na versión conxelada)
+
+1. **Importar `v15.json`:** a portabilidade exporta documentos legais, aceptacións e acreditacións, pero a importación aínda non os restaura.
+2. **«Escoitar»:** probar con TalkBack e VoiceOver en dispositivos reais e cunha voz galega real.
+3. **Procedencia:** editar a posición das parroquias na xestión (hoxe, no admin técnico) e coropletas con límites parroquiais libres.
+4. **Portas legais:** opción do concello para esixir a aceptación antes de reservar (hoxe avísase sen bloquear).

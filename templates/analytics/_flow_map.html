@@ -1,0 +1,23 @@
+{% load i18n l10n %}{% if map %}
+<figure class="flow-map mb-0">
+  <svg viewBox="0 0 {{ map.w }} {{ map.h }}" role="img" aria-label="{{ caption }}">
+    <defs><marker id="flow-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto-start-reverse"><path class="flow-map__arrow" d="M0 0 L10 5 L0 10 z"/></marker></defs>
+    {% localize off %}
+    {% for l in map.lines %}<path class="flow-map__line" d="{{ l.d }}" stroke-width="{{ l.width }}" marker-end="url(#flow-arrow)"><title>{{ l.title }}</title></path>{% endfor %}
+    {% for n in map.nodes %}<g class="flow-map__node flow-map__node--{{ n.kind }}"><title>{{ n.name }}</title>
+      {% if n.kind == 'facility' %}<rect x="-12" y="-12" width="24" height="24" rx="5" transform="translate({{ n.x }} {{ n.y }})"/><text class="flow-map__num" x="{{ n.x }}" y="{{ n.y }}" dy="6" text-anchor="middle">{{ n.number }}</text>
+      {% elif n.kind == 'municipality' %}<rect x="-9" y="-9" width="18" height="18" transform="translate({{ n.x }} {{ n.y }}) rotate(45)"/><text class="flow-map__label" x="{{ n.label_x }}" y="{{ n.label_y }}" text-anchor="middle">{{ n.name }}</text>
+      {% else %}<circle cx="{{ n.x }}" cy="{{ n.y }}" r="{% if n.kind == 'me' %}11{% else %}8{% endif %}"/><text class="flow-map__label" x="{{ n.label_x }}" y="{{ n.label_y }}" text-anchor="middle">{{ n.name }}</text>{% endif %}
+    </g>{% endfor %}
+    {% endlocalize %}
+  </svg>
+  <figcaption class="flow-map__legend">
+    {% if legend_parish %}<span><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" class="flow-map__key flow-map__key--parish"/></svg> {{ legend_parish }}</span>{% endif %}
+    {% if legend_me %}<span><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" class="flow-map__key flow-map__key--me"/></svg> {{ legend_me }}</span>{% endif %}
+    {% if legend_town %}<span><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="4" width="12" height="12" transform="rotate(45 10 10)" class="flow-map__key flow-map__key--municipality"/></svg> {{ legend_town }}</span>{% endif %}
+    {% if legend_facility %}<span><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="3" class="flow-map__key flow-map__key--facility"/></svg> {{ legend_facility }}</span>{% endif %}
+    {% if map.lines %}<span>{% translate "O grosor da liña é proporcional ao número de persoas." %}</span>{% endif %}
+    {% if map.out_of_scale %}<span>{% translate "Os concellos afastados móstranse na súa dirección, fóra de escala." %}</span>{% endif %}
+  </figcaption>
+</figure>
+{% else %}<p class="muted">{% translate "Aínda non hai posicións anotadas para debuxar o mapa." %}</p>{% endif %}

@@ -34,3 +34,8 @@ Con 14 anos ou máis: «[Nome] está de acordo con estes consentimentos» (art. 
 
 ## 5. Cookies
 > Só usamos cookies técnicas, necesarias para que a web funcione (sesión, seguridade dos formularios, idioma e preferencias de lectura). Non hai cookies de seguimento nin de publicidade, e por iso non pedimos aceptalas.
+
+## Documentos legais (v1.5)
+
+Os modelos completos, en galego e castelán, están en [../legal/modelos/](../legal/modelos/README.md).
+**Son modelos de exemplo: non son documentos legais válidos.**

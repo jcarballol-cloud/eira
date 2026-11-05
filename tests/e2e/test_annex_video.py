@@ -51,12 +51,10 @@ def run_annex(page, base, d):
     d.hide()
     d.login(base, "admin@vilardeiras.demo.eira.example")
     d.go(f"{c}/xestion/valoracions/")
-    d.say("«Que tal foi?»: o concello ve as valoracións por instalación, sen nomes.", extra=1.2)
+    d.say("«Que tal foi?»: o concello ve as valoracións por instalación, sen nomes.")
     # 3. Observatorio e índice de vida activa
     d.go(f"{c}/actividades/observatorio/?semanas=12")
-    d.say(
-        "O observatorio segue igual: esforzo, asistencia e probas físicas, só agregados.", extra=1.2
-    )
+    d.say("O observatorio segue igual: esforzo, asistencia e probas físicas, só agregados.")
     # v1.5 · Mapa de procedencia
     d.go(f"{c}/xestion/procedencia/")
     d.show(".flow-map svg")
@@ -70,7 +68,7 @@ def run_annex(page, base, d):
     )
     # 4. Cartel da porta e ficha de seguridade
     d.show(".safety-card")
-    d.say("Ficha de seguridade: material, protocolo de accidentes, DEA e 112.", extra=1.2)
+    d.say("Ficha de seguridade: material, protocolo de accidentes, DEA e 112.")
     d.go(f"{c}/xestion/instalacions/{padel.pk}/qr/")
     d.say("Cartel para a porta: QR, normas, accidentes, DEA e 112. Tamén en PDF accesible.")
     # 5. Revisión de seguridade
@@ -84,7 +82,7 @@ def run_annex(page, base, d):
     d.go(f"{c}/xestion/privacidade/brechas/")
     d.say("Rexistro de brechas: prazo de 72 horas para a AEPD, só para o concello e o DPD.")
     d.go(f"{c}/xestion/privacidade/brechas/{breach.pk}/comunicacion/")
-    d.say("E a comunicación ás persoas afectadas, en linguaxe clara.", extra=1.2)
+    d.say("E a comunicación ás persoas afectadas, en linguaxe clara.")
     # 7. v1.2 · Panel de rendemento (consumo estimado)
     hall = Facility.objects.get(name="Pavillón municipal de Vilardeiras")
     d.go(f"{c}/xestion/instalacions/{hall.pk}/rendemento/")
@@ -97,7 +95,7 @@ def run_annex(page, base, d):
     survey = Survey.objects.filter(municipality__slug="vilardeiras").order_by("year").first()
     d.go(f"{c}/xestion/enquisas/{survey.pk}/")
     d.say("E a enquisa anual de satisfacción: NPS e sete aspectos, só con dez respostas ou máis.")
-    d.say("Eira · para o concello e a saúde · software libre EUPL.", extra=0.6)
+    d.say("Eira · para o concello e a saúde · software libre EUPL.")
 
 
 def test_record_annex(browser, base, tmp_path, settings):

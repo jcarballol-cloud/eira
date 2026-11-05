@@ -440,6 +440,9 @@ components:
       - cancelled
       - used
       - no_show
+      - pending_approval
+      - pending_office
+      - declined
       type: string
       description: |-
         * `pending_payment` - Pendente de pagamento
@@ -449,6 +452,9 @@ components:
         * `cancelled` - Cancelada
         * `used` - Usada
         * `no_show` - Non presentada
+        * `pending_approval` - Pendente de aprobación
+        * `pending_office` - Pendente de pagamento na oficina
+        * `declined` - Rexeitada polo concello
     CancelResult:
       type: object
       properties:

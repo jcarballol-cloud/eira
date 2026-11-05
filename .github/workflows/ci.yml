@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     services:
       postgres:
         image: postgres:16-alpine
@@ -21,11 +21,12 @@ jobs:
       EIRA_DEBUG: "1"
       DATABASE_URL: postgres://eira:eira@localhost:5432/eira
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
           cache: pip
+          cache-dependency-path: requirements*.txt
       - run: pip install -r requirements-dev.txt
       - name: Lint
         run: python tools/tasks.py lint

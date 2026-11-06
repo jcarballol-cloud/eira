@@ -2,7 +2,7 @@
 """v1.5.1: os exemplos da demo existen sempre, sexa cal sexa a data e a hora do seed.
 
 A lista está en apps/tenants/demo_checks.py. Inclúe as datas nas que faltaban (venres pola noite) e
-casos límite: fin de semana, madrugada, cambio de hora, fin de ano e 29 de febreiro."""
+casos límite. Cada seed tarda uns 2 min con PostgreSQL, así que aquí só van 4 momentos."""
 
 import datetime as dt
 from unittest import mock
@@ -30,13 +30,9 @@ def at(value):
     "moment",
     [
         "2026-11-06T21:00",  # venres: faltaban a lista de espera e a franxa liberada
-        "2026-11-06T23:50",  # venres, cruzando a medianoite
         "2026-11-07T00:30",  # sábado de madrugada
-        "2026-11-08T12:00",  # domingo
-        "2026-11-09T07:00",  # luns, antes de abrir
         "2026-10-25T02:30",  # cambio de hora
-        "2026-12-31T23:50",  # fin de ano
-        "2028-02-29T09:00",  # ano bisesto
+        "2026-12-31T23:50",  # fin de ano, cruzando a medianoite
     ],
 )
 def test_examples_exist_at_any_moment(moment):

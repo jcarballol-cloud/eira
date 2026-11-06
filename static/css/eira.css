@@ -1838,3 +1838,6 @@ html.theme-dark body.themable .flow-map__node--parish circle, html.theme-dark bo
 /* v1.5: días doutro mes no calendario, en tema escuro */
 html.theme-dark body.themable .cal .day.out { background: #1C2B31; color: #D5DDD8; }
 html.theme-dark body.themable .cal .day.out .n { color: #D5DDD8; }
+
+/* v1.5.1: os avisos longos do acceso (chave custodiada) axústanse ao ancho, tamén con texto grande */
+#access-card .badge { white-space: normal; max-width: 100%; height: auto; overflow-wrap: anywhere; }

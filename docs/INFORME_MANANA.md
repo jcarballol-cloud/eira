@@ -12,7 +12,8 @@
 - **Reproducción previa en Linux con PostgreSQL 16:** lint, licencias, SPDX y OpenAPI ✅; 941 tests y 13 saltados por no haber Node en el contenedor; 89 E2E con axe ✅ (35 min).
 
 - **Pruebas que dependían de la fecha o la hora (corregidas):** orden de mantenimiento de madrugada, lista de espera en fin de semana y ejemplos de la demo que no siempre existen. La aplicación no cambia.
-- **La demo garantiza sus ejemplos:** `seed_demo` crea siempre la lista de espera de Uxía, la franja liberada y los demás ejemplos condicionales; `test_demo_always` lo comprueba con 8 fechas y horas.
+- **La demo garantiza sus ejemplos:** `seed_demo` crea siempre la lista de espera de Uxía, la franja liberada y los demás ejemplos condicionales; `test_demo_always` lo comprueba con 4 fechas y horas.
+- **Error real corregido:** con texto grande, el aviso de la llave custodiada desbordaba la pantalla de la reserva.
 - **Reloj fijado, suite completa en Linux con PostgreSQL 16:** a las 23:50 y a las 00:30, 941 tests y 13 saltados por no haber Node en el contenedor, y 89 E2E con axe ✅ en ambas.
 
 ## v1.5. Versión definitiva para la entrega (05/11) · etiqueta `v1.5-certame`

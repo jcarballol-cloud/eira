@@ -11,6 +11,8 @@ from apps.bookings.models import Booking
 from apps.facilities.models import Facility
 from apps.maintenance.models import WorkOrder
 
+from .conftest import uxia_waitlist_entry
+
 pytestmark = [pytest.mark.e2e, pytest.mark.django_db(transaction=False)]
 
 # Páxina enteira e panel con scroll propio (.shell-main) sen desbordar; e ningún elemento visible

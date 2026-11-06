@@ -6,7 +6,7 @@ import pytest
 from apps.facilities.models import Facility
 from apps.safety.models import Alert
 
-from .conftest import DESKTOP, MOBILE
+from .conftest import DESKTOP, MOBILE, uxia_waitlist_entry
 
 pytestmark = [pytest.mark.e2e, pytest.mark.django_db(transaction=False)]
 C = "/c/vilardeiras"

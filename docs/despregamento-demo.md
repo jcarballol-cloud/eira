@@ -102,8 +102,12 @@ docker exec engram-gestor-caddy-1 caddy validate --config /etc/caddy/Caddyfile -
 docker exec engram-gestor-caddy-1 caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile
 ```
 
-**Ao actualizar o gestor** hai que comprobar que a entrada segue no Caddyfile. Se se perde, Eira deixa
-de responder, pero o gestor non se ve afectado.
+**Non redespregar o gestor ata despois do 26/11/2026 sen volver engadir este bloque.** O gestor
+desprégase substituíndo `/srv/engram/app`, e iso borra a entrada de `infra/Caddyfile.pruebas`. Se se
+perde, Eira deixa de responder, pero o gestor non se ve afectado. Para recuperala, engadir o bloque
+cun `>>` e repetir `caddy validate` e `caddy reload`.
+
+Copia do Caddyfile anterior á entrada: `/srv/eira-demo/Caddyfile.pruebas.antes-eira`.
 
 ## Despregar nun servidor só para a demo
 
@@ -122,7 +126,7 @@ Comproba o certificado, a entrada con cada perfil, unha reserva completa, a repr
 PWA, axe en seis pantallas e o rexeitamento de correos reais. Con `--rate-limit` proba tamén o límite
 de acceso, e gasta o da IP que fai a proba durante unha hora.
 
-## Parar ou borrar a demo
+## Retirar a demo despois do certame
 
 Parala, conservando todo:
 
@@ -130,13 +134,28 @@ Parala, conservando todo:
 cd /srv/eira-demo && docker compose -f docker-compose.demo.yml -f docker-compose.tras-proxy.yml stop
 ```
 
-Borrala por completo despois do certame:
+Borrala por completo, no servidor:
 
-1. Quitar a entrada `eira.engramlab.es` do Caddyfile do proxy e executar `caddy reload`.
-2. `docker compose -f docker-compose.demo.yml -f docker-compose.tras-proxy.yml down -v`
-3. `docker image rm eira-demo-app:local postgres:16-alpine`
-4. `sudo rm -r /srv/eira-demo`
-5. Quitar os rexistros A e AAAA de `eira` na zona `engramlab.es`.
+1. Quitar o bloque `eira.engramlab.es` (e o seu comentario) de `/srv/engram/app/infra/Caddyfile.pruebas`
+   conservando o resto, sen substituír o ficheiro, e recargar. Se o ficheiro non cambiou desde o
+   despregamento, abonda con isto:
+   ```bash
+   cat /srv/eira-demo/Caddyfile.pruebas.antes-eira > /srv/engram/app/infra/Caddyfile.pruebas
+   docker exec engram-gestor-caddy-1 caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+   docker exec engram-gestor-caddy-1 caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile
+   ```
+2. Borrar contedores, redes e volumes da demo:
+   ```bash
+   cd /srv/eira-demo && docker compose -f docker-compose.demo.yml -f docker-compose.tras-proxy.yml down -v
+   ```
+3. Borrar as imaxes que só usa a demo. `caddy:2-alpine` queda, porque a usa o gestor:
+   ```bash
+   docker image rm eira-demo-app:local postgres:16-alpine
+   ```
+4. Borrar os ficheiros: `sudo rm -r /srv/eira-demo`
+5. Comprobar que o gestor segue respondendo.
+
+No panel de IONOS, quitar os rexistros A e AAAA de `eira` na zona `engramlab.es`.
 
 ## Probas en local
 
@@ -146,5 +165,11 @@ que imita ao do gestor. En ambas, `tools/check_demo_online.py --insecure --rate-
 `X-Forwarded-For`. A app non chega a Internet. Na rexeneración forzada, desaparecen unha conta real
 simulada e un ficheiro vello e `missing()` queda baleiro (17 s).
 
-**Non verificado en local:** certificado real de Let's Encrypt, instalación da PWA nun móbil real,
-reprodución do MP4 (o Chromium das probas usa o WebM) e funcionamento continuado varios días.
+## Probas no servidor (06/11/2026)
+
+**Verificado desde fóra en `https://eira.engramlab.es`:** certificado de Let's Encrypt, os 12 perfís,
+reserva completa, vídeos WebM en Chromium e MP4 en Chrome, PWA instalable segundo Chromium, axe sen
+violacións en seis pantallas, límite de acceso no envío 21, rexeneración a man e polo bucle (31 s).
+
+**Non verificado:** instalación da PWA nun móbil real, Safari, a execución espontánea ás 04:00 e o
+funcionamento continuado varios días.

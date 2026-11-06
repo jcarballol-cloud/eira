@@ -27,3 +27,7 @@ docs/demo/eira-anexo-saude.vtt
 *.odt
 *.pdf
 !docs/**/*.pdf
+
+# Vídeos da demo pública: cópianse ao despregar
+deploy/demo/videos/*
+!deploy/demo/videos/README.md

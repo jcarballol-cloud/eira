@@ -14,6 +14,7 @@ from django.views.decorators.http import require_POST
 from apps.accounts.profiles import STAFF_ROLES
 from apps.bookings.models import Booking
 from apps.facilities.models import Facility
+from apps.tenants.public_demo import client_ip
 from apps.tenants.urlutils import treverse
 
 from . import services
@@ -120,7 +121,7 @@ def _raise(request, kind):
             origin = Alert.Origin.MONITOR
             facility = facility or session.group.facility
     if not request.user.is_authenticated:
-        ip = request.META.get("REMOTE_ADDR", "")
+        ip = client_ip(request)
         if not services.anonymous_alert_allowed(f"{request.tenant.pk}:{ip}"):
             return None
     return services.raise_alert(

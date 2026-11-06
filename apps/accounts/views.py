@@ -19,6 +19,7 @@ from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from apps.integrations.registry import get_adapter
+from apps.tenants.public_demo import client_ip, rejects_email
 
 from . import twofactor
 from .forms import (
@@ -68,7 +69,7 @@ def _after_login(request, user, nxt, last_tenant):
 
 
 def _client_ip(request):
-    return request.META.get("REMOTE_ADDR", "")
+    return client_ip(request)
 
 
 def _rate_limited(email, ip):
@@ -96,7 +97,9 @@ def login_email(request):
     form = EmailForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         email = form.cleaned_data["email"].lower()
-        if _rate_limited(email, _client_ip(request)):
+        if rejects_email(email):
+            form.add_error("email", _("Nesta demostración non escribas o teu correo real."))
+        elif _rate_limited(email, _client_ip(request)):
             form.add_error(
                 None, _("Demasiados intentos. Agarda un pouco antes de pedir outro código.")
             )

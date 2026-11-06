@@ -1,0 +1,144 @@
+# SPDX-License-Identifier: EUPL-1.2
+# Demo pública de Eira: Caddy (HTTPS automático) + app (Gunicorn) + PostgreSQL 16, con datos
+# FICTICIOS que se rexeneran cada noite. Pasos en docs/despregamento-demo.md.
+#
+#   cd deploy/demo && cp .env.example .env && (editar .env)
+#   docker compose -f docker-compose.demo.yml up -d --build
+name: eira-demo
+
+x-eira-env: &eira-env
+  DATABASE_URL: postgres://eira:${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD en .env}@db:5432/eira
+  EIRA_DEBUG: "0"
+  EIRA_DEMO_TOOLS: "1"          # bandexa de correo, TPV e simulador (datos ficticios)
+  EIRA_PUBLIC_DEMO: "1"         # aviso e vídeos na portada, sen admin, só correos ficticios
+  EIRA_ALLOWED_HOSTS: ${EIRA_DOMAIN:?Define EIRA_DOMAIN en .env}
+  EIRA_CSRF_TRUSTED_ORIGINS: https://${EIRA_DOMAIN}${EIRA_ORIGIN_PORT:-}
+  EIRA_BASE_DOMAIN: ${EIRA_DOMAIN}
+  EIRA_SECRET_KEY: ${EIRA_SECRET_KEY:?Define EIRA_SECRET_KEY en .env}
+  EIRA_TOTP_KEY: ${EIRA_TOTP_KEY:?Define EIRA_TOTP_KEY en .env}
+  EIRA_SECURE_COOKIES: "1"
+  EIRA_BEHIND_PROXY: "1"
+  EIRA_HSTS_SECONDS: "86400"    # un día: a demo é temporal
+  EIRA_CACHE_DIR: /tmp/eira-cache
+  # Só simuladores, fixados aquí para que nada poida activar un envío real (e, ademais, estes
+  # contedores están nunha rede sen saída a Internet).
+  EIRA_MAIL_ADAPTER: apps.integrations.mail.DevMailboxAdapter
+  EIRA_TELEGRAM_ADAPTER: apps.integrations.telegram.FakeTelegramAdapter
+  EIRA_PUSH_ADAPTER: apps.integrations.push.FakeWebPushAdapter
+  EIRA_PAYMENT_ADAPTER: apps.integrations.payments.FakeRedsysAdapter
+  EIRA_IDENTITY_ADAPTER: apps.integrations.identity.FakeClaveAdapter
+  EIRA_LOCK_ADAPTER: apps.integrations.locks.MockConnectedLockAdapter
+  EIRA_WEATHER_ADAPTER: apps.integrations.weather.FakeWeatherAdapter
+  EIRA_AI_ADAPTER: apps.integrations.ai.FakeAIAdapter   # sen IA local: resumo por regras
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: eira
+      POSTGRES_USER: eira
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U eira -d eira"]
+      interval: 5s
+      retries: 20
+    networks: [interna]
+    mem_limit: 256m
+    logging: *logging
+
+  app:
+    image: eira-demo-app:local
+    build:
+      context: ../..
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      <<: *eira-env
+      EIRA_SEED_DEMO: "1"       # carga a demo no primeiro arranque
+    command: ["gunicorn", "eira.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "2",
+              "--max-requests", "1000", "--max-requests-jitter", "100", "--access-logfile", "-"]
+    volumes:
+      - media:/app/media
+    networks: [interna]
+    mem_limit: 512m
+    logging: *logging
+
+  # Rexenera os datos ficticios cada noite, ás 04:00 de Madrid, para que ninguén deixe a demo rota
+  reseed:
+    image: eira-demo-app:local
+    pull_policy: never
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      app:
+        condition: service_started
+    environment:
+      <<: *eira-env
+      TZ: Europe/Madrid
+      EIRA_RESEED_HOUR: ${EIRA_RESEED_HOUR:-4}
+    entrypoint: ["sh", "/app/tools/demo-reseed-loop.sh"]
+    volumes:
+      - media:/app/media
+    networks: [interna]
+    mem_limit: 384m
+    logging: *logging
+
+  # Avisos programados cada 5 minutos: só chegan aos simuladores
+  notices:
+    image: eira-demo-app:local
+    pull_policy: never
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      app:
+        condition: service_started
+    environment: *eira-env
+    entrypoint: ["sh", "/app/tools/send-notices-loop.sh"]
+    networks: [interna]
+    mem_limit: 192m
+    logging: *logging
+
+  # Nome propio (non `caddy`) para non coincidir no DNS da rede doutro proxy, se se usa detrás del
+  eira-web:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on: [app]
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+    environment:
+      EIRA_DOMAIN: ${EIRA_DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./sitio.caddy:/etc/caddy/sitio.caddy:ro
+      - ./videos:/srv/videos:ro
+      - media:/srv/media:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks: [interna, saida]
+    mem_limit: 128m
+    logging: *logging
+
+networks:
+  interna:
+    internal: true   # app, base de datos e bucles: sen saída a Internet
+  saida:             # só eira-web: recibe o tráfico e pide o certificado
+
+volumes:
+  pgdata:
+  media:
+  caddy_data:
+  caddy_config:

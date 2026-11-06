@@ -830,3 +830,13 @@ Decisións do equipo sobre a auditoría da v1.3: **este repositorio e o seu remo
 - **Como se comprobou a hora:** suite completa en Linux con PostgreSQL 16 e `libfaketime`, co reloxo fixado nas 23:50 (cruza a medianoite durante os E2E) e nas 00:30, co mesmo desprazamento para o servidor, as probas e o navegador. Ademais, barrido dos datos que piden as probas nas 7 datas da semana a tres horas, sen navegador.
 - **A demo garante os seus exemplos (substitúe o «a demo non cambia» anterior):** `seed_demo` crea sempre a lista de espera de Uxía, a franxa liberada, o peche escalado, as partidas abertas e a valoración con incidencia; se o azar non deixou a reserva que precisan, créase nunha franxa libre (`apps/tenants/demo_utils.py`). A lista está en `apps/tenants/demo_checks.py` e `test_demo_always` xera o seed con 4 datas e horas (cada seed tarda uns 2 min con PostgreSQL na CI). As probas volven ler os datos da demo, sen crealos.
 - **Erro real atopado pola CI:** con texto grande, o aviso da chave custodiada desbordaba a pantalla da reserva. Só se vía desde as 10:00, cando a seguinte reserva de Manuel pasa a ser a do pavillón. Corríxese no CSS: o aviso axústase ao ancho.
+
+## Demo pública (2026-11-06)
+
+- **`EIRA_PUBLIC_DEMO`:** aviso e vídeos na portada, sen admin de Django, só correos `*.example` e, en cada rexeneración, borrado de todas as contas. Separado de `EIRA_DEMO_TOOLS` para que a demo local e as probas non cambien.
+- **IP real detrás do proxy (`client_ip`):** con `REMOTE_ADDR`, todas as visitas compartirían o límite por IP do proxy. Tómase o último valor de `X-Forwarded-For`, e só con `EIRA_BEHIND_PROXY`.
+- **Sen saída a Internet:** app, base de datos e bucles nunha rede `internal`, ademais de fixar os adaptadores simulados.
+- **Exemplos todo o día:** coa carga ás 04:00, a reserva de ximnasio de Uxía caducaba pola mañá e a de pádel ás 19:00. Coa demo pública engádense as do día seguinte, sen tocar os datos do pitch nin das probas.
+- **Detrás dun proxy existente:** `pruebas-gestor` xa ten o Caddy do gestor en 80/443. Eira entra cun Caddy propio sen portos (`eira-web`) na rede dese proxy, e só ese contedor; así os dous proxies non comparten configuración. Conectar o Caddy do gestor a unha rede nova illaría máis, pero obrigaría a cambiar o compose do gestor.
+- **Imaxe construída en local e copiada:** sen credenciais de GitHub no servidor (repositorio privado) e sen carga de compilación xunto ao gestor.
+- **`.dockerignore`:** só excluía o `.env` da raíz; `deploy/demo/.env`, a carta `.docx` e os vídeos entraban na imaxe. Corrixido.

@@ -11,7 +11,6 @@ from apps.tenants.media import protected_serve
 
 urlpatterns = [
     path("", core.home, name="home"),
-    path("admin/", admin.site.urls),
     path("i18n/", include("django.conf.urls.i18n")),
     path("acceso/", include("apps.accounts.urls")),
     path("conta/", include("apps.accounts.urls_account")),
@@ -31,6 +30,9 @@ urlpatterns = [
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("c/<slug:tenant>/", include("eira.tenant_urls")),
 ]
+
+if not settings.EIRA_PUBLIC_DEMO:
+    urlpatterns.append(path("admin/", admin.site.urls))
 
 if settings.EIRA_DEMO_TOOLS:
     urlpatterns.append(path("dev/", include("apps.integrations.urls_dev")))

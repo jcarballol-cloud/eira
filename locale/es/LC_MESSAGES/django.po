@@ -18061,5 +18061,29 @@ msgstr "Hasta retirar la marca o eliminar la cuenta."
 msgid "Documentos"
 msgstr "Documentos"
 
+msgid "Demo con datos ficticios. Restáurase cada noite."
+msgstr "Demo con datos ficticios. Se restaura cada noche."
+
+msgid "Vídeos"
+msgstr "Vídeos"
+
+msgid "Os vídeos non teñen son: os subtítulos van na imaxe."
+msgstr "Los vídeos no tienen sonido: los subtítulos van en la imagen."
+
+msgid "Descargar o vídeo"
+msgstr "Descargar el vídeo"
+
+msgid "Presentación de Eira"
+msgstr "Presentación de Eira"
+
+msgid "Eira para o concello e a saúde"
+msgstr "Eira para el ayuntamiento y la salud"
+
+msgid "Texto do vídeo"
+msgstr "Texto del vídeo"
+
+msgid "Nesta demostración non escribas o teu correo real."
+msgstr "En esta demostración no escribas tu correo real."
+
 #~ msgid "Frecuencia"
 #~ msgstr "Frecuencia"

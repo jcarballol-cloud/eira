@@ -1,29 +1,5 @@
 # SPDX-License-Identifier: EUPL-1.2
-# HTTPS automático (Let's Encrypt, gratuíto). Só os ficheiros públicos se serven directamente;
-# as fotos de incidencias e ordes pasan pola aplicación, que comproba permisos.
-{
-	email {$ACME_EMAIL}
-}
-
+# Despregamento autónomo: este Caddy recibe o tráfico en 80/443 e pide o certificado (Let's Encrypt).
 {$EIRA_DOMAIN} {
-	encode zstd gzip
-
-	@public_media path /media/facilities/* /media/tenants/*
-	handle @public_media {
-		uri strip_prefix /media
-		root * /srv/media
-		file_server
-	}
-
-	handle {
-		reverse_proxy app:8000 {
-			header_up X-Forwarded-Proto {scheme}
-		}
-	}
-
-	header {
-		-Server
-		X-Robots-Tag "noindex"  # demo: non indexar
-	}
-	log
+	import sitio.caddy
 }

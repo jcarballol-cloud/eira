@@ -4,6 +4,10 @@
 
 > **Capturas:** as rutas `docs/capturas/v…/` que se citan aquí son das capturas completas, que non están no repositorio: publicaranse no adxunto `capturas-v1.4.zip` da versión **v1.4-certame** (ver [capturas/README.md](capturas/README.md)). No repositorio quedan as 6 capturas clave do README.
 
+## Demo pública (2026-11-06)
+- ✅ `deploy/demo/` e `docs/despregamento-demo.md`, probados en local nas dúas variantes (`tools/check_demo_online.py`: 31 de 31)
+- ⬜ Despregamento en `pruebas-gestor`: pendente da autorización
+
 ## Ferramentas da máquina
 - Python 3.13 (venv) ✔ · Docker 29 ✔ (arrancouse Docker Desktop durante a sesión) · Node 24 ✔ · Playwright + Chromium ✔
 - **Non dispoñibles:** `make`, GNU gettext → substitutos en `tools/` (ver DECISIONS). `makemessages` execútase no contedor.

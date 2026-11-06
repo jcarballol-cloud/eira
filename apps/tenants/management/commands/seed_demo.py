@@ -8,6 +8,7 @@ import datetime as dt
 import random
 from decimal import Decimal
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db import connection, transaction
 from django.db.models import F, OuterRef, Subquery
@@ -19,6 +20,7 @@ from apps.accounts.models import (
     Consent,
     Dependent,
     Household,
+    LoginCode,
     Membership,
     PadronImport,
     RegionMembership,
@@ -304,6 +306,10 @@ class Command(BaseCommand):
         User.objects.filter(email__endswith=DEMO_DOMAIN).delete()
         User.objects.filter(email__endswith=".example").delete()
         User.objects.filter(email__endswith="example.org").delete()
+        if settings.EIRA_PUBLIC_DEMO:
+            # Demo aberta en Internet: non queda nada do que escribisen as visitas
+            User.objects.all().delete()
+            LoginCode.objects.all().delete()
         for model in (DevMail, OutboundMessage, FakePayment, Notification):
             model.objects.all().delete()
 
@@ -920,6 +926,11 @@ class Command(BaseCommand):
         make(gym, uxia, current or next_slot(gym, now))
         # Uxía: pádel ás 19:30 do próximo día e unha reserva xa rematada (checklist de peche pendente)
         make(padel, uxia, next_slot(padel, now + dt.timedelta(hours=12), hour=19))
+        if settings.EIRA_PUBLIC_DEMO:
+            # A demo pública só se rexenera de madrugada: estes exemplos deben durar todo o día
+            tomorrow = now + dt.timedelta(days=1)
+            make(gym, uxia, next_slot(gym, tomorrow))
+            make(padel, uxia, next_slot(padel, tomorrow, hour=19))
         b = make(padel, uxia, last_finished(padel), status="used")
         if b:
             b.checked_in_at = b.start

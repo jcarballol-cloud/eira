@@ -167,13 +167,17 @@ def send_app_code(request, app_request, actor=None, parish=None):
 
 
 def request_app(request):
+    from apps.tenants.public_demo import rejects_email
+
     from .views import _client_ip, _rate_limited
 
     request.layout_override = "public"
     form = AppRequestForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         d = form.cleaned_data
-        if _rate_limited(d["email"], _client_ip(request)):
+        if rejects_email(d["email"]):
+            form.add_error("email", _("Nesta demostración non escribas o teu correo real."))
+        elif _rate_limited(d["email"], _client_ip(request)):
             form.add_error(None, _("Demasiadas solicitudes. Téntao de novo nun anaco."))
         else:
             app_request = form.save(commit=False)

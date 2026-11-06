@@ -10,3 +10,10 @@ docs/capturas
 test-results
 .env
 assets-originais
+**/.env
+*.docx
+*.pdf
+release-assets
+deploy/demo/videos
+docs/demo/*.mp4
+docs/demo/*.webm

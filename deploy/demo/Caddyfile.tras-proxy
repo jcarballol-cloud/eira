@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: EUPL-1.2
+# Detrás doutro proxy, que é quen ten os portos 80/443 e o certificado. Este Caddy só escoita na rede
+# de Docker, polo que todo o que chega vén dese proxy: fíase da IP e do esquema que el indica.
+{
+	auto_https off
+	servers {
+		trusted_proxies static private_ranges
+		client_ip_headers X-Forwarded-For
+	}
+}
+
+:80 {
+	import sitio.caddy
+}

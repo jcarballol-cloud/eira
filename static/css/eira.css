@@ -1841,3 +1841,8 @@ html.theme-dark body.themable .cal .day.out .n { color: #D5DDD8; }
 
 /* v1.5.1: os avisos longos do acceso (chave custodiada) axústanse ao ancho, tamén con texto grande */
 #access-card .badge { white-space: normal; max-width: 100%; height: auto; overflow-wrap: anywhere; }
+
+/* Demo pública: vídeos da portada */
+.demo-video { margin: 0; min-width: 0; }
+.demo-video video { display: block; width: 100%; height: auto; border-radius: var(--radius-sm); background: #000; }
+.demo-video figcaption { margin-top: .4rem; }

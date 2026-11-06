@@ -10,6 +10,9 @@
 </section>
 {% endblock %}
 {% block content %}
+{% if public_demo %}
+<p class="alert alert-warn" role="note"><strong>{% translate "Demo con datos ficticios. Restáurase cada noite." %}</strong></p>
+{% endif %}
 {% if demo_tenants %}
 <section id="concello" aria-labelledby="step1-title" class="demo-step">
   <p class="demo-step__n">{% translate "Paso 1 de 2" %}</p>
@@ -81,6 +84,30 @@
       <li class="alert alert-warn">{% translate "Aínda non hai concellos." %}</li>
     {% endfor %}
   </ul>
+</section>
+{% endif %}
+{% if public_demo %}
+<section aria-labelledby="videos-title" class="demo-videos">
+  <h2 id="videos-title">{% translate "Vídeos" %}</h2>
+  <p class="muted">{% translate "Os vídeos non teñen son: os subtítulos van na imaxe." %}</p>
+  <div class="grid grid-2">
+    <figure class="demo-video">
+      <video controls preload="metadata" playsinline width="1920" height="1080" aria-labelledby="video-pitch">
+        <source src="/videos/eira-pitch.webm" type="video/webm">
+        <source src="/videos/eira-pitch.mp4" type="video/mp4">
+        <a href="/videos/eira-pitch.mp4">{% translate "Descargar o vídeo" %}</a>
+      </video>
+      <figcaption id="video-pitch">{% translate "Presentación de Eira" %} · <a href="/videos/eira-pitch.vtt">{% translate "Texto do vídeo" %}</a></figcaption>
+    </figure>
+    <figure class="demo-video">
+      <video controls preload="metadata" playsinline width="1920" height="1080" aria-labelledby="video-anexo">
+        <source src="/videos/eira-anexo-saude.webm" type="video/webm">
+        <source src="/videos/eira-anexo-saude.mp4" type="video/mp4">
+        <a href="/videos/eira-anexo-saude.mp4">{% translate "Descargar o vídeo" %}</a>
+      </video>
+      <figcaption id="video-anexo">{% translate "Eira para o concello e a saúde" %} · <a href="/videos/eira-anexo-saude.vtt">{% translate "Texto do vídeo" %}</a></figcaption>
+    </figure>
+  </div>
 </section>
 {% endif %}
 {% endblock %}

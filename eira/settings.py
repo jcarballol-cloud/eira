@@ -61,6 +61,8 @@ CSRF_TRUSTED_ORIGINS = env_list("EIRA_CSRF_TRUSTED_ORIGINS", "")
 EIRA_BASE_DOMAIN = env("EIRA_BASE_DOMAIN", "localhost")
 # Ferramentas de demostración (/dev/…): bandexa de correo, TPV simulado, simulador de pechadura…
 EIRA_DEMO_TOOLS = env_bool("EIRA_DEMO_TOOLS", DEBUG)
+# Demo aberta en Internet: aviso e vídeos na portada, sen admin de Django e só correos ficticios
+EIRA_PUBLIC_DEMO = env_bool("EIRA_PUBLIC_DEMO", False)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -182,9 +184,8 @@ CSRF_COOKIE_SECURE = SESSION_COOKIE_SECURE
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "same-origin"
 X_FRAME_OPTIONS = "DENY"
-SECURE_PROXY_SSL_HEADER = (
-    ("HTTP_X_FORWARDED_PROTO", "https") if env_bool("EIRA_BEHIND_PROXY") else None
-)
+EIRA_BEHIND_PROXY = env_bool("EIRA_BEHIND_PROXY")
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https") if EIRA_BEHIND_PROXY else None
 SECURE_SSL_REDIRECT = env_bool("EIRA_SSL_REDIRECT", False)
 SECURE_HSTS_SECONDS = int(env("EIRA_HSTS_SECONDS", 0))
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 14

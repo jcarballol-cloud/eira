@@ -20,7 +20,11 @@ from .prefs import KEYS, read_prefs, write_prefs
 def home(request):
     request.layout_override = "public"
     municipalities = Municipality.objects.filter(is_active=True).select_related("region")
-    ctx = {"municipalities": municipalities, "regions": Region.objects.all()}
+    ctx = {
+        "municipalities": municipalities,
+        "regions": Region.objects.all(),
+        "public_demo": settings.EIRA_PUBLIC_DEMO,
+    }
     if settings.EIRA_DEMO_TOOLS:
         # Portada da demo en dous pasos: 1) concello (ou deputación) e 2) quen es nese concello
         from apps.integrations.demo import DEMO_PERSONAS, DEMO_TENANTS

@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: EUPL-1.2
+# Regras da demo, comúns ao despregamento autónomo (Caddyfile) e detrás doutro proxy (Caddyfile.tras-proxy).
+encode zstd gzip
+
+request_body {
+	max_size 12MB
+}
+
+header {
+	-Server
+	X-Robots-Tag "noindex, nofollow"
+	X-Content-Type-Options "nosniff"
+}
+
+handle /robots.txt {
+	header Content-Type "text/plain; charset=utf-8"
+	respond "User-agent: *
+Disallow: /
+Noindex: /
+" 200
+}
+
+# A administración de Django non se publica (a app tampouco ten esta ruta con EIRA_PUBLIC_DEMO)
+@admin path /admin /admin/*
+handle @admin {
+	respond "Non atopado" 404
+}
+
+# Vídeos da portada: ficheiros estáticos locais, con saltos (Range), sen servizos externos
+handle_path /videos/* {
+	root * /srv/videos
+	header Cache-Control "public, max-age=86400"
+	file_server
+}
+
+# Só os ficheiros públicos se serven directamente; as fotos de incidencias e ordes pasan pola
+# aplicación, que comproba permisos.
+@public_media path /media/facilities/* /media/tenants/*
+handle @public_media {
+	uri strip_prefix /media
+	root * /srv/media
+	file_server
+}
+
+handle {
+	reverse_proxy app:8000 {
+		# Un único valor, a IP real: é o que usa o límite de peticións da aplicación
+		header_up X-Forwarded-For {client_ip}
+	}
+}
+
+log

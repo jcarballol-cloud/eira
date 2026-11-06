@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: EUPL-1.2
+# Variante para un servidor que xa ten un proxy en 80/443. Úsase sobre o compose base:
+#   docker compose -f docker-compose.demo.yml -f docker-compose.tras-proxy.yml up -d
+# Só `eira-web` entra na rede do proxy; a app e a base de datos seguen illadas en `interna`.
+services:
+  eira-web:
+    ports: !reset []
+    networks: [interna, proxy]
+    volumes: !override
+      - ./Caddyfile.tras-proxy:/etc/caddy/Caddyfile:ro
+      - ./sitio.caddy:/etc/caddy/sitio.caddy:ro
+      - ./videos:/srv/videos:ro
+      - media:/srv/media:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    mem_limit: 96m
+
+networks:
+  proxy:
+    external: true
+    name: ${EIRA_PROXY_NETWORK:?Define EIRA_PROXY_NETWORK en .env}

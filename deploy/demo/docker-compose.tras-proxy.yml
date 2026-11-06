@@ -5,7 +5,7 @@
 services:
   eira-web:
     ports: !reset []
-    networks: [interna, proxy]
+    networks: !override [interna, proxy]
     volumes: !override
       - ./Caddyfile.tras-proxy:/etc/caddy/Caddyfile:ro
       - ./sitio.caddy:/etc/caddy/sitio.caddy:ro

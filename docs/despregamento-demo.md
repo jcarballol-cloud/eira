@@ -64,6 +64,9 @@ Unha carga ás 04:00 deixaría sen exemplos a quen entrase pola tarde: a reserva
 remataba pola mañá e a de pádel ás 19:00. Por iso, con `EIRA_PUBLIC_DEMO`, Uxía ten tamén esas dúas
 reservas o día seguinte. Compróbao `test_examples_last_all_day_after_the_night_reseed`.
 
+Todas as visitas comparten as mesmas contas, así que o máximo de reservas activas por persoa
+bloquearía axiña ao xurado. Con `EIRA_PUBLIC_DEMO`, a carga súbeo a 100 en cada concello.
+
 ## Despregar detrás dun proxy que xa existe
 
 É o caso de `pruebas-gestor`, onde o Caddy do gestor documental ten os portos 80 e 443.

@@ -15,9 +15,12 @@ from django.urls import clear_url_caches
 from django.utils import timezone
 
 from apps.accounts.models import LoginCode, User
+from apps.bookings.models import Booking
+from apps.integrations.demo import DEMO_PERSONAS
 from apps.integrations.models import DevMail
 from apps.tenants.demo_checks import missing
 from apps.tenants.management.commands.seed_demo import Command
+from apps.tenants.models import Municipality
 from apps.tenants.public_demo import client_ip, rejects_email
 
 pytestmark = pytest.mark.django_db
@@ -130,3 +133,18 @@ def test_examples_last_all_day_after_the_night_reseed(settings, day):
     for hour in ("09:00", "16:00", "19:30", "23:50"):
         with at(f"{day}T{hour}"):
             assert missing() == [], hour
+
+
+def test_shared_profiles_can_always_book_in_public_demo(settings):
+    """As visitas comparten as contas: ningún perfil pode quedar no máximo de reservas activas."""
+    settings.EIRA_PUBLIC_DEMO = True
+    call_command("seed_demo", verbosity=0)
+    now = timezone.now()
+    for email in [p["email"] for p in DEMO_PERSONAS]:
+        for town in Municipality.objects.all():
+            active = (
+                Booking.objects.filter(municipality=town, user__email=email, end__gt=now)
+                .holding()
+                .count()
+            )
+            assert active + 20 < min(town.max_active_bookings, town.network_max_active), email

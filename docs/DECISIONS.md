@@ -837,6 +837,7 @@ Decisións do equipo sobre a auditoría da v1.3: **este repositorio e o seu remo
 - **IP real detrás do proxy (`client_ip`):** con `REMOTE_ADDR`, todas as visitas compartirían o límite por IP do proxy. Tómase o último valor de `X-Forwarded-For`, e só con `EIRA_BEHIND_PROXY`.
 - **Sen saída a Internet:** app, base de datos e bucles nunha rede `internal`, ademais de fixar os adaptadores simulados.
 - **Exemplos todo o día:** coa carga ás 04:00, a reserva de ximnasio de Uxía caducaba pola mañá e a de pádel ás 19:00. Coa demo pública engádense as do día seguinte, sen tocar os datos do pitch nin das probas.
+- **Máximo de reservas na demo pública:** as dúas reservas extra deixaron a Uxía no máximo e non podía reservar (atopado ao comprobar a demo xa despregada). Como as visitas comparten as contas, o problema xurdiría igual co uso: a carga pública sobe o máximo a 100 nos datos, sen tocar a regra de negocio.
 - **Detrás dun proxy existente:** `pruebas-gestor` xa ten o Caddy do gestor en 80/443. Eira entra cun Caddy propio sen portos (`eira-web`) na rede dese proxy, e só ese contedor; así os dous proxies non comparten configuración. Conectar o Caddy do gestor a unha rede nova illaría máis, pero obrigaría a cambiar o compose do gestor.
 - **Imaxe construída en local e copiada:** sen credenciais de GitHub no servidor (repositorio privado) e sen carga de compilación xunto ao gestor.
 - **`.dockerignore`:** só excluía o `.env` da raíz; `deploy/demo/.env`, a carta `.docx` e os vídeos entraban na imaxe. Corrixido.

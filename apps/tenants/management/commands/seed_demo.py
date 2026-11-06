@@ -241,6 +241,9 @@ def hour_weight(hour, weekday):
     }.get(hour, 0.1)
 
 
+PUBLIC_DEMO_MAX_ACTIVE = 100
+
+
 class Command(BaseCommand):
     help = "Carga datos de demostración ficticios (borra os anteriores de demostración)."
 
@@ -290,6 +293,12 @@ class Command(BaseCommand):
             from apps.tenants.demo_v15 import seed as seed_v15
 
             seed_v15()
+            if settings.EIRA_PUBLIC_DEMO:
+                # Todas as visitas comparten as contas: o máximo por persoa bloquearía ao xurado
+                Municipality.objects.update(
+                    max_active_bookings=PUBLIC_DEMO_MAX_ACTIVE,
+                    network_max_active=PUBLIC_DEMO_MAX_ACTIVE,
+                )
         self.stdout.write(
             self.style.SUCCESS(
                 f"Demo lista: {Municipality.objects.count()} concellos, {Facility.objects.count()} instalacións, "

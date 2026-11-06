@@ -15,14 +15,14 @@ from django.utils import timezone
 
 from apps.accounts.models import User
 from apps.activities.models import Group, Session
-from apps.bookings.models import Booking, OpenGame
+from apps.bookings.models import Booking, OpenGame, SlotRelease
 from apps.facilities.models import Facility
 from apps.members.models import MemberCard
 from apps.members.services import live_token
 from apps.safety.models import ClosingEscalation
 from apps.surveys.models import Survey
 
-from .conftest import DESKTOP, MOBILE, released_booking_id
+from .conftest import DESKTOP, MOBILE
 
 pytestmark = [pytest.mark.e2e, pytest.mark.video, pytest.mark.django_db(transaction=False)]
 OUT = Path(settings.BASE_DIR) / "docs" / "capturas" / "v1.2"
@@ -57,7 +57,7 @@ def shots():
     live = _uxia_booking(court, now - dt.timedelta(minutes=20))  # reserva en curso
     soon = _uxia_booking(hall, now + dt.timedelta(hours=5))  # dentro das 24 h: Confirmo/Cancelo
     esc = ClosingEscalation.objects.filter(municipality__slug="vilardeiras").first()
-    released = released_booking_id()
+    released = SlotRelease.objects.filter(municipality__slug="vilardeiras").first()
     surveys = Survey.objects.filter(municipality__slug="vilardeiras").order_by("year")
     game = OpenGame.objects.filter(municipality__slug="vilardeiras", joins__isnull=False).first()
     next_padel = (
@@ -101,7 +101,7 @@ def shots():
         (
             "F4-ciclo-lista-espera",
             ADMIN,
-            f"{V}/xestion/reservas/{released}/",
+            f"{V}/xestion/reservas/{released.released_booking_id}/",
             False,
         ),
         # G · Partidas abertas

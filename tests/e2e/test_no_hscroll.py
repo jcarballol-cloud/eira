@@ -11,8 +11,6 @@ from apps.bookings.models import Booking
 from apps.facilities.models import Facility
 from apps.maintenance.models import WorkOrder
 
-from .conftest import uxia_waitlist_entry
-
 pytestmark = [pytest.mark.e2e, pytest.mark.django_db(transaction=False)]
 
 # Páxina enteira e panel con scroll propio (.shell-main) sen desbordar; e ningún elemento visible
@@ -73,11 +71,11 @@ def pages():
         .first()
     )
     start = timezone.localtime(upcoming.start).isoformat()
-    from apps.bookings.models import OpenGame
+    from apps.bookings.models import OpenGame, WaitlistEntry
 
     hall = Facility.objects.get(name="Pavillón municipal de Vilardeiras")
     game = OpenGame.objects.filter(municipality__slug="vilardeiras", joins__isnull=False).first()
-    wait = uxia_waitlist_entry()
+    wait = WaitlistEntry.objects.filter(user__email="uxia@demo.eira.example").first()
     neighbour = [
         f"{c}/app/",
         f"{c}/",

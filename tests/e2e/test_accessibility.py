@@ -15,7 +15,7 @@ from apps.integrations.models import DevMail
 from apps.maintenance.models import WorkOrder
 from apps.notifications.models import Notice
 
-from .conftest import DESKTOP, MOBILE, TABLET, released_booking_id, uxia_waitlist_entry
+from .conftest import DESKTOP, MOBILE, TABLET
 
 pytestmark = [pytest.mark.e2e, pytest.mark.django_db(transaction=False)]
 
@@ -87,11 +87,12 @@ def page_sets():
     from apps.safety.models import ClosingEscalation
 
     esc = ClosingEscalation.objects.filter(municipality__slug="vilardeiras").first()
+    from apps.bookings.models import SlotRelease, WaitlistEntry
     from apps.surveys.models import Survey
 
     surveys = Survey.objects.filter(municipality__slug="vilardeiras").order_by("year")
-    released = released_booking_id()
-    wait = uxia_waitlist_entry()
+    released = SlotRelease.objects.filter(municipality__slug="vilardeiras").first()
+    wait = WaitlistEntry.objects.get(user__email="uxia@demo.eira.example")
     padel_v = Facility.objects.get(municipality__slug="vilardeiras", kind="padel")
     from apps.bookings.models import OpenGame
 
@@ -269,7 +270,7 @@ def page_sets():
             f"{c}/xestion/enquisas/",
             f"{c}/xestion/enquisas/{surveys[0].pk}/",
             f"{c}/xestion/enquisas/{surveys[1].pk}/",
-            f"{c}/xestion/reservas/{released}/",
+            f"{c}/xestion/reservas/{released.released_booking_id}/",
             # v1.2 · D
             f"{c}/xestion/instalacions/{hall.pk}/rendemento/",
             f"{c}/xestion/rendemento/",

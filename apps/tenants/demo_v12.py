@@ -24,6 +24,7 @@ from apps.safety.models import (
     ClosingEscalation,
     ResponsibleContact,
 )
+from apps.tenants.demo_utils import demo_booking
 from apps.tenants.models import Municipality
 
 # Accesibilidade detallada por instalación (valor, nota). Sen entrada = sen datos.
@@ -254,6 +255,8 @@ class Seeder:
 
     def closing_escalation(self):
         """Un peche sen confirmar onte no pavillón (chave custodiada), escalado á conserxaría."""
+        from apps.accounts.models import User
+
         yesterday = timezone.localdate() - dt.timedelta(days=1)
         booking = (
             Booking.objects.filter(
@@ -269,7 +272,12 @@ class Seeder:
             # pavillón; créase unha para que o exemplo exista sempre (o E2E e as capturas úsano).
             booking = self._used_hall_booking(yesterday)
         if booking is None:
-            return
+            booking = demo_booking(
+                self.hall,
+                User.objects.filter(email__startswith="vecinanza").order_by("email").first(),
+                range(-2, -30, -1),
+                Booking.Status.USED,
+            )
         booking.closed_at = None
         booking.close_door_ok = booking.close_key_ok = booking.close_all_ok = None
         booking.close_unconfirmed = True
@@ -399,7 +407,13 @@ class Seeder:
             .first()
         )
         if taken is None:
-            return
+            # v1.5.1: o azar pode non deixar ningún uso do pádel ese día; o exemplo ten que existir
+            taken = demo_booking(
+                padel,
+                User.objects.filter(email__startswith="vecinanza").order_by("email").first(),
+                range(-3, -30, -1),
+                Booking.Status.USED,
+            )
         others = list(
             User.objects.filter(email__startswith="vecinanza")
             .exclude(pk=taken.user_id)
@@ -490,10 +504,17 @@ class Seeder:
             .order_by("start")
             .first()
         )
-        if busy:
-            WaitlistEntry.objects.create(
-                municipality=self.vil, facility=padel, start=busy.start, end=busy.end, user=uxia
+        if busy is None:
+            # v1.5.1: sen reservas doutra persoa mañá, créase unha para que haxa que agardar
+            busy = demo_booking(
+                padel,
+                User.objects.filter(email__startswith="vecinanza").order_by("email").first(),
+                range(1, 14),
+                Booking.Status.CONFIRMED,
             )
+        WaitlistEntry.objects.create(
+            municipality=self.vil, facility=padel, start=busy.start, end=busy.end, user=uxia
+        )
 
     # ------------------------------------------------------------------ D
     # (instalación, [(tipo, descrición, kW, modo, factor)])
@@ -608,7 +629,12 @@ class Seeder:
                 .first()
             )
             if b is None:
-                continue
+                b = demo_booking(
+                    Facility.objects.filter(municipality=m, kind=kind).order_by("pk").first(),
+                    people[(i + 3) % len(people)],
+                    range(2, 30),
+                    Booking.Status.CONFIRMED,
+                )
             used.add(b.pk)
             b.participants = max(1, min(b.participants, b.facility.max_participants - spots))
             b.save(update_fields=["participants"])

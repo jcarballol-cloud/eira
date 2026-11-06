@@ -6,7 +6,7 @@ import pytest
 from apps.facilities.models import Facility
 from apps.safety.models import Alert
 
-from .conftest import DESKTOP, MOBILE, uxia_waitlist_entry
+from .conftest import DESKTOP, MOBILE
 
 pytestmark = [pytest.mark.e2e, pytest.mark.django_db(transaction=False)]
 C = "/c/vilardeiras"
@@ -85,7 +85,9 @@ def test_busy_slot_offers_waitlist(new_page, base):
     padel = Facility.objects.get(municipality__slug="vilardeiras", kind="padel")
     page.goto(f"{base}{C}/instalacions/{padel.pk}/")
     assert page.locator(".how-to-book li").count() == 3
-    entry = uxia_waitlist_entry()
+    from apps.bookings.models import WaitlistEntry
+
+    entry = WaitlistEntry.objects.get(user__email=UXIA, status="waiting")
     page.goto(f"{base}{C}/reservas/")
     assert "Listas de espera" in page.locator("main").inner_text()
     page.get_by_role("link", name=padel.name).last.click()

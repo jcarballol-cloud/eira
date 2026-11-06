@@ -24,6 +24,7 @@ from apps.facilities.models import Facility
 from apps.maintenance import cleaning
 from apps.maintenance.models import CleaningLog, CleaningZone, Frequency, WorkOrder
 from apps.maintenance.services import generate_orders
+from apps.tenants.demo_utils import demo_booking
 from apps.tenants.models import Municipality
 
 CLEANER_EMAIL = "noela@demo.eira.example"
@@ -184,7 +185,13 @@ class Seeder:
             .first()
         )
         if b is None:
-            return
+            # v1.5.1: o exemplo ten que existir aínda que o azar non deixase usos recentes
+            b = demo_booking(
+                self.hall,
+                User.objects.filter(email__startswith="vecinanza").order_by("email").first(),
+                range(-1, -30, -1),
+                Booking.Status.USED,
+            )
         rating = save_rating(
             b,
             "bad",

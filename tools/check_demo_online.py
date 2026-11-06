@@ -232,7 +232,7 @@ def check_rate_limit(browser, base, insecure):
 def check_real_mail_rejected(browser, base, insecure):
     page = new_page(browser, DESKTOP, insecure)
     page.goto(base + "/acceso/")
-    page.fill("#id_email", "alguen@example.org")
+    page.fill("#id_email", "alguen@correo.test")
     page.click("main button[type=submit]")
     page.wait_for_load_state()
     report("Rexeita correos reais", "correo real" in page.locator("main").inner_text())

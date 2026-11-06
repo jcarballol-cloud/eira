@@ -74,7 +74,7 @@ def test_rate_limit_is_per_visitor_behind_proxy(client, settings):
 
 def test_public_demo_only_accepts_fictitious_addresses(client, settings):
     settings.EIRA_PUBLIC_DEMO = True
-    response = client.post("/acceso/", {"email": "Alguen@Example.org"})
+    response = client.post("/acceso/", {"email": "Alguen@Correo.test"})
     assert response.status_code == 200
     assert "non escribas o teu correo real" in response.content.decode()
     assert not LoginCode.objects.exists() and not DevMail.objects.exists()
@@ -83,7 +83,7 @@ def test_public_demo_only_accepts_fictitious_addresses(client, settings):
 
 def test_real_addresses_work_outside_the_public_demo(settings):
     settings.EIRA_PUBLIC_DEMO = False
-    assert not rejects_email("alguen@example.org")
+    assert not rejects_email("alguen@correo.test")
 
 
 def test_home_shows_notice_and_local_videos_only_in_public_demo(client, settings):
@@ -99,10 +99,10 @@ def test_home_shows_notice_and_local_videos_only_in_public_demo(client, settings
 
 
 def test_seed_reset_removes_visitors_only_in_public_demo(settings):
-    User.objects.create_user("alguen@example.org")
+    User.objects.create_user("alguen@correo.test")
     settings.EIRA_PUBLIC_DEMO = False
     Command().reset()
-    assert User.objects.filter(email="alguen@example.org").exists()
+    assert User.objects.filter(email="alguen@correo.test").exists()
 
     settings.EIRA_PUBLIC_DEMO = True
     Command().reset()

@@ -71,11 +71,11 @@ def pages():
         .first()
     )
     start = timezone.localtime(upcoming.start).isoformat()
-    from apps.bookings.models import OpenGame, WaitlistEntry
+    from apps.bookings.models import OpenGame
 
     hall = Facility.objects.get(name="Pavillón municipal de Vilardeiras")
     game = OpenGame.objects.filter(municipality__slug="vilardeiras", joins__isnull=False).first()
-    wait = WaitlistEntry.objects.filter(user__email="uxia@demo.eira.example").first()
+    wait = uxia_waitlist_entry()
     neighbour = [
         f"{c}/app/",
         f"{c}/",

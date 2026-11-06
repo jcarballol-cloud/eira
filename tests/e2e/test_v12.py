@@ -81,13 +81,11 @@ def test_annual_survey_answer(new_page, base):
 
 
 def test_busy_slot_offers_waitlist(new_page, base):
-    from apps.bookings.models import WaitlistEntry
-
     page = new_page(viewport=MOBILE, persona=UXIA)
     padel = Facility.objects.get(municipality__slug="vilardeiras", kind="padel")
     page.goto(f"{base}{C}/instalacions/{padel.pk}/")
     assert page.locator(".how-to-book li").count() == 3
-    entry = WaitlistEntry.objects.get(user__email=UXIA, status="waiting")
+    entry = uxia_waitlist_entry()
     page.goto(f"{base}{C}/reservas/")
     assert "Listas de espera" in page.locator("main").inner_text()
     page.get_by_role("link", name=padel.name).last.click()

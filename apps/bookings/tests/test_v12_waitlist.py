@@ -109,7 +109,9 @@ def test_join_only_busy_slots(client, citizen, ana, padel_a):
     with pytest.raises(waitlist.WaitlistError):
         waitlist.join(padel_a, start, citizen)  # xa é súa
     client.force_login(ana)
-    html = client.get(f"{C}/instalacions/{padel_a.pk}/").content.decode()
+    # A semana da franxa: en fin de semana, dentro de 2 días xa é a grella da semana seguinte
+    week = timezone.localtime(start).date().isoformat()
+    html = client.get(f"{C}/instalacions/{padel_a.pk}/", {"semana": week}).content.decode()
     assert "Avísame" in html and "Elixe" in html and "Paga" in html and "Confirma" in html
     r = client.post(f"{C}/reservas/agardar/{padel_a.pk}/", {"inicio": start.isoformat()})
     assert r.status_code == 302

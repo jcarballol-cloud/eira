@@ -15,7 +15,7 @@ from apps.integrations.models import DevMail
 from apps.maintenance.models import WorkOrder
 from apps.notifications.models import Notice
 
-from .conftest import DESKTOP, MOBILE, TABLET
+from .conftest import DESKTOP, MOBILE, TABLET, uxia_waitlist_entry
 
 pytestmark = [pytest.mark.e2e, pytest.mark.django_db(transaction=False)]
 
@@ -87,12 +87,12 @@ def page_sets():
     from apps.safety.models import ClosingEscalation
 
     esc = ClosingEscalation.objects.filter(municipality__slug="vilardeiras").first()
-    from apps.bookings.models import SlotRelease, WaitlistEntry
+    from apps.bookings.models import SlotRelease
     from apps.surveys.models import Survey
 
     surveys = Survey.objects.filter(municipality__slug="vilardeiras").order_by("year")
     released = SlotRelease.objects.filter(municipality__slug="vilardeiras").first()
-    wait = WaitlistEntry.objects.get(user__email="uxia@demo.eira.example")
+    wait = uxia_waitlist_entry()
     padel_v = Facility.objects.get(municipality__slug="vilardeiras", kind="padel")
     from apps.bookings.models import OpenGame
 

@@ -74,3 +74,45 @@ def login_as(page, base, email):
     page.goto(demo_url(base, email))
     page.locator(f"form:has(input[value='{email}']) button").click()
     page.wait_for_load_state()
+
+
+def uxia_waitlist_entry():
+    """Uxía agardando unha franxa ocupada. A demo só a crea se mañá hai unha reserva doutra persoa
+    no pádel, e iso depende da data e da hora: se falta, créase aquí para que a proba non dependa."""
+    from django.utils import timezone
+
+    from apps.accounts.models import User
+    from apps.bookings.models import Booking, WaitlistEntry
+    from apps.bookings.services import slot_starts
+    from apps.facilities.models import Facility
+
+    uxia = User.objects.get(email="uxia@demo.eira.example")
+    entry = WaitlistEntry.objects.filter(user=uxia, status="waiting").first()
+    if entry:
+        return entry
+    padel = Facility.objects.get(municipality__slug="vilardeiras", kind="padel")
+    other = User.objects.filter(email__startswith="vecinanza").order_by("email").first()
+    for days in range(1, 8):
+        day = timezone.localdate() + timezone.timedelta(days=days)
+        for start in slot_starts(padel, day):
+            active = Booking.objects.filter(
+                facility=padel, start=start, status__in=["confirmed", "used"]
+            )
+            if active.filter(user=uxia).exists():
+                continue
+            booking = active.first() or Booking.objects.create(
+                municipality=padel.municipality,
+                facility=padel,
+                user=other,
+                start=start,
+                end=start + timezone.timedelta(minutes=padel.slot_minutes),
+                status=Booking.Status.CONFIRMED,
+            )
+            return WaitlistEntry.objects.create(
+                municipality=padel.municipality,
+                facility=padel,
+                start=booking.start,
+                end=booking.end,
+                user=uxia,
+            )
+    raise AssertionError("Non hai franxas de pádel nos próximos 7 días")

@@ -11,6 +11,9 @@
 - **Cambios:** OpenAPI regenerado, `ubuntu-24.04`, `checkout@v7`, `setup-python@v7` (Node 24) y caché de pip también ligada a `requirements-dev.txt`. Sin cambios en la aplicación.
 - **Reproducción previa en Linux con PostgreSQL 16:** lint, licencias, SPDX y OpenAPI ✅; 941 tests y 13 saltados por no haber Node en el contenedor; 89 E2E con axe ✅ (35 min).
 
+- **Pruebas que dependían de la fecha o la hora (corregidas):** orden de mantenimiento de madrugada, lista de espera en fin de semana y ejemplos de la demo que no siempre existen. La aplicación y la demo no cambian: en algunas fechas y horas, Uxía puede no tener lista de espera en la demo.
+- **Reloj fijado, suite completa en Linux con PostgreSQL 16:** a las 23:50 y a las 00:30, 941 tests y 13 saltados por no haber Node en el contenedor, y 89 E2E con axe ✅ en ambas.
+
 ## v1.5. Versión definitiva para la entrega (05/11) · etiqueta `v1.5-certame`
 
 **Servidor:** `0.0.0.0:8000`, `EIRA_DEBUG=1`, con la demo regenerada. Última tanda de funcionalidades: a partir de aquí solo se corrigen errores.

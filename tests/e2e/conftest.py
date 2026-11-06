@@ -116,3 +116,39 @@ def uxia_waitlist_entry():
                 user=uxia,
             )
     raise AssertionError("Non hai franxas de pádel nos próximos 7 días")
+
+
+def released_booking_id():
+    """Reserva orixinal dunha franxa liberada. A demo só crea o exemplo se hai 3 días houbo un uso
+    do pádel, e iso depende da data e da hora: se falta, créase aquí."""
+    from django.utils import timezone
+
+    from apps.bookings.models import Booking, SlotRelease
+    from apps.facilities.models import Facility
+
+    release = SlotRelease.objects.filter(
+        municipality__slug="vilardeiras", released_booking__isnull=False
+    ).first()
+    if release:
+        return release.released_booking_id
+    padel = Facility.objects.get(municipality__slug="vilardeiras", kind="padel")
+    used = Booking.objects.filter(facility=padel, user__isnull=False, end__lte=timezone.now())
+    taken = used.order_by("-start").first()
+    original = Booking.objects.create(
+        municipality=padel.municipality,
+        facility=padel,
+        user=taken.user,
+        start=taken.start,
+        end=taken.end,
+        status=Booking.Status.CANCELLED,
+    )
+    return SlotRelease.objects.create(
+        municipality=padel.municipality,
+        facility=padel,
+        start=taken.start,
+        end=taken.end,
+        released_booking=original,
+        reason=SlotRelease.Reason.CANCELLED,
+        taken_booking=taken,
+        closed_at=taken.start,
+    ).released_booking_id

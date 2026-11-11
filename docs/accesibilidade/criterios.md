@@ -36,5 +36,6 @@
 ## Ferramentas
 
 - `tests/e2e/test_accessibility.py`: axe-core (reglas `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`) en
-  53 páxinas × móbil e escritorio con todos os perfís de demostración.
+  174 páxinas (153 enderezos distintos) × móbil, tableta e escritorio con todos os perfís de
+  demostración, e 81 en tema escuro (`tests/e2e/test_dark_theme.py`).
 - Test que impide `<script>` e `style=` en liña (compatibilidade con CSP e mantemento).

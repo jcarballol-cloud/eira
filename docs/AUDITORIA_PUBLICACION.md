@@ -2,14 +2,14 @@
 
 **Última revisión: 27/10/2026 (v1.4)**, primeira sección. A auditoría orixinal segue debaixo.
 
-> **Capturas:** as rutas `docs/capturas/v…/` que se citan aquí son das capturas completas, que non están no repositorio: publicaranse no adxunto `capturas-v1.4.zip` da versión **v1.4-certame** (ver [capturas/README.md](capturas/README.md)). No repositorio quedan as 6 capturas clave do README.
+> **Capturas:** as rutas `docs/capturas/v…/` que se citan aquí son das capturas completas, que non están no repositorio: están dispoñibles baixo petición ao equipo (ver [capturas/README.md](capturas/README.md)). No repositorio quedan as 11 capturas clave do README.
 
 ## Revisión v1.4 (27/10/2026): copia limpa para publicar
 
 O equipo decidiu **non reescribir este repositorio** (queda como arquivo privado co historial
 completo) e publicar unha **copia limpa** xerada á parte cun script (`git filter-repo` só na copia):
 sen o dominio de demostración antigo, sen o nome de pila da sección 2.b, sen o apelido común da
-2.c e sen `docs/capturas/` (que vai como adxunto da versión). A auditoría completa repetiuse
+2.c e sen `docs/capturas/` (as capturas completas, dispoñibles baixo petición). A auditoría completa repetiuse
 **sobre a copia** e o resultado queda fóra do repositorio, xunto ao script
 (`Eira-release/auditoria-copia-publica.md`). Resumo: apta para publicar; `.git` de ≈ 32 MB;
 0 ficheiros > 5 MB; tests, E2E, `publiccode.yml`, licenza e cabeceiras SPDX en verde. Neste

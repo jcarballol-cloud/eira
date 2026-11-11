@@ -1,5 +1,9 @@
 # Eira
 
+> **Próbaa xa, sen instalar nada: <https://eira.engramlab.es>**
+> Só leva datos ficticios, restáurase cada noite e na portada escolles o perfil (veciña, concello,
+> mantemento…).
+
 **Eira · Software libre para a xestión deportiva municipal.** Reservas, acceso ás instalacións, mantemento e actividades deportivas do concello, nunha soa plataforma.
 
 Eira é unha plataforma de software libre para que os concellos —sobre todo os pequenos— xestionen as
@@ -28,13 +32,16 @@ nun bar, un teclado con código que non necesita internet ou unha pechadura cone
 
 ## Probalo
 
-Con Docker:
+**En liña, sen instalar nada:** <https://eira.engramlab.es>. Datos ficticios que se restauran cada
+noite ás 04:00; na portada escolles o concello e o perfil.
+
+**No teu ordenador**, como alternativa, con Docker:
 
 ```bash
 docker compose up --build
 ```
 
-Sen Docker (Python 3.12+):
+Ou sen Docker (Python 3.12+):
 
 ```bash
 python -m venv .venv && . .venv/bin/activate      # Windows: .venv\Scripts\activate
@@ -46,10 +53,10 @@ Abre <http://127.0.0.1:8000> e escolle un perfil de demostración (persoas ficti
 
 ### A demo en 5 minutos
 
-1. **Arrancar** (1–3 min): `docker compose up --build` (precisa Docker) ou, sen Docker,
+1. **Arrancar** (1–3 min; na [demo en liña](https://eira.engramlab.es) sáltase este paso): `docker compose up --build` (precisa Docker) ou, sen Docker,
    `python tools/tasks.py dev` (Python 3.12+; usa SQLite e carga a demo). Agarda a que diga que
    escoita no porto 8000.
-2. **Entrar:** abre <http://localhost:8000>. Non hai contrasinais: escolle o concello (Vilardeiras ou
+2. **Entrar:** abre <http://localhost:8000> (ou <https://eira.engramlab.es>). Non hai contrasinais: escolle o concello (Vilardeiras ou
    Pontedouro, ficticios) e un perfil. Todas as persoas, correos e datos son inventados.
 3. **Probar como veciña** (perfil *Uxía*): reserva unha franxa no pádel → paga no TPV simulado →
    recibe o código de acceso → abre a pechadura no simulador. Mira tamén *O meu carné* e *Incidencia

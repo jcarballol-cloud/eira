@@ -2,7 +2,7 @@
 
 Última actualización: 2026-10-26, v5 (versión conxelada `v1.0-certame`).
 
-> **Capturas:** as rutas `docs/capturas/v…/` que se citan aquí son das capturas completas, que non están no repositorio: publicaranse no adxunto `capturas-v1.4.zip` da versión **v1.4-certame** (ver [capturas/README.md](capturas/README.md)). No repositorio quedan as 6 capturas clave do README.
+> **Capturas:** as rutas `docs/capturas/v…/` que se citan aquí son das capturas completas, que non están no repositorio: están dispoñibles baixo petición ao equipo (ver [capturas/README.md](capturas/README.md)). No repositorio quedan as 11 capturas clave do README.
 
 ## Demo pública (2026-11-06)
 - ✅ `deploy/demo/` e `docs/despregamento-demo.md`, probados en local nas dúas variantes (`tools/check_demo_online.py`: 31 de 31)
@@ -171,3 +171,11 @@ Decisións en DECISIONS (v1.5). Lista de comprobación en `docs/REVISION_V1.5.md
 - ✅ D · documentos legais versionados e modelos de exemplo.
 - ✅ A · botón «Escoitar».
 - ✅ C · procedencia e mobilidade, só agregadas.
+
+## Último repaso antes da entrega (11/11/2026)
+
+Sen funcionalidade nova.
+- ✅ README: demo en liña (<https://eira.engramlab.es>) baixo o título e primeira en «Probalo»; Docker e Python como alternativas.
+- ✅ Capturas completas e vídeos: non hai release publicada, así que os documentos din «dispoñibles baixo petición» en vez de prometer un adxunto.
+- ✅ Cifras de axe en `docs/accesibilidade/criterios.md` postas ao día: 174 páxinas × 3 tamaños e 81 en escuro (contadas cos mesmos `page_sets()` dos tests). 970 tests unitarios/integración e 89 E2E (sen os de vídeo).
+- ✅ Demo en liña: rexeneración das 04:00 executada soa do 7 ao 11/11; a imaxe despregada coincide co código de HEAD; `check_demo_online.py` 30 de 30.

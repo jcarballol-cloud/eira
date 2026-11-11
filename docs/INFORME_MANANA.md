@@ -2,7 +2,7 @@
 
 **Fecha:** 23/10/2026 (última actualización: 05/11/2026, v1.5) · **Rama:** `master` (git local, sin push) · **Estado:** P0–P5 cubiertos; queda pulido y verificación humana.
 
-> **Capturas:** las rutas `docs/capturas/v…/` citadas aquí son de las capturas completas, que no están en el repositorio: se publicarán en el adjunto `capturas-v1.4.zip` de la versión **v1.4-certame** (ver [capturas/README.md](capturas/README.md)). En el repositorio quedan las 6 capturas clave del README.
+> **Capturas:** las rutas `docs/capturas/v…/` citadas aquí son de las capturas completas, que no están en el repositorio: están disponibles bajo petición al equipo (ver [capturas/README.md](capturas/README.md)). En el repositorio quedan las 11 capturas clave del README.
 
 
 ## v1.5.1. CI de GitHub (05/11) · etiqueta `v1.5.1-certame`
@@ -510,7 +510,7 @@ Antes de corregir, reproduje cada problema con capturas o tests.
 | Fallos reales que encontró la CI local | ✅ corregidos | El OpenAPI cambiaba con PostgreSQL (la CI habría fallado); se podían reservar franjas ya empezadas; `role="status"` rompía la lista de mensajes (axe) |
 | Demo pública preparada (Caddy HTTPS, DEBUG off, regeneración nocturna) | ✅ verificado en local / ⬜ sin desplegar | [despregamento-demo.md](despregamento-demo.md): HTTPS con el certificado interno de Caddy, 308 de HTTP a HTTPS, HSTS, 33 páginas con 200, regeneración forzada a la hora actual y cargas simultáneas serializadas |
 | RAM sin IA | ✅ medido | app 139 MiB (2 workers), PostgreSQL 52–59 MiB, Caddy 12–15 MiB → **≈ 210 MiB en reposo, ≈ 300 MiB en el pico nocturno**. VPS de 1 GB recomendado |
-| Vídeo del guion del pitch | ✅ verificado | `eira-demo-movil.webm` y `eira-demo-escritorio.webm` (adjuntos de la release; ver `docs/demo/VIDEOS.md`) (~88 s, subtítulos, pausas de 2,6–3,4 s), más capturas numeradas en `docs/demo/pasos-movil/` y `pasos-escritorio/` (22 cada una). Se revisaron fotogramas con ffmpeg. `python tools/tasks.py video` |
+| Vídeo del guion del pitch | ✅ verificado | `eira-demo-movil.webm` y `eira-demo-escritorio.webm` (fuera del repositorio, disponibles bajo petición; ver `docs/demo/VIDEOS.md`) (~88 s, subtítulos, pausas de 2,6–3,4 s), más capturas numeradas en `docs/demo/pasos-movil/` y `pasos-escritorio/` (22 cada una). Se revisaron fotogramas con ffmpeg. `python tools/tasks.py video` |
 | Nombres ficticios | ✅ revisado | Ninguna coincidencia real en Vilardeiras, Pontedouro ni Deputación das Marismas (búsquedas web); las parroquias son topónimos genéricos (ver DECISIONS). No se consultó el Nomenclátor del IGE |
 
 **Importante para el servidor de la fase 1:** arrancó con el código de antes de estos cambios y sin

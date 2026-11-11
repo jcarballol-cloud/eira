@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: EUPL-1.2 -->
 # Vídeos da demostración
 
-Os vídeos do guión pesan máis de 10 MB, así que non se gardan no repositorio: van como adxuntos dunha release.
+Os vídeos do guión pesan máis de 10 MB, así que non se gardan no repositorio: están dispoñibles baixo petición ao equipo.
 
 | Ficheiro | Contido |
 |---|---|

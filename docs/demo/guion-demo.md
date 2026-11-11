@@ -5,7 +5,7 @@
 
 No escritorio, a app da veciñanza e a do operario aparecen dentro dun **marco de teléfono**, e a do monitor nun de **tableta**. Na barra da demo está «Sen marco» para quitalo.
 
-O mesmo percorrido está gravado, con subtítulos, en `eira-demo-movil.webm` e `eira-demo-escritorio.webm`. Pesan máis de 10 MB, así que non van ao git: distribúense como adxuntos da release (ver [VIDEOS.md](VIDEOS.md)). As capturas de cada paso (`docs/capturas/v3/pitch-*/`) e as novidades da v4 (`docs/capturas/v4/`) van no adxunto `capturas-v1.4.zip` da versión v1.4-certame (ver [../capturas/README.md](../capturas/README.md)); no repositorio só quedan as 6 capturas clave do README. Regénerase con `pytest tests/e2e/test_video.py`.
+O mesmo percorrido está gravado, con subtítulos, en `eira-demo-movil.webm` e `eira-demo-escritorio.webm`. Pesan máis de 10 MB, así que non van ao git: están dispoñibles baixo petición (ver [VIDEOS.md](VIDEOS.md)). As capturas de cada paso (`docs/capturas/v3/pitch-*/`) e as novidades da v4 (`docs/capturas/v4/`) tampouco están no repositorio, tamén baixo petición (ver [../capturas/README.md](../capturas/README.md)); no repositorio só quedan as 11 capturas clave do README. Regénerase con `pytest tests/e2e/test_video.py`.
 
 **Vídeo final do pitch (≈ 2 min, 1920×1080):** versión curta deste guión (alta por padrón → franxa tranquila → pagamento rexeitado e reintento → código e pechadura → **(v5) Uxía reserva en Pontedouro con tarifa de non empadroada e suplemento de luz** → «Que tal foi?» e incidencia → orde do operario → tableta → avisos e Telegram → deputación). Grávase con `python tools/tasks.py pitch` en `docs/demo/eira-pitch.{mp4,webm,vtt}`, fóra do git.
 

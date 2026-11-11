@@ -2,7 +2,7 @@
 
 Formato: data · decisión · motivo · alternativas descartadas.
 
-> **Capturas:** as rutas `docs/capturas/v…/` que se citan aquí son das capturas completas, que non están no repositorio: publicaranse no adxunto `capturas-v1.4.zip` da versión **v1.4-certame** (ver [capturas/README.md](capturas/README.md)). No repositorio quedan as 6 capturas clave do README.
+> **Capturas:** as rutas `docs/capturas/v…/` que se citan aquí son das capturas completas, que non están no repositorio: están dispoñibles baixo petición ao equipo (ver [capturas/README.md](capturas/README.md)). No repositorio quedan as 11 capturas clave do README.
 
 ## 2026-10-23 · Python 3.13 no entorno local
 - **Decisión:** venv con Python 3.13 (a máquina ten 3.13 e 3.14). Docker usa `python:3.13-slim`.
@@ -841,3 +841,5 @@ Decisións do equipo sobre a auditoría da v1.3: **este repositorio e o seu remo
 - **Detrás dun proxy existente:** `pruebas-gestor` xa ten o Caddy do gestor en 80/443. Eira entra cun Caddy propio sen portos (`eira-web`) na rede dese proxy, e só ese contedor; así os dous proxies non comparten configuración. Conectar o Caddy do gestor a unha rede nova illaría máis, pero obrigaría a cambiar o compose do gestor.
 - **Imaxe construída en local e copiada:** sen credenciais de GitHub no servidor (repositorio privado) e sen carga de compilación xunto ao gestor.
 - **`.dockerignore`:** só excluía o `.env` da raíz; `deploy/demo/.env`, a carta `.docx` e os vídeos entraban na imaxe. Corrixido.
+- **Capturas e vídeos sen release (11/11/2026):** non se publicou ningunha versión con adxuntos, así que a documentación deixa de anunciar `capturas-v1.4.zip` e os vídeos como adxuntos: «dispoñibles baixo petición». As entradas históricas quedan como estaban; a nota da cabeceira aclara o estado actual.
+- **LEEME sen a ligazón á demo en liña:** o LEEME móstrase dentro da app (axuda «?»); cambialo obrigaría a reconstruír a imaxe da demo só por iso. A demo en liña vai no README.

@@ -183,6 +183,6 @@ violacións en seis pantallas, límite de acceso no envío 21, rexeneración a m
 ## Comprobación do 11/11/2026
 
 **Verificado:** a rexeneración das 04:00 executouse soa os días 7, 8, 9, 10 e 11 (rexistros de
-`reseed`, entre 36 e 39 s cada unha); a demo seguiu respondendo eses cinco días; ningunha conta fóra
+`reseed`, entre 36 e 39 s cada unha); os contedores levaban 5 días sen reiniciarse; ningunha conta fóra
 do dominio ficticio. Imaxe nova coa declaración de accesibilidade: os 535 ficheiros da app no contedor
 son idénticos aos do repositorio; `check_demo_online.py` 30 de 30.

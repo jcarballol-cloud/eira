@@ -19,6 +19,7 @@ urlpatterns = [
     path("saude/", core.health, name="health"),
     path("offline/", core.offline, name="offline"),
     path("creditos/", core.credits, name="credits"),
+    path("accesibilidade/", core.accessibility, name="accessibility_global"),  # v1.5.1
     path("axuda/", core.help_guide, name="help_guide"),
     path("axuda/leeme/", core.leeme, name="leeme"),  # v1.5 · F
     path("modo-xestion/", core.desk_mode, name="desk_mode"),

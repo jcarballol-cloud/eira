@@ -7,6 +7,7 @@ import pytest
 from axe_playwright_python.sync_playwright import Axe
 
 from apps.integrations.demo import NEW_NEIGHBOUR
+from apps.tenants.accessibility import AXE_DARK_PAGES
 
 from .conftest import DESKTOP, MOBILE, TABLET
 from .test_accessibility import RULES, format_violations, page_sets
@@ -58,6 +59,10 @@ def test_axe_dark_theme(new_page, base):
                 failures.append(f"[{persona}] {path}\n{format_violations(results)}")
     assert not failures, f"{len(failures)} páxinas con violacións de {checked}:\n\n" + "\n\n".join(
         failures
+    )
+    # v1.5.1: a declaración de accesibilidade cita este número de páxinas
+    assert checked == AXE_DARK_PAGES, (
+        f"revisadas {checked}: actualiza apps/tenants/accessibility.py"
     )
 
 

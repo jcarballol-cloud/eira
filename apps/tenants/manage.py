@@ -138,7 +138,21 @@ SETTINGS_SECTIONS = [
     (
         "legal",
         gettext_lazy("Textos legais"),
-        ["privacy_text", "accessibility_statement", "legal_notice"],
+        ["privacy_text", "legal_notice"],
+        True,
+    ),
+    # v1.5.1: declaración de accesibilidade (RD 1112/2018, art. 15)
+    (
+        "accesibilidade",
+        gettext_lazy("Declaración de accesibilidade"),
+        [
+            "accessibility_unit",
+            "accessibility_email",
+            "accessibility_phone",
+            "accessibility_complaint_url",
+            "accessibility_reviewed_on",
+            "accessibility_statement",
+        ],
         True,
     ),
 ]
@@ -166,6 +180,11 @@ class SettingsForm(forms.ModelForm):
             "dpo_contact",
             "privacy_text",
             "accessibility_statement",
+            "accessibility_unit",  # v1.5.1
+            "accessibility_email",
+            "accessibility_phone",
+            "accessibility_complaint_url",
+            "accessibility_reviewed_on",
             "legal_notice",
             "office_payment_hours",
             "lighting_rule",
@@ -201,6 +220,7 @@ class SettingsForm(forms.ModelForm):
             "accent_color": forms.TextInput(attrs={"type": "color"}),
             "privacy_text": forms.Textarea(attrs={"rows": 4}),
             "accessibility_statement": forms.Textarea(attrs={"rows": 4}),
+            "accessibility_reviewed_on": forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d"),
             "legal_notice": forms.Textarea(attrs={"rows": 3}),
             # Correo e enderezo xuntos: nunha caixa dunha liña cortábase
             "dpo_contact": forms.Textarea(attrs={"rows": 2}),

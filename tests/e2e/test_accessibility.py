@@ -14,6 +14,7 @@ from apps.integrations.demo import NEW_NEIGHBOUR
 from apps.integrations.models import DevMail
 from apps.maintenance.models import WorkOrder
 from apps.notifications.models import Notice
+from apps.tenants.accessibility import AXE_PAGES
 
 from .conftest import DESKTOP, MOBILE, TABLET
 
@@ -142,6 +143,7 @@ def page_sets():
             f"{c}/privacidade/datos/",
             "/axuda/",
             f"{c}/accesibilidade/",
+            "/accesibilidade/",  # v1.5.1: declaración xeral
             f"{c}/datos-abertos/",
             "/dev/lock-simulator/",
             "/dev/mailbox/",
@@ -347,3 +349,5 @@ def test_axe_main_pages(new_page, base, viewport):
     assert not failures, f"{len(failures)} páxinas con violacións de {checked}:\n\n" + "\n\n".join(
         failures
     )
+    # v1.5.1: a declaración de accesibilidade cita este número de páxinas
+    assert checked == AXE_PAGES, f"revisadas {checked}: actualiza apps/tenants/accessibility.py"

@@ -28,6 +28,7 @@ nun bar, un teclado con código que non necesita internet ou unha pechadura cone
 - **Multi-concello:** cada concello illado e configurable; vista de deputación para comparar e dar de alta concellos.
 - **Para todas as persoas (v1.5):** botón «Escoitar» coa voz do dispositivo e «Alerta» en todos os perfís, co DESA e a ubicación para ditar ao 112.
 - **Datos e legalidade (v1.5):** mapa de procedencia só agregado (n ≥ 10), documentos legais versionados (modelos de exemplo) e acreditación con menores sen gardar o certificado.
+- **App instalable desde o navegador (PWA):** sen tendas de aplicacións nin custos de publicación, actualízase para todas as persoas ao momento e funciona sen conexión.
 - **Soberanía:** exportación íntegra en formatos abertos, API OpenAPI 3.1, datos abertos DCAT-AP, IA opcional só autoaloxada.
 
 ## Probalo
@@ -85,7 +86,8 @@ python tools/tasks.py licenses  # licenzas das dependencias compatibles coa EUPL
 - [Visión xeral e arquitectura](docs/arquitectura/vision-xeral.md) · [Modelo de datos](docs/arquitectura/modelo-datos.md)
 - [Códigos de acceso sen conexión](docs/access/offline-codes.md)
 - [Interoperabilidade](docs/interoperabilidade.md) · [Seguridade e RXPD](docs/seguridade-rxpd.md)
-- [Accesibilidade](docs/accesibilidade/criterios.md) · [Despregamento](docs/despregamento.md)
+- [Declaración de accesibilidade](docs/accesibilidade/declaracion.md) (RD 1112/2018; na app, en `/accesibilidade/`) ·
+  [criterios de accesibilidade](docs/accesibilidade/criterios.md) · [Despregamento](docs/despregamento.md)
 - [Guión da demostración](docs/demo/guion-demo.md)
 - Para concellos: [modelo de ordenanza de prezos públicos e taxa](docs/concello/ordenanza-modelo.md) ·
   [plantilla de EIPD](docs/rxpd/eipd-plantilla.md) · [matriz de datos por perfil](docs/rxpd/matriz.md)

@@ -1,0 +1,11 @@
+{% load i18n %}{# v1.5.1: pé da app e da tableta, coa declaración de accesibilidade (RD 1112/2018) #}<footer class="app-footer">
+  <ul>
+    {% if app_tenant %}
+      <li><a href="{% url 'accessibility' app_tenant.slug %}">{% translate "Accesibilidade" %}</a></li>
+      <li><a href="{% url 'privacy' app_tenant.slug %}">{% translate "Privacidade" %}</a></li>
+    {% else %}
+      <li><a href="{% url 'accessibility_global' %}">{% translate "Accesibilidade" %}</a></li>
+    {% endif %}
+    <li><a href="{% url 'preferences' %}?next={{ request.get_full_path|urlencode }}">{% translate "Preferencias de lectura" %}</a></li>
+  </ul>
+</footer>

@@ -110,6 +110,11 @@ TENANT_FIELDS = [
     "population",
     "privacy_text",
     "accessibility_statement",
+    "accessibility_unit",  # v1.5.1
+    "accessibility_email",
+    "accessibility_phone",
+    "accessibility_complaint_url",
+    "accessibility_reviewed_on",
     "legal_notice",
     "modules",
     "cancellation_hours",
@@ -201,7 +206,7 @@ def export_municipality(tenant):
         data = {
             "format": FORMAT,
             "exported_at": timezone.now().isoformat(),
-            "municipality": {f: getattr(tenant, f) for f in TENANT_FIELDS},
+            "municipality": {f: _value(tenant, tenant._meta.get_field(f)) for f in TENANT_FIELDS},
             "users": [{f: getattr(u, f) for f in USER_FIELDS} for u in users],
             "objects": [],
         }

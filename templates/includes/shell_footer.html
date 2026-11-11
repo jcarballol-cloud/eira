@@ -9,6 +9,8 @@
         <li><a href="{% turl 'privacy' %}">{% translate "Privacidade" %}</a></li>
         <li><a href="{% turl 'accessibility' %}">{% translate "Accesibilidade" %}</a></li>
         <li><a href="{% turl 'open_data:index' %}">{% translate "Datos abertos" %}</a></li>
+      {% else %}
+        <li><a href="{% url 'accessibility_global' %}">{% translate "Accesibilidade" %}</a></li>
       {% endif %}
       <li><a href="{% url 'preferences' %}?next={{ request.get_full_path|urlencode }}">{% translate "Preferencias de lectura" %}</a></li>
       <li><a href="{% url 'credits' %}">{% translate "Créditos das fotos" %}</a></li>

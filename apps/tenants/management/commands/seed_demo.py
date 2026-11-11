@@ -350,6 +350,10 @@ class Command(BaseCommand):
             contact_email=spec["email"],
             address="Praza do Concello, 1",
             dpo_contact=f"dpd@{spec['slug']}.example · Praza do Concello, 1",
+            # v1.5.1: canle da declaración de accesibilidade (ficticia)
+            accessibility_unit="Servizo Municipal de Deportes",
+            accessibility_email=f"accesibilidade@{spec['slug']}.example",
+            accessibility_complaint_url=f"https://sede.{spec['slug']}.example/",
             # Códigos postais ficticios: o padrón simulado recoñece estes
             postcodes={"vilardeiras": "15999,15998"}.get(spec["slug"], "27999"),
             modules={

@@ -177,5 +177,7 @@ Decisións en DECISIONS (v1.5). Lista de comprobación en `docs/REVISION_V1.5.md
 Sen funcionalidade nova.
 - ✅ README: demo en liña (<https://eira.engramlab.es>) baixo o título e primeira en «Probalo»; Docker e Python como alternativas.
 - ✅ Capturas completas e vídeos: non hai release publicada, así que os documentos din «dispoñibles baixo petición» en vez de prometer un adxunto.
-- ✅ Cifras de axe en `docs/accesibilidade/criterios.md` postas ao día: 174 páxinas × 3 tamaños e 81 en escuro (contadas cos mesmos `page_sets()` dos tests). 970 tests unitarios/integración e 89 E2E (sen os de vídeo).
+- ✅ Cifras de axe en `docs/accesibilidade/criterios.md` postas ao día: 175 páxinas × 3 tamaños e 81 en escuro (contadas cos mesmos `page_sets()` dos tests). 970 tests unitarios/integración e 89 E2E (sen os de vídeo).
 - ✅ Demo en liña: rexeneración das 04:00 executada soa do 7 ao 11/11; a imaxe despregada coincide co código de HEAD; `check_demo_online.py` 30 de 30.
+- ✅ Declaración de accesibilidade (RD 1112/2018, art. 15): `/accesibilidade/` (páxinas comúns) e `/c/<concello>/accesibilidade/` co modelo do Observatorio, ligazón no pé de todas as pantallas (tamén na app e na tableta), canle e reclamación configurables polo concello, copia en `docs/accesibilidade/declaracion.md`. 12 tests novos; axe tamén na páxina xeral.
+- ✅ README: liña da PWA en «Que inclúe».

@@ -58,7 +58,7 @@
         <div class="wrap">
           {% block content %}{% endblock %}
         </div>
-        {% if layout == 'public' or layout == 'desk' %}{% include "includes/shell_footer.html" %}{% endif %}
+        {% if layout == 'public' or layout == 'desk' %}{% include "includes/shell_footer.html" %}{% else %}{% include "includes/shell_app_footer.html" %}{% endif %}
       </main>
       {% if layout == 'app' %}{% include "includes/shell_tabbar.html" %}{% endif %}
     </div>

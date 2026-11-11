@@ -1,23 +1,64 @@
-{% extends "base.html" %}{% load i18n %}
+{% extends "base.html" %}{% load i18n eira %}
 {% block title %}{% translate "Declaración de accesibilidade" %}{% endblock %}
 {% block content %}
-<article class="prose card">
+<article class="prose card accessibility-statement">
   <h1>{% translate "Declaración de accesibilidade" %}</h1>
-  {% if tenant.accessibility_statement %}<div>{{ tenant.accessibility_statement|linebreaks }}</div>{% endif %}
-  <p>{% blocktranslate trimmed with n=tenant.name %}O Concello de {{ n }} comprométese a facer accesible este sitio web, de conformidade co Real Decreto 1112/2018, do 7 de setembro, sobre accesibilidade dos sitios web e aplicacións para dispositivos móbiles do sector público.{% endblocktranslate %}</p>
+  {% if tenant %}
+    {% if tenant.accessibility_statement %}<div>{{ tenant.accessibility_statement|linebreaks }}</div>{% endif %}
+    <p>{% blocktranslate trimmed with n=tenant.name %}O Concello de {{ n }} comprométese a facer accesible o seu sitio web e a súa aplicación de Eira, de conformidade co Real Decreto 1112/2018, do 7 de setembro, sobre accesibilidade dos sitios web e aplicacións para dispositivos móbiles do sector público.{% endblocktranslate %}</p>
+    <p>{% blocktranslate trimmed with n=tenant.name %}Esta declaración de accesibilidade aplícase ás páxinas e á aplicación de Eira do Concello de {{ n }}.{% endblocktranslate %}</p>
+  {% else %}
+    <p>{% translate "A entidade que presta este servizo comprométese a facer accesibles as páxinas comúns de Eira (portada, axuda, preferencias e conta), de conformidade co Real Decreto 1112/2018, do 7 de setembro, sobre accesibilidade dos sitios web e aplicacións para dispositivos móbiles do sector público." %}</p>
+    <p>{% translate "Cada concello ten a súa propia declaración, coa súa canle de comunicación e reclamación:" %}</p>
+    <ul>
+      {% for m in municipalities %}<li><a href="{% url 'accessibility' m.slug %}">{% blocktranslate with n=m.name %}Concello de {{ n }}{% endblocktranslate %}</a></li>{% endfor %}
+    </ul>
+  {% endif %}
+
   <h2>{% translate "Situación de cumprimento" %}</h2>
-  <p>{% translate "Este sitio web é parcialmente conforme co RD 1112/2018 debido ás excepcións e á falta de conformidade dos aspectos que se indican a continuación. O obxectivo é a conformidade co nivel AA das WCAG 2.1 (norma EN 301 549)." %}</p>
+  <p>{% translate "Este sitio web e esta aplicación son parcialmente conformes co RD 1112/2018 debido ás excepcións e á falta de conformidade dos aspectos que se indican a continuación. O obxectivo é o nivel AA das WCAG 2.1 (norma UNE-EN 301 549)." %}</p>
+
   <h2>{% translate "Contido non accesible" %}</h2>
+  <p>{% translate "O contido que se recolle a continuación non é accesible polo seguinte:" %}</p>
+  <h3>{% translate "Falta de conformidade co RD 1112/2018" %}</h3>
   <ul>
-    <li>{% translate "O mapa de instalacións é un complemento visual: toda a súa información está dispoñible na lista accesible e nos filtros." %}</li>
-    <li>{% translate "As fotos subidas pola veciñanza nos avisos de avaría poden non ter texto alternativo descritivo." %}</li>
+    <li>{% translate "Non se fixeron aínda probas con lectores de pantalla reais (NVDA, JAWS, TalkBack ou VoiceOver) nin con persoas usuarias con discapacidade. Ata facelas, a conformidade só se pode declarar parcial." %}</li>
+    <li>{% translate "As fotos que a veciñanza sube cos avisos de avaría poden non ter un texto alternativo descritivo." %}</li>
   </ul>
+  <h3>{% translate "Contido que non entra no ámbito da lexislación aplicable" %}</h3>
+  <ul>
+    <li>{% translate "Mapas en liña: o mapa de instalacións é un complemento visual. Toda a súa información está tamén na lista accesible e nos filtros." %}</li>
+  </ul>
+
   <h2>{% translate "Preparación desta declaración" %}</h2>
-  <p>{% translate "Avaliación propia con probas automáticas (axe-core) en todas as páxinas principais, en móbil e escritorio, e revisión manual con teclado e lector de pantalla." %}</p>
-  <h2>{% translate "Observacións e contacto" %}</h2>
-  <p>{% translate "Podes comunicar problemas de accesibilidade ou solicitar información en formato accesible:" %} {% if tenant.contact_email %}<a href="mailto:{{ tenant.contact_email }}">{{ tenant.contact_email }}</a>{% endif %}{% if tenant.contact_phone %} · {{ tenant.contact_phone }}{% endif %}</p>
+  <p>{% blocktranslate trimmed with d=evaluated_on|date:"DATE_FORMAT" %}Esta declaración preparouse o {{ d }}.{% endblocktranslate %}</p>
+  <p>{% blocktranslate trimmed with p=axe_pages s=axe_sizes k=axe_dark_pages %}Método: autoavaliación. Probas automáticas con axe-core (regras WCAG 2.0 e 2.1, niveis A e AA) en {{ p }} pantallas × {{ s }} tamaños (móbil, tableta e escritorio) e en {{ k }} pantallas en tema escuro, sen violacións, e revisión manual co teclado.{% endblocktranslate %}</p>
+  {% if tenant %}<p>{% blocktranslate trimmed with d=reviewed_on|date:"DATE_FORMAT" %}Última revisión da declaración: {{ d }}.{% endblocktranslate %}</p>{% endif %}
+
+  <h2>{% translate "Observacións e datos de contacto" %}</h2>
+  <p>{% translate "Podes facer comunicacións sobre requisitos de accesibilidade (artigo 10.2.a do RD 1112/2018): informar dun posible incumprimento, transmitir outras dificultades de acceso ao contido ou formular calquera consulta ou suxestión de mellora." %}</p>
+  <p>{% translate "Tamén podes presentar:" %}</p>
+  <ul>
+    <li>{% translate "unha queixa relativa ao cumprimento dos requisitos do RD 1112/2018;" %}</li>
+    <li>{% translate "unha solicitude de información accesible sobre contidos excluídos do ámbito de aplicación do RD 1112/2018 ou exentos por carga desproporcionada. Na solicitude hai que concretar os feitos, as razóns e a petición." %}</li>
+  </ul>
+  {% if tenant %}
+    <ul class="statement-contact">
+      {% if unit %}<li>{% translate "Unidade responsable:" %} {{ unit }}</li>{% endif %}
+      {% if email %}<li>{% translate "Correo:" %} <a href="mailto:{{ email }}">{{ email }}</a></li>{% endif %}
+      {% if phone %}<li>{% translate "Teléfono:" %} {{ phone }}</li>{% endif %}
+      {% if not unit and not email and not phone %}<li>{% translate "O concello aínda non indicou a canle de contacto. Mentres tanto, diríxete ao rexistro do concello." %}</li>{% endif %}
+    </ul>
+  {% else %}
+    <p>{% translate "Envía a túa comunicación ao concello ao que corresponda a páxina (ligazóns enriba)." %}</p>
+  {% endif %}
+
   <h2>{% translate "Procedemento de aplicación" %}</h2>
-  <p>{% translate "Se unha vez realizada unha solicitude de información accesible ou queixa a resposta non é satisfactoria, podes presentar unha reclamación ante a unidade responsable de accesibilidade do concello." %}</p>
+  <p>{% translate "Se, despois dunha solicitude de información accesible ou dunha queixa, esta fose desestimada, non estiveses de acordo coa decisión ou a resposta non cumprise os requisitos do artigo 12.5 do RD 1112/2018, podes iniciar unha reclamación. Tamén podes facelo se pasan vinte días hábiles sen resposta." %}</p>
+  {% if tenant %}
+    <p>{% if complaint_url %}{% translate "Presenta a reclamación en:" %} <a href="{{ complaint_url }}">{{ complaint_url }}</a>{% else %}{% translate "Presenta a reclamación no rexistro do concello." %}{% endif %}{% if unit %} {% blocktranslate trimmed with u=unit %}Tramítaa: {{ u }}.{% endblocktranslate %}{% endif %}</p>
+  {% endif %}
+
   <h2>{% translate "Axustes de lectura" %}</h2>
   <p><a href="{% url 'preferences' %}">{% translate "Activa texto grande, alto contraste ou movemento reducido." %}</a></p>
 </article>

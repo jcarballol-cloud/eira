@@ -137,7 +137,40 @@ class Municipality(models.Model):
             "Correo ou enderezo do DPD do concello (ou da deputación que presta o servizo)."
         ),
     )
-    accessibility_statement = models.TextField(_("declaración de accesibilidade"), blank=True)
+    accessibility_statement = models.TextField(
+        _("declaración de accesibilidade: texto propio do concello"),
+        blank=True,
+        help_text=_("Opcional. Engádese ao principio da declaración (modelo do RD 1112/2018)."),
+    )
+    # v1.5.1: declaración de accesibilidade (RD 1112/2018, art. 15): canle e reclamación do concello
+    accessibility_unit = models.CharField(
+        _("unidade responsable de accesibilidade"),
+        max_length=200,
+        blank=True,
+        help_text=_("Quen recibe e trata as comunicacións, queixas e reclamacións."),
+    )
+    accessibility_email = models.EmailField(
+        _("correo para accesibilidade"),
+        blank=True,
+        help_text=_("Baleiro = o correo de contacto do concello."),
+    )
+    accessibility_phone = models.CharField(
+        _("teléfono para accesibilidade"),
+        max_length=40,
+        blank=True,
+        help_text=_("Baleiro = o teléfono do concello."),
+    )
+    accessibility_complaint_url = models.URLField(
+        _("ligazón para presentar reclamacións"),
+        blank=True,
+        help_text=_("Sede electrónica ou rexistro do concello."),
+    )
+    accessibility_reviewed_on = models.DateField(
+        _("data da última revisión da declaración"),
+        null=True,
+        blank=True,
+        help_text=_("Baleiro = a data da avaliación incluída con Eira."),
+    )
     legal_notice = models.TextField(_("aviso legal"), blank=True)
     modules = models.JSONField(_("módulos activos"), default=default_modules)
     tile_url = models.CharField(

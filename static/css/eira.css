@@ -126,6 +126,10 @@ main:focus { outline: none; }
 .site-footer a { color: var(--branco); }
 .site-footer .wrap { display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: space-between; }
 .site-footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; }
+/* v1.5.1: pé da app e da tableta (declaración de accesibilidade) */
+.app-footer { margin-top: 2rem; padding: 1rem 0 .5rem; border-top: 1px solid var(--liña); font-size: .9rem; color: var(--text); }
+.app-footer ul { list-style: none; margin: 0 auto; padding: 0 1rem; display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem 1.2rem; }
+.app-footer a { color: inherit; }
 
 @media (max-width: 760px) {
   .js .menu-toggle { display: inline-flex; }

@@ -200,7 +200,13 @@ def privacy(request):
 
 
 def accessibility(request):
-    return render(request, "core/accessibility.html")
+    """v1.5.1: declaración de accesibilidade (RD 1112/2018, art. 15), do concello ou xeral."""
+    from .accessibility import statement_context
+
+    tenant = getattr(request, "tenant", None)
+    if tenant is None:
+        request.layout_override = "public"
+    return render(request, "core/accessibility.html", statement_context(tenant))
 
 
 def not_found(request, exception=None):

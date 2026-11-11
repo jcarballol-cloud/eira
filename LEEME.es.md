@@ -47,7 +47,8 @@ docker compose up --build           # con Docker
 python tools/tasks.py dev           # sin Docker (Python 3.12+)
 ```
 
-Abre <http://127.0.0.1:8000> y elige concello y perfil. No hay contraseñas: los concellos, las
+Abre <http://127.0.0.1:8000> y elige concello y perfil. La primera vez con cada perfil sale una guía
+paso a paso (también en «?» → «Ver la guía»; en una instalación real, la activa el concello en «Configuración»). No hay contraseñas: los concellos, las
 personas y los datos son ficticios. Prueba:
 
 1. *Uxía:* reserva el pádel, paga en el TPV simulado, mira el código y pulsa «Escoitar».

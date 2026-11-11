@@ -1,5 +1,5 @@
 {% load i18n eira %}{# v1.5 · A: «Escoitar». Oculto ata que o JS comprobe que hai speechSynthesis. `target` = selector da zona que se le #}
-<div class="listen-bar" data-listen-bar hidden>
+<div class="listen-bar" data-listen-bar data-tour="listen" hidden>
   <button type="button" class="btn btn-secondary btn-sm listen-btn" data-listen="{{ target }}"
     data-text-start="{% translate 'Escoitar' %}" data-text-stop="{% translate 'Deter' %}"
     data-aria-start="{% translate 'Escoitar esta pantalla en voz alta' %}" data-aria-stop="{% translate 'Deter a lectura' %}"

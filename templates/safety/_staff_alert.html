@@ -1,5 +1,5 @@
 {% load i18n eira %}{# v1.5 · B: botón grande na pantalla principal do persoal #}
-<div class="big-choice big-choice--compact staff-alert" role="group" aria-label="{% translate 'Alerta' %}">
+<div data-tour="alert" class="big-choice big-choice--compact staff-alert" role="group" aria-label="{% translate 'Alerta' %}">
   <a class="big-choice__btn big-choice__btn--alert" href="{% turl 'safety:alert' %}">
     <span class="big-choice__shape big-choice__shape--octagon" aria-hidden="true">!</span>
     <span class="big-choice__text"><strong>{% translate "Alerta" %}</strong><span>{% translate "Accidente deportivo ou emerxencia de seguridade" %}</span></span>

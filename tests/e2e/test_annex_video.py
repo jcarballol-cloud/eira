@@ -18,6 +18,7 @@ from apps.bookings.models import Booking
 from apps.facilities.models import Facility
 from apps.maintenance.models import WorkOrder
 
+from .conftest import tours_seen_script
 from .test_pitch_video import VIEW, Director, Recorder, encode
 
 pytestmark = [pytest.mark.e2e, pytest.mark.video, pytest.mark.django_db(transaction=False)]
@@ -111,6 +112,7 @@ def test_record_annex(browser, base, tmp_path, settings):
         bypass_csp=True,
         color_scheme="light",
     )
+    ctx.add_init_script(tours_seen_script())  # v1.5.1: sen guía nos vídeos
     page = ctx.new_page()
     page.goto(base + "/")
     rec = Recorder(page, frames)

@@ -18295,5 +18295,304 @@ msgstr "Presenta la reclamación en el registro del concello."
 msgid "Tramítaa: %(u)s."
 msgstr "La tramita: %(u)s."
 
+msgid "Guía paso a paso"
+msgstr "Guía paso a paso"
+
+msgid "mostrar a guía paso a paso"
+msgstr "mostrar la guía paso a paso"
+
+msgid ""
+"A primeira vez que cada persoa entra na súa pantalla principal, unha guía "
+"curta explica as funcións. Sempre se pode abrir desde «?» → «Ver a guía»."
+msgstr ""
+"La primera vez que cada persona entra en su pantalla principal, una guía "
+"corta explica las funciones. Siempre se puede abrir desde «?» → «Ver la "
+"guía»."
+
+msgid "Guía da app"
+msgstr "Guía de la app"
+
+msgid "Guía de mantemento"
+msgstr "Guía de mantenimiento"
+
+msgid "Guía de limpeza"
+msgstr "Guía de limpieza"
+
+msgid "Guía da tableta"
+msgstr "Guía de la tableta"
+
+msgid "Guía da xestión municipal"
+msgstr "Guía de la gestión municipal"
+
+msgid "Guía da deputación"
+msgstr "Guía de la diputación"
+
+msgid "Rematar"
+msgstr "Terminar"
+
+msgid "Paso %(n)s de %(total)s"
+msgstr "Paso %(n)s de %(total)s"
+
+msgid "Busca unha instalación"
+msgstr "Busca una instalación"
+
+msgid ""
+"Toca «Reservar» para ver as instalacións do concello: podes buscar por "
+"deporte, por parroquia ou no mapa."
+msgstr ""
+"Toca «Reservar» para ver las instalaciones del concello: puedes buscar por "
+"deporte, por parroquia o en el mapa."
+
+msgid "Horas con ★ e luz"
+msgstr "Horas con ★ y luz"
+
+msgid ""
+"Na ficha de cada instalación, as horas con ★ adoitan ter pouca xente e son "
+"máis baratas. Se fai falta luz, o suplemento vese antes de pagar."
+msgstr ""
+"En la ficha de cada instalación, las horas con ★ suelen tener poca gente y "
+"son más baratas. Si hace falta luz, el suplemento se ve antes de pagar."
+
+msgid "Reservar e pagar"
+msgstr "Reservar y pagar"
+
+msgid ""
+"Reservas en tres pasos: hora, persoas e pagamento. A túa próxima reserva "
+"aparece sempre aquí."
+msgstr ""
+"Reservas en tres pasos: hora, personas y pago. Tu próxima reserva aparece "
+"siempre aquí."
+
+msgid "O código da porta"
+msgstr "El código de la puerta"
+
+msgid ""
+"Durante a túa franxa, este código abre a porta. Funciona aínda que a "
+"instalación non teña internet."
+msgstr ""
+"Durante tu franja, este código abre la puerta. Funciona aunque la "
+"instalación no tenga internet."
+
+msgid "Aviso e Alerta"
+msgstr "Aviso y Alerta"
+
+msgid ""
+"Avisa dunha avaría con foto ou pide axuda nunha emerxencia. En «Alerta» tes "
+"o DESA máis próximo e o que hai que dicir ao 112."
+msgstr ""
+"Avisa de una avería con foto o pide ayuda en una emergencia. En «Alerta» "
+"tienes el DESA más cercano y lo que hay que decir al 112."
+
+msgid "«Escoitar» le a pantalla en voz alta coa voz do teu dispositivo."
+msgstr "«Escuchar» lee la pantalla en voz alta con la voz de tu dispositivo."
+
+msgid ""
+"Coa mesma conta podes reservar noutros concellos da rede, coa tarifa de "
+"persoas non empadroadas."
+msgstr ""
+"Con la misma cuenta puedes reservar en otros concellos de la red, con la "
+"tarifa de personas no empadronadas."
+
+msgid "A túa app de mantemento"
+msgstr "Tu app de mantenimiento"
+
+msgid ""
+"Aquí tes o traballo do día. Funciona sen cobertura: os cambios envíanse ao "
+"recuperar a rede."
+msgstr ""
+"Aquí tienes el trabajo del día. Funciona sin cobertura: los cambios se "
+"envían al recuperar la red."
+
+msgid "Ordes do día"
+msgstr "Órdenes del día"
+
+msgid ""
+"As ordes atrasadas van primeiro. Toca unha para ver a instalación e o que "
+"hai que facer."
+msgstr ""
+"Las órdenes atrasadas van primero. Toca una para ver la instalación y lo que"
+" hay que hacer."
+
+msgid "Foto e peche"
+msgstr "Foto y cierre"
+
+msgid ""
+"Dentro de cada orde engades unha foto e unha nota e pechas a orde. O "
+"concello veo ao momento."
+msgstr ""
+"Dentro de cada orden añades una foto y una nota y cierras la orden. El "
+"concello lo ve al momento."
+
+msgid ""
+"Nun accidente ou unha emerxencia, toca «Alerta»: avisa ao persoal de servizo"
+" e mostra o DESA e o que hai que dicir ao 112."
+msgstr ""
+"En un accidente o una emergencia, toca «Alerta»: avisa al personal de "
+"servicio y muestra el DESA y lo que hay que decir al 112."
+
+msgid "A túa app de limpeza"
+msgstr "Tu app de limpieza"
+
+msgid ""
+"Aquí tes as zonas e as tarefas do día. Funciona sen cobertura: os rexistros "
+"envíanse ao recuperar a rede."
+msgstr ""
+"Aquí tienes las zonas y las tareas del día. Funciona sin cobertura: los "
+"registros se envían al recuperar la red."
+
+msgid "Un QR por zona"
+msgstr "Un QR por zona"
+
+msgid ""
+"Cada zona ten un QR na parede. Escanéao ou toca a zona aquí para abrir a súa"
+" lista de limpeza."
+msgstr ""
+"Cada zona tiene un QR en la pared. Escanéalo o toca la zona aquí para abrir "
+"su lista de limpieza."
+
+msgid ""
+"Marca as tarefas feitas e, se queres, engade unha foto. Queda gardado quen o"
+" fixo, o día e a hora."
+msgstr ""
+"Marca las tareas hechas y, si quieres, añade una foto. Queda guardado quién "
+"lo hizo, el día y la hora."
+
+msgid ""
+"Nun accidente ou unha emerxencia, toca «Alerta» para avisar ao persoal de "
+"servizo."
+msgstr ""
+"En un accidente o una emergencia, toca «Alerta» para avisar al personal de "
+"servicio."
+
+msgid "A túa tableta"
+msgstr "Tu tableta"
+
+msgid "Aquí tes os grupos de hoxe. Cada sesión ten o seu rexistro."
+msgstr "Aquí tienes los grupos de hoy. Cada sesión tiene su registro."
+
+msgid "Abecedario"
+msgstr "Abecedario"
+
+msgid ""
+"«Abrir o rexistro» deixa a tableta na entrada: cada persoa toca a inicial do"
+" seu nome e despois o seu nome."
+msgstr ""
+"«Abrir el registro» deja la tableta en la entrada: cada persona toca la "
+"inicial de su nombre y después su nombre."
+
+msgid "Entrada e saída"
+msgstr "Entrada y salida"
+
+msgid ""
+"Quen chega marca a entrada e, ao marchar, a saída. Coa «Lista rápida» "
+"pásalas ti dunha vez."
+msgstr ""
+"Quien llega marca la entrada y, al irse, la salida. Con la «Lista rápida» "
+"las pasas tú de una vez."
+
+msgid "Esforzo (RPE)"
+msgstr "Esfuerzo (RPE)"
+
+msgid ""
+"Ao saír, cada persoa indica o esforzo do 0 ao 10. Ves a evolución en "
+"«Estatísticas»."
+msgstr ""
+"Al salir, cada persona indica el esfuerzo del 0 al 10. Ves la evolución en "
+"«Estadísticas»."
+
+msgid "Nun accidente durante a sesión, toca «Alerta»."
+msgstr "En un accidente durante la sesión, toca «Alerta»."
+
+msgid ""
+"As reservas de hoxe, as incidencias e os avisos pendentes, nunha soa "
+"pantalla."
+msgstr ""
+"Las reservas de hoy, las incidencias y los avisos pendientes, en una sola "
+"pantalla."
+
+msgid "Instalacións e tarifas"
+msgstr "Instalaciones y tarifas"
+
+msgid ""
+"Dá de alta instalacións con plantillas e define horarios, tarifas, normas e "
+"como se entra."
+msgstr ""
+"Da de alta instalaciones con plantillas y define horarios, tarifas, normas y"
+" cómo se entra."
+
+msgid ""
+"Plans preventivos que crean as ordes de traballo soas, e o calendario "
+"compartido co persoal."
+msgstr ""
+"Planes preventivos que crean las órdenes de trabajo solas, y el calendario "
+"compartido con el personal."
+
+msgid "Rendemento e NPS"
+msgstr "Rendimiento y NPS"
+
+msgid ""
+"Uso, enerxía e custo por instalación, e a satisfacción da veciñanza "
+"(enquisas NPS anónimas)."
+msgstr ""
+"Uso, energía y coste por instalación, y la satisfacción del vecindario "
+"(encuestas NPS anónimas)."
+
+msgid ""
+"De onde vén a xente que usa cada instalación, só con datos agregados (nunca "
+"menos de 10 persoas)."
+msgstr ""
+"De dónde viene la gente que usa cada instalación, solo con datos agregados "
+"(nunca menos de 10 personas)."
+
+msgid ""
+"Privacidade, condicións e normas con versións e rexistro de aceptacións. Son"
+" modelos de exemplo: revísaos cos servizos xurídicos."
+msgstr ""
+"Privacidad, condiciones y normas con versiones y registro de aceptaciones. "
+"Son modelos de ejemplo: revísalos con los servicios jurídicos."
+
+msgid "A túa rede de concellos"
+msgstr "Tu red de concellos"
+
+msgid ""
+"Desde aquí ves os concellos adheridos e dás de alta outros novos. Só ves "
+"datos agregados."
+msgstr ""
+"Desde aquí ves los concellos adheridos y das de alta otros nuevos. Solo ves "
+"datos agregados."
+
+msgid "Comparativa agregada"
+msgstr "Comparativa agregada"
+
+msgid ""
+"Reservas, ocupación e satisfacción de toda a rede, comparando as últimas "
+"catro semanas coas anteriores."
+msgstr ""
+"Reservas, ocupación y satisfacción de toda la red, comparando las últimas "
+"cuatro semanas con las anteriores."
+
+msgid "Mapa de procedencia"
+msgstr "Mapa de procedencia"
+
+msgid ""
+"Como se move a xente entre concellos para facer deporte, só con datos "
+"agregados."
+msgstr ""
+"Cómo se mueve la gente entre concellos para hacer deporte, solo con datos "
+"agregados."
+
+msgid "Acceso de soporte de 24 horas"
+msgstr "Acceso de soporte de 24 horas"
+
+msgid ""
+"Para ver datos persoais dun concello, ese concello ten que darche acceso de "
+"soporte. Caduca ás 24 horas e cada consulta queda rexistrada."
+msgstr ""
+"Para ver datos personales de un concello, ese concello tiene que darte "
+"acceso de soporte. Caduca a las 24 horas y cada consulta queda registrada."
+
+msgid "Ver a guía"
+msgstr "Ver la guía"
+
 #~ msgid "Frecuencia"
 #~ msgstr "Frecuencia"

@@ -16,7 +16,7 @@ from django.utils import timezone
 
 from apps.incidents.models import Incident
 
-from .conftest import DESKTOP, MOBILE, demo_url
+from .conftest import DESKTOP, MOBILE, demo_url, tours_seen_script
 
 pytestmark = [pytest.mark.e2e, pytest.mark.video, pytest.mark.django_db(transaction=False)]
 # Os vídeos (> 10 MB) non van ao git: gárdanse en release-assets/ para adxuntalos a unha release
@@ -244,6 +244,7 @@ def test_record_pitch_video(browser, base, viewport, name, tmp_path):
         record_video_dir=str(tmp_path),
         record_video_size=viewport,
     )
+    ctx.add_init_script(tours_seen_script())  # v1.5.1: sen guía nos vídeos
     page = ctx.new_page()
     run_script(page, base, Director(page, shots))
     video = page.video

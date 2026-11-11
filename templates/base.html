@@ -19,6 +19,7 @@
   <script src="{% asset 'js/eira.js' %}" defer></script>
   <script src="{% asset 'js/listen-core.js' %}" defer></script>
   <script src="{% asset 'js/listen.js' %}" defer></script>
+  {% if tour %}<script src="{% asset 'js/tour.js' %}" defer></script>{% endif %}
 </head>
 <body class="layout-{{ layout }} kind-{{ kind }}{% if layout == 'app' or layout == 'tablet' %} themable{% elif themable %} themable themable-desk{% endif %}{% if region_consult %} region-consult{% endif %}{% if framed %} framed framed-{{ layout }}{% endif %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' {% block body_attrs %}{% endblock %}>
   <a class="skip-link" href="#main">{% translate "Saltar ao contido" %}</a>
@@ -64,5 +65,6 @@
     </div>
   </div>
   </div>
+  {% if tour %}{% include "includes/tour.html" %}{% endif %}
 </body>
 </html>

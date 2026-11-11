@@ -5,7 +5,7 @@
   <div class="row"><span class="nowrap"><a href="?csv=1">{% icon 'download' %} CSV</a> · <a href="?ods=1">ODS</a></span>
   <a class="btn" href="{% url 'region:new_municipality' region.slug %}">{% icon 'plus' %} {% translate "Dar de alta un concello" %}</a></div></div>
 
-<div class="grid grid-4 mb-2">
+<div class="grid grid-4 mb-2" data-tour="region-compare">
   <div class="stat"><div class="label">{% translate "Reservas na rede" %}</div><div class="value">{{ network.bookings }} {% include "region/_delta.html" with d=network.bookings_delta %}</div><div class="delta muted">{% if network.per_1000 %}{% blocktranslate with n=network.per_1000 %}{{ n }} por 1.000 hab.{% endblocktranslate %}{% endif %}</div></div>
   <div class="stat"><div class="label">{% translate "Ocupación media" %}</div><div class="value">{{ network.occupancy }} % {% include "region/_delta.html" with d=network.occupancy_delta unit=" p.p." %}</div></div>
   <div class="stat"><div class="label">{% translate "Satisfacción da veciñanza" %}</div><div class="value">{% if network.satisfaction is not None %}{{ network.satisfaction }}<small>/100</small>{% else %}—{% endif %}</div></div>
@@ -18,7 +18,7 @@
   <section class="card" aria-labelledby="c3"><h2 id="c3" class="h3">{% translate "Satisfacción (0–100)" %}</h2>{% include "includes/hbar.html" with chart=sat_chart cid="sat" title=_("Satisfacción por concello") %}</section>
 </div>
 
-<div class="table-wrap" tabindex="0"><table class="data">
+<div class="table-wrap" tabindex="0" data-tour="region-support"><table class="data">
   <caption>{% translate "Indicadores por concello (a táboa contén todos os datos das gráficas)" %}</caption>
   <thead><tr><th scope="col">{% translate "Concello" %}</th><th scope="col" class="num">{% translate "Reservas" %}</th><th scope="col" class="num">{% translate "Por 1.000 hab." %}</th><th scope="col">{% translate "Ocupación" %}</th><th scope="col" class="num">{% translate "Non presentadas" %}</th><th scope="col" class="num">{% translate "Satisfacción" %}</th><th scope="col" class="num">{% translate "Incidencias abertas" %}</th><th scope="col" class="num">{% translate "Horas ata resolver" %}</th><th scope="col" class="num">{% translate "Ingresos / hab." %}</th><th scope="col">{% translate "Accións" %}</th></tr></thead>
   <tbody>{% for r in rows %}<tr>

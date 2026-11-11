@@ -23,22 +23,22 @@
     <a href="{% turl 'manage:work_orders' %}" {% if sub == 'work_orders' %}aria-current="page"{% endif %}>{% icon 'wrench' %} {% translate "Ordes de traballo" %}</a>
     <a href="{% turl 'manage:cleaning' %}" {% if sub == 'cleaning' %}aria-current="page"{% endif %}>{% icon 'sparkle' %} {% translate "Limpeza" %}</a>
     <p class="sidenav__group">{% translate "Servizo" %}</p>
-    <a href="{% turl 'manage:facilities' %}" {% if sub == 'facilities' %}aria-current="page"{% endif %}>{% icon 'map' %} {% translate "Instalacións" %}</a>
+    <a data-tour="admin-facilities" href="{% turl 'manage:facilities' %}" {% if sub == 'facilities' %}aria-current="page"{% endif %}>{% icon 'map' %} {% translate "Instalacións" %}</a>
     <a href="{% turl 'manage:closures' %}" {% if sub == 'closures' %}aria-current="page"{% endif %}>{% icon 'lock' %} {% translate "Peches" %}</a>
-    <a href="{% turl 'manage:maintenance_plans' %}" {% if sub == 'maintenance' %}aria-current="page"{% endif %}>{% icon 'check' %} {% translate "Mantemento" %}</a>
+    <a data-tour="admin-maintenance" href="{% turl 'manage:maintenance_plans' %}" {% if sub == 'maintenance' %}aria-current="page"{% endif %}>{% icon 'check' %} {% translate "Mantemento" %}</a>
     <a href="{% turl 'manage:activities' %}" {% if sub == 'activities' %}aria-current="page"{% endif %}>{% icon 'users' %} {% translate "Escolas" %}</a>
     {% if 'admin' in roles %}<a href="{% turl 'manage:accreditations' %}" {% if sub == 'accreditations' %}aria-current="page"{% endif %}>{% icon 'shield' %} {% translate "Acreditacións (menores)" %}</a>{% endif %}
     <p class="sidenav__group">{% translate "Datos" %}</p>
     <a href="{% turl 'manage:indicators' %}" {% if sub == 'indicators' %}aria-current="page"{% endif %}>{% icon 'chart' %} {% translate "Indicadores" %}</a>
-    <a href="{% turl 'manage:provenance' %}" {% if sub == 'provenance' %}aria-current="page"{% endif %}>{% icon 'map' %} {% translate "Procedencia" %}</a>
+    <a data-tour="admin-provenance" href="{% turl 'manage:provenance' %}" {% if sub == 'provenance' %}aria-current="page"{% endif %}>{% icon 'map' %} {% translate "Procedencia" %}</a>
     <a href="{% turl 'manage:ratings' %}" {% if sub == 'ratings' %}aria-current="page"{% endif %}>{% icon 'smile' %} {% translate "Valoracións" %}</a>
-    <a href="{% turl 'manage:performance' %}" {% if sub == 'performance' %}aria-current="page"{% endif %}>{% icon 'light' %} {% translate "Rendemento" %}</a>
+    <a data-tour="admin-performance" href="{% turl 'manage:performance' %}" {% if sub == 'performance' %}aria-current="page"{% endif %}>{% icon 'light' %} {% translate "Rendemento" %}</a>
     <a href="{% turl 'activities:observatory' %}" {% if sub == 'observatory' %}aria-current="page"{% endif %}>{% icon 'heart' %} {% translate "Observatorio" %}</a>
     <a href="{% turl 'manage:surveys' %}" {% if sub == 'surveys' %}aria-current="page"{% endif %}>{% icon 'smile' %} {% translate "Enquisas (NPS)" %}</a>
     <p class="sidenav__group">{% translate "Concello" %}</p>
     <a href="{% turl 'manage:signups' %}" {% if sub == 'signups' %}aria-current="page"{% endif %}>{% icon 'plus' %} {% translate "Altas da app" %}</a>
     <a href="{% turl 'manage:staff' %}" {% if sub == 'staff' %}aria-current="page"{% endif %}>{% icon 'users' %} {% translate "Persoal e códigos" %}</a>
-    <a href="{% turl 'manage:legal' %}" {% if sub == 'legal' %}aria-current="page"{% endif %}>{% icon 'shield' %} {% translate "Documentos legais" %}</a>
+    <a data-tour="admin-legal" href="{% turl 'manage:legal' %}" {% if sub == 'legal' %}aria-current="page"{% endif %}>{% icon 'shield' %} {% translate "Documentos legais" %}</a>
     <a href="{% turl 'manage:breaches' %}" {% if sub == 'breaches' %}aria-current="page"{% endif %}>{% icon 'shield' %} {% translate "Rexistro de brechas" %}</a>
     <a href="{% turl 'manage:accidents' %}" {% if sub == 'accidents' %}aria-current="page"{% endif %}>{% icon 'heart' %} {% translate "Rexistro de accidentes" %}</a>
     <a href="{% turl 'manage:audit' %}" {% if sub == 'audit' %}aria-current="page"{% endif %}>{% icon 'lock' %} {% translate "Rexistro de auditoría" %}</a>
@@ -60,7 +60,7 @@
     {% if nav_region %}
     <a href="{% url 'region:dashboard' nav_region.slug %}" {% if nav == 'region' %}aria-current="page"{% endif %}>{% icon 'chart' %} {% translate "Rede" %}</a>
     <a href="{% url 'region:new_municipality' nav_region.slug %}" {% if nav == 'region_new' %}aria-current="page"{% endif %}>{% icon 'star' %} {% translate "Novo concello" %}</a>
-    <a href="{% url 'region:mobility' nav_region.slug %}" {% if nav == 'region_mobility' %}aria-current="page"{% endif %}>{% icon 'map' %} {% translate "Mobilidade" %}</a>
+    <a data-tour="region-mobility" href="{% url 'region:mobility' nav_region.slug %}" {% if nav == 'region_mobility' %}aria-current="page"{% endif %}>{% icon 'map' %} {% translate "Mobilidade" %}</a>
     <a href="{% url 'region:legal' nav_region.slug %}" {% if nav == 'region_legal' %}aria-current="page"{% endif %}>{% icon 'shield' %} {% translate "Documentos legais" %}</a>
     <p class="sidenav__group">{% translate "Concellos" %}</p>
     {% for m in nav_region.municipalities.all %}<a href="{% url 'manage:indicators' m.slug %}" {% if tenant == m %}aria-current="page"{% endif %}>{% icon 'map' %} {{ m.name }}</a>{% endfor %}

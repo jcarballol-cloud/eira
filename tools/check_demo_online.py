@@ -61,8 +61,17 @@ def personas(page, base):
     return found
 
 
-def new_page(browser, viewport, insecure):
+# v1.5.1: as guías paso a paso márcanse como vistas para que non tapen as pantallas que se proban
+TOURS_SEEN = (
+    "try{['neighbour','operator','cleaning','monitor','admin','region'].forEach(function(k){"
+    "localStorage.setItem('eira-tour-'+k+'-v1','1')})}catch(e){}"
+)
+
+
+def new_page(browser, viewport, insecure, tour=False):
     context = browser.new_context(viewport=viewport, locale="gl-ES", ignore_https_errors=insecure)
+    if not tour:
+        context.add_init_script(TOURS_SEEN)
     page = context.new_page()
     page.csp_errors = []
     page.on(
@@ -90,6 +99,21 @@ def check_profiles(browser, base, insecure):
         logged = page.locator(".demo-bar__who").count() == 1
         report(f"Entrar como {email}", logged and not page.csp_errors, urlparse(page.url).path)
         page.context.close()
+
+
+def check_tour(browser, base, insecure):
+    """v1.5.1: a guía sae soa a primeira vez con Uxía e non volve saír ao recargar."""
+    page = new_page(browser, MOBILE, insecure, tour=True)
+    login(page, base, "uxia@demo.eira.example")
+    dialog = page.locator("dialog#tour[open]")
+    dialog.wait_for(timeout=5000)
+    steps = page.locator("#tour-step").inner_text()
+    report("Guía de Uxía á primeira entrada", dialog.count() == 1, steps)
+    page.locator("[data-tour-close]").click()
+    page.reload()
+    page.wait_for_load_state()
+    report("A guía non volve saír ao recargar", page.locator("dialog#tour[open]").count() == 0)
+    page.context.close()
 
 
 def check_booking(browser, base, insecure):
@@ -252,6 +276,7 @@ def main():
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
         check("Perfís", lambda: check_profiles(browser, base, insecure))
+        check("Guía", lambda: check_tour(browser, base, insecure))
         check("Reserva completa", lambda: check_booking(browser, base, insecure))
         check("Vídeos", lambda: check_videos(browser, base, insecure))
         check("PWA", lambda: check_pwa(playwright, base, insecure))

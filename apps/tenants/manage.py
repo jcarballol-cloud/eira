@@ -134,6 +134,7 @@ SETTINGS_SECTIONS = [
         ["energy_price_eur_kwh", "co2_kg_kwh"],
         False,
     ),
+    ("guia", gettext_lazy("Guía paso a paso"), ["guided_tour"], False),  # v1.5.1
     ("mapa", gettext_lazy("Mapa"), ["tile_url", "tile_attribution", "tile_attribution_url"], True),
     (
         "legal",
@@ -185,6 +186,7 @@ class SettingsForm(forms.ModelForm):
             "accessibility_phone",
             "accessibility_complaint_url",
             "accessibility_reviewed_on",
+            "guided_tour",  # v1.5.1
             "legal_notice",
             "office_payment_hours",
             "lighting_rule",

@@ -45,12 +45,22 @@ def base(live_server):
     return live_server.url
 
 
+def tours_seen_script():
+    """v1.5.1: marca todas as guías paso a paso como vistas (para que non tapen as pantallas)."""
+    from apps.tenants.tours import TOURS, VERSION
+
+    sets = ";".join(f"localStorage.setItem('eira-tour-{k}-v{VERSION}','1')" for k in TOURS)
+    return f"try{{{sets}}}catch(e){{}}"
+
+
 @pytest.fixture
 def new_page(browser, base):
     contexts = []
 
-    def make(viewport=DESKTOP, persona=None, **kw):
+    def make(viewport=DESKTOP, persona=None, tour=False, **kw):
         ctx = browser.new_context(viewport=viewport, locale="gl-ES", **kw)
+        if not tour:
+            ctx.add_init_script(tours_seen_script())
         contexts.append(ctx)
         page = ctx.new_page()
         if persona:

@@ -58,7 +58,8 @@ Abre <http://127.0.0.1:8000> e escolle un perfil de demostración (persoas ficti
    `python tools/tasks.py dev` (Python 3.12+; usa SQLite e carga a demo). Agarda a que diga que
    escoita no porto 8000.
 2. **Entrar:** abre <http://localhost:8000> (ou <https://eira.engramlab.es>). Non hai contrasinais: escolle o concello (Vilardeiras ou
-   Pontedouro, ficticios) e un perfil. Todas as persoas, correos e datos son inventados.
+   Pontedouro, ficticios) e un perfil. Todas as persoas, correos e datos son inventados. A primeira vez
+   que entras con cada perfil, unha **guía paso a paso** explica a pantalla (sempre en «?» → «Ver a guía»).
 3. **Probar como veciña** (perfil *Uxía*): reserva unha franxa no pádel → paga no TPV simulado →
    recibe o código de acceso → abre a pechadura no simulador. Mira tamén *O meu carné* e *Incidencia
    ou seguridade*.

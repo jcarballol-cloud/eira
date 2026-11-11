@@ -165,6 +165,15 @@ class Municipality(models.Model):
         blank=True,
         help_text=_("Sede electrónica ou rexistro do concello."),
     )
+    # v1.5.1: guía paso a paso de cada perfil (na demo sempre está activa)
+    guided_tour = models.BooleanField(
+        _("mostrar a guía paso a paso"),
+        default=False,
+        help_text=_(
+            "A primeira vez que cada persoa entra na súa pantalla principal, unha guía curta "
+            "explica as funcións. Sempre se pode abrir desde «?» → «Ver a guía»."
+        ),
+    )
     accessibility_reviewed_on = models.DateField(
         _("data da última revisión da declaración"),
         null=True,

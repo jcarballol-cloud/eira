@@ -1,0 +1,17 @@
+{% load i18n %}{# v1.5.1: guía paso a paso. Datos en json_script; lóxica en static/js/tour.js #}{{ tour|json_script:"tour-data" }}
+<dialog class="tour" id="tour" aria-modal="true" aria-labelledby="tour-title" aria-describedby="tour-body">
+  <div class="tour__ring" aria-hidden="true" hidden></div>
+  <div class="tour__panel">
+    <p class="tour__step" id="tour-step"></p>
+    <h2 class="tour__title" id="tour-title" tabindex="-1">{{ tour.title }}</h2>
+    <p class="tour__body" id="tour-body"></p>
+    <p class="visually-hidden" id="tour-live" aria-live="polite" aria-atomic="true"></p>
+    <div class="tour__actions">
+      <button type="button" class="btn btn-ghost tour__close" data-tour-close>{% translate "Saír" %}</button>
+      <span class="tour__nav">
+        <button type="button" class="btn btn-secondary" data-tour-prev>{% translate "Anterior" %}</button>
+        <button type="button" class="btn" data-tour-next>{% translate "Seguinte" %}</button>
+      </span>
+    </div>
+  </div>
+</dialog>

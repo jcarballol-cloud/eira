@@ -5,6 +5,7 @@
     <p class="help-pop__title"><strong>{{ help_topic.title }}</strong></p>
     <p>{{ help_topic.body }}</p>
     <ul class="list-plain help-pop__links">
+      {% if tour_available %}<li><a href="{{ home_url }}?guia=1" data-tour-open>{% translate "Ver a guía" %}</a></li>{% endif %}{# v1.5.1 #}
       <li><a href="{% url 'help_guide' %}{% if help_topic.key %}#{{ help_topic.key|slugify }}{% endif %}">{% translate "Guía completa" %}</a></li>
       {% if kind == 'admin' or kind == 'region' or kind == 'dpo' %}<li><a href="{% url 'leeme' %}">{% translate "Uso e requisitos legais (LEEME)" %}</a></li>{% endif %}
       {% with t=tenant|default:app_tenant %}{% if t %}

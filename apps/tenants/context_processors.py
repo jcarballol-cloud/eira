@@ -67,7 +67,12 @@ def eira(request):
         from apps.legal.services import pending_versions
 
         legal_pending = pending_versions(user, tenant)
+    # v1.5.1: guía paso a paso do perfil
+    from .tours import tour_context
+
+    tour = tour_context(request, kind, tenant, nav_region)
     return {
+        **tour,
         "legal_pending": legal_pending,
         "help_topic": help_for(match.view_name if match else "", kind),
         "network_visit": network_visit,

@@ -109,6 +109,13 @@ cun `>>` e repetir `caddy validate` e `caddy reload`.
 
 Copia do Caddyfile anterior á entrada: `/srv/eira-demo/Caddyfile.pruebas.antes-eira`.
 
+**Actualizar a imaxe** (11/11/2026, coa declaración de accesibilidade): construír e copiar como
+arriba e, no servidor, gardar a anterior antes de cargar a nova, para poder volver atrás:
+`docker tag eira-demo-app:local eira-demo-app:anterior`, `docker load -i eira-demo-app.tar` e
+`docker compose -f docker-compose.demo.yml -f docker-compose.tras-proxy.yml up -d` (só recrea `app`,
+`notices` e `reseed`; o Caddy do gestor non se toca). Volver atrás:
+`docker tag eira-demo-app:anterior eira-demo-app:local` e o mesmo `up -d`.
+
 ## Despregar nun servidor só para a demo
 
 ```bash
@@ -150,7 +157,7 @@ Borrala por completo, no servidor:
    ```
 3. Borrar as imaxes que só usa a demo. `caddy:2-alpine` queda, porque a usa o gestor:
    ```bash
-   docker image rm eira-demo-app:local postgres:16-alpine
+   docker image rm eira-demo-app:local eira-demo-app:anterior postgres:16-alpine
    ```
 4. Borrar os ficheiros: `sudo rm -r /srv/eira-demo`
 5. Comprobar que o gestor segue respondendo.
@@ -171,5 +178,11 @@ simulada e un ficheiro vello e `missing()` queda baleiro (17 s).
 reserva completa, vídeos WebM en Chromium e MP4 en Chrome, PWA instalable segundo Chromium, axe sen
 violacións en seis pantallas, límite de acceso no envío 21, rexeneración a man e polo bucle (31 s).
 
-**Non verificado:** instalación da PWA nun móbil real, Safari, a execución espontánea ás 04:00 e o
-funcionamento continuado varios días.
+**Non verificado:** instalación da PWA nun móbil real e Safari.
+
+## Comprobación do 11/11/2026
+
+**Verificado:** a rexeneración das 04:00 executouse soa os días 7, 8, 9, 10 e 11 (rexistros de
+`reseed`, entre 36 e 39 s cada unha); a demo seguiu respondendo eses cinco días; ningunha conta fóra
+do dominio ficticio. Imaxe nova coa declaración de accesibilidade: os 535 ficheiros da app no contedor
+son idénticos aos do repositorio; `check_demo_online.py` 30 de 30.

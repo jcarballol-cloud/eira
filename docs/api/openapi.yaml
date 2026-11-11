@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Eira API
-  version: 0.1.0
+  version: 1.5.1
   description: 'API aberta de Eira: concellos, instalacións, dispoñibilidade, reservas
     e incidencias.'
   license:

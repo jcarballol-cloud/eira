@@ -276,7 +276,7 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     "TITLE": "Eira API",
     "DESCRIPTION": "API aberta de Eira: concellos, instalacións, dispoñibilidade, reservas e incidencias.",
-    "VERSION": "0.1.0",
+    "VERSION": "1.5.1",
     "OAS_VERSION": "3.1.0",
     "LICENSE": {
         "name": "EUPL-1.2",

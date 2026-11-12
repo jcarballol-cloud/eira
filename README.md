@@ -59,7 +59,8 @@ Abre <http://127.0.0.1:8000> e escolle un perfil de demostración (persoas ficti
    escoita no porto 8000.
 2. **Entrar:** abre <http://localhost:8000> (ou <https://eira.engramlab.es>). Non hai contrasinais: escolle o concello (Vilardeiras ou
    Pontedouro, ficticios) e un perfil. Todas as persoas, correos e datos son inventados. A primeira vez
-   que entras con cada perfil, unha **guía paso a paso** explica a pantalla (sempre en «?» → «Ver a guía»).
+   que entras con cada perfil, unha **guía paso a paso** explica a pantalla (sempre en «?» → «Ver a guía»;
+   a casilla «Non volver amosar a guía» gárdase no teu perfil).
 3. **Probar como veciña** (perfil *Uxía*): reserva unha franxa no pádel → paga no TPV simulado →
    recibe o código de acceso → abre a pechadura no simulador. Mira tamén *O meu carné* e *Incidencia
    ou seguridade*.
@@ -76,6 +77,7 @@ en [.env.example](.env.example) (en local abonda con `EIRA_DEBUG=1`).
 ```bash
 python tools/tasks.py test      # tests unitarios e de integración
 python tools/tasks.py e2e       # Playwright + axe (WCAG 2.1 AA), arranca un servidor propio
+python tools/tasks.py e2e_pg    # os mesmos E2E contra PostgreSQL en Docker, coma na CI
 python tools/tasks.py lint      # ruff
 python tools/tasks.py licenses  # licenzas das dependencias compatibles coa EUPL-1.2
 ```

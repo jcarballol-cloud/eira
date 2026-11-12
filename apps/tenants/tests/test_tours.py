@@ -120,3 +120,117 @@ def test_settings_can_enable_the_tour(client, admin_a, muni_a):
     assert client.post(f"{C}/xestion/configuracion/", form).status_code == 302
     muni_a.refresh_from_db()
     assert muni_a.guided_tour is True
+
+
+# «Non volver amosar a guía»
+
+
+def test_checkbox_is_labelled_and_unchecked_by_default(client, settings, citizen, muni_a):
+    settings.EIRA_DEMO_TOOLS = True
+    client.force_login(citizen)
+    html = client.get(f"{C}/app/").content.decode()
+    box = re.search(r'<input type="checkbox" id="tour-hide"[^>]*>', html).group(0)
+    assert "checked" not in box and 'aria-describedby="tour-hide-hint"' in box
+    assert '<label for="tour-hide">Non volver amosar a guía</label>' in html
+    data = tour_json(html)
+    assert data["kind"] == "neighbour" and data["hidden"] is False
+    assert data["save"] == reverse("tour_preference")
+
+
+def test_spanish_checkbox_label(client, settings, citizen, muni_a):
+    settings.EIRA_DEMO_TOOLS = True
+    client.force_login(citizen)
+    with translation.override("es"):
+        data = tour_payload("neighbour", auto=True)
+    assert data["labels"]["hide"] == "No volver a mostrar la guía"
+
+
+def test_hiding_is_saved_in_the_profile_for_every_device(client, settings, citizen, muni_a):
+    from django.test import Client
+
+    settings.EIRA_DEMO_TOOLS = True
+    client.force_login(citizen)
+    url = reverse("tour_preference")
+    assert client.post(url, {"kind": "neighbour", "hide": "1"}).status_code == 204
+    citizen.refresh_from_db()
+    assert citizen.tours_hidden == ["neighbour"]
+    # Outro dispositivo (sesión nova): non sae soa e a casilla vén marcada
+    other = Client()
+    other.force_login(citizen)
+    html = other.get(f"{C}/app/").content.decode()
+    data = tour_json(html)
+    assert data["auto"] is False and data["hidden"] is True
+    assert re.search(r'<input type="checkbox" id="tour-hide"[^>]* checked>', html)
+    # Desde «?» → «Ver a guía» pódese volver activar
+    assert other.post(url, {"kind": "neighbour", "hide": "0"}).status_code == 204
+    citizen.refresh_from_db()
+    assert citizen.tours_hidden == []
+
+
+def test_closing_without_ticking_only_lasts_this_session(client, settings, citizen, muni_a):
+    from django.test import Client
+
+    settings.EIRA_DEMO_TOOLS = True
+    client.force_login(citizen)
+    assert (
+        client.post(reverse("tour_preference"), {"kind": "neighbour", "hide": "0"}).status_code
+        == 204
+    )
+    assert tour_json(client.get(f"{C}/app/").content.decode())["auto"] is False
+    citizen.refresh_from_db()
+    assert citizen.tours_hidden == []
+    other = Client()
+    other.force_login(citizen)
+    assert tour_json(other.get(f"{C}/app/").content.decode())["auto"] is True
+
+
+def test_hiding_one_profile_keeps_the_others(client, settings, admin_a, muni_a):
+    settings.EIRA_DEMO_TOOLS = True
+    admin_a.tours_hidden = ["neighbour"]
+    admin_a.save()
+    client.force_login(admin_a)
+    assert tour_json(client.get(f"{C}/xestion/").content.decode())["auto"] is True
+
+
+def test_preference_endpoint_rejects_bad_requests(client, citizen):
+    url = reverse("tour_preference")
+    assert client.post(url, {"kind": "neighbour", "hide": "1"}).status_code == 403  # sen sesión
+    client.force_login(citizen)
+    assert client.get(url).status_code == 405
+    assert client.post(url, {"kind": "outro", "hide": "1"}).status_code == 400
+    citizen.refresh_from_db()
+    assert citizen.tours_hidden == []
+
+
+def test_preference_endpoint_needs_csrf(citizen):
+    from django.test import Client
+
+    strict = Client(enforce_csrf_checks=True)
+    strict.force_login(citizen)
+    assert (
+        strict.post(reverse("tour_preference"), {"kind": "neighbour", "hide": "1"}).status_code
+        == 403
+    )
+
+
+def test_preference_is_in_the_personal_data_export(client, citizen):
+    citizen.tours_hidden = ["neighbour"]
+    citizen.save()
+    from apps.accounts.views import export_user_data
+
+    assert export_user_data(citizen)["user"]["tours_hidden"] == ["neighbour"]
+
+
+def test_night_reseed_forgets_the_shared_accounts_preference(db, settings):
+    """Demo pública: tras o reinicio nocturno, a seguinte visita volve ver a guía."""
+    from django.core.management import call_command
+
+    from apps.accounts.models import User
+    from apps.integrations.demo import DEMO_PERSONAS
+
+    settings.EIRA_PUBLIC_DEMO = True
+    call_command("seed_demo", verbosity=0)
+    emails = [p["email"] for p in DEMO_PERSONAS]
+    User.objects.filter(email__in=emails).update(tours_hidden=["neighbour", "admin"])
+    call_command("seed_demo", verbosity=0)
+    assert not User.objects.filter(email__in=emails).exclude(tours_hidden=[]).exists()

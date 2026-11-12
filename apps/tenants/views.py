@@ -304,6 +304,17 @@ def help_guide(request):
 
 
 @require_http_methods(["POST"])
+def tour_preference(request):
+    """v1.5.1: «Non volver amosar a guía» (no perfil da persoa, para todos os seus dispositivos)."""
+    from .tours import save_preference
+
+    if not request.user.is_authenticated:
+        return HttpResponse(status=403)
+    ok = save_preference(request, request.POST.get("kind", ""), request.POST.get("hide") == "1")
+    return HttpResponse(status=204 if ok else 400)
+
+
+@require_http_methods(["POST"])
 def desk_mode(request):
     """Modo básico / avanzado do menú da administración (por persoa; non cambia permisos)."""
     if request.user.is_authenticated:

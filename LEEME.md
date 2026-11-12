@@ -48,7 +48,7 @@ python tools/tasks.py dev           # sen Docker (Python 3.12+)
 ```
 
 Abre <http://127.0.0.1:8000> e escolle concello e perfil. A primeira vez con cada perfil sae unha guía
-paso a paso (tamén en «?» → «Ver a guía»; nunha instalación real, actívaa o concello en «Configuración»). Non hai contrasinais: os concellos, as
+paso a paso (tamén en «?» → «Ver a guía»; se marcas «Non volver amosar a guía», xa non sae soa; nunha instalación real, actívaa o concello en «Configuración»). Non hai contrasinais: os concellos, as
 persoas e os datos son ficticios. Proba:
 
 1. *Uxía:* reserva o pádel, paga no TPV simulado, mira o código e pulsa «Escoitar».

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: EUPL-1.2
 """Tarefas do proxecto, equivalentes ao Makefile, para sistemas sen `make` (p. ex. Windows).
 
-python tools/tasks.py dev | seed | test | e2e | lint | licenses | i18n | openapi | screenshots | video | pitch | annex
+python tools/tasks.py dev | seed | test | e2e | e2e_pg | lint | licenses | i18n | openapi | screenshots | video | pitch | annex
 """
 
 import os
@@ -49,6 +49,34 @@ def test():
 def e2e():
     i18n()
     run(PY, "-m", "pytest", "tests/e2e", "-m", "e2e and not video", "-p", "no:cacheprovider")
+
+
+def e2e_pg():
+    """E2E contra PostgreSQL nun contedor efémero, coma na CI (o servidor de probas con SQLite
+    pode dar algún 400 «session was deleted» ocasional por compartir a conexión)."""
+    import time
+
+    name, port = "eira-e2e-pg", os.environ.get("EIRA_E2E_PG_PORT", "55432")
+    subprocess.run(["docker", "rm", "-f", name], capture_output=True)
+    run(
+        "docker", "run", "-d", "--rm", "--name", name,
+        "-e", "POSTGRES_DB=eira", "-e", "POSTGRES_USER=eira", "-e", "POSTGRES_PASSWORD=eira",
+        "-p", f"127.0.0.1:{port}:5432", "--tmpfs", "/var/lib/postgresql/data",
+        "postgres:16-alpine",
+    )  # fmt: skip
+    try:
+        for _ in range(60):
+            ready = subprocess.run(
+                ["docker", "exec", name, "pg_isready", "-U", "eira", "-h", "127.0.0.1"],
+                capture_output=True,
+            )
+            if ready.returncode == 0:
+                break
+            time.sleep(1)
+        ENV["DATABASE_URL"] = f"postgres://eira:eira@127.0.0.1:{port}/eira"
+        e2e()
+    finally:
+        subprocess.run(["docker", "rm", "-f", name], capture_output=True)
 
 
 def video():
@@ -133,6 +161,7 @@ TASKS = {
         seed,
         test,
         e2e,
+        e2e_pg,
         lint,
         licenses,
         i18n,

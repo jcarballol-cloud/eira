@@ -2,6 +2,8 @@
 // v1.5.1: guía paso a paso do perfil. Diálogo modal accesible (<dialog> + showModal): o foco
 // entra, non escapa e volve ao pechar; Esc pecha; frechas e tabulador navegan; cada paso
 // anúnciase. Se o elemento dun paso non existe ou non se ve, o paso vai centrado.
+// Sae soa unha vez por sesión ata que se marca «Non volver amosar a guía»: con sesión iniciada
+// gárdase no perfil (servidor, todos os dispositivos); sen ela, no navegador.
 (function () {
   "use strict";
   var dataEl = document.getElementById("tour-data");
@@ -12,7 +14,8 @@
   try { tour = JSON.parse(dataEl.textContent); } catch (e) { return; }
   if (!tour || !tour.steps || !tour.steps.length) return;
 
-  var KEY = "eira-tour-" + tour.id;
+  var KEY = "eira-tour-" + tour.id; // localStorage (sen sesión): «1» = non volver amosar
+  var SEEN = "eira-tour-seen-" + tour.id; // sessionStorage: xa se pechou nesta sesión
   var ring = dlg.querySelector(".tour__ring");
   var panel = dlg.querySelector(".tour__panel");
   var stepEl = document.getElementById("tour-step");
@@ -22,14 +25,46 @@
   var prevBtn = dlg.querySelector("[data-tour-prev]");
   var nextBtn = dlg.querySelector("[data-tour-next]");
   var closeBtn = dlg.querySelector("[data-tour-close]");
+  var hideBox = document.getElementById("tour-hide");
   var index = 0;
   var opener = null;
   var target = null;
   var opened = []; // <details> abertos pola guía para mostrar un elemento; péchanse despois
 
-  // localStorage pode non estar (navegación privada, cookies bloqueadas): entón non se lembra
-  function seen() { try { return window.localStorage.getItem(KEY) === "1"; } catch (e) { return false; } }
-  function markSeen() { try { window.localStorage.setItem(KEY, "1"); } catch (e) { /* sen memoria */ } }
+  // O almacenamento pode non estar (navegación privada, cookies bloqueadas): entón non se lembra
+  function localHidden() { try { return window.localStorage.getItem(KEY) === "1"; } catch (e) { return false; } }
+  function seenNow() { try { return window.sessionStorage.getItem(SEEN) === "1"; } catch (e) { return false; } }
+  function markSeen() { try { window.sessionStorage.setItem(SEEN, "1"); } catch (e) { /* sen memoria */ } }
+
+  function csrf() {
+    try { return JSON.parse(document.body.getAttribute("hx-headers"))["X-CSRFToken"] || ""; } catch (e) { return ""; }
+  }
+
+  function hiddenNow() { return tour.save ? !!tour.hidden : localHidden(); }
+
+  // Gardar «Non volver amosar» (e que xa se viu nesta sesión). Nunca rompe a pantalla se falla.
+  function savePreference() {
+    var hide = !!(hideBox && hideBox.checked);
+    if (!tour.save) {
+      try {
+        if (hide) window.localStorage.setItem(KEY, "1"); else window.localStorage.removeItem(KEY);
+      } catch (e) { /* sen memoria */ }
+      return;
+    }
+    tour.hidden = hide;
+    try {
+      var body = new URLSearchParams();
+      body.set("kind", tour.kind);
+      body.set("hide", hide ? "1" : "0");
+      window.fetch(tour.save, {
+        method: "POST",
+        body: body,
+        credentials: "same-origin",
+        keepalive: true,
+        headers: { "X-CSRFToken": csrf() }
+      }).catch(function () { /* sen conexión: nesta sesión xa non volve saír */ });
+    } catch (e) { /* navegador antigo */ }
+  }
 
   function isVisible(el) {
     if (!el || dlg.contains(el)) return false;
@@ -136,6 +171,7 @@
     if (dlg.open) return;
     opener = document.activeElement && document.activeElement !== document.body ? document.activeElement : null;
     index = 0;
+    if (hideBox) hideBox.checked = hiddenNow();
     dlg.showModal();
     render();
     titleEl.focus();
@@ -143,6 +179,7 @@
 
   function close() {
     markSeen();
+    savePreference();
     restoreDetails();
     target = null;
     if (dlg.open) dlg.close();
@@ -163,7 +200,7 @@
 
   function focusables() {
     return Array.prototype.filter.call(
-      panel.querySelectorAll("button, [href], [tabindex]:not([tabindex='-1'])"),
+      panel.querySelectorAll("button, input, [href], [tabindex]:not([tabindex='-1'])"),
       function (el) { return !el.hidden && !el.disabled; }
     );
   }
@@ -203,7 +240,7 @@
 
   var wanted = false;
   try { wanted = new URL(window.location.href).searchParams.get("guia") === "1"; } catch (e) { wanted = false; }
-  function start() { if (wanted || (tour.auto && !seen())) open(); }
+  function start() { if (wanted || (tour.auto && !seenNow() && !hiddenNow())) open(); }
   // Esperar ás imaxes: se non, a pantalla móvese despois de colocar o panel
   if (document.readyState === "complete") start(); else window.addEventListener("load", start);
 })();

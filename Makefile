@@ -2,7 +2,7 @@
 # Atallos de desenvolvemento. En Windows sen make: python tools/tasks.py <orde>
 PY ?= python
 
-.PHONY: dev seed test e2e lint licenses i18n openapi screenshots up
+.PHONY: dev seed test e2e e2e-pg lint licenses i18n openapi screenshots up
 
 dev:         ## Migra, carga a demo e arranca o servidor en http://127.0.0.1:8000
 	$(PY) tools/tasks.py dev
@@ -12,6 +12,8 @@ test:        ## Tests unitarios e de integración
 	$(PY) tools/tasks.py test
 e2e:         ## Tests E2E con Playwright + axe-core
 	$(PY) tools/tasks.py e2e
+e2e-pg:      ## Os mesmos E2E contra PostgreSQL en Docker, coma na CI
+	$(PY) tools/tasks.py e2e_pg
 lint:        ## ruff
 	$(PY) tools/tasks.py lint
 licenses:    ## Comproba licenzas das dependencias (compatibles con EUPL-1.2)

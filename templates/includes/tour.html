@@ -6,6 +6,11 @@
     <h2 class="tour__title" id="tour-title" tabindex="-1">{{ tour.title }}</h2>
     <p class="tour__body" id="tour-body"></p>
     <p class="visually-hidden" id="tour-live" aria-live="polite" aria-atomic="true"></p>
+    <p class="tour__hide">
+      <input type="checkbox" id="tour-hide" aria-describedby="tour-hide-hint"{% if tour.hidden %} checked{% endif %}>
+      <label for="tour-hide">{% translate "Non volver amosar a guía" %}</label>
+      <span class="visually-hidden" id="tour-hide-hint">{% translate "Sempre podes abrila desde «?» → «Ver a guía»." %}</span>
+    </p>
     <div class="tour__actions">
       <button type="button" class="btn btn-ghost tour__close" data-tour-close>{% translate "Saír" %}</button>
       <span class="tour__nav">

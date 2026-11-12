@@ -64,7 +64,7 @@ def personas(page, base):
 # v1.5.1: as guías paso a paso márcanse como vistas para que non tapen as pantallas que se proban
 TOURS_SEEN = (
     "try{['neighbour','operator','cleaning','monitor','admin','region'].forEach(function(k){"
-    "localStorage.setItem('eira-tour-'+k+'-v1','1')})}catch(e){}"
+    "sessionStorage.setItem('eira-tour-seen-'+k+'-v1','1')})}catch(e){}"
 )
 
 
@@ -109,6 +109,11 @@ def check_tour(browser, base, insecure):
     dialog.wait_for(timeout=5000)
     steps = page.locator("#tour-step").inner_text()
     report("Guía de Uxía á primeira entrada", dialog.count() == 1, steps)
+    # Non se marca «Non volver amosar»: a conta é compartida e a seguinte visita debe vela
+    box = page.get_by_role("checkbox", name="Non volver amosar a guía")
+    report(
+        "Casilla «Non volver amosar a guía» desmarcada", box.is_visible() and not box.is_checked()
+    )
     page.locator("[data-tour-close]").click()
     page.reload()
     page.wait_for_load_state()

@@ -46,10 +46,11 @@ def base(live_server):
 
 
 def tours_seen_script():
-    """v1.5.1: marca todas as guías paso a paso como vistas (para que non tapen as pantallas)."""
+    """v1.5.1: marca todas as guías paso a paso como vistas nesta sesión (para que non tapen as
+    pantallas). Non usa «Non volver amosar», que se garda no perfil."""
     from apps.tenants.tours import TOURS, VERSION
 
-    sets = ";".join(f"localStorage.setItem('eira-tour-{k}-v{VERSION}','1')" for k in TOURS)
+    sets = ";".join(f"sessionStorage.setItem('eira-tour-seen-{k}-v{VERSION}','1')" for k in TOURS)
     return f"try{{{sets}}}catch(e){{}}"
 
 

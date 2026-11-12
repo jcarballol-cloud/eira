@@ -23,6 +23,7 @@ urlpatterns = [
     path("axuda/", core.help_guide, name="help_guide"),
     path("axuda/leeme/", core.leeme, name="leeme"),  # v1.5 · F
     path("modo-xestion/", core.desk_mode, name="desk_mode"),
+    path("guia/preferencia/", core.tour_preference, name="tour_preference"),
     path("sw.js", core.service_worker, name="service_worker"),
     path("manifest.webmanifest", core.manifest, name="manifest"),
     path("pagamentos/notificacion/", gateway_notification, name="payment_notification"),

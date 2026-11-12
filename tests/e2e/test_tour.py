@@ -51,6 +51,7 @@ def walk(page, kind):
             head = {**box, "height": min(box["height"], 120)}
             assert box and not boxes_overlap(head, panel), f"{kind} paso {i + 1} tapa {target}"
         assert page.evaluate("document.getElementById('tour').contains(document.activeElement)")
+        assert page.locator("#tour-hide").is_visible(), f"{kind} paso {i + 1}: sen casilla"
         page.locator("[data-tour-next]").click()
     assert page.locator(OPEN).count() == 0
 
@@ -133,6 +134,7 @@ def test_axe_with_tour_open(new_page, scheme):
         email, viewport = PERSONAS[kind]
         page = new_page(viewport=viewport, persona=email, tour=True, color_scheme=scheme)
         page.locator(OPEN).wait_for()
+        assert page.locator("#tour-hide").is_visible()  # axe tamén revisa a casilla
         for _ in range(3):  # un paso centrado e pasos con elemento
             results = AXE.run(page, options=RULES)
             if results.violations_count:
@@ -164,3 +166,78 @@ def test_reduced_motion_has_no_transition(new_page):
         page.evaluate("getComputedStyle(document.querySelector('.tour__ring')).transitionDuration")
         == "0s"
     )
+
+
+# «Non volver amosar a guía»
+
+
+def save_on_close(page, close):
+    """Pecha a guía e agarda a que se garde a preferencia no perfil."""
+    with page.expect_response(lambda r: "/guia/preferencia/" in r.url) as resp:
+        close()
+    assert resp.value.status == 204
+
+
+def test_dont_show_again_with_keyboard_across_devices(new_page):
+    email = PERSONAS["neighbour"][0]
+    page = new_page(viewport=MOBILE, persona=email, tour=True)
+    page.locator(OPEN).wait_for()
+    box = page.get_by_role("checkbox", name="Non volver amosar a guía")
+    assert box.is_visible() and not box.is_checked()  # desmarcada por defecto
+    # Nome accesible pola <label> e explicación de como volver abrila
+    hint = page.evaluate(
+        "document.getElementById(document.getElementById('tour-hide')"
+        ".getAttribute('aria-describedby')).textContent"
+    )
+    assert "Ver a guía" in hint
+    # Só con teclado: do título, o tabulador vai á casilla; espazo márcaa
+    assert page.evaluate("document.activeElement.id") == "tour-title"
+    page.keyboard.press("Tab")
+    assert page.evaluate("document.activeElement.id") == "tour-hide"
+    page.keyboard.press("Space")
+    assert box.is_checked()
+    page.keyboard.press("ArrowRight")  # segue marcada ao cambiar de paso
+    assert page.locator("#tour-step").inner_text().startswith("Paso 2 ") and box.is_checked()
+    save_on_close(page, lambda: page.keyboard.press("Escape"))
+    assert page.locator(OPEN).count() == 0
+
+    # Outro dispositivo coa mesma conta: xa non sae soa
+    other = new_page(viewport=DESKTOP, persona=email, tour=True)
+    other.wait_for_load_state("networkidle")
+    assert other.locator(OPEN).count() == 0
+    # «?» → «Ver a guía»: ábrese, coa casilla marcada; desmarcala volve activar que saia soa
+    other.goto(other.url.split("?")[0] + "?guia=1")
+    other.locator(OPEN).wait_for()
+    box2 = other.get_by_role("checkbox", name="Non volver amosar a guía")
+    assert box2.is_checked()
+    box2.uncheck()
+    save_on_close(other, lambda: other.locator("[data-tour-close]").click())
+
+    third = new_page(viewport=MOBILE, persona=email, tour=True)
+    third.locator(OPEN).wait_for()
+
+
+def test_finishing_with_the_box_ticked_also_hides_it(new_page):
+    email = PERSONAS["admin"][0]
+    page = new_page(viewport=DESKTOP, persona=email, tour=True)
+    page.locator(OPEN).wait_for()
+    page.get_by_role("checkbox", name="Non volver amosar a guía").check()
+    total = len(TOURS["admin"]["steps"])
+    for _ in range(total - 1):
+        page.locator("[data-tour-next]").click()
+    save_on_close(page, lambda: page.locator("[data-tour-next]").click())  # «Rematar»
+    other = new_page(viewport=DESKTOP, persona=email, tour=True)
+    other.wait_for_load_state("networkidle")
+    assert other.locator(OPEN).count() == 0
+
+
+def test_closing_without_ticking_comes_back_next_session(new_page):
+    email = PERSONAS["neighbour"][0]
+    page = new_page(viewport=MOBILE, persona=email, tour=True)
+    page.locator(OPEN).wait_for()
+    save_on_close(page, lambda: page.locator("[data-tour-close]").click())
+    page.reload()
+    page.wait_for_load_state("networkidle")
+    assert page.locator(OPEN).count() == 0  # nesta sesión, non
+    other = new_page(viewport=MOBILE, persona=email, tour=True)
+    other.locator(OPEN).wait_for()  # na seguinte, si

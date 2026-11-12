@@ -1870,6 +1870,9 @@ html.theme-dark body.themable .cal .day.out .n { color: #D5DDD8; }
 .tour__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem; }
 .tour__nav { display: flex; flex-wrap: wrap; gap: .5rem; margin-left: auto; }
 .tour__actions .btn { min-height: 44px; }
+.tour__hide { display: flex; align-items: center; gap: .5rem; margin: 0 0 .6rem; }
+.tour__hide input { flex: none; width: 1.3rem; height: 1.3rem; margin: 0; accent-color: var(--musgo); }
+.tour__hide label { min-height: 44px; display: flex; align-items: center; cursor: pointer; }
 html.theme-dark .tour__step { color: var(--pedra); }
 html.pref-high-contrast .tour__panel { border: 2px solid #000; box-shadow: none; }
 html.pref-high-contrast .tour__ring { outline: 4px solid #000; box-shadow: 0 0 0 4px #fff, 0 0 0 200vmax rgb(0 0 0 / 70%); }

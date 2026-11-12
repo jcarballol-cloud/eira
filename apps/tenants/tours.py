@@ -5,11 +5,14 @@ Cada guía empeza na pantalla principal do perfil. Un paso pode sinalar un eleme
 `data-tour="…"` nesa pantalla; se non existe ou non se ve (p. ex. no móbil), o paso móstrase
 centrado. Os textos van ao navegador con `json_script` e o JS está en `static/js/tour.js`.
 
-Aparece soa a primeira vez en cada perfil na demo (`EIRA_DEMO_TOOLS`) ou, nunha instalación real,
-se o concello a activa en «Configuración». Sempre se pode abrir desde «?» → «Ver a guía».
+Aparece soa na demo (`EIRA_DEMO_TOOLS`) ou, nunha instalación real, se o concello a activa en
+«Configuración»: unha vez por sesión, ata que a persoa marca «Non volver amosar a guía». Esa
+preferencia gárdase no seu perfil (vale en todos os dispositivos); sen sesión, no navegador.
+Sempre se pode abrir desde «?» → «Ver a guía», e desde aí volver activala.
 """
 
 from django.conf import settings
+from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
@@ -290,13 +293,23 @@ def target_selector(name):
     return f'[data-tour="{name}"]' if name else None
 
 
-def tour_payload(kind, auto):
-    """Datos da guía para `json_script`: textos xa traducidos e selectores."""
+SESSION_KEY = "tours_dismissed"  # guías pechadas nesta sesión: non volven saír soas ata a seguinte
+
+
+def tour_payload(kind, auto, hidden=False, save_url=None):
+    """Datos da guía para `json_script`: textos xa traducidos e selectores.
+
+    `hidden`: a persoa marcou «Non volver amosar» (a casilla sae marcada). `save_url`: onde gardar
+    a preferencia no perfil; se é None (sen sesión), o JS gárdaa no navegador.
+    """
     tour = TOURS[kind]
     return {
         "id": f"{kind}-v{VERSION}",
+        "kind": kind,
         "title": str(tour["title"]),
         "auto": auto,
+        "hidden": hidden,
+        "save": save_url,
         "steps": [
             {"target": target_selector(t), "title": str(title), "body": str(body)}
             for t, title, body in tour["steps"]
@@ -306,6 +319,7 @@ def tour_payload(kind, auto):
             "next": _("Seguinte"),
             "done": _("Rematar"),
             "close": _("Saír"),
+            "hide": _("Non volver amosar a guía"),
             # %(n)s e %(total)s substitúeos o JS
             "step": _("Paso %(n)s de %(total)s"),
         },
@@ -331,5 +345,32 @@ def tour_context(request, kind, tenant, nav_region):
     here = match.view_name if match else ""
     if here != TOURS[kind]["start"]:
         return {"tour_available": True, "tour": None}
-    # Na demo sae soa a primeira vez; nunha instalación real, se o concello a activou
-    return {"tour_available": True, "tour": tour_payload(kind, auto=True)}
+    user = getattr(request, "user", None)
+    signed_in = bool(user and user.is_authenticated)
+    hidden = signed_in and kind in (user.tours_hidden or [])
+    dismissed = (
+        kind in request.session.get(SESSION_KEY, []) if hasattr(request, "session") else False
+    )
+    payload = tour_payload(
+        kind,
+        auto=not hidden and not dismissed,
+        hidden=hidden,
+        save_url=reverse("tour_preference") if signed_in else None,
+    )
+    return {"tour_available": True, "tour": payload}
+
+
+def save_preference(request, kind, hide):
+    """Ao pechar a guía: non volve saír soa nesta sesión e, se cambia, gárdase «Non volver amosar»."""
+    if kind not in TOURS:
+        return False
+    dismissed = set(request.session.get(SESSION_KEY, []))
+    if kind not in dismissed:
+        request.session[SESSION_KEY] = sorted(dismissed | {kind})
+    user = request.user
+    current = set(user.tours_hidden or [])
+    wanted = current | {kind} if hide else current - {kind}
+    if wanted != current:
+        user.tours_hidden = sorted(wanted)
+        user.save(update_fields=["tours_hidden"])
+    return True

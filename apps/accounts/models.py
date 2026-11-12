@@ -64,6 +64,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     # v5 · Actividades e eventos dos concellos próximos (opcional): slugs dos concellos escollidos
     network_feed = models.JSONField(default=list, blank=True)
+    # v1.5.1 · Guías paso a paso que a persoa marcou «Non volver amosar» (tipos de perfil)
+    tours_hidden = models.JSONField(default=list, blank=True)
     # v1.5 · C: residencia voluntaria para estatísticas agregadas. Só parroquia ou concello: nunca
     # GPS, enderezo nin ubicación do dispositivo. Ver docs/rxpd/matriz.md.
     residence_parish = models.ForeignKey(

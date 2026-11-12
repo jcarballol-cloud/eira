@@ -248,6 +248,7 @@ def export_user_data(user):
             "date_joined": dt(user.date_joined),
             "notify_email": user.notify_email,
             "notify_telegram": user.notify_telegram,
+            "tours_hidden": list(user.tours_hidden or []),
             "linked_public_identity": bool(user.identity_subject),
         },
         # Saúde: só se a persoa a gardou na conta (dereito de acceso; nunca nas exportacións do concello)

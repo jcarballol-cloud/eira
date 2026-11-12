@@ -18466,5 +18466,11 @@ msgstr ""
 msgid "Ver a guía"
 msgstr "Ver a guía"
 
+msgid "Non volver amosar a guía"
+msgstr "Non volver amosar a guía"
+
+msgid "Sempre podes abrila desde «?» → «Ver a guía»."
+msgstr "Sempre podes abrila desde «?» → «Ver a guía»."
+
 #~ msgid "Frecuencia"
 #~ msgstr "Frecuencia"

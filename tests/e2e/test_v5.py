@@ -13,12 +13,21 @@ C = "/c/vilardeiras"
 
 
 def pick_lit_slot(page):
-    for chip in page.locator(".daychip").all():
-        chip.click()
-        lit = page.locator(".daypanel:not([hidden]) a.pill:has(.pill__light)")
-        if lit.count():
-            lit.first.click()
-            return True
+    """Unha franxa con luz desta semana ou, se xa non quedan (o domingo pola noite só queda ese
+    día, e os datos aleatorios da demo poden enchelo: atopado na CI ás 00:05), da seguinte."""
+    for _week in range(2):
+        for chip in page.locator(".daychip").all():
+            chip.click()
+            lit = page.locator(".daypanel:not([hidden]) a.pill:has(.pill__light)")
+            if lit.count():
+                lit.first.click()
+                return True
+        following = page.locator("#week a[aria-label='Semana seguinte']")
+        if not following.count():
+            break
+        with page.expect_response(lambda r: "semana=" in r.url):
+            following.first.click()
+        page.wait_for_load_state("networkidle")
     return False
 
 

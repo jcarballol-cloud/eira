@@ -94,6 +94,11 @@ python tools/tasks.py licenses  # licenzas das dependencias compatibles coa EUPL
 - [Guión da demostración](docs/demo/guion-demo.md)
 - Para concellos: [modelo de ordenanza de prezos públicos e taxa](docs/concello/ordenanza-modelo.md) ·
   [plantilla de EIPD](docs/rxpd/eipd-plantilla.md) · [matriz de datos por perfil](docs/rxpd/matriz.md)
+- **Protección de datos (RXPD):** [paquete para o concello](docs/rxpd/paquete/00-guia-rapida.md)
+  ([en castelán](docs/rxpd/paquete/es/00-guia-rapida.md)): rexistro de actividades, EIPD, información por
+  capas, contrato de encargado, conservación, dereitos, brechas e [que non garda Eira](docs/rxpd/paquete/08-minimizacion.md).
+  [Auditoría coa metodoloxía da AEPD](docs/rxpd/auditoria-aepd.md) e [citas legais verificadas](docs/rxpd/citas-verificadas.md).
+  Na app: *Xestión → Protección de datos: primeiros pasos*.
 
 ## Licenza
 

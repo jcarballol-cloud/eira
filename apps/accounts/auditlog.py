@@ -35,6 +35,7 @@ CATEGORIES = {
     ),
     "soporte": (gettext_lazy("Acceso de soporte da deputación"), ("support.",)),
     "brechas": (gettext_lazy("Brechas de seguridade"), ("breach.",)),
+    "rxpd": (gettext_lazy("Protección de datos: primeiros pasos"), ("privacy.", "retention.")),
     "accidentes": (gettext_lazy("Accidentes e alertas"), ("accident.", "alert.", "closing.")),
     "contas": (gettext_lazy("Accesos e dobre factor"), ("auth.", "2fa.")),
 }
@@ -57,6 +58,9 @@ LABELS = {
     "audit.export": gettext_lazy("Descarga do rexistro de auditoría"),
     "audit.purge": gettext_lazy("Entradas antigas borradas por conservación"),
     "retention.purge": gettext_lazy("Datos antigos borrados ou anonimizados por conservación"),
+    "privacy.step_done": gettext_lazy("Paso de protección de datos feito"),
+    "privacy.step_na": gettext_lazy("Paso de protección de datos: non procede"),
+    "privacy.step_undo": gettext_lazy("Paso de protección de datos desmarcado"),
     "support.request": gettext_lazy("A deputación pide acceso de soporte"),
     "support.grant": gettext_lazy("Acceso de soporte autorizado"),
     "support.revoke": gettext_lazy("Acceso de soporte revogado"),

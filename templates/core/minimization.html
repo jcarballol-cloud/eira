@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% load i18n eira %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<p><a href="{% turl 'privacy_custody' %}">{% translate "Quen custodia os teus datos" %}</a></p>
+<article class="prose card legal-doc">
+  {{ body }}
+  <p class="help">{% translate "Os documentos de protección de datos para o concello (rexistro de actividades, avaliación de impacto, conservación, dereitos e brechas) están no repositorio de Eira:" %} <a href="{{ repo }}" rel="noopener">{% translate "paquete RXPD" %}</a>.</p>
+</article>
+{% endblock %}

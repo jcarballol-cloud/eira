@@ -16,7 +16,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from apps.tenants.models import Municipality, Region
+from apps.tenants.models import Municipality, Region, TenantModel
 
 from .secretbox import EncryptedCharField
 
@@ -625,3 +625,24 @@ class RecoveryCode(models.Model):
     class Meta:
         verbose_name = _("código de recuperación")
         verbose_name_plural = _("códigos de recuperación")
+
+
+class PrivacyStep(TenantModel):
+    """Auditoría RXPD (14/11/2026): «Protección de datos: primeiros pasos». Cada fila é un paso
+    da lista que o concello marcou como feito (ou «non procede»), con data e persoa. Os cambios
+    quedan tamén no rexistro de auditoría (`privacy.step_*`)."""
+
+    class State(models.TextChoices):
+        DONE = "done", _("Feito")
+        NOT_APPLICABLE = "na", _("Non procede")
+
+    key = models.CharField(max_length=20)
+    state = models.CharField(max_length=4, choices=State.choices, default=State.DONE)
+    done_at = models.DateTimeField(default=timezone.now)
+    done_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name="+")
+    reviewed_on = models.DateField(_("data da revisión"), null=True, blank=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["municipality", "key"], name="uniq_privacy_step")
+        ]

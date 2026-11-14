@@ -1882,3 +1882,19 @@ html.pref-reduced-motion .tour__ring { transition: none; }
   .tour__panel { border: 2px solid CanvasText; }
   .tour__ring { outline: 4px solid Highlight; box-shadow: none; }
 }
+
+/* Auditoría RXPD (14/11/2026): «Protección de datos: primeiros pasos» */
+.privacy-steps { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: .9rem; counter-reset: paso; }
+.privacy-step { counter-increment: paso; }
+.privacy-step__title { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; font-size: 1.15rem; margin: 0 0 .4rem; }
+.privacy-step__title::before { content: counter(paso) "."; color: var(--text-muted); }
+.privacy-step--done { border-left: 4px solid var(--musgo); }
+.privacy-step__check { font-weight: 600; }
+.privacy-step__check--missing { color: var(--arxila-texto); }
+.privacy-step__links { display: flex; flex-wrap: wrap; gap: .3rem .6rem; align-items: center; }
+.privacy-step__form { display: flex; flex-wrap: wrap; gap: .5rem; align-items: flex-end; margin-top: .5rem; }
+.privacy-step__form .field { margin: 0; }
+.privacy-steps__progress { font-weight: 600; margin: .5rem 0 .25rem; }
+.privacy-steps__bar { width: 100%; max-width: 24rem; height: .8rem; accent-color: var(--musgo); }
+.privacy-steps__docs { columns: 2 16rem; }
+.privacy-doc__actions { display: flex; justify-content: flex-end; }

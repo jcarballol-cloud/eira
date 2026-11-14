@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: EUPL-1.2 -->
 # Rexistro de actividades de tratamento (modelo, art. 30 RXPD)
 
+> **Versión completa e revisada (14/11/2026):** [paquete/01-rexistro-actividades.md](paquete/01-rexistro-actividades.md). Esta queda como historial.
+
 Modelo para que cada concello o adapte. **Responsable:** o concello que presta o servizo. **Encargado:** a deputación ou a empresa que aloxe Eira, cun contrato do art. 28. DPD: o do concello ou o da deputación (campo «contacto do DPD» na configuración).
 
 | # | Actividade | Finalidade | Base xurídica | Categorías de interesados e datos | Destinatarios | Prazo de conservación | Medidas |

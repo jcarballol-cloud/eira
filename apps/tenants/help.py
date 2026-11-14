@@ -266,6 +266,17 @@ HELP = {
             "brechas, os accidentes e o dobre factor. Filtra por categoría e datas."
         ),
     ),
+    "manage:privacy_steps": (
+        _("Protección de datos: primeiros pasos"),
+        _(
+            "Os sete pasos para usar Eira cumprindo o RXPD. Cada un leva ao seu documento ou á "
+            "pantalla onde se fai; ao marcalo queda a data e a persoa no rexistro de auditoría."
+        ),
+    ),
+    "manage:privacy_doc": (
+        _("Documentos do paquete RXPD"),
+        _("Modelos de exemplo para o concello. Revísaos co DPD e cos servizos xurídicos."),
+    ),
     "manage:breaches": (
         _("Rexistro de brechas"),
         _(

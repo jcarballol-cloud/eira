@@ -3,6 +3,7 @@
 
 from django.urls import include, path
 
+from apps.accounts import privacy_steps
 from apps.facilities import views as facilities
 from apps.tenants import views as core
 
@@ -12,6 +13,10 @@ urlpatterns = [
     path("privacidade/", core.privacy, name="privacy"),
     path("privacidade/datos/", core.custody, name="privacy_custody"),
     path("privacidade/avaliacion-impacto/", core.dpia, name="privacy_dpia"),  # v1.3 · B
+    # Auditoría RXPD (14/11/2026): «Que non garda Eira», público
+    path(
+        "privacidade/que-non-garda-eira/", privacy_steps.minimization, name="privacy_minimization"
+    ),
     path("seguridade/", core.safety, name="safety"),
     path("seguridade/", include("apps.safety.urls")),  # v1.2 · A: Aviso e Alerta
     path("accesibilidade/", core.accessibility, name="accessibility"),

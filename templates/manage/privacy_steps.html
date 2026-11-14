@@ -1,0 +1,40 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{% translate "Protección de datos: primeiros pasos" %}{% endblock %}
+{% block content %}
+<div class="page-head"><div><p class="eyebrow">{% icon 'shield' %} {% translate "Protección de datos" %}</p><h1>{% translate "Protección de datos: primeiros pasos" %}</h1>
+  <p>{% translate "O concello é o responsable do tratamento. Eira xa trae a privacidade desde o deseño e os documentos cubertos; quedan estes sete pasos. Cada un queda co día e a persoa que o marcou, e no rexistro de auditoría." %}</p></div></div>
+<p class="privacy-steps__progress" id="steps-progress">{% blocktranslate %}{{ done }} de {{ total }} pasos feitos{% endblocktranslate %}</p>
+<progress class="privacy-steps__bar" max="{{ total }}" value="{{ done }}" aria-labelledby="steps-progress">{{ done }}/{{ total }}</progress>
+<p class="help">{% translate "Só o ven a administración do concello e a persoa delegada de protección de datos." %}</p>
+<ol class="privacy-steps">
+{% for r in rows %}{% with s=r.step rec=r.record %}
+  <li class="card privacy-step{% if rec %} privacy-step--done{% endif %}" id="paso-{{ s.key }}">
+    <h2 class="privacy-step__title">{{ s.title }}
+      {% if rec and rec.state == 'na' %}<span class="badge">{% translate "Non procede" %}</span>{% elif rec %}<span class="badge badge-ok">{% icon 'check' %} {% translate "Feito" %}</span>{% else %}<span class="badge badge-warn">{% translate "Pendente" %}</span>{% endif %}</h2>
+    <p>{{ s.body }}</p>
+    {% if r.check_text %}<p class="privacy-step__check{% if r.check_ok is False %} privacy-step__check--missing{% endif %}">{% if r.check_ok %}{% icon 'check' %}{% elif r.check_ok is False %}{% icon 'alert' %}{% endif %} {{ r.check_text }}</p>{% endif %}
+    {% if rec %}<p class="help">{% if rec.state == 'na' %}{% blocktranslate with d=rec.done_at|date:"d/m/Y" p=rec.done_by.display_name|default:rec.done_by.email|default:"—" %}Marcado como «non procede» o {{ d }} por {{ p }}.{% endblocktranslate %}{% else %}{% blocktranslate with d=rec.done_at|date:"d/m/Y" p=rec.done_by.display_name|default:rec.done_by.email|default:"—" %}Feito o {{ d }} por {{ p }}.{% endblocktranslate %}{% endif %}{% if rec.reviewed_on %} {% blocktranslate with r=rec.reviewed_on|date:"d/m/Y" %}Revisión do DPD: {{ r }}.{% endblocktranslate %}{% endif %}</p>{% endif %}
+    <p class="privacy-step__links">
+      {% if s.doc %}<a href="{% turl 'manage:privacy_doc' s.doc %}">{% translate "Ler o documento" %}</a> · <a href="{% turl 'manage:privacy_doc' s.doc %}?descargar=1">{% icon 'download' %} {% translate "Descargar" %}</a>{% endif %}
+      {% if s.doc and s.screen %} · {% endif %}
+      {% if s.screen %}<a href="{% turl s.screen %}{% if s.key == 'dpo' %}#cfg-contacto{% elif s.key == 'twofa' %}#cfg-contas{% endif %}">{% icon 'chevron' %} {{ s.screen_label }}</a>{% endif %}
+    </p>
+    <form method="post" class="privacy-step__form">{% csrf_token %}<input type="hidden" name="step" value="{{ s.key }}">
+      {% if rec %}
+        <button class="btn btn-secondary btn-sm" type="submit" name="action" value="undo">{% translate "Volver a pendente" %}</button>
+      {% else %}
+        {% if s.needs_date %}<div class="field"><label for="reviewed-{{ s.key }}">{% translate "Data da revisión do DPD" %}</label><input type="date" id="reviewed-{{ s.key }}" name="reviewed_on" max="{{ today }}" required></div>{% endif %}
+        <button class="btn btn-sm" type="submit" name="action" value="done"{% if r.blocked %} disabled aria-describedby="why-{{ s.key }}"{% endif %}>{% icon 'check' %} {% translate "Marcar como feito" %}</button>
+        {% if s.allows_na %}<button class="btn btn-secondary btn-sm" type="submit" name="action" value="na" formnovalidate>{% translate "Non procede" %}</button>{% endif %}
+        {% if r.blocked %}<span class="help" id="why-{{ s.key }}">{% translate "Primeiro hai que completalo na pantalla indicada." %}</span>{% endif %}
+      {% endif %}
+    </form>
+  </li>
+{% endwith %}{% endfor %}
+</ol>
+<section class="card mt-2" aria-labelledby="pkg-t">
+  <h2 id="pkg-t">{% translate "Paquete RXPD para o concello" %}</h2>
+  <p class="help">{% translate "Modelos de exemplo: requiren revisión do DPD e dos servizos xurídicos do concello." %}</p>
+  <ul class="privacy-steps__docs">{% for slug, title in docs %}<li><a href="{% turl 'manage:privacy_doc' slug %}">{{ title }}</a></li>{% endfor %}</ul>
+</section>
+{% endblock %}

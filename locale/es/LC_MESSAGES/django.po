@@ -18645,8 +18645,263 @@ msgstr ""
 "si vinculas Telegram para recibir avisos. El mapa de las instalaciones carga"
 " imágenes de un servidor de mapas, que ve la dirección IP de tu navegador."
 
-msgid "Delegado/a de protección de datos:"
-msgstr "Delegado/a de protección de datos:"
+msgid "Paso de protección de datos feito"
+msgstr "Paso de protección de datos hecho"
+
+msgid "Paso de protección de datos: non procede"
+msgstr "Paso de protección de datos: no procede"
+
+msgid "Paso de protección de datos desmarcado"
+msgstr "Paso de protección de datos desmarcado"
+
+msgid "Protección de datos: primeiros pasos"
+msgstr "Protección de datos: primeros pasos"
+
+msgid "data da revisión"
+msgstr "fecha de la revisión"
+
+msgid "Feito"
+msgstr "Hecho"
+
+msgid "Non procede"
+msgstr "No procede"
+
+msgid "Guía rápida"
+msgstr "Guía rápida"
+
+msgid "Rexistro de actividades"
+msgstr "Registro de actividades"
+
+msgid "Información por capas"
+msgstr "Información por capas"
+
+msgid "Contrato de encargado do tratamento"
+msgstr "Contrato de encargado del tratamiento"
+
+msgid "Política de conservación"
+msgstr "Política de conservación"
+
+msgid "Dereitos das persoas"
+msgstr "Derechos de las personas"
+
+msgid "Protocolo de brechas"
+msgstr "Protocolo de brechas"
+
+msgid "Que non garda Eira"
+msgstr "Qué no guarda Eira"
+
+msgid "DPD designado"
+msgstr "DPD designado"
+
+msgid ""
+"Os concellos teñen que designar unha persoa delegada de protección de datos "
+"(art. 37.1.a RXPD). Pode ser a da deputación. O seu contacto sae na páxina "
+"de privacidade."
+msgstr ""
+"Los concellos tienen que designar una persona delegada de protección de "
+"datos (art. 37.1.a RGPD). Puede ser la de la diputación. Su contacto sale en"
+" la página de privacidad."
+
+msgid "Textos legais adoptados"
+msgstr "Textos legales adoptados"
+
+msgid ""
+"Revisar e adoptar a política de privacidade, as condicións e os "
+"consentimentos. Mentres non se revisen, Eira mostra o aviso de modelo de "
+"exemplo."
+msgstr ""
+"Revisar y adoptar la política de privacidad, las condiciones y los "
+"consentimientos. Mientras no se revisen, Eira muestra el aviso de modelo de "
+"ejemplo."
+
+msgid "Rexistro de actividades descargado e revisado"
+msgstr "Registro de actividades descargado y revisado"
+
+msgid ""
+"Completar os datos do concello, revisar as actividades e publicar o "
+"inventario (art. 31.2 LOPDGDD)."
+msgstr ""
+"Completar los datos del concello, revisar las actividades y publicar el "
+"inventario (art. 31.2 LOPDGDD)."
+
+msgid "EIPD revisada polo DPD"
+msgstr "EIPD revisada por el DPD"
+
+msgid ""
+"Obrigatoria para saúde, menores e accidentes. Anota a data en que o DPD deu "
+"a súa opinión."
+msgstr ""
+"Obligatoria para salud, menores y accidentes. Anota la fecha en que el DPD "
+"dio su opinión."
+
+msgid "Contrato de encargado asinado (se procede)"
+msgstr "Contrato de encargado firmado (si procede)"
+
+msgid ""
+"Só se Eira a aloxa a deputación, unha empresa ou engram. Se a aloxa o propio"
+" concello, marca «Non procede»."
+msgstr ""
+"Solo si Eira la aloja la diputación, una empresa o engram. Si la aloja el "
+"propio concello, marca «No procede»."
+
+msgid "Prazos de conservación confirmados"
+msgstr "Plazos de conservación confirmados"
+
+msgid ""
+"Eira borra ou anonimiza os datos caducados automaticamente. Confirma os "
+"prazos co DPD ou pide que se cambien."
+msgstr ""
+"Eira borra o anonimiza los datos caducados automáticamente. Confirma los "
+"plazos con el DPD o pide que se cambien."
+
+msgid "Dobre factor obrigatorio para a administración"
+msgstr "Doble factor obligatorio para la administración"
+
+msgid ""
+"Protexe as contas de administración e do DPD aínda que alguén se faga co seu"
+" correo."
+msgstr ""
+"Protege las cuentas de administración y del DPD aunque alguien se haga con "
+"su correo."
+
+msgid "Configuración → Contacto"
+msgstr "Configuración → Contacto"
+
+msgid "Configuración → Seguridade das contas e rexistro de auditoría"
+msgstr "Configuración → Seguridad de las cuentas y registro de auditoría"
+
+msgid "Falta o contacto do DPD en Configuración → Contacto."
+msgstr "Falta el contacto del DPD en Configuración → Contacto."
+
+msgid "Aínda non está activado en Configuración."
+msgstr "Todavía no está activado en Configuración."
+
+msgid "Activado: a administración e o DPD entran co dobre factor."
+msgstr "Activado: la administración y el DPD entran con el doble factor."
+
+msgid "O concello aínda non publicou ningún documento legal."
+msgstr "El concello todavía no ha publicado ningún documento legal."
+
+msgid "%(n)s documentos publicados e revisados."
+msgstr "%(n)s documentos publicados y revisados."
+
+msgid "Paso gardado: %(s)s"
+msgstr "Paso guardado: %(s)s"
+
+msgid "Contacto do DPD: %(c)s"
+msgstr "Contacto del DPD: %(c)s"
+
+msgid ""
+"%(n)s documentos publicados; %(e)s aínda co aviso de modelo de exemplo."
+msgstr ""
+"%(n)s documentos publicados; %(e)s todavía con el aviso de modelo de "
+"ejemplo."
+
+msgid "Paso marcado como pendente: %(s)s"
+msgstr "Paso marcado como pendiente: %(s)s"
+
+msgid "Este paso aínda non se cumpre: %(s)s"
+msgstr "Este paso todavía no se cumple: %(s)s"
+
+msgid "Indica a data da revisión."
+msgstr "Indica la fecha de la revisión."
+
+msgid ""
+"Os sete pasos para usar Eira cumprindo o RXPD. Cada un leva ao seu documento"
+" ou á pantalla onde se fai; ao marcalo queda a data e a persoa no rexistro "
+"de auditoría."
+msgstr ""
+"Los siete pasos para usar Eira cumpliendo el RGPD. Cada uno lleva a su "
+"documento o a la pantalla donde se hace; al marcarlo quedan la fecha y la "
+"persona en el registro de auditoría."
+
+msgid "Documentos do paquete RXPD"
+msgstr "Documentos del paquete RGPD"
+
+msgid ""
+"Modelos de exemplo para o concello. Revísaos co DPD e cos servizos "
+"xurídicos."
+msgstr ""
+"Modelos de ejemplo para el concello. Revísalos con el DPD y con los "
+"servicios jurídicos."
+
+msgid "Descargar (Markdown)"
+msgstr "Descargar (Markdown)"
+
+msgid ""
+"O concello é o responsable do tratamento. Eira xa trae a privacidade desde o"
+" deseño e os documentos cubertos; quedan estes sete pasos. Cada un queda co "
+"día e a persoa que o marcou, e no rexistro de auditoría."
+msgstr ""
+"El concello es el responsable del tratamiento. Eira ya trae la privacidad "
+"desde el diseño y los documentos rellenados; quedan estos siete pasos. Cada "
+"uno queda con el día y la persona que lo marcó, y en el registro de "
+"auditoría."
+
+msgid "%(done)s de %(total)s pasos feitos"
+msgstr "%(done)s de %(total)s pasos hechos"
+
+msgid "Marcado como «non procede» o %(d)s por %(p)s."
+msgstr "Marcado como «no procede» el %(d)s por %(p)s."
+
+msgid "Feito o %(d)s por %(p)s."
+msgstr "Hecho el %(d)s por %(p)s."
+
+msgid "Revisión do DPD: %(r)s."
+msgstr "Revisión del DPD: %(r)s."
+
+msgid "Ler o documento"
+msgstr "Leer el documento"
+
+msgid "Volver a pendente"
+msgstr "Volver a pendiente"
+
+msgid "Data da revisión do DPD"
+msgstr "Fecha de la revisión del DPD"
+
+msgid "Marcar como feito"
+msgstr "Marcar como hecho"
+
+msgid "Primeiro hai que completalo na pantalla indicada."
+msgstr "Primero hay que completarlo en la pantalla indicada."
+
+msgid "Paquete RXPD para o concello"
+msgstr "Paquete RGPD para el concello"
+
+msgid ""
+"Modelos de exemplo: requiren revisión do DPD e dos servizos xurídicos do "
+"concello."
+msgstr ""
+"Modelos de ejemplo: requieren revisión del DPD y de los servicios jurídicos "
+"del concello."
+
+msgid "O que non gardamos"
+msgstr "Lo que no guardamos"
+
+msgid ""
+"Nin o padrón, nin o certificado penal, nin a túa saúde no servidor, nin GPS,"
+" nin seguimento dos correos, nin analítica de terceiros."
+msgstr ""
+"Ni el padrón, ni el certificado penal, ni tu salud en el servidor, ni GPS, "
+"ni seguimiento de los correos, ni analítica de terceros."
+
+msgid "Que non garda Eira, e por que"
+msgstr "Qué no guarda Eira, y por qué"
+
+msgid ""
+"Os documentos de protección de datos para o concello (rexistro de "
+"actividades, avaliación de impacto, conservación, dereitos e brechas) están "
+"no repositorio de Eira:"
+msgstr ""
+"Los documentos de protección de datos para el concello (registro de "
+"actividades, evaluación de impacto, conservación, derechos y brechas) están "
+"en el repositorio de Eira:"
+
+msgid "paquete RXPD"
+msgstr "paquete RGPD"
+
+msgid "Persoa delegada de protección de datos:"
+msgstr "Persona delegada de protección de datos:"
 
 #~ msgid "Frecuencia"
 #~ msgstr "Frecuencia"

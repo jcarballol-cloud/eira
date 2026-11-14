@@ -3,6 +3,8 @@
 
 Que dato ve cada perfil e onde se comproba. As probas en `apps/*/tests/test_privacy*.py`, `apps/tenants/tests/test_roles.py` e `apps/accounts/tests/test_privacy.py` verifican esta matriz.
 
+**Paquete RXPD para o concello:** [guía rápida](paquete/00-guia-rapida.md) ([castelán](paquete/es/00-guia-rapida.md)), [auditoría coa metodoloxía da AEPD](auditoria-aepd.md) e [que non garda Eira](paquete/08-minimizacion.md). Na app: «Protección de datos: primeiros pasos».
+
 **Avaliación de impacto (EIPD):** os tratamentos de maior risco (saúde, menores, accidentes e carné con foto) teñen unha plantilla de EIPD cuberta co que fai Eira: [eipd-plantilla.md](eipd-plantilla.md). Resumo para a veciñanza en *Quen custodia os teus datos → Ver a avaliación de impacto*.
 
 Lenda: **✔** ve o dato · **—** non o ve · **agr.** só agregado (n ≥ 10) · **seud.** seudonimizado.

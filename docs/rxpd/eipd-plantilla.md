@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: EUPL-1.2 -->
 # Plantilla de avaliación de impacto relativa á protección de datos (EIPD)
 
+> **Versión revisada coa auditoría (14/11/2026):** [paquete/02-eipd.md](paquete/02-eipd.md). Esta queda como historial.
+
 > **Para que serve:** o art. 35 do RXPD obriga a facer unha EIPD antes de tratar datos que poidan
 > supoñer un alto risco. Esta plantilla xa ven **cuberta co que fai Eira de verdade** (comprobado no
 > código e nos tests citados). O concello ten que completar o marcado con `‹ ›`, revisala co seu DPD e

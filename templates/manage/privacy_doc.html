@@ -1,0 +1,9 @@
+{% extends "manage/base.html" %}{% load i18n eira %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<p><a href="{% turl 'manage:privacy_steps' %}">{% translate "Protección de datos: primeiros pasos" %}</a></p>
+<article class="prose card legal-doc">
+  <p class="privacy-doc__actions"><a class="btn btn-secondary btn-sm" href="?descargar=1">{% icon 'download' %} {% translate "Descargar (Markdown)" %}</a></p>
+  {{ body }}
+</article>
+{% endblock %}

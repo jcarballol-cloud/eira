@@ -64,7 +64,7 @@ concello.
 > recibir avisos. O mapa das instalacións carga imaxes dun servidor de mapas, que ve o enderezo IP
 > do teu navegador.
 >
-> **Delegado/a de protección de datos:** [contacto do DPD] (sae se o concello o enche en
+> **Persoa delegada de protección de datos:** [contacto do DPD] (sae se o concello o enche en
 > «Configuración»).
 >
 > **Os teus dereitos:** acceso, rectificación, supresión, portabilidade, oposición e limitación.

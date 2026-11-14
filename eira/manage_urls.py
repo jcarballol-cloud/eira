@@ -4,7 +4,7 @@
 from django.urls import path
 
 from apps.access import views as access
-from apps.accounts import auditlog, breaches, signup
+from apps.accounts import auditlog, breaches, privacy_steps, signup
 from apps.activities import views as activities
 from apps.analytics import performance_views as performance
 from apps.analytics import provenance_views as provenance
@@ -88,6 +88,9 @@ urlpatterns = [
     path("persoal/empadroamento/", tenant.issue_invitation, name="issue_invitation"),
     path("portabilidade/", portability.page, name="portability"),
     path("privacidade/brechas/", breaches.breach_list, name="breaches"),
+    # Auditoría RXPD (14/11/2026): primeiros pasos e documentos do paquete
+    path("privacidade/primeiros-pasos/", privacy_steps.steps_view, name="privacy_steps"),
+    path("privacidade/documentos/<slug:slug>/", privacy_steps.doc_view, name="privacy_doc"),
     path("privacidade/auditoria/", auditlog.audit_log, name="audit"),  # v1.3 · C
     path("privacidade/brechas/nova/", breaches.breach_edit, name="breach_new"),
     path("privacidade/brechas/<int:pk>/", breaches.breach_edit, name="breach"),

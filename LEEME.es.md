@@ -67,7 +67,8 @@ Eira aporta herramientas, pero **no cumple las obligaciones por el concello**.
 | Requisito | Quién y qué | Dónde ayuda Eira |
 |---|---|---|
 | **Responsable del tratamiento** | El concello es el responsable (art. 4.7 RGPD). Si la diputación o una empresa presta el servicio, hace falta un contrato de encargo (art. 28 RGPD) | [Matriz de datos](docs/rxpd/matriz.md), «Quien custodia los datos» |
-| **DPD** | Las administraciones públicas deben designarlo (art. 37 RGPD y art. 34 LOPDGDD) y comunicarlo a la AEPD | Campo de contacto en «Configuración», perfil DPD |
+| **DPD** | Las administraciones públicas deben designarlo (art. 37.1.a RGPD) y comunicarlo a la AEPD | Campo de contacto en «Configuración», perfil DPD |
+| **Paquete RGPD para el concello** | Guía rápida en siete pasos, registro de actividades, EIPD, información por capas, contrato de encargado, conservación, derechos, brechas y «qué no guarda Eira». **Modelos de ejemplo**: requieren revisión del DPD y de los servicios jurídicos | [Paquete](docs/rxpd/paquete/es/00-guia-rapida.md), [auditoría AEPD](docs/rxpd/auditoria-aepd.md), en la app «Protección de datos: primeros pasos» |
 | **Registro de actividades** | El concello debe llevarlo y mantenerlo (art. 30 RGPD) | [Modelo de RAT](docs/rxpd/rat.md) |
 | **EIPD** | Debe evaluarse y aprobarse antes de usar los tratamientos de mayor riesgo (art. 35 RGPD) | [Plantilla](docs/rxpd/eipd-plantilla.md) y resumen público |
 | **Documentos legales** | Privacidad, condiciones, menores, imagen, normas y salud: revisarlos y adaptarlos | [Modelos de ejemplo](docs/legal/modelos/), versiones y registro de aceptaciones |

@@ -25,8 +25,8 @@ def test_mark_a_step_with_the_keyboard_and_it_is_audited(new_page, base):
     step = page.locator("#paso-retention")
     assert "Pendente" in step.locator("h2").inner_text()
     step.get_by_role("button", name="Marcar como feito").focus()
-    page.keyboard.press("Enter")
-    page.wait_for_load_state()
+    with page.expect_navigation():
+        page.keyboard.press("Enter")
     assert "Feito" in page.locator("#paso-retention h2").inner_text()
     assert "1 de 7 pasos feitos" in page.locator("#steps-progress").inner_text()
     page.goto(base + "/c/vilardeiras/xestion/privacidade/auditoria/?categoria=rxpd")

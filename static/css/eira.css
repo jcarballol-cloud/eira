@@ -1884,8 +1884,9 @@ html.pref-reduced-motion .tour__ring { transition: none; }
 }
 
 /* Auditoría RXPD (14/11/2026): «Protección de datos: primeiros pasos» */
-.privacy-steps { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: .9rem; counter-reset: paso; }
-.privacy-step { counter-increment: paso; }
+.privacy-steps { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: .9rem; counter-reset: paso; }
+.privacy-step { counter-increment: paso; min-width: 0; overflow-wrap: anywhere; }
+.privacy-step input[type="date"] { max-width: 100%; }
 .privacy-step__title { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; font-size: 1.15rem; margin: 0 0 .4rem; }
 .privacy-step__title::before { content: counter(paso) "."; color: var(--text-muted); }
 .privacy-step--done { border-left: 4px solid var(--musgo); }

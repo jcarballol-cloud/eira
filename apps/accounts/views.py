@@ -179,7 +179,11 @@ def identity_callback(request):
 def logout_view(request):
     logout(request)
     messages.success(request, _("Saíches da túa conta."))
-    return redirect("home")
+    response = redirect("home")
+    # Auditoría RXPD: que non quede nada da sesión na caché HTTP do navegador. As páxinas que
+    # garda o service worker bórraas eira.js ao ver que xa non hai sesión (data-cache-owner).
+    response["Clear-Site-Data"] = '"cache"'
+    return response
 
 
 # ---------------------------------------------------------------- conta
@@ -361,6 +365,90 @@ def export_user_data(user):
             }
             for a in user.legal_acceptances.select_related("version__document", "municipality")
         ],
+        # Auditoría RXPD (14/11/2026): o que faltaba para que o acceso (art. 15) sexa completo
+        **_export_extra(user, dt),
+    }
+
+
+def _export_extra(user, dt):
+    from apps.bookings.models import GameJoin, OpenGame, Rating, Voucher
+    from apps.members.models import MemberCard, SportsPass
+    from apps.notifications.models import NoticePreference
+
+    return {
+        "member_cards": [
+            {
+                "municipality": c.municipality.slug,
+                "number": c.number,
+                "has_photo": bool(c.photo),
+                "external_id": c.external_id,
+                "created_at": dt(c.created_at),
+            }
+            for c in MemberCard.objects.filter(user=user).select_related("municipality")
+        ],
+        "sports_passes": [
+            {
+                "municipality": p.municipality.slug,
+                "type": p.type.name,
+                "status": p.status,
+                "starts_on": p.starts_on.isoformat() if p.starts_on else None,
+                "expires_on": p.expires_on.isoformat() if p.expires_on else None,
+                "price_cents": p.price_cents,
+            }
+            for p in SportsPass.objects.filter(user=user).select_related("municipality", "type")
+        ],
+        "vouchers": [
+            {
+                "type": v.type.name,
+                "uses_left": v.uses_left,
+                "status": v.status,
+                "expires_at": dt(v.expires_at),
+            }
+            for v in Voucher.objects.filter(user=user).select_related("type")
+        ],
+        "ratings": [
+            {
+                "booking": r.booking.reference,
+                "score": r.score,
+                "tags": r.tags,
+                "comment": r.comment,
+                "created_at": dt(r.created_at),
+            }
+            for r in Rating.objects.filter(booking__user=user).select_related("booking")
+        ],
+        "open_games": [
+            {
+                "booking": g.booking.reference,
+                "level": g.level,
+                "message": g.message,
+                "consent_at": dt(g.consent_at),
+            }
+            for g in OpenGame.objects.filter(booking__user=user).select_related("booking")
+        ],
+        "game_joins": [
+            {
+                "booking": j.game.booking.reference,
+                "status": j.status,
+                "consent_at": dt(j.consent_at),
+            }
+            for j in GameJoin.objects.filter(user=user).select_related("game__booking")
+        ],
+        "notice_preferences": [
+            {
+                "municipality": n.municipality.slug,
+                "informative_consent_at": dt(n.comms_consent_at),
+                "matrix": n.matrix,
+            }
+            for n in NoticePreference.objects.filter(user=user).select_related("municipality")
+        ],
+        "preferences": {
+            "notify_email": user.notify_email,
+            "notify_telegram": user.notify_telegram,
+            "telegram_linked": bool(user.telegram_chat),
+            "photo_consent": user.photo_consent,
+            "network_feed": list(user.network_feed or []),
+            "tours_hidden": list(user.tours_hidden or []),
+        },
     }
 
 
@@ -379,7 +467,20 @@ def delete_user(user):
     """Supresión (art. 17 RXPD). As reservas pasadas consérvanse anonimizadas para a contabilidade."""
     from apps.bookings.models import Booking
 
-    Booking.objects.filter(user=user).update(user=None, holder_name="", holder_phone="")
+    mine = Booking.objects.filter(user=user)
+    # Fotos e textos libres da reserva (poden levar nomes doutras persoas): fóra tamén
+    for b in mine.exclude(start_state_photo=""):
+        b.start_state_photo.delete(save=False)
+    mine.update(
+        user=None,
+        holder_name="",
+        holder_phone="",
+        participant_names="",
+        start_state_notes="",
+        start_state_photo="",
+        close_notes="",
+        cancel_reason="",
+    )
     audit("account.delete", None, detail_user=hashlib.sha256(user.email.encode()).hexdigest()[:12])
     user.delete()
 

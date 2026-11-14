@@ -11,6 +11,7 @@ from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 from django.views.decorators.http import require_POST
 
+from apps.accounts.freetext import hint
 from apps.accounts.models import audit
 from apps.facilities.models import Facility
 from apps.tenants.urlutils import neighbour_required, role_required, treverse
@@ -26,6 +27,7 @@ class AnswerForm(forms.ModelForm):
         model = SurveyResponse
         fields = ["nps", *[k for k, _l in ASPECTS], "facility", "comment"]
         widgets = {"comment": forms.Textarea(attrs={"rows": 3, "maxlength": 500})}
+        help_texts = {"comment": hint()}
 
     def __init__(self, *args, tenant=None, **kwargs):
         super().__init__(*args, **kwargs)

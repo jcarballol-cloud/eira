@@ -45,6 +45,11 @@ class Command(BaseCommand):
         self.stdout.write(
             f"Rexistro de auditoría: {purge_expired()} entradas borradas por antigüidade"
         )
+        # Auditoría RXPD (14/11/2026): o resto dos prazos de conservación
+        from apps.accounts.retention import purge_all
+
+        done = {k: v for k, v in purge_all().items() if v}
+        self.stdout.write(f"Conservación: {done or 'nada que borrar'}")
         # v1.5 · E: aviso ao concello cando toca volver confirmar unha acreditación
         from apps.activities.accreditation import notify_due_reviews
 

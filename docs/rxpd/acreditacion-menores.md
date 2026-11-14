@@ -6,13 +6,14 @@
 > Documento orientativo. O concello debe revisalo cos seus servizos xurídicos e o seu DPD.
 
 **Eira non garda nin sube o certificado do Rexistro Central de Delincuentes Sexuais.** Son datos
-penais (art. 10 RGPD) e a comprobación corresponde á contratación do concello (LO 1/1996, art. 13.5;
-LO 8/2021, LOPIVI).
+penais (art. 10 RGPD) e a comprobación corresponde á contratación do concello (LO 8/2021, LOPIVI,
+art. 57; o art. 13.5 da LO 1/1996 foi suprimido pola LOPIVI). O rexistro chámase agora «Rexistro Central de
+Delincuentes Sexuais e de Trata de Seres Humanos».
 
 ## Que fai Eira
 
 1. A administración do concello marca en *Acreditacións (menores)*: **«Acreditación verificada na
-   contratación (LO 1/1996, art. 13.5; LOPIVI)»**.
+   contratación (LO 8/2021, LOPIVI, art. 57)»**.
 2. **Só se garda quen o marcou e a data.** Non hai campo para a data do certificado, o resultado nin
    ningún documento (`MinorsAccreditation`).
 3. Ata marcalo, **a asignación a un grupo con menores queda bloqueada** cunha mensaxe clara. É un
@@ -37,8 +38,8 @@ LO 8/2021, LOPIVI).
 > Documento orientativo. El concello debe revisarlo con sus servicios jurídicos y su DPD.
 
 **Eira no guarda ni sube el certificado del Registro Central de Delincuentes Sexuales.** Son datos
-penales (art. 10 RGPD) y la comprobación corresponde a la contratación del concello (LO 1/1996,
-art. 13.5; LO 8/2021, LOPIVI).
+penales (art. 10 RGPD) y la comprobación corresponde a la contratación del concello (LO 8/2021,
+LOPIVI, art. 57).
 
 - La administración del concello marca la casilla «Acreditación verificada na contratación».
 - **Solo se guarda quién la marcó y la fecha**, sin fecha del certificado, resultado ni documento.

@@ -11,7 +11,7 @@
       <span class="badge {% if r.status == 'current' %}badge-ok{% else %}badge-warn{% endif %}">{{ r.status_label }}</span></div>
     {% if r.record %}<p class="help">{% blocktranslate trimmed with w=r.record.confirmed_by|default:"—" d=r.record.confirmed_at|date:"d/m/Y" u=r.review_on|date:"d/m/Y" %}Marcouno {{ w }} o {{ d }}. Revisión: {{ u }}.{% endblocktranslate %}</p>{% endif %}
     <form method="post" class="stack-sm mt-1">{% csrf_token %}<input type="hidden" name="member" value="{{ r.member.pk }}">
-      <div class="check"><input id="acc-{{ r.member.pk }}" name="verified" type="checkbox" value="1"><label for="acc-{{ r.member.pk }}">{% translate "Acreditación verificada na contratación (LO 1/1996, art. 13.5; LOPIVI)" %}<span class="visually-hidden"> · {{ r.member.user }}</span></label></div>
+      <div class="check"><input id="acc-{{ r.member.pk }}" name="verified" type="checkbox" value="1"><label for="acc-{{ r.member.pk }}">{% translate "Acreditación verificada na contratación (LO 8/2021, LOPIVI, art. 57)" %}<span class="visually-hidden"> · {{ r.member.user }}</span></label></div>
       <div class="row"><button class="btn btn-sm" type="submit">{% if r.record %}{% translate "Volver confirmar" %}{% else %}{% translate "Marcar" %}{% endif %}<span class="visually-hidden"> · {{ r.member.user }}</span></button>
       {% if r.record %}<button class="btn btn-sm btn-secondary" name="action" value="withdraw" type="submit">{% translate "Retirar a marca" %}<span class="visually-hidden"> · {{ r.member.user }}</span></button>{% endif %}</div>
     </form>

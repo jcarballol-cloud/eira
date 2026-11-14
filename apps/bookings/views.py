@@ -14,6 +14,7 @@ from django.utils.translation import gettext_lazy
 from django.views.decorators.http import require_POST
 
 from apps.access.services import booking_access_info, remote_open
+from apps.accounts.freetext import hint
 from apps.facilities.models import Facility
 from apps.integrations.registry import get_adapter
 from apps.integrations.weather import advice
@@ -570,7 +571,9 @@ class ChecklistForm(forms.Form):
     notes = forms.CharField(
         label=gettext_lazy("Algo que contar? (opcional)"),
         required=False,
+        max_length=500,
         widget=forms.Textarea(attrs={"rows": 3}),
+        help_text=hint(),
     )
 
     def __init__(self, *args, needs_key=False, **kwargs):
@@ -715,6 +718,7 @@ class StartStateForm(forms.Form):
         required=False,
         max_length=500,
         widget=forms.Textarea(attrs={"rows": 3}),
+        help_text=hint(),
     )
     photo = forms.ImageField(
         label=gettext_lazy("Foto (opcional)"),

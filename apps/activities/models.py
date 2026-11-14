@@ -300,7 +300,7 @@ class FitnessResult(models.Model):
 
 class MinorsAccreditation(TenantModel):
     """v1.5 · E: o concello deixa constancia de que comprobou, na contratación, a acreditación
-    negativa do Rexistro Central de Delincuentes Sexuais (LO 1/1996, art. 13.5; LOPIVI).
+    negativa do Rexistro Central de Delincuentes Sexuais (LO 8/2021, LOPIVI, art. 57).
 
     **Eira nunca garda nin sube o certificado** (datos penais, art. 10 RGPD). Só se garda quen o
     marcou e cando: nin a data do certificado nin ningún documento nin o resultado."""

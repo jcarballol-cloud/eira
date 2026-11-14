@@ -11,6 +11,7 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
+from apps.accounts.freetext import hint
 from apps.facilities.models import Facility
 from apps.tenants.uploads import clean_image
 from apps.tenants.urlutils import role_required, treverse
@@ -29,6 +30,7 @@ class ZoneLogForm(forms.Form):
         required=False,
         max_length=500,
         widget=forms.Textarea(attrs={"rows": 2}),
+        help_text=hint(gettext_lazy("Por exemplo: falta xabón, unha billa pinga…")),
     )
     photo = forms.ImageField(
         label=gettext_lazy("Foto (opcional)"),

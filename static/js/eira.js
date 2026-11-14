@@ -379,6 +379,25 @@
   document.addEventListener("DOMContentLoaded", function () {
     var f = document.querySelector("[data-focus]");
     if (f) { f.setAttribute("tabindex", "-1"); f.focus(); }
+    forgetOtherPeoplesPages();
     setupMenu(); syncThemeToggles(); updateOnline(); setupOfflineForms(); precacheLinks(); setupKeypad(); setupToggles(); setupAutoSubmit();
   });
+  // Auditoría RXPD: o service worker garda algunhas páxinas para velas sen rede (as túas reservas,
+  // a lista do grupo na tableta). Se cambia a persoa ou se sae da conta, bórranse deste dispositivo.
+  function forgetOtherPeoplesPages() {
+    var owner = document.body.getAttribute("data-cache-owner");
+    if (owner === null || !("caches" in window)) return;
+    var before = null;
+    try { before = window.localStorage.getItem("eira-cache-owner"); } catch (e) { before = null; }
+    if (owner && owner === before) return;
+    window.caches.keys().then(function (keys) {
+      return Promise.all(keys.filter(function (k) { return k.indexOf("eira-pages-") === 0; })
+        .map(function (k) { return window.caches.delete(k); }));
+    }).then(function () {
+      try {
+        if (owner) window.localStorage.setItem("eira-cache-owner", owner);
+        else window.localStorage.removeItem("eira-cache-owner");
+      } catch (e) { /* sen almacenamento: bórrase en cada páxina sen sesión */ }
+    }).catch(function () { /* navegador sen Cache API */ });
+  }
 })();

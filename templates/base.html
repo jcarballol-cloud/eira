@@ -21,7 +21,7 @@
   <script src="{% asset 'js/listen.js' %}" defer></script>
   {% if tour %}<script src="{% asset 'js/tour.js' %}" defer></script>{% endif %}
 </head>
-<body class="layout-{{ layout }} kind-{{ kind }}{% if layout == 'app' or layout == 'tablet' %} themable{% elif themable %} themable themable-desk{% endif %}{% if region_consult %} region-consult{% endif %}{% if framed %} framed framed-{{ layout }}{% endif %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' {% block body_attrs %}{% endblock %}>
+<body class="layout-{{ layout }} kind-{{ kind }}{% if layout == 'app' or layout == 'tablet' %} themable{% elif themable %} themable themable-desk{% endif %}{% if region_consult %} region-consult{% endif %}{% if framed %} framed framed-{{ layout }}{% endif %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' data-cache-owner="{% if user.is_authenticated %}{{ user.pk }}{% endif %}" {% block body_attrs %}{% endblock %}>
   <a class="skip-link" href="#main">{% translate "Saltar ao contido" %}</a>
   {% if demo_tools %}
   <div class="demo-bar" role="note">

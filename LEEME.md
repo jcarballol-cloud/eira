@@ -74,7 +74,7 @@ Eira achega ferramentas, pero **non cumpre as obrigas polo concello**.
 | **Ordenanza** | Prezos públicos ou taxa: debe aprobarse polo procedemento que corresponda | [Modelo](docs/concello/ordenanza-modelo.md) |
 | **Accesibilidade** | Declaración e canle de queixas (RD 1112/2018). As probas automáticas non substitúen unha revisión con persoas | [Declaración](docs/accesibilidade/declaracion.md) (na app, en «Accesibilidade», no pé de todas as pantallas) e [criterios](docs/accesibilidade/criterios.md); canle e reclamación en «Configuración» |
 | **ENS** | Categorizar o sistema e aplicar as medidas (RD 311/2022). Non hai certificación incluída | [Seguridade e RGPD](docs/seguridade-rxpd.md), [despregamento](docs/despregamento.md) |
-| **Acreditación de monitoras con menores** | O concello comproba na contratación o certificado do Rexistro Central de Delincuentes Sexuais (LO 1/1996, art. 13.5; LOPIVI). **Eira non o garda nin o sube** (art. 10 RGPD): só quen marcou a comprobación e a data | [Documentación](docs/rxpd/acreditacion-menores.md) |
+| **Acreditación de monitoras con menores** | O concello comproba na contratación o certificado do Rexistro Central de Delincuentes Sexuais (LO 8/2021, LOPIVI, art. 57). **Eira non o garda nin o sube** (art. 10 RGPD): só quen marcou a comprobación e a data | [Documentación](docs/rxpd/acreditacion-menores.md) |
 
 ## 3. Se modificas Eira
 

@@ -56,6 +56,7 @@ LABELS = {
     "account.export": gettext_lazy("Descarga dos datos propios"),
     "audit.export": gettext_lazy("Descarga do rexistro de auditoría"),
     "audit.purge": gettext_lazy("Entradas antigas borradas por conservación"),
+    "retention.purge": gettext_lazy("Datos antigos borrados ou anonimizados por conservación"),
     "support.request": gettext_lazy("A deputación pide acceso de soporte"),
     "support.grant": gettext_lazy("Acceso de soporte autorizado"),
     "support.revoke": gettext_lazy("Acceso de soporte revogado"),

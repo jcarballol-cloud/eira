@@ -20,7 +20,7 @@
     {% endif %}
     {% if incident.status != 'resolved' and incident.status != 'rejected' %}
     <form method="post" class="card">{% csrf_token %}<input type="hidden" name="action" value="resolve"><h2>{% translate "3. Resolver" %}</h2>
-      <div class="field"><label for="note">{% translate "Nota para a persoa" %}</label><textarea id="note" name="note" rows="2"></textarea></div>
+      <div class="field"><label for="note">{% translate "Nota para a persoa" %}</label><textarea id="note" name="note" rows="2" aria-describedby="note-help"></textarea><span class="help" id="note-help">{% translate "Non escribas datos de saúde nin datos persoais doutras persoas." %}</span></div>
       <div class="row"><button class="btn" type="submit">{% translate "Marcar como resolta" %}</button><button class="btn btn-secondary" type="submit" name="action" value="reject">{% translate "Descartar" %}</button></div></form>
     {% endif %}
   </aside>

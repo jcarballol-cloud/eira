@@ -1,6 +1,13 @@
 # SPDX-License-Identifier: EUPL-1.2
 # Demostración local: `docker compose up --build` → http://localhost:8000
 # Para produción, ver docs/despregamento.md (segredos propios, HTTPS e EIRA_DEMO_TOOLS=0).
+# Rexistros dos contedores (levan enderezos IP no log de acceso): rotan e non medran sen fin.
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   db:
     image: postgres:16-alpine
@@ -17,6 +24,7 @@ services:
 
   app:
     build: .
+    logging: *logging
     depends_on:
       db:
         condition: service_healthy
@@ -37,6 +45,7 @@ services:
   # Envía os avisos programados do concello cada 5 minutos (`manage.py send_notices`)
   notices:
     build: .
+    logging: *logging
     depends_on:
       db:
         condition: service_healthy

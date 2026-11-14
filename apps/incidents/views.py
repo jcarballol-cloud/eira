@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
+from apps.accounts.freetext import hint
 from apps.facilities.models import Facility
 from apps.tenants.uploads import clean_image
 from apps.tenants.urlutils import neighbour_required, treverse
@@ -30,7 +31,10 @@ class IncidentForm(forms.ModelForm):
             "category": forms.RadioSelect,
         }
         help_texts = {
-            "photo": gettext_lazy("Opcional. Eliminamos a localización e outros metadatos da foto.")
+            "description": hint(),
+            "photo": gettext_lazy(
+                "Opcional. Eliminamos a localización e outros metadatos da foto."
+            ),
         }
 
     def __init__(self, *args, tenant=None, **kwargs):

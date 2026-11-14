@@ -13,6 +13,8 @@ from django import forms
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from apps.accounts.freetext import hint
+
 from .models import Booking, Rating
 
 # código → (texto, positiva?, categoría de incidencia se é negativa)
@@ -65,7 +67,7 @@ class RatingForm(forms.Form):
         max_length=500,
         required=False,
         widget=forms.Textarea(attrs={"rows": 2}),
-        help_text=_("O concello le os comentarios sen ver o teu nome."),
+        help_text=hint(_("O concello le os comentarios sen ver o teu nome.")),
     )
     make_incident = forms.BooleanField(
         label=_("Avisar ao concello para que o arranxe"), required=False, initial=True

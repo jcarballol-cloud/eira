@@ -17,7 +17,7 @@
       <div class="check"><input type="checkbox" id="chk-{{ forloop.counter0 }}" name="done" value="{{ forloop.counter0 }}" {% if item.done %}checked{% endif %}><label for="chk-{{ forloop.counter0 }}">{{ item.label }}</label></div>
     {% empty %}<p class="muted">{% translate "Sen puntos de checklist." %}</p>{% endfor %}
   </fieldset>
-  <div class="field"><label for="id_closing_notes">{% translate "Notas de peche" %}</label><textarea id="id_closing_notes" name="closing_notes" rows="3"></textarea></div>
+  <div class="field"><label for="id_closing_notes">{% translate "Notas de peche" %}</label><textarea id="id_closing_notes" name="closing_notes" rows="3" aria-describedby="closing-notes-help"></textarea><span class="help" id="closing-notes-help">{% translate "Non escribas datos de saúde nin datos persoais doutras persoas." %}</span></div>
   <div class="field"><label for="id_photo">{% icon 'camera' %} {% translate "Foto do traballo feito (opcional)" %}</label><input id="id_photo" type="file" name="photo" accept="image/*" capture="environment" aria-describedby="photo-help"><span class="help" id="photo-help">{% translate "Sen conexión, a foto gárdase no dispositivo e súbese despois." %}</span></div>
   <p class="alert alert-warn" data-offline-note hidden role="status"></p>
   <div class="form-actions">

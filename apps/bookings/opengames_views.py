@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
+from apps.accounts.freetext import hint
 from apps.facilities.models import FacilityKind
 from apps.tenants.urlutils import neighbour_required, treverse
 
@@ -30,8 +31,8 @@ class PublishForm(forms.Form):
         label=gettext_lazy("Mensaxe curta (opcional)"),
         max_length=140,
         required=False,
-        help_text=gettext_lazy(
-            "P. ex. «Buscamos dúas persoas para dobres». Sen teléfonos nin correos."
+        help_text=hint(
+            gettext_lazy("P. ex. «Buscamos dúas persoas para dobres». Sen teléfonos nin correos.")
         ),
     )
     consent = forms.BooleanField(

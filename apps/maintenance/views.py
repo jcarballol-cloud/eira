@@ -13,6 +13,7 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
+from apps.accounts.freetext import hint
 from apps.tenants.uploads import clean_image
 from apps.tenants.urlutils import aggregate_view, role_required, treverse
 
@@ -82,6 +83,7 @@ class CloseForm(forms.Form):
         label=gettext_lazy("Notas de peche"),
         required=False,
         widget=forms.Textarea(attrs={"rows": 3}),
+        help_text=hint(),
     )
     photo = forms.ImageField(
         label=gettext_lazy("Foto do traballo feito"),

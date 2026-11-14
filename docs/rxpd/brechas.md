@@ -35,7 +35,7 @@ Agravantes: menores, saúde, gran número de persoas, datos que permitan suplant
 
 ## 6. Pechar e aprender
 - Medidas para que non se repita. Pechar o rexistro coa data.
-- O rexistro consérvase **5 anos** (prazo de prescrición das infraccións graves e moi graves da LOPDGDD), aínda que a brecha non se notificase: o art. 33.5 obriga a documentar **todas**.
+- O rexistro consérvase **5 anos** (prazo prudente: supera os 3 anos de prescrición das infraccións moi graves, art. 72 LOPDGDD; as graves prescriben aos 2, art. 73), aínda que a brecha non se notificase: o art. 33.5 obriga a documentar **todas**.
 
 ## Permisos en Eira
 - **Ven e editan:** administración do concello e persoa con rol **DPD** (`dpo`) dese concello.

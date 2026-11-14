@@ -14,7 +14,7 @@ actividades coa súa base legal, por medios electrónicos (art. 31.2 LOPDGDD).
 | Responsable | Concello de ‹nome›, ‹NIF›, ‹enderezo›, ‹correo› |
 | Delegado/a de protección de datos | ‹nome ou posto, correo› (obrigatorio para os concellos: art. 37.1.a RXPD) |
 | Encargado, se o hai | ‹deputación, empresa ou quen aloxe Eira›, con contrato do art. 28 ([04-contrato-encargado.md](04-contrato-encargado.md)) |
-| Transferencias internacionais | **Ningunha** cos datos das contas. Excepcións: Telegram (voluntario, fóra do EEE) e o servidor de teselas do mapa, se é externo (enderezo IP do navegador) |
+| Transferencias internacionais | **Ningunha** cos datos das contas. Avisadas e por decisión da persoa: Telegram (voluntario, fóra do EEE) e o mapa, só baixo demanda («Ver mapa»: o servidor de teselas, OpenStreetMap por defecto, ve o enderezo IP do navegador) |
 | Medidas de seguridade (art. 32) | ENS (RD 311/2022) segundo a disposición adicional 1.ª LOPDGDD; en Eira: HTTPS, CSP estrita, sesións de 14 días, acceso sen contrasinal con código dun só uso, dobre factor para a xestión, rexistro de auditoría, illamento por concello, fotos sen metadatos, purga automática |
 
 ## Actividades

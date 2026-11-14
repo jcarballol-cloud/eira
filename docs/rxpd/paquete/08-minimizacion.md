@@ -39,7 +39,8 @@ Eira garda o imprescindible para cada servizo e bórrao ou anonimízao cando dei
 
 - **Telegram** é un servizo de fóra da Unión Europea. Só se usa se a persoa o vincula; sempre hai
   app e correo.
-- **O mapa** carga por defecto as teselas de OpenStreetMap (Reino Unido): o navegador envía o seu
-  enderezo IP ao ver o mapa. O concello pode usar o seu servidor de teselas en «Configuración → Mapa».
+- **O mapa** só se carga se a persoa pulsa «Ver mapa». Entón pide as imaxes a OpenStreetMap (Reino
+  Unido), que ve o enderezo IP do navegador; o aviso dío xusto ao lado do botón. O concello pode usar
+  o seu servidor de teselas en «Configuración → Mapa».
 - **Os textos libres** (notas, comentarios) levan un aviso para non escribir datos de saúde, pero
   Eira non pode impedir que alguén o faga.

@@ -1898,3 +1898,7 @@ html.pref-reduced-motion .tour__ring { transition: none; }
 .privacy-steps__bar { width: 100%; max-width: 24rem; height: .8rem; accent-color: var(--musgo); }
 .privacy-steps__docs { columns: 2 16rem; }
 .privacy-doc__actions { display: flex; justify-content: flex-end; }
+/* Auditoría RXPD: o mapa só se carga ao pulsar «Ver mapa» */
+.map-consent { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; }
+.map-consent[hidden] { display: none; }
+.map-consent__note { margin: 0; flex: 1 1 18rem; }

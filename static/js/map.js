@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: EUPL-1.2
 // Mapa de instalacións con Leaflet + teselas configurables (OpenStreetMap por defecto).
 // A lista accesible é sempre a alternativa principal; o mapa é un complemento.
+// Auditoría RXPD: as teselas veñen dun servidor externo, que ve a IP do navegador. Non se pide
+// ningunha ata que a persoa pulsa «Ver mapa» (en cada visita: non se lembra a elección).
 (function () {
   "use strict";
-  function init() {
-    var el = document.querySelector("[data-map]");
-    if (!el || !window.L) return;
+  function init(el) {
     var data = JSON.parse(document.getElementById(el.getAttribute("data-map")).textContent);
     if (!data.features.length) { el.hidden = true; return; }
+    el.hidden = false;
     var map = L.map(el, { scrollWheelZoom: false, keyboard: true });
     // A política global é «same-origin» (non se filtra a URL a terceiros), pero os servidores de teselas
     // de OSM esixen o Referer: envíase só a orixe e só nas teselas.
@@ -36,5 +37,16 @@
     }).addTo(map);
     map.fitBounds(layer.getBounds().pad(0.2));
   }
-  document.addEventListener("DOMContentLoaded", init);
+  function setup() {
+    var el = document.querySelector("[data-map]");
+    var consent = document.querySelector("[data-map-consent]");
+    if (!el || !consent || !window.L) return;
+    consent.hidden = false;
+    consent.querySelector("[data-map-load]").addEventListener("click", function () {
+      consent.hidden = true;
+      init(el);
+      el.focus();
+    });
+  }
+  document.addEventListener("DOMContentLoaded", setup);
 })();

@@ -129,6 +129,8 @@ def home(request):
             "form": form,
             "facilities": facilities,
             "geo": geo,
+            # Nome do servidor de teselas para o aviso de «Ver mapa» (p. ex. «OpenStreetMap»)
+            "tile_provider": tile_provider_name(tiles["url"]),
             "nav": "facilities",
             "view": request.GET.get("vista", "lista"),
             "active": active,
@@ -186,3 +188,12 @@ def detail(request, pk):
         "facilities/_week.html" if request.headers.get("HX-Request") else "facilities/detail.html"
     )
     return render(request, template, ctx)
+
+
+def tile_provider_name(url):
+    """Nome curto do servidor de teselas para o aviso: «OpenStreetMap» ou o dominio."""
+    from urllib.parse import urlparse
+
+    if "openstreetmap.org" in url:
+        return "OpenStreetMap"
+    return urlparse(url.replace("{s}.", "")).netloc or url

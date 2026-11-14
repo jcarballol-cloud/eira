@@ -57,8 +57,13 @@
 
 {% if view == "mapa" %}
   {{ geo|json_script:"facilities-geo" }}
-  <div id="map" class="map mb-2" data-map="facilities-geo" role="region" aria-label="{% translate 'Mapa das instalacións (a mesma información está na lista de embaixo)' %}"></div>
-  <p class="map-hint">{% translate "Mapa: © OpenStreetMap. A lista seguinte contén a mesma información de forma accesible." %}</p>
+  {# Auditoría RXPD: as teselas son dun servidor externo; non se piden ata que a persoa o decide #}
+  <div class="map-consent card mb-2" data-map-consent hidden>
+    <p class="map-consent__note" id="map-note">{% blocktranslate trimmed with p=tile_provider %}O mapa carga imaxes de {{ p }}: ese servidor verá o enderezo IP do teu navegador.{% endblocktranslate %}</p>
+    <button type="button" class="btn" data-map-load aria-describedby="map-note">{% icon 'map' %} {% translate "Ver mapa" %}</button>
+  </div>
+  <div id="map" class="map mb-2" data-map="facilities-geo" role="region" tabindex="-1" aria-label="{% translate 'Mapa das instalacións (a mesma información está na lista de embaixo)' %}" hidden></div>
+  <p class="map-hint">{% translate "A lista seguinte contén a mesma información de forma accesible, sen cargar o mapa." %}</p>
 {% endif %}
 
 <ul class="grid grid-3 list" role="list">

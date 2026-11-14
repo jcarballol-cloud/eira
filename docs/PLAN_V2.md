@@ -142,11 +142,10 @@ Os oito bloques (A–H) están feitos na interface. Queda pendente, sen facelo a
 
 ## Auditoría RXPD (14/11/2026): o que queda
 
-Ver [docs/rxpd/auditoria-aepd.md](rxpd/auditoria-aepd.md). Corrixido no código: O1–O6 e O11.
+Ver [docs/rxpd/auditoria-aepd.md](rxpd/auditoria-aepd.md). Corrixido no código: O1–O6, O9 (mapa só baixo demanda) e O11.
 
 | Prioridade | Oco | Proposta |
 |---|---|---|
-| **Alta** | O9 · Teselas do mapa en OpenStreetMap por defecto (o navegador envía a IP ao Reino Unido) | Mapa que se carga ao tocalo («Ver o mapa») ou teselas da deputación por defecto; o concello xa pode cambialas en «Configuración → Mapa» |
 | **Alta** | O8 · Pagamentos sen purga aos 6 anos | Purga ou anonimización aos 6 anos do peche do exercicio, con aviso previo á Intervención; depende do calendario contable de cada concello |
 | **Media** | O8 · Asistencia, esforzo e probas sen purga (tempada + 1 ano) | Data de fin de tempada por grupo e purga ao ano seguinte; o observatorio xa só garda agregados |
 | **Media** | Limitación do tratamento (art. 18) e bloqueo (art. 32 LOPDGDD) sen estado propio | Marca «limitado/bloqueado» por persoa que oculta os datos do uso ordinario e só os deixa ver ao DPD |

@@ -61,8 +61,8 @@ concello.
 >
 > **Destinatarios:** ninguno fuera del concello, salvo quien aloja Eira por encargo del concello (contrato
 > del art. 28 RGPD). Tus datos no salen de la Unión Europea, salvo si vinculas Telegram para
-> recibir avisos. El mapa de las instalaciones carga imágenes de un servidor de mapas, que ve la dirección IP
-> de tu navegador.
+> recibir avisos. El mapa de las instalaciones solo se carga si pulsas «Ver mapa»; entonces el servidor de
+> mapas (OpenStreetMap por defecto) ve la dirección IP de tu navegador.
 >
 > **Persona delegada de protección de datos:** [contacto del DPD] (aparece si el concello lo rellena en
 > «Configuración»).

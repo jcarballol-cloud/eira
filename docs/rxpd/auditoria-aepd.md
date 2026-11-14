@@ -59,13 +59,16 @@ exercer un dereito ou acceder a un servizo. **Dous ou máis criterios → EIPD n
 | 17 | Textos legais e consentimentos | 6.1.c e 6.1.a | Servidor | O que fixe o concello | Ningunha | — | Non |
 | 18 | Acreditación de monitoras | 6.1.c (LOPIVI, art. 57) | Servidor: **só quen e cando** | Ata retirar a marca | Ningunha | — (sen datos penais) | Non |
 
-**Transferencias fóra da UE:** **ningunha cos datos das contas**. Hai tres excepcións que debe
-coñecer o concello: (a) **Telegram**, provedor de fóra do EEE, só se a persoa vincula o bot
-(voluntario; sempre hai app e correo); (b) **as teselas do mapa**, que por defecto veñen de
-`tile.openstreetmap.org` (Fundación OpenStreetMap, Reino Unido): o navegador envía o seu enderezo IP
-ao ver o mapa; o concello pode poñer o seu servidor de teselas en «Configuración → Mapa»; (c)
-**push real**: o adaptador incluído é simulado; un adaptador real enviaría a mensaxe cifrada
-(RFC 8291) ao servizo de push do navegador (Google, Mozilla ou Apple). Ver «Ocos».
+**Transferencias fóra da UE:** **ningunha cos datos das contas.** Dúas comunicacións a servizos
+de fóra, as dúas avisadas e por decisión da persoa:
+- **Telegram** (provedor de fóra do EEE): só se a persoa vincula o bot, que é voluntario; sempre
+  hai app e correo.
+- **Mapa, só baixo demanda:** as teselas veñen por defecto de `tile.openstreetmap.org` (Fundación
+  OpenStreetMap, Reino Unido). Non se pide ningunha ata que a persoa pulsa «Ver mapa», xunto a un
+  aviso dunha liña: «O mapa carga imaxes de OpenStreetMap: ese servidor verá o enderezo IP do teu
+  navegador.» Non se lembra a elección. O concello pode usar o seu servidor en «Configuración → Mapa».
+
+Non hai push real: o adaptador incluído é simulado (ver `PLAN_V2.md`).
 
 ## Ocos atopados e que se fixo
 
@@ -79,7 +82,7 @@ ao ver o mapa; o concello pode poñer o seu servidor de teselas en «Configuraci
 | O6 | **Os rexistros dos contedores** (levan enderezos IP no log de acceso de gunicorn) non tiñan límite no `docker-compose.yml` local | `docker-compose.yml` | **Corrixido:** rotación 3 × 10 MB. Na demo en liña, Caddy (`deploy/demo/sitio.caddy`) rexistra o acceso coa IP, gunicorn só ve o proxy, e os rexistros de todos os contedores rotan en 3 × 10 MB (comprobado no servidor o 14/11/2026) | — (configuración) |
 | O7 | Campos que non se usan: `GameReport.reviewed_at` (nunca se escribe) e `User.last_login` (Django actualízao, Eira non o le) | modelos | **Pendente** (PLAN_V2): decidir se se usan (revisión de denuncias; aviso de contas inactivas) ou se deixan de gardar | — |
 | O8 | Pagamentos (6 anos) e asistencia/RPE (tempada + 1 ano) seguen sen purga | `bookings.Payment`, `activities.Attendance` | **Pendente** (PLAN_V2): as dúas dependen da contabilidade e das tempadas de cada concello; borrar sen regra clara sería peor | — |
-| O9 | Teselas do mapa por defecto en OpenStreetMap (IP ao Reino Unido) | `EIRA_TILE_URL` | **Pendente** (PLAN_V2): mapa que se carga ao tocalo ou teselas da deputación por defecto | `test_security.py::test_tile_provider_per_municipality_goes_to_csp` (configurable) |
+| O9 | **O mapa pedía as teselas a OpenStreetMap (IP ao Reino Unido) ao abrir a vista de mapa**, sen avisar | `templates/facilities/home.html`, `static/js/map.js` | **Corrixido:** non se pide ningunha tesela ata pulsar «Ver mapa», cun aviso dunha liña sobre o servidor e a IP; non se lembra a elección | `apps/facilities/tests/test_map_on_demand.py` (4) e E2E `test_map.py::test_no_tile_request_without_clicking` |
 | O11 | **A descarga dos datos propios (art. 15) estaba incompleta:** non levaba carné e abonos, bonos, valoracións, partidas abertas nin preferencias de avisos | `apps/accounts/views.py::export_user_data` | **Corrixido:** engadidos | `test_rgpd_export.py` (2 tests) |
 | O10 | Os textos libres só levan aviso: non se detecta automaticamente un dato de saúde | formularios | **Pendente** (PLAN_V2, baixa) | — |
 

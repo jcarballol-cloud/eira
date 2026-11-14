@@ -139,7 +139,7 @@ medidas; o residual, despois. Valores propostos: o DPD debe revisalos.
 | R16 | Nun dispositivo compartido (tableta, ordenador do mostrador), a seguinte persoa ve sen rede páxinas gardadas da anterior (lista de menores, reservas) | B, todos | M/A | **Novo:** ao saír, `Clear-Site-Data: "cache"`; a caché de páxinas bórrase se cambia a persoa ou non hai sesión (`test_rgpd_device.py`, E2E `test_rgpd.py`) | B/M → **Baixo** |
 | R17 | Datos de saúde escritos en textos libres (notas, comentarios) | A, todos | M/M | **Novo:** aviso en todos os campos de texto libre; o rexistro de accidentes segue sen texto libre. Non hai detección automática | M/B → **Baixo-medio** |
 | R18 | Conservación máis longa do necesario | todos | A/M | **Novo:** purga automática de todos os prazos documentados agás pagamentos e asistencia (ver [05-conservacion.md](05-conservacion.md)) | B/M → **Baixo** |
-| R19 | Transferencias fóra da UE: Telegram (voluntario) e IP ao servidor de teselas do mapa | todos | M/B | Telegram só se a persoa o vincula; teselas configurables polo concello | B/B → **Baixo** (se o concello usa teselas propias) |
+| R19 | Transferencias fóra da UE: Telegram (voluntario) e IP ao servidor de teselas do mapa | todos | M/B | Ningunha cos datos das contas. Telegram só se a persoa o vincula; o mapa só se carga ao pulsar «Ver mapa», con aviso da IP; teselas configurables polo concello | B/B → **Baixo** |
 | R20 | Alta denegada por un erro do contraste automático co padrón | F | M/M | Sen coincidencia → revisión humana co motivo; nunca se casa polo nome (`test_padron.py`) | B/B → **Baixo** |
 
 ## 4. Risco residual e conclusión

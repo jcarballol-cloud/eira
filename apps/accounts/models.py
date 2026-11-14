@@ -45,7 +45,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     display_name = models.CharField(_("nome para mostrar"), max_length=80, blank=True)
     phone = models.CharField(_("teléfono"), max_length=20, blank=True)
     birth_year = models.PositiveIntegerField(_("ano de nacemento"), null=True, blank=True)
-    preferred_language = models.CharField(_("idioma preferido"), max_length=5, default="gl")
+    # Baleiro = nunca escolleu: úsase o idioma por defecto do concello (galego de serie)
+    preferred_language = models.CharField(
+        _("idioma preferido"), max_length=5, default="", blank=True
+    )
     identity_subject = models.CharField(
         max_length=128, unique=True, null=True, blank=True, editable=False
     )

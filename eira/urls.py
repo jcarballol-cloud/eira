@@ -11,7 +11,7 @@ from apps.tenants.media import protected_serve
 
 urlpatterns = [
     path("", core.home, name="home"),
-    path("i18n/", include("django.conf.urls.i18n")),
+    path("i18n/setlang/", core.set_language, name="set_language"),
     path("acceso/", include("apps.accounts.urls")),
     path("conta/", include("apps.accounts.urls_account")),
     path("preferencias/", core.preferences, name="preferences"),

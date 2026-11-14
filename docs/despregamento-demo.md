@@ -129,7 +129,8 @@ docker compose -f docker-compose.demo.yml up -d --build
 python tools/check_demo_online.py https://eira.engramlab.es
 ```
 
-Comproba o certificado, a entrada con cada perfil, unha reserva completa, a reprodución dos vídeos, a
+Comproba o certificado, a entrada con cada perfil, que cun navegador en castelán a demo se abre en
+galego (e que «ES» se lembra), unha reserva completa, a reprodución dos vídeos, a
 PWA, axe en seis pantallas e o rexeitamento de correos reais. Con `--rate-limit` proba tamén o límite
 de acceso, e gasta o da IP que fai a proba durante unha hora.
 

@@ -104,6 +104,7 @@ TENANT_FIELDS = [
     "ine_code",
     "accent_color",
     "languages",
+    "default_language",
     "contact_email",
     "contact_phone",
     "address",

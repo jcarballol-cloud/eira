@@ -49,7 +49,7 @@ MODULE_LABELS = {
 # Orde pensada para a grella de dúas columnas: as seccións curtas van emparelladas (Identidade e
 # Padrón; Contacto e Regras de reserva) e as de campos longos ocupan as dúas columnas.
 SETTINGS_SECTIONS = [
-    ("identidade", gettext_lazy("Identidade"), ["name", "accent_color"], False),
+    ("identidade", gettext_lazy("Identidade"), ["name", "accent_color", "default_language"], False),
     ("padron", gettext_lazy("Padrón"), ["postcodes"], False),
     (
         "contacto",
@@ -165,6 +165,7 @@ class SettingsForm(forms.ModelForm):
         fields = [
             "name",
             "accent_color",
+            "default_language",
             "contact_email",
             "contact_phone",
             "address",

@@ -113,7 +113,7 @@ def test_admin_edits_statement_contact_in_settings(client, admin_a, muni_a):
 
 def test_statement_in_spanish(client, muni_a):
     client.cookies["django_language"] = "es"
-    html = client.get(f"{C}/accesibilidade/", HTTP_ACCEPT_LANGUAGE="es").content.decode()
+    html = client.get(f"{C}/accesibilidade/").content.decode()
     assert "Declaración de accesibilidad" in html and "Procedimiento de aplicación" in html
 
 

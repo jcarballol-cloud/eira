@@ -11,6 +11,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.http import Http404
 
+from .language import apply_tenant_default
 from .models import Municipality
 
 PASSTHROUGH_PREFIXES = (
@@ -89,6 +90,7 @@ class TenantMiddleware:
         except Municipality.DoesNotExist as exc:
             raise Http404("Concello descoñecido") from exc
         request.tenant = tenant
+        apply_tenant_default(request, tenant)
         # Lembra o último concello visitado (para volver a el despois de identificarse).
         # Só se xa hai sesión: non se crean sesións para visitantes anónimos.
         session = getattr(request, "session", None)

@@ -155,3 +155,7 @@ Ver [docs/rxpd/auditoria-aepd.md](rxpd/auditoria-aepd.md). Corrixido no código:
 | **Baixa** | O10 · Os textos libres só levan un aviso | Aviso suave no navegador se se detectan palabras de saúde (sen enviar nada) |
 | **Baixa** | Gestiona RGPD | Pasar a táboa da auditoría á ferramenta da AEPD cun concello ficticio e gardar o informe |
 
+
+## Idioma (14/11/2026): o que queda
+
+- Os correos dos procesos de fondo (avisos, recordatorios, `booking_maintenance`) saen sempre en galego: deberían usar o idioma escollido pola persoa ou, se non escolleu, o do concello.

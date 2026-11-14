@@ -52,7 +52,9 @@ class ProfileForm(forms.ModelForm):
         widgets = {
             "phone": forms.TextInput(attrs={"autocomplete": "tel", "inputmode": "tel"}),
             "display_name": forms.TextInput(attrs={"autocomplete": "nickname"}),
-            "preferred_language": forms.Select(choices=[("gl", "Galego"), ("es", "Castellano")]),
+            "preferred_language": forms.Select(
+                choices=[("", _("O do concello")), ("gl", "Galego"), ("es", "Castellano")]
+            ),
         }
         help_texts = {
             "birth_year": _("Opcional. Só o ano, para aplicar tarifas por idade."),

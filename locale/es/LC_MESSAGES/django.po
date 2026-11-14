@@ -8386,10 +8386,6 @@ msgstr "mantener la sesión abierta (14 días)"
 msgid "protexer os formularios"
 msgstr "proteger los formularios"
 
-#: templates/accounts/privacy.html:64
-msgid "lembrar o idioma"
-msgstr "recordar el idioma"
-
 #: templates/accounts/privacy.html:65
 msgid "preferencias de lectura"
 msgstr "preferencias de lectura"
@@ -18913,6 +18909,22 @@ msgstr ""
 "si vinculas Telegram para recibir avisos. El mapa de las instalaciones solo "
 "se carga si pulsas «Ver mapa»; entonces el servidor de mapas (OpenStreetMap "
 "por defecto) ve la dirección IP de tu navegador."
+
+msgid "O do concello"
+msgstr "El del ayuntamiento"
+
+msgid "idioma por defecto"
+msgstr "idioma por defecto"
+
+msgid ""
+"O idioma en que se abre Eira para quen aínda non escolleu outro no selector."
+" Non se usa o idioma do navegador."
+msgstr ""
+"El idioma en el que se abre Eira para quien aún no ha elegido otro en el "
+"selector. No se usa el idioma del navegador."
+
+msgid "lembrar o idioma que escolliches no selector (1 ano)"
+msgstr "recordar el idioma que elegiste en el selector (1 año)"
 
 #~ msgid "Frecuencia"
 #~ msgstr "Frecuencia"

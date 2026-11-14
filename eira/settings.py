@@ -97,10 +97,11 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "apps.tenants.middleware.SubdomainTenantMiddleware",
-    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    # Idioma: perfil → cookie → concello → galego. Nunca Accept-Language (14/11/2026)
+    "apps.tenants.language.LanguageMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "apps.tenants.middleware.TenantMiddleware",
@@ -150,6 +151,9 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = "gl"
 LANGUAGES = [("gl", _("Galego")), ("es", _("Castelán"))]
 LOCALE_PATHS = [BASE_DIR / "locale"]
+# A escolla do selector lémbrase un ano sen sesión (sen data, a cookie morrería ao pechar o navegador)
+LANGUAGE_COOKIE_AGE = 365 * 24 * 3600
+LANGUAGE_COOKIE_SAMESITE = "Lax"
 TIME_ZONE = "Europe/Madrid"
 USE_I18N = True
 USE_TZ = True
@@ -181,6 +185,7 @@ SESSION_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SAMESITE = "Lax"
 SESSION_COOKIE_SECURE = env_bool("EIRA_SECURE_COOKIES", not DEBUG)
 CSRF_COOKIE_SECURE = SESSION_COOKIE_SECURE
+LANGUAGE_COOKIE_SECURE = SESSION_COOKIE_SECURE
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "same-origin"
 X_FRAME_OPTIONS = "DENY"

@@ -95,6 +95,17 @@ class Municipality(models.Model):
     )
     coat_of_arms = models.ImageField(_("escudo"), upload_to="tenants/coats/", blank=True)
     languages = models.CharField(_("idiomas"), max_length=40, default="gl,es")
+    # 14/11/2026: idioma de partida para quen aínda non escolleu (nunca o do navegador)
+    default_language = models.CharField(
+        _("idioma por defecto"),
+        max_length=5,
+        default="gl",
+        choices=[("gl", "Galego"), ("es", "Castellano")],
+        help_text=_(
+            "O idioma en que se abre Eira para quen aínda non escolleu outro no selector. "
+            "Non se usa o idioma do navegador."
+        ),
+    )
     domain = models.CharField(
         _("dominio propio"),
         max_length=190,

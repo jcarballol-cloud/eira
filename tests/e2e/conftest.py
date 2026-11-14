@@ -59,7 +59,7 @@ def new_page(browser, base):
     contexts = []
 
     def make(viewport=DESKTOP, persona=None, tour=False, **kw):
-        ctx = browser.new_context(viewport=viewport, locale="gl-ES", **kw)
+        ctx = browser.new_context(viewport=viewport, locale=kw.pop("locale", "gl-ES"), **kw)
         if not tour:
             ctx.add_init_script(tours_seen_script())
         contexts.append(ctx)

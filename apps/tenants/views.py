@@ -326,3 +326,21 @@ def desk_mode(request):
     response = HttpResponse(status=303)
     response["Location"] = _safe_next(request)
     return response
+
+
+@require_http_methods(["POST"])
+def set_language(request):
+    """Selector de idioma (14/11/2026): a vista de Django garda a cookie; con sesión, tamén no
+    perfil, para que a escolla siga á persoa en todos os seus dispositivos."""
+    from django.views.i18n import set_language as django_set_language
+
+    from .language import valid
+
+    response = django_set_language(request)
+    code = valid(request.POST.get("language", ""))
+    user = request.user
+    shared = settings.EIRA_PUBLIC_DEMO  # contas compartidas: só a cookie (ver language.py)
+    if code and user.is_authenticated and not shared and user.preferred_language != code:
+        user.preferred_language = code
+        user.save(update_fields=["preferred_language"])
+    return response

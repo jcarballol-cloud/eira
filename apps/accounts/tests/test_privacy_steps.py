@@ -5,7 +5,6 @@ DPD. Marcar garda data e persoa e queda no rexistro de auditoría."""
 import re
 
 import pytest
-from django.utils import translation
 
 from apps.accounts.models import AuditLog, Membership, PrivacyStep, Role, User
 from apps.accounts.privacy_steps import DOCS, PACKAGE, STEPS
@@ -123,10 +122,8 @@ def test_documents_render_and_download_is_audited(client, admin_a):
 
 def test_documents_in_spanish(client, admin_a):
     client.force_login(admin_a)
-    with translation.override("es"):
-        html = client.get(
-            f"{C}/xestion/privacidade/documentos/minimizacion/", HTTP_ACCEPT_LANGUAGE="es"
-        ).content.decode()
+    client.cookies["django_language"] = "es"
+    html = client.get(f"{C}/xestion/privacidade/documentos/minimizacion/").content.decode()
     assert "MODELO DE EJEMPLO" in html
 
 

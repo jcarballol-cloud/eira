@@ -68,8 +68,13 @@ TOURS_SEEN = (
 )
 
 
-def new_page(browser, viewport, insecure, tour=False):
-    context = browser.new_context(viewport=viewport, locale="gl-ES", ignore_https_errors=insecure)
+def new_page(browser, viewport, insecure, tour=False, locale="gl-ES"):
+    context = browser.new_context(
+        viewport=viewport,
+        locale=locale,
+        extra_http_headers={"Accept-Language": f"{locale},{locale[:2]};q=0.9"},
+        ignore_https_errors=insecure,
+    )
     if not tour:
         context.add_init_script(TOURS_SEEN)
     page = context.new_page()
@@ -118,6 +123,31 @@ def check_tour(browser, base, insecure):
     page.reload()
     page.wait_for_load_state()
     report("A guía non volve saír ao recargar", page.locator("dialog#tour[open]").count() == 0)
+    page.context.close()
+
+
+def check_language(browser, base, insecure):
+    """14/11/2026: cun navegador en castelán a demo ábrese en galego; «ES» cambia e lémbrase."""
+    page = new_page(browser, MOBILE, insecure, locale="es-ES")
+    lang = "document.documentElement.lang"
+    langs = {}
+    for path in ("/", "/c/vilardeiras/", "/acceso/", "/c/vilardeiras/accesibilidade/"):
+        page.goto(base + path)
+        langs[path] = page.evaluate(lang)
+    report(
+        "Navegador en castelán: abre en galego",
+        set(langs.values()) == {"gl"},
+        " ".join(f"{p}={v}" for p, v in langs.items()),
+    )
+    page.goto(f"{base}/c/vilardeiras/")
+    with page.expect_navigation():
+        page.locator(".lang-form button[value=es]").first.click()
+    page.reload()
+    page.goto(f"{base}/acceso/")
+    kept = page.evaluate(lang)
+    with page.expect_navigation():
+        page.locator(".lang-form button[value=gl]").first.click()
+    report("Escoller «ES» lémbrase ao navegar", kept == "es", f"/acceso/={kept}")
     page.context.close()
 
 
@@ -282,6 +312,7 @@ def main():
         browser = playwright.chromium.launch()
         check("Perfís", lambda: check_profiles(browser, base, insecure))
         check("Guía", lambda: check_tour(browser, base, insecure))
+        check("Idioma", lambda: check_language(browser, base, insecure))
         check("Reserva completa", lambda: check_booking(browser, base, insecure))
         check("Vídeos", lambda: check_videos(browser, base, insecure))
         check("PWA", lambda: check_pwa(playwright, base, insecure))

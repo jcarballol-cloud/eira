@@ -44,7 +44,8 @@ def test_lang_attribute_and_skip_link(client, padel_a):
 
 
 def test_spanish_lang(client, padel_a):
-    html = client.get("/c/concello-a/", HTTP_ACCEPT_LANGUAGE="es").content.decode()
+    client.cookies["django_language"] = "es"  # escollido no selector (o navegador non conta)
+    html = client.get("/c/concello-a/").content.decode()
     assert '<html lang="es"' in html
 
 

@@ -31,6 +31,27 @@ nun bar, un teclado con código que non necesita internet ou unha pechadura cone
 - **App instalable desde o navegador (PWA):** sen tendas de aplicacións nin custos de publicación, actualízase para todas as persoas ao momento e funciona sen conexión.
 - **Soberanía:** exportación íntegra en formatos abertos, API OpenAPI 3.1, datos abertos DCAT-AP, IA opcional só autoaloxada.
 
+## Como se ve
+
+| | |
+|---|---|
+| ![Instalacións do concello no móbil, sen rexistro](docs/capturas/01-instalacions-movil.png) | ![Reserva confirmada co código temporal da porta](docs/capturas/03-reserva-codigo-movil.png) |
+| ![App de mantemento: ordes de traballo](docs/capturas/05-operario-ordes-movil.png) | ![Aviso e Alerta: incidencias e emerxencias](docs/capturas/06-aviso-e-alerta-movil.png) |
+| ![Botón Escoitar no inicio da app](docs/capturas/07-escoitar-movil.png) | ![Alerta desde a app de mantemento, co que hai que ditar ao 112 e o DESA](docs/capturas/08-alerta-operario-movil.png) |
+
+![Ficha dunha instalación con grella de dispoñibilidade](docs/capturas/02-grella-semanal-escritorio.png)
+
+![Panel do día da xestión municipal](docs/capturas/04-panel-do-dia-escritorio.png)
+
+![Mapa de procedencia, só con datos agregados](docs/capturas/09-procedencia-escritorio.png)
+
+![Documentos legais do concello, con aviso de modelo de exemplo](docs/capturas/10-documentos-legais-escritorio.png)
+
+![Acreditacións para actividades con menores, sen gardar o certificado](docs/capturas/11-acreditacions-escritorio.png)
+
+Datos ficticios da demo. Capturas de cada pantalla (móbil, tableta, escritorio e tema escuro)
+dispoñibles baixo petición: ver [docs/capturas/README.md](docs/capturas/README.md).
+
 ## Probalo
 
 **En liña, sen instalar nada:** <https://eira.engramlab.es>. Datos ficticios que se restauran cada

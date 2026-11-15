@@ -1,8 +1,7 @@
-# CLAUDE.md — Proxecto Eira
+# AGENTS.md — Proxecto Eira
 
 Plataforma libre (EUPL-1.2) de xestión, reserva e **acceso** a instalacións deportivas municipais
-para concellos pequenos. Candidatura ao I Certame GOBTEC de Software Libre 2026 (AGASOL).
-Prazo de entrega: **18/11/2026**. Descrición: «Eira · Software libre para a xestión deportiva municipal» (reservas, acceso ás instalacións, mantemento e actividades deportivas, nunha soa plataforma).
+para concellos pequenos.
 
 ## Stack
 - Python 3.12+ (venv con 3.13), **Django 5.2**, DRF + drf-spectacular (OpenAPI 3.1).
@@ -38,10 +37,3 @@ Prazo de entrega: **18/11/2026**. Descrición: «Eira · Software libre para a x
 - CSP estrita: **nada de `<script>` nin `style=` en liña**. JS en `static/js/`, datos para JS con `json_script`.
 - Accesibilidade WCAG 2.1 AA: campos con `includes/field.html`, foco visible, anuncios `aria-live` (`data-announce`) nos intercambios HTMX.
 - Datos persoais mínimos. Nada de datos reais na demo; autoría «Equipo Eira».
-
-## Regras da sesión autónoma (resumo)
-- Non preguntar: decidir e anotar en `docs/DECISIONS.md`. Rexistro vivo en `docs/PROGRESS.md`.
-- Git local, commits pequenos en galego/castelán. **Non facer push nin publicar nada.**
-- Sen servizos de pago, contas externas nin claves reais.
-- Dependencias só con licenza compatible con EUPL-1.2 (`make licenses`).
-- Distinguir sempre «verificado» de «non verificado».

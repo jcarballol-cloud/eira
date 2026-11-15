@@ -4,6 +4,7 @@ on:
   push:
     branches: ["**"]  # só ramas: as etiquetas non lanzan outro run do mesmo commit
   pull_request:
+  workflow_dispatch:  # relanzar a CI a man (Actions → CI → Run workflow)
 
 jobs:
   test:
